@@ -453,14 +453,11 @@ export default function NeuralMesh() {
     linesGroup.appendChild(spineSharp2);
 
     // Spine labels
-    [
-      { x: 500, y: 248, label: 'TOKENIZATION', size: '13', weight: '700', opacity: '0.8' },
-      { x: 500, y: 440, label: 'LAYER', size: '12', weight: '600', opacity: '0.6' },
-    ].forEach(sl => {
+    {
       const pill = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      pill.setAttribute('x', String(sl.x - 52)); pill.setAttribute('y', String(sl.y - 10));
-      pill.setAttribute('width', '104'); pill.setAttribute('height', '20');
-      pill.setAttribute('rx', '10');
+      pill.setAttribute('x', '420'); pill.setAttribute('y', '334');
+      pill.setAttribute('width', '160'); pill.setAttribute('height', '22');
+      pill.setAttribute('rx', '11');
       pill.setAttribute('fill', 'rgba(139,92,246,0.12)');
       pill.setAttribute('stroke', 'rgba(139,92,246,0.25)');
       pill.setAttribute('stroke-width', '0.5');
@@ -468,18 +465,18 @@ export default function NeuralMesh() {
       nodesGroup.appendChild(pill);
 
       const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      t.setAttribute('x', String(sl.x)); t.setAttribute('y', String(sl.y));
+      t.setAttribute('x', '500'); t.setAttribute('y', '345');
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('dominant-baseline', 'middle');
-      t.setAttribute('fill', `rgba(200,180,255,${sl.opacity})`);
-      t.setAttribute('font-family', "'Clash Display', sans-serif");
-      t.setAttribute('font-size', sl.size);
-      t.setAttribute('font-weight', sl.weight);
-      t.setAttribute('letter-spacing', '0.2em');
-      t.textContent = sl.label;
+      t.setAttribute('fill', 'rgba(200,180,255,0.75)');
+      t.setAttribute('font-family', "'Monument Extended', sans-serif");
+      t.setAttribute('font-size', '11');
+      t.setAttribute('font-weight', '900');
+      t.setAttribute('letter-spacing', '0.15em');
+      t.textContent = 'TOKENIZATION LAYER';
       t.classList.add('spine-label');
       nodesGroup.appendChild(t);
-    });
+    }
 
     // Spine pulses
     for (let p = 0; p < 4; p++) {
