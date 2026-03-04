@@ -65,7 +65,7 @@ export default function SiteFooter() {
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
-      <div className="max-w-[960px] mx-auto text-center">
+      <div className="max-w-[960px] mx-auto text-left">
         <div className="mb-8">
           <h2 style={{
             fontFamily: 'var(--font-display)',
@@ -75,7 +75,7 @@ export default function SiteFooter() {
             marginBottom: '1.5rem',
             textTransform: 'uppercase',
           }}>Join the Conversation</h2>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-start gap-4">
             {socialLinks.map(link => (
               <a
                 key={link.label}
@@ -108,7 +108,7 @@ export default function SiteFooter() {
 
         {/* Activity Feed */}
         <div
-          className="overflow-hidden mx-auto mb-8 relative"
+          className="overflow-hidden mb-8 relative"
           style={{
             maxWidth: '480px',
             height: '168px',
@@ -125,7 +125,7 @@ export default function SiteFooter() {
           />
         </div>
 
-        <div className="flex gap-4 justify-center flex-wrap mb-10">
+        <div className="flex gap-4 justify-start flex-wrap mb-10">
           <a
             href="#"
             target="_blank"
