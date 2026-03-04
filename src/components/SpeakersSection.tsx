@@ -67,7 +67,7 @@ export default function SpeakersSection() {
                 <div>
                   <h3 style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 'var(--text-lg)',
+                    fontSize: '18px',
                     fontWeight: 900,
                     color: 'var(--color-text)',
                     letterSpacing: '-0.01em',
