@@ -5,7 +5,7 @@
 /* ============================================
    FONTS
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 
 @font-face {
   font-family: 'Monument Extended';
@@ -54,7 +54,7 @@
   --text-hero: clamp(3rem,     0.5rem  + 7vw,    8rem);
 
   --font-display: 'Monument Extended', 'Arial Black', sans-serif;
-  --font-body: 'Inter', 'Helvetica Neue', 'Segoe UI', sans-serif;
+  --font-body: 'Space Grotesk', 'Helvetica Neue', 'Segoe UI', sans-serif;
 }
 
 /* ============================================
