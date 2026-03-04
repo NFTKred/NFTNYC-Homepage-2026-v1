@@ -131,7 +131,7 @@ export default function Index() {
         >
           <div className="max-w-[960px] mx-auto text-center">
             <h2 style={{
-              fontFamily: 'var(--font-display)',
+              fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-xl)',
               fontWeight: 500,
               color: 'var(--color-text)',
