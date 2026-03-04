@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SiteHeader from '@/components/SiteHeader';
 import NeuralMesh from '@/components/NeuralMesh';
+import Countdown from '@/components/Countdown';
 import SpeakersSection from '@/components/SpeakersSection';
 import EcosystemSection from '@/components/EcosystemSection';
 import SiteFooter from '@/components/SiteFooter';
@@ -77,7 +78,8 @@ export default function Index() {
               letterSpacing: '0.12em',
               color: 'var(--color-text-faint)',
               marginTop: '1rem',
-            }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;H2 2026</p>
+            }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;1–2 SEPTEMBER 2026</p>
+            <Countdown />
           </div>
 
           {/* Neural mesh (desktop) */}
