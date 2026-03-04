@@ -47,7 +47,7 @@ export default function SiteFooter() {
     justifyContent: 'center',
     padding: '0.75rem 1.5rem',
     borderRadius: '9999px',
-    fontFamily: 'var(--font-display)',
+    fontFamily: 'var(--font-body)',
     fontWeight: 600,
     fontSize: 'var(--text-sm)',
     textDecoration: 'none',
