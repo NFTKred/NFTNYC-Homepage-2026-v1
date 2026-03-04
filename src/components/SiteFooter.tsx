@@ -70,7 +70,7 @@ export default function SiteFooter() {
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'var(--text-xl)',
-            fontWeight: 600,
+            fontWeight: 900,
             color: 'var(--color-text)',
             marginBottom: '1.5rem',
             textTransform: 'uppercase',

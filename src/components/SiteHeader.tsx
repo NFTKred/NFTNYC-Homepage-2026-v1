@@ -39,7 +39,7 @@ export default function Header({ theme, onToggleTheme }: HeaderProps) {
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'var(--text-lg)',
-              fontWeight: 700,
+              fontWeight: 900,
               color: 'var(--color-text)',
               letterSpacing: '-0.02em',
             }}

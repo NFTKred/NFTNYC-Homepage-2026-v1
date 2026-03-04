@@ -31,7 +31,7 @@ export default function EcosystemSection() {
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 700,
+            fontWeight: 900,
             color: 'var(--color-text)',
             letterSpacing: '-0.02em',
             textTransform: 'uppercase',
@@ -65,7 +65,7 @@ export default function EcosystemSection() {
                 <h3 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: 'var(--text-lg)',
-                  fontWeight: 600,
+                  fontWeight: 900,
                   color: 'var(--color-text)',
                   letterSpacing: '-0.01em',
                   textTransform: 'uppercase',

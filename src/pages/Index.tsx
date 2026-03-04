@@ -56,7 +56,7 @@ export default function Index() {
             <h1 style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'var(--text-hero)',
-              fontWeight: 700,
+              fontWeight: 900,
               color: 'var(--color-text)',
               letterSpacing: '-0.04em',
               lineHeight: 1,

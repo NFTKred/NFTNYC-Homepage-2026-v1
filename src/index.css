@@ -31,6 +31,15 @@
   src: url('/fonts/MonumentExtended-Ultrabold.woff') format('woff');
 }
 
+/* Black weight — mapped to Ultrabold file (heaviest available) */
+@font-face {
+  font-family: 'Monument Extended';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('/fonts/MonumentExtended-Ultrabold.woff') format('woff');
+}
+
 /* ============================================
    TYPE SCALE
    ============================================ */
