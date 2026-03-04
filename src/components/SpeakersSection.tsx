@@ -52,13 +52,26 @@ export default function SpeakersSection() {
               }}
             >
               <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={`https://unavatar.io/twitter/${s.handle}`}
+                  alt={s.name}
+                  className="w-14 h-14 rounded-full flex-shrink-0 object-cover"
+                  style={{ border: `2px solid ${s.ecoColor}` }}
+                  onError={e => {
+                    const el = e.currentTarget as HTMLImageElement;
+                    el.style.display = 'none';
+                    const fallback = el.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
                 <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                  className="w-14 h-14 rounded-full flex-shrink-0 items-center justify-center"
                   style={{
+                    display: 'none',
                     background: s.ecoColor,
                     fontFamily: 'var(--font-display)',
                     fontSize: 'var(--text-lg)',
-                    fontWeight: 700,
+                    fontWeight: 900,
                     color: '#fff',
                   }}
                 >
