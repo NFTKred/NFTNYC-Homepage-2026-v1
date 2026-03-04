@@ -64,7 +64,7 @@ export default function EcosystemSection() {
                 <span style={{ fontSize: 'var(--text-xl)' }}>{eco.icon}</span>
                 <h3 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'var(--text-lg)',
+                  fontSize: '18px',
                   fontWeight: 900,
                   color: 'var(--color-text)',
                   letterSpacing: '-0.01em',
