@@ -56,13 +56,13 @@ export default function EcosystemSection() {
                 className="card-inner-mask"
                 style={{ background: 'var(--color-bg)' }}
               />
+              {/* Top color bar — above mask */}
+              <div
+                className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[0.75rem]"
+                style={{ background: eco.color, zIndex: 3 }}
+              />
               {/* Content */}
               <div className="card-content">
-                {/* Top color bar */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[0.75rem]"
-                  style={{ background: eco.color, zIndex: 3 }}
-                />
                 <div className="flex items-center gap-3 mb-4 mt-1">
                   <span style={{ fontSize: 'var(--text-xl)' }}>{eco.icon}</span>
                   <h3 style={{
