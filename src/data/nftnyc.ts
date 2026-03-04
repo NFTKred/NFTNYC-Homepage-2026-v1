@@ -82,7 +82,7 @@ export const SPEAKERS: Speaker[] = [
   { name: 'Bearsnake', role: 'COO, Magic Machine (Forgotten Runes)', eco: 'Creator & IP Economy', ecoColor: '#F59E0B', why: 'Turned down a Hollywood buyout to keep IP community-owned. MMORPG on Nintendo/PlayStation/Xbox.', handle: 'BearSnake' },
   { name: 'Stephen Young', role: 'Founder & CEO, NFTfi', eco: 'DeFi & Capital Markets', ecoColor: '#10B981', why: 'Built the first NFT lending protocol. 60,000+ loans, zero security incidents.', handle: 'stephen_yo' },
   { name: 'Chris Lee', role: 'Co-Founder, IYK', eco: 'Brands & Engagement', ecoColor: '#F97316', why: 'Infrastructure connecting physical products to on-chain NFTs via NFC. Backed by a16z.', handle: 'clee681' },
-  { name: 'Justin Blau (3LAU)', role: 'DJ/Producer & CEO, Royal', eco: 'Culture: Art & Music', ecoColor: '#D946EF', why: 'Sold the first tokenized album ($11.7M). Royal lets fans own streaming royalties.', handle: '3LAU' },
+  { name: 'Justin Blau (3LAU)', role: 'DJ/Producer & CEO, Royal', eco: 'Culture: Art & Music', ecoColor: '#D946EF', why: 'Sold the first tokenized album ($11.7M). Royal lets fans own streaming royalties.', handle: 'justinblau' },
   { name: 'Jacob Horne', role: 'Co-Founder & CEO, Zora', eco: 'NFT Marketplaces', ecoColor: '#38BDF8', why: 'Forbes 30 Under 30. $353M trading volume, $27M paid to creators.', handle: 'js_horne' }
 ];
 
