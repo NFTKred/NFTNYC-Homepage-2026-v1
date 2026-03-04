@@ -60,6 +60,7 @@ export default function Index() {
               color: 'var(--color-text)',
               letterSpacing: '-0.04em',
               lineHeight: 1,
+              textTransform: 'uppercase',
             }}>
               NFT<span style={{ color: 'var(--nft-blue)' }}>.</span>NYC{' '}
               <span style={{

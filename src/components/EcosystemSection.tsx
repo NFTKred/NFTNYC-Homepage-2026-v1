@@ -34,6 +34,7 @@ export default function EcosystemSection() {
             fontWeight: 700,
             color: 'var(--color-text)',
             letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
           }}>Ecosystem</h2>
         </div>
         <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))' }}>
@@ -67,6 +68,7 @@ export default function EcosystemSection() {
                   fontWeight: 600,
                   color: 'var(--color-text)',
                   letterSpacing: '-0.01em',
+                  textTransform: 'uppercase',
                 }}>{eco.name}</h3>
               </div>
               <p style={{
