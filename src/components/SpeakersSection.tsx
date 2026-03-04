@@ -39,16 +39,14 @@ export default function SpeakersSection() {
               key={s.handle}
               className="fade-in card-with-glow rounded-[0.75rem] p-6"
               style={{
+                '--glow-c': s.ecoColor,
                 background: 'var(--color-surface)',
                 border: '1px solid rgba(255,255,255,0.06)',
-                transition: 'transform 0.2s ease',
-              }}
+                transition: 'transform 0.2s ease, box-shadow 0.3s ease',
+              } as React.CSSProperties}
             >
               {/* Rotating glow ring */}
-              <div
-                className="card-glow-ring"
-                style={{ '--glow-c': s.ecoColor } as React.CSSProperties}
-              />
+              <div className="card-glow-ring" />
               {/* Inner mask */}
               <div
                 className="card-inner-mask"
