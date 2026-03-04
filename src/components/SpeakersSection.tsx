@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { SPEAKERS } from '@/data/nftnyc';
 
 function hexToRgba(hex: string, alpha: number): string {
@@ -9,26 +8,6 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 export default function SpeakersSection() {
-  const glowIntervals = useRef<Map<string, ReturnType<typeof setInterval>>>(new Map());
-
-  function startGlow(el: HTMLElement, color: string) {
-    const dim = `0 0 14px 2px ${hexToRgba(color, 0.3)}`;
-    const bright = `0 0 32px 8px ${hexToRgba(color, 0.55)}`;
-    let on = true;
-    el.style.boxShadow = dim;
-    el.style.transform = 'translateY(-2px)';
-    el.style.borderColor = hexToRgba(color, 0.45);
-    return setInterval(() => {
-      el.style.boxShadow = on ? bright : dim;
-      on = !on;
-    }, 700);
-  }
-
-  function stopGlow(el: HTMLElement) {
-    el.style.boxShadow = 'none';
-    el.style.transform = 'translateY(0)';
-    el.style.borderColor = 'rgba(255,255,255,0.06)';
-  }
   return (
     <section
       id="speakers"
@@ -58,99 +37,101 @@ export default function SpeakersSection() {
           {SPEAKERS.map(s => (
             <article
               key={s.handle}
-              className="fade-in rounded-[0.75rem] p-6"
+              className="fade-in card-with-glow rounded-[0.75rem] p-6"
               style={{
                 background: 'var(--color-surface)',
                 border: '1px solid rgba(255,255,255,0.06)',
-                transition: 'transform 0.2s ease, border-color 0.2s ease',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                const interval = startGlow(el, s.ecoColor);
-                glowIntervals.current.set(s.handle, interval);
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                const interval = glowIntervals.current.get(s.handle);
-                if (interval) { clearInterval(interval); glowIntervals.current.delete(s.handle); }
-                stopGlow(el);
+                transition: 'transform 0.2s ease',
               }}
             >
-              <div className="flex items-center gap-4 mb-4">
-                <img
-                  src={`https://unavatar.io/twitter/${s.handle}`}
-                  alt={s.name}
-                  className="w-14 h-14 rounded-full flex-shrink-0 object-cover"
-                  style={{ border: `2px solid ${s.ecoColor}` }}
-                  onError={e => {
-                    const el = e.currentTarget as HTMLImageElement;
-                    el.style.display = 'none';
-                    const fallback = el.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div
-                  className="w-14 h-14 rounded-full flex-shrink-0 items-center justify-center"
+              {/* Rotating glow ring */}
+              <div
+                className="card-glow-ring"
+                style={{ '--glow-c': s.ecoColor } as React.CSSProperties}
+              />
+              {/* Inner mask */}
+              <div
+                className="card-inner-mask"
+                style={{ background: 'var(--color-surface)' }}
+              />
+              {/* Content */}
+              <div className="card-content">
+                <div className="flex items-center gap-4 mb-4">
+                  <img
+                    src={`https://unavatar.io/twitter/${s.handle}`}
+                    alt={s.name}
+                    className="w-14 h-14 rounded-full flex-shrink-0 object-cover"
+                    style={{ border: `2px solid ${s.ecoColor}` }}
+                    onError={e => {
+                      const el = e.currentTarget as HTMLImageElement;
+                      el.style.display = 'none';
+                      const fallback = el.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  <div
+                    className="w-14 h-14 rounded-full flex-shrink-0 items-center justify-center"
+                    style={{
+                      display: 'none',
+                      background: s.ecoColor,
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'var(--text-lg)',
+                      fontWeight: 900,
+                      color: '#fff',
+                    }}
+                  >
+                    {s.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '18px',
+                      fontWeight: 900,
+                      color: 'var(--color-text)',
+                      letterSpacing: '-0.01em',
+                      textTransform: 'uppercase',
+                    }}>{s.name}</h3>
+                    <p style={{
+                      fontSize: 'var(--text-xs)',
+                      color: 'var(--color-text-muted)',
+                      marginTop: '0.25rem',
+                    }}>{s.role}</p>
+                  </div>
+                </div>
+                <span
                   style={{
-                    display: 'none',
-                    background: s.ecoColor,
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'var(--text-lg)',
-                    fontWeight: 900,
-                    color: '#fff',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '9999px',
+                    fontSize: '0.7rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.02em',
+                    marginBottom: '0.75rem',
+                    background: hexToRgba(s.ecoColor, 0.12),
+                    color: s.ecoColor,
                   }}
-                >
-                  {s.name.charAt(0)}
-                </div>
-                <div>
-                  <h3 style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '18px',
-                    fontWeight: 900,
-                    color: 'var(--color-text)',
-                    letterSpacing: '-0.01em',
-                    textTransform: 'uppercase',
-                  }}>{s.name}</h3>
-                  <p style={{
+                >{s.eco}</span>
+                <p style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--color-text-muted)',
+                  lineHeight: 1.5,
+                  marginBottom: '1rem',
+                  maxWidth: '72ch',
+                }}>{s.why}</p>
+                <a
+                  href={`https://x.com/${s.handle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
                     fontSize: 'var(--text-xs)',
-                    color: 'var(--color-text-muted)',
-                    marginTop: '0.25rem',
-                  }}>{s.role}</p>
-                </div>
+                    color: 'var(--color-primary)',
+                    textDecoration: 'none',
+                    fontWeight: 500,
+                    transition: 'color var(--transition-interactive)',
+                  }}
+                >@{s.handle}</a>
               </div>
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  padding: '0.25rem 0.75rem',
-                  borderRadius: '9999px',
-                  fontSize: '0.7rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.02em',
-                  marginBottom: '0.75rem',
-                  background: hexToRgba(s.ecoColor, 0.12),
-                  color: s.ecoColor,
-                }}
-              >{s.eco}</span>
-              <p style={{
-                fontSize: 'var(--text-sm)',
-                color: 'var(--color-text-muted)',
-                lineHeight: 1.5,
-                marginBottom: '1rem',
-                maxWidth: '72ch',
-              }}>{s.why}</p>
-              <a
-                href={`https://x.com/${s.handle}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontSize: 'var(--text-xs)',
-                  color: 'var(--color-primary)',
-                  textDecoration: 'none',
-                  fontWeight: 500,
-                  transition: 'color var(--transition-interactive)',
-                }}
-              >@{s.handle}</a>
             </article>
           ))}
         </div>

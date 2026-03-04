@@ -312,7 +312,53 @@
   }
 }
 
-/* Card glow pulse — driven by JS setInterval */
-.card-glow-active {
-  transition: box-shadow 0.6s ease, transform 0.2s ease !important;
+/* Rotating border glow */
+@keyframes rotateGlowRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.card-glow-ring {
+  position: absolute;
+  inset: -150%;
+  width: 400%;
+  height: 400%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--glow-c, #fff) 40deg,
+    transparent 80deg
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: rotateGlowRing 2.5s linear infinite paused;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.card-with-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-with-glow:hover .card-glow-ring {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.card-with-glow:hover {
+  transform: translateY(-2px);
+}
+
+.card-inner-mask {
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(0.75rem - 1px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
 }
