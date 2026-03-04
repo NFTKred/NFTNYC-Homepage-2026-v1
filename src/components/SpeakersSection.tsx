@@ -30,6 +30,7 @@ export default function SpeakersSection() {
             fontWeight: 700,
             color: 'var(--color-text)',
             letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
           }}>Speakers</h2>
         </div>
         <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))' }}>
@@ -70,6 +71,7 @@ export default function SpeakersSection() {
                     fontWeight: 600,
                     color: 'var(--color-text)',
                     letterSpacing: '-0.01em',
+                    textTransform: 'uppercase',
                   }}>{s.name}</h3>
                   <p style={{
                     fontSize: 'var(--text-xs)',

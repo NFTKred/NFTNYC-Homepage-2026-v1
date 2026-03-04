@@ -73,6 +73,7 @@ export default function SiteFooter() {
             fontWeight: 600,
             color: 'var(--color-text)',
             marginBottom: '1.5rem',
+            textTransform: 'uppercase',
           }}>Join the Conversation</h2>
           <div className="flex justify-center gap-4">
             {socialLinks.map(link => (
