@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import nftLogo from '@/assets/nftnyc-logo.svg';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
@@ -35,17 +36,7 @@ export default function Header({ theme, onToggleTheme }: HeaderProps) {
       >
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           {/* Logo */}
-          <div
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-lg)',
-              fontWeight: 900,
-              color: 'var(--color-text)',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            NFT<span style={{ color: 'var(--nft-blue)' }}>.</span>NYC
-          </div>
+          <img src={nftLogo} alt="NFT.NYC" style={{ height: '32px', width: 'auto' }} />
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6">
