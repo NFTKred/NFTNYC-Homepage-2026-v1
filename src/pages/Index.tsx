@@ -59,7 +59,7 @@ export default function Index() {
               fontSize: 'var(--text-hero)',
               fontWeight: 900,
               color: 'var(--color-text)',
-              letterSpacing: '-0.04em',
+              letterSpacing: '0.06em',
               lineHeight: 1,
               textTransform: 'uppercase',
             }}>
