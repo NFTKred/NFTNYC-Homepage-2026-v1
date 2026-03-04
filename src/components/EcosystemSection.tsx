@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 
 function hexToRgba(hex: string, alpha: number): string {
@@ -8,6 +9,26 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 export default function EcosystemSection() {
+  const glowIntervals = useRef<Map<string, ReturnType<typeof setInterval>>>(new Map());
+
+  function startGlow(el: HTMLElement, color: string) {
+    const dim = `0 0 14px 2px ${hexToRgba(color, 0.3)}`;
+    const bright = `0 0 32px 8px ${hexToRgba(color, 0.55)}`;
+    let on = true;
+    el.style.boxShadow = dim;
+    el.style.transform = 'translateY(-2px)';
+    el.style.borderColor = hexToRgba(color, 0.45);
+    return setInterval(() => {
+      el.style.boxShadow = on ? bright : dim;
+      on = !on;
+    }, 700);
+  }
+
+  function stopGlow(el: HTMLElement) {
+    el.style.boxShadow = 'none';
+    el.style.transform = 'translateY(0)';
+    el.style.borderColor = 'rgba(255,255,255,0.06)';
+  }
   return (
     <section
       id="ecosystem"
@@ -41,23 +62,24 @@ export default function EcosystemSection() {
           {ECOSYSTEMS.map(eco => (
             <article
               key={eco.id}
-              className="fade-in relative overflow-hidden rounded-[0.75rem] p-6 transition-all"
+              className="fade-in relative overflow-hidden rounded-[0.75rem] p-6"
               style={{
                 background: 'var(--color-bg)',
                 border: '1px solid rgba(255,255,255,0.06)',
+                transition: 'transform 0.2s ease, border-color 0.2s ease',
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.setProperty('--glow-color', hexToRgba(eco.color, 0.25));
-                el.style.setProperty('--glow-border-color', hexToRgba(eco.color, 0.4));
-                el.classList.add('card-glow');
-                el.style.transform = 'translateY(-2px)';
+                const id = String(eco.id);
+                const interval = startGlow(el, eco.color);
+                glowIntervals.current.set(id, interval);
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.classList.remove('card-glow');
-                el.style.boxShadow = 'none';
-                el.style.transform = 'translateY(0)';
+                const id = String(eco.id);
+                const interval = glowIntervals.current.get(id);
+                if (interval) { clearInterval(interval); glowIntervals.current.delete(id); }
+                stopGlow(el);
               }}
             >
               {/* Top color bar */}

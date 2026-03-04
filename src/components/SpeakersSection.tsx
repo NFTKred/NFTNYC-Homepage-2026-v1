@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { SPEAKERS } from '@/data/nftnyc';
 
 function hexToRgba(hex: string, alpha: number): string {
@@ -8,6 +9,26 @@ function hexToRgba(hex: string, alpha: number): string {
 }
 
 export default function SpeakersSection() {
+  const glowIntervals = useRef<Map<string, ReturnType<typeof setInterval>>>(new Map());
+
+  function startGlow(el: HTMLElement, color: string) {
+    const dim = `0 0 14px 2px ${hexToRgba(color, 0.3)}`;
+    const bright = `0 0 32px 8px ${hexToRgba(color, 0.55)}`;
+    let on = true;
+    el.style.boxShadow = dim;
+    el.style.transform = 'translateY(-2px)';
+    el.style.borderColor = hexToRgba(color, 0.45);
+    return setInterval(() => {
+      el.style.boxShadow = on ? bright : dim;
+      on = !on;
+    }, 700);
+  }
+
+  function stopGlow(el: HTMLElement) {
+    el.style.boxShadow = 'none';
+    el.style.transform = 'translateY(0)';
+    el.style.borderColor = 'rgba(255,255,255,0.06)';
+  }
   return (
     <section
       id="speakers"
@@ -37,23 +58,22 @@ export default function SpeakersSection() {
           {SPEAKERS.map(s => (
             <article
               key={s.handle}
-              className="fade-in rounded-[0.75rem] p-6 transition-all"
+              className="fade-in rounded-[0.75rem] p-6"
               style={{
                 background: 'var(--color-surface)',
                 border: '1px solid rgba(255,255,255,0.06)',
+                transition: 'transform 0.2s ease, border-color 0.2s ease',
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.setProperty('--glow-color', hexToRgba(s.ecoColor, 0.25));
-                el.style.setProperty('--glow-border-color', hexToRgba(s.ecoColor, 0.4));
-                el.classList.add('card-glow');
-                el.style.transform = 'translateY(-2px)';
+                const interval = startGlow(el, s.ecoColor);
+                glowIntervals.current.set(s.handle, interval);
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.classList.remove('card-glow');
-                el.style.boxShadow = 'none';
-                el.style.transform = 'translateY(0)';
+                const interval = glowIntervals.current.get(s.handle);
+                if (interval) { clearInterval(interval); glowIntervals.current.delete(s.handle); }
+                stopGlow(el);
               }}
             >
               <div className="flex items-center gap-4 mb-4">
