@@ -5,8 +5,31 @@
 /* ============================================
    FONTS
    ============================================ */
-@import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap');
+
+@font-face {
+  font-family: 'Monument Extended';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/MonumentExtended-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Monument Extended';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/MonumentExtended-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Monument Extended';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/MonumentExtended-Ultrabold.woff') format('woff');
+}
 
 /* ============================================
    TYPE SCALE
@@ -21,7 +44,7 @@
   --text-3xl:  clamp(2.5rem,   1rem    + 4vw,    5rem);
   --text-hero: clamp(3rem,     0.5rem  + 7vw,    8rem);
 
-  --font-display: 'Clash Display', 'Helvetica Neue', 'Arial Black', sans-serif;
+  --font-display: 'Monument Extended', 'Arial Black', sans-serif;
   --font-body: 'Inter', 'Helvetica Neue', 'Segoe UI', sans-serif;
 }
 
