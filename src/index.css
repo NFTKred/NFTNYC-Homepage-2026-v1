@@ -311,3 +311,19 @@
     animation-range: entry 0% entry 100%;
   }
 }
+
+/* Card glow pulse animation */
+@property --glow-color {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@keyframes cardGlowPulse {
+  0%, 100% { box-shadow: 0 0 12px 0px var(--glow-color), 0 0 0 1px var(--glow-border-color); }
+  50%       { box-shadow: 0 0 28px 6px var(--glow-color), 0 0 0 1px var(--glow-border-color); }
+}
+
+.card-glow {
+  animation: cardGlowPulse 1.8s ease-in-out infinite;
+}

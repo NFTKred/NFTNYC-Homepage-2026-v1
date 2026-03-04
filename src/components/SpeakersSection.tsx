@@ -43,12 +43,17 @@ export default function SpeakersSection() {
                 border: '1px solid rgba(255,255,255,0.06)',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-md)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)';
+                const el = e.currentTarget as HTMLElement;
+                el.style.setProperty('--glow-color', hexToRgba(s.ecoColor, 0.25));
+                el.style.setProperty('--glow-border-color', hexToRgba(s.ecoColor, 0.4));
+                el.classList.add('card-glow');
+                el.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
+                const el = e.currentTarget as HTMLElement;
+                el.classList.remove('card-glow');
+                el.style.boxShadow = 'none';
+                el.style.transform = 'translateY(0)';
               }}
             >
               <div className="flex items-center gap-4 mb-4">
