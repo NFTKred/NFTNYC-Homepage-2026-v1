@@ -5,7 +5,7 @@ function buildFeedHTML(): string {
   return FEED_POSTS.map(p => `
     <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem 1.25rem;background:var(--color-surface);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;flex-shrink:0;">
       <span style="width:8px;height:8px;border-radius:9999px;background:${p.color};flex-shrink:0;animation:feedDotPulse 3s ease-in-out infinite;"></span>
-      <span style="font-family:var(--font-display);font-size:var(--text-sm);font-weight:500;color:var(--color-text);letter-spacing:-0.01em;">${p.title}</span>
+      <span style="font-family:var(--font-body);font-size:var(--text-sm);font-weight:500;color:var(--color-text);letter-spacing:-0.01em;">${p.title}</span>
     </div>
   `).join('');
 }
