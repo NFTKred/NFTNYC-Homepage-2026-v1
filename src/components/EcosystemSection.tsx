@@ -43,16 +43,14 @@ export default function EcosystemSection() {
               key={eco.id}
               className="fade-in card-with-glow rounded-[0.75rem] p-6"
               style={{
+                '--glow-c': eco.color,
                 background: 'var(--color-bg)',
                 border: '1px solid rgba(255,255,255,0.06)',
-                transition: 'transform 0.2s ease',
-              }}
+                transition: 'transform 0.2s ease, box-shadow 0.3s ease',
+              } as React.CSSProperties}
             >
               {/* Rotating glow ring */}
-              <div
-                className="card-glow-ring"
-                style={{ '--glow-c': eco.color } as React.CSSProperties}
-              />
+              <div className="card-glow-ring" />
               {/* Inner mask — hides glow in card center, shows only at border */}
               <div
                 className="card-inner-mask"

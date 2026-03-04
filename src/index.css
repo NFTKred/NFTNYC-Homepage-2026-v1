@@ -348,6 +348,9 @@
 
 .card-with-glow:hover {
   transform: translateY(-2px);
+  box-shadow:
+    0 0 30px 6px color-mix(in srgb, var(--glow-c, #fff) 35%, transparent),
+    0 8px 32px -4px color-mix(in srgb, var(--glow-c, #fff) 25%, transparent);
 }
 
 .card-inner-mask {
