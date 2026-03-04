@@ -21,7 +21,7 @@ export default function Index() {
     justifyContent: 'center',
     padding: '1rem 2rem',
     borderRadius: '9999px',
-    fontFamily: 'var(--font-display)',
+    fontFamily: 'var(--font-body)',
     fontWeight: 600,
     fontSize: 'var(--text-base)',
     textDecoration: 'none',
