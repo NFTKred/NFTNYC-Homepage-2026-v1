@@ -14,11 +14,11 @@ export default function EcosystemSection() {
       style={{
         padding: 'clamp(3rem, 8vw, 6rem) 0',
         background: 'var(--color-surface)',
-        borderTop: '1px solid rgba(255,255,255,0.06)',
+        borderTop: '1px solid var(--card-border)',
       }}
     >
       <div className="max-w-[1200px] mx-auto px-6">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 scroll-fade-up">
           <p style={{
             fontFamily: 'var(--font-body)',
             fontSize: 'var(--text-xs)',
@@ -31,7 +31,7 @@ export default function EcosystemSection() {
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 900,
+            fontWeight: 700,
             color: 'var(--color-text)',
             letterSpacing: '-0.02em',
             textTransform: 'uppercase',
@@ -45,18 +45,18 @@ export default function EcosystemSection() {
               style={{
                 '--glow-c': eco.color,
                 background: 'var(--color-bg)',
-                border: '1px solid rgba(255,255,255,0.06)',
+                border: '1px solid var(--card-border)',
                 transition: 'transform 0.2s ease, box-shadow 0.3s ease',
               } as React.CSSProperties}
             >
               {/* Rotating glow ring */}
               <div className="card-glow-ring" />
-              {/* Inner mask — hides glow in card center, shows only at border */}
+              {/* Inner mask - hides glow in card center, shows only at border */}
               <div
                 className="card-inner-mask"
                 style={{ background: 'var(--color-bg)' }}
               />
-              {/* Top color bar — above mask */}
+              {/* Top color bar - above mask */}
               <div
                 className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[0.75rem]"
                 style={{ background: eco.color, zIndex: 3 }}
@@ -68,7 +68,7 @@ export default function EcosystemSection() {
                   <h3 style={{
                     fontFamily: 'var(--font-display)',
                     fontSize: '18px',
-                    fontWeight: 900,
+                    fontWeight: 700,
                     color: 'var(--color-text)',
                     letterSpacing: '-0.01em',
                     textTransform: 'uppercase',

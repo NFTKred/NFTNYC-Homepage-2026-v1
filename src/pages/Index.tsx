@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import useScrollReveal from '@/hooks/useScrollReveal';
 import SiteHeader from '@/components/SiteHeader';
 import NeuralMesh from '@/components/NeuralMesh';
-import Countdown from '@/components/Countdown';
+import StatsBar from '@/components/StatsBar';
 import SpeakersSection from '@/components/SpeakersSection';
 import EcosystemSection from '@/components/EcosystemSection';
+import BrandQuotes from '@/components/BrandQuotes';
+import AttendeeTestimonials from '@/components/AttendeeTestimonials';
+import MediaCoverage from '@/components/MediaCoverage';
+import WhyNYC from '@/components/WhyNYC';
+import PastEvents from '@/components/PastEvents';
+import SatelliteEvents from '@/components/SatelliteEvents';
+import NewsletterCapture from '@/components/NewsletterCapture';
+import FAQ from '@/components/FAQ';
 import SiteFooter from '@/components/SiteFooter';
-import { ECOSYSTEMS } from '@/data/nftnyc';
+import RotatingStar from '@/components/RotatingStar';
 
 export default function Index() {
+  const stage = useMemo(() => {
+    try {
+      return Number(localStorage.getItem('nftnyc-stage') ?? 0);
+    } catch {
+      return 0;
+    }
+  }, []);
+
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  useScrollReveal();
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -34,7 +52,7 @@ export default function Index() {
 
   return (
     <div data-theme={theme} style={{ background: 'var(--color-bg)', minHeight: '100dvh' }}>
-      <SiteHeader theme={theme} onToggleTheme={toggleTheme} />
+      <SiteHeader theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <main id="main">
         {/* ======== HERO ======== */}
@@ -44,7 +62,7 @@ export default function Index() {
           style={{ padding: 'calc(4rem + 56px) 1rem 2rem' }}
           aria-label="NFT.NYC 2026 Interactive Ecosystem Map"
         >
-          <div className="text-center relative z-[2] mb-8">
+          <div className="text-center relative z-[2] mb-8" style={{ maxWidth: '100%', overflow: 'hidden' }}>
             <p style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-xs)',
@@ -54,23 +72,58 @@ export default function Index() {
               color: 'var(--color-text-muted)',
               marginBottom: '1rem',
             }}>THE 9TH NFT INDUSTRY EVENT</p>
-            <h1 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-hero)',
-              fontWeight: 900,
-              color: 'var(--color-text)',
-              letterSpacing: '0em',
-              lineHeight: 1,
-              textTransform: 'uppercase',
-            }}>
-              NFT<span style={{ color: 'var(--nft-blue)' }}>.</span>NYC{' '}
+            <h1>
               <span style={{
-                background: 'linear-gradient(135deg, var(--nft-blue), var(--nft-purple), var(--nft-pink))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>2026</span>
+                display: 'block',
+                fontFamily: 'var(--font-display)',
+                fontSize: 'min(var(--text-hero), 18vw)',
+                fontWeight: 700,
+                color: 'var(--color-text)',
+                letterSpacing: '0em',
+                lineHeight: 1,
+                textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
+              }}>
+                NFT<span style={{ color: 'var(--color-text)' }}>.</span>NYC
+                <span style={{
+                  background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
+                  backgroundSize: '300% 300%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  WebkitTextStroke: '1px rgba(0, 0, 0, 0.3)',
+                  animation: 'liquidGradient 12s ease-in-out infinite',
+                }}>2026</span>
+              </span>
+              <span style={{
+                display: 'block',
+                fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-base)',
+                fontWeight: 400,
+                color: 'var(--color-text-muted)',
+                marginTop: '1rem',
+                letterSpacing: '-0.01em',
+                lineHeight: 1.4,
+                maxWidth: '100%',
+                wordWrap: 'break-word',
+                padding: '0 0.5rem',
+                textTransform: 'none',
+                whiteSpace: 'normal',
+              }}>Where Builders, Brands, and Creators Shape the Future of Digital Ownership</span>
             </h1>
+            <p style={{
+              position: 'absolute',
+              width: '1px',
+              height: '1px',
+              padding: 0,
+              margin: '-1px',
+              overflow: 'hidden',
+              clip: 'rect(0, 0, 0, 0)',
+              whiteSpace: 'nowrap',
+              border: 0,
+            }}>
+              NFT.NYC is an annual in-person NFT and Web3 conference in New York City. The 2026 edition brings builders, brands, and creators together in Times Square to shape the future of digital ownership.
+            </p>
             <p style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-sm)',
@@ -78,48 +131,19 @@ export default function Index() {
               letterSpacing: '0.12em',
               color: 'var(--color-text-faint)',
               marginTop: '1rem',
-            }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;1–2 SEPTEMBER 2026</p>
-            <Countdown />
+              maxWidth: '100%',
+              wordWrap: 'break-word',
+              padding: '0 0.5rem',
+            }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;2–3 SEPTEMBER 2026</p>
           </div>
 
-          {/* Neural mesh (desktop) */}
-          <div className="hidden sm:flex justify-center w-full">
+          {/* Neural mesh */}
+          <div className="flex justify-center w-full">
             <NeuralMesh />
           </div>
-
-          {/* Mobile fallback */}
-          <div className="sm:hidden w-full max-w-[500px] px-4">
-            <div
-              className="text-center mb-6 p-8 rounded-xl"
-              style={{
-                border: '2px solid var(--nft-blue)',
-                background: 'rgba(59,130,246,0.08)',
-              }}
-            >
-              <span style={{ fontSize: 'var(--text-2xl)', display: 'block', marginBottom: '0.5rem', color: 'var(--nft-blue)' }}>◆</span>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--color-text)' }}>NFTs</h2>
-              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>Tokenizing Virtual Assets</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              {ECOSYSTEMS.map(eco => (
-                <div
-                  key={eco.id}
-                  className="flex items-center gap-4 p-4 rounded-[0.75rem]"
-                  style={{
-                    background: 'var(--color-surface)',
-                    borderLeft: `3px solid ${eco.color}`,
-                  }}
-                >
-                  <span style={{ fontSize: 'var(--text-xl)', flexShrink: 0 }}>{eco.icon}</span>
-                  <div>
-                    <strong style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-text)', display: 'block' }}>{eco.name}</strong>
-                    <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', display: 'block', marginTop: '0.25rem' }}>{eco.subtitle}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </section>
+
+        <StatsBar />
 
         {/* ======== STATEMENT ======== */}
         <section
@@ -127,12 +151,12 @@ export default function Index() {
           style={{
             padding: 'clamp(3rem, 8vw, 8rem) 1.5rem',
             background: 'var(--color-surface)',
-            borderTop: '1px solid rgba(255,255,255,0.06)',
-            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            borderTop: '1px solid var(--card-border)',
+            borderBottom: '1px solid var(--card-border)',
           }}
         >
           <div className="max-w-[960px] mx-auto text-center">
-            <h2 style={{
+            <h2 className="scroll-fade-up" style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-xl)',
               fontWeight: 500,
@@ -143,51 +167,156 @@ export default function Index() {
               marginInline: 'auto',
               marginBottom: '2.5rem',
             }}>
-              NFTs are the tokenization layer for virtual assets — from AI agent identity to gaming economies, from community ownership to digital culture.
+              NFTs are the <span className="rainbow-glow" data-text="tokenization layer" style={{
+                background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
+                backgroundSize: '300% 300%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                animation: 'liquidGradient 12s ease-in-out infinite',
+              }}>tokenization layer</span> for virtual assets - from AI agent identity to gaming economies, from community ownership to <span className="rainbow-glow" data-text="digital culture" style={{
+                background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
+                backgroundSize: '300% 300%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                animation: 'liquidGradient 12s ease-in-out infinite',
+                animationDelay: '-4s',
+              }}>digital culture</span>.
             </h2>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ ...btnBase, background: 'var(--color-primary)', color: '#fff' }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'var(--color-primary-hover)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(59,130,246,0.3)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'var(--color-primary)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                }}
-              >
-                Speak at NFT.NYC 2026
-              </a>
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ ...btnBase, background: 'transparent', color: 'var(--color-text)', border: '1px solid var(--color-border)' }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'var(--color-surface-dynamic)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'transparent';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                }}
-              >
-                Become a Sponsor
-              </a>
+            {stage >= 1 && (
+              <div className="flex gap-4 justify-center flex-wrap">
+                <a
+                  href="https://sessionize.com/nft-nyc-2026/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ ...btnBase, background: 'var(--color-primary)', color: '#fff' }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.background = 'var(--color-primary-hover)';
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                    (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(59,130,246,0.3)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.background = 'var(--color-primary)';
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                    (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                  }}
+                >
+                  Speak at NFT.NYC 2026
+                </a>
+                <a
+                  href="mailto:sponsors@nft.nyc?subject=NFT.NYC%202026%20Sponsorship%20Inquiry"
+                  style={{ ...btnBase, background: 'transparent', color: 'var(--color-text)', border: '1px solid var(--color-border)' }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.background = 'var(--color-surface-dynamic)';
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.background = 'transparent';
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                  }}
+                >
+                  Become a Sponsor
+                </a>
+              </div>
+            )}
+            <a
+              href="https://nftnyc2025.sessionize.com/schedule"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-block',
+                marginTop: '1.25rem',
+                fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-text-faint)',
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+              }}
+            >
+              View Last Year's Program
+            </a>
+
+            {/* Core Values */}
+            <div className="flex flex-col items-center scroll-fade-up" style={{ marginTop: '3.5rem', marginBottom: '1.5rem' }}>
+              <RotatingStar size={120} />
+              <h3 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--text-lg)',
+                fontWeight: 700,
+                color: 'var(--color-text)',
+                textTransform: 'uppercase',
+                letterSpacing: '-0.01em',
+                marginTop: '0.5rem',
+              }}>Our North Star</h3>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
+              gap: '1rem',
+              textAlign: 'left',
+            }}>
+              {[
+                { icon: '🎤', title: 'Community Voice', desc: 'A stage for the NFT community to share the most relevant ideas.' },
+                { icon: '🤝', title: 'Community Connection', desc: 'Bring people together who are working on like projects.' },
+                { icon: '📣', title: 'Proselytize NFTs', desc: 'Educate the global community about the value of NFTs.' },
+                { icon: '⚡', title: 'Create Engagement', desc: 'Use NFTs to create engagement that delivers our first 3 values.' },
+              ].map((v, i) => (
+                <div
+                  key={v.title}
+                  className="scroll-fade-scale"
+                  style={{
+                    background: 'var(--color-surface)',
+                    border: '1px solid var(--card-border)',
+                    borderRadius: '0.75rem',
+                    padding: '1.5rem',
+                    boxShadow: 'var(--shadow-sm)',
+                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--card-border-hover)';
+                    (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-md)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--card-border)';
+                    (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-sm)';
+                  }}
+                >
+                  <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.75rem' }}>{v.icon}</span>
+                  <h3 style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 700,
+                    color: 'var(--color-text)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '-0.01em',
+                    marginBottom: '0.5rem',
+                  }}>{v.title}</h3>
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 'var(--text-xs)',
+                    color: 'var(--color-text-muted)',
+                    lineHeight: 1.6,
+                  }}>{v.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        <SpeakersSection />
-        <EcosystemSection />
+        <NewsletterCapture />
 
-        <SiteFooter />
+        {stage >= 1 && <SpeakersSection />}
+        <WhyNYC stage={stage} />
+        <EcosystemSection />
+        {stage >= 1 && <BrandQuotes />}
+        <AttendeeTestimonials />
+        <MediaCoverage />
+        <PastEvents />
+        {stage >= 1 && <SatelliteEvents />}
+        <FAQ />
+
+        <SiteFooter stage={stage} />
       </main>
     </div>
   );

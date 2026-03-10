@@ -27,7 +27,7 @@ export default function SpeakersSection() {
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'var(--text-2xl)',
-            fontWeight: 900,
+            fontWeight: 700,
             color: 'var(--color-text)',
             letterSpacing: '-0.02em',
             textTransform: 'uppercase',
@@ -41,7 +41,7 @@ export default function SpeakersSection() {
               style={{
                 '--glow-c': s.ecoColor,
                 background: 'var(--color-surface)',
-                border: '1px solid rgba(255,255,255,0.06)',
+                border: '1px solid var(--card-border)',
                 transition: 'transform 0.2s ease, box-shadow 0.3s ease',
               } as React.CSSProperties}
             >
@@ -74,7 +74,7 @@ export default function SpeakersSection() {
                       background: s.ecoColor,
                       fontFamily: 'var(--font-display)',
                       fontSize: 'var(--text-lg)',
-                      fontWeight: 900,
+                      fontWeight: 700,
                       color: '#fff',
                     }}
                   >
@@ -84,7 +84,7 @@ export default function SpeakersSection() {
                     <h3 style={{
                       fontFamily: 'var(--font-display)',
                       fontSize: '18px',
-                      fontWeight: 900,
+                      fontWeight: 700,
                       color: 'var(--color-text)',
                       letterSpacing: '-0.01em',
                       textTransform: 'uppercase',

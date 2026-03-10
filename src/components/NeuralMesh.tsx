@@ -253,15 +253,11 @@ export default function NeuralMesh() {
       addSvgText(g, p.x, p.y - (6 + 8 * ff), eco.icon, '#fff', 'sans-serif', iconSize, '400', 'middle');
 
       const nameSize = 9 + 5 * ff;
-      if (ff > 0.5) {
-        addSvgText(g, p.x, p.y + 10, eco.name, '#fff', "'Clash Display', sans-serif", nameSize, '700', 'middle');
-        addSvgText(g, p.x, p.y + 26, eco.subtitle, hexToRgba(eco.color, 0.8), "'Inter', sans-serif", '9', '500', 'middle');
-      } else {
-        const nameLines = wrapText(eco.name, 14);
-        nameLines.forEach((line, li) => {
-          addSvgText(g, p.x, p.y + 10 + li * 12, line, '#fff', "'Clash Display', sans-serif", nameSize, '600', 'middle');
-        });
-      }
+      const nameWeight = ff > 0.5 ? '700' : '600';
+      const nameLines = wrapText(eco.name, 14);
+      nameLines.forEach((line, li) => {
+        addSvgText(g, p.x, p.y + 10 + li * 12, line, '#fff', "'Clash Display', sans-serif", nameSize, nameWeight, 'middle');
+      });
 
       if (ff < 0.15 || ff > 0.85) {
         const subs = eco.subs || [];
