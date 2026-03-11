@@ -93,6 +93,27 @@ export interface BrandQuote {
   quote: string;
 }
 
+export interface BrandTestimonial {
+  brand: string;
+  quote: string;
+  logo: string;
+  photo: string;
+}
+
+export const BRAND_TESTIMONIALS: BrandTestimonial[] = [
+  { brand: 'Coinbase', quote: 'The Super Bowl of NFTs.', logo: '/brands/coinbase.png', photo: '/brands/coinbase-testimonial.jpg' },
+  { brand: 'AWS', quote: 'The atmosphere was buzzing with excitement, and the attendees were engaged and enthusiastic. NFT NYC continues to be one of the most creative and fun events in Web3.', logo: '/brands/aws.png', photo: '/brands/aws-bg.jpg' },
+  { brand: 'Ledger', quote: 'NFT.NYC is the new CES for NFTs.', logo: '/brands/ledger.jpeg', photo: '/brands/ledger-testimonial.jpeg' },
+  { brand: 'MoonPay', quote: 'NFT.NYC, the flagship event of the NFT community is, bar none, the best way to connect with people and brands.', logo: '/brands/moonpay-avatar.jpeg', photo: '/brands/moonpay-testimonial.jpg' },
+  { brand: 'Polygon', quote: 'The event brings together the entire community of creators, devs and entrepreneurs building in the NFT ecosystem.', logo: '/brands/logo-0xpolygon.jpg', photo: '/brands/polygon-testimonial.jpg' },
+  { brand: 'Tron DAO', quote: 'The team had a great time interacting with the NFT community and making new friends and connections.', logo: '/brands/tron.jpeg', photo: '/brands/trondao-testimonial.jpg' },
+  { brand: 'Immutable', quote: 'We are excited to partner with NFT.NYC to deliver the best experiences for the NFT and gaming communities across the world.', logo: '/brands/IMX.jpeg', photo: '/brands/immutable-testimonial.jpg' },
+  { brand: 'Boson Protocol', quote: 'NFT.NYC was our best marketing of the year.', logo: '/brands/BosonProtocol.jpeg', photo: '/brands/boson-testimonial.jpg' },
+  { brand: 'arteQ', quote: 'NFT.NYC is a quality event and is arguably the best networked Web3 event of the year.', logo: '/brands/arteQio.jpeg', photo: '/brands/arteq-testimonial.jpg' },
+  { brand: 'Pinata', quote: "We're still on a high from all the people we met, and the interactions we had with some of the projects that are pushing the NFT space forward.", logo: '/brands/pinatacloud.jpeg', photo: '/brands/pinata-testimonial.jpg' },
+  { brand: 'Valeria Games', quote: 'Valeria Games showed out this year in New York! Got to meet a ton of amazing community members as well as showcase our Alpha to everyone there!', logo: '/brands/Valeria Games Icon Logotype Glow Black BG.png', photo: '/brands/valeria.jpg' },
+];
+
 export interface AttendeeTestimonial {
   name: string;
   quote: string;

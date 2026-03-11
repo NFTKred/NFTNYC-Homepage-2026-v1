@@ -16,7 +16,7 @@ const FAQ_DATA: FAQCategory[] = [
     items: [
       {
         q: 'When is NFT.NYC 2026?',
-        a: 'NFT.NYC 2026 is September 2-3 at the Edison Ballroom in Times Square, NY.',
+        a: 'NFT.NYC 2026 is September 1-3 at the Edison Ballroom in Times Square, NY.',
       },
       {
         q: '2026 Satellite Events',

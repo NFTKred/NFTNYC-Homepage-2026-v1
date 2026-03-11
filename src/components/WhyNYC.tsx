@@ -156,7 +156,7 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
                 color: 'rgba(255,255,255,0.7)',
                 lineHeight: 1.5,
                 marginBottom: '0.75rem',
-              }}>Your AI guide to NFT.NYC. Ask Relay anything about past events, what to expect in 2026, or how to get involved.</p>
+              }}>Born and raised in Times Square, Relay is your local guide to NFT.NYC. Ask Relay anything about past events, what to expect in 2026, or how to get involved.</p>
               <button
                 onClick={() => {
                   const w = window as any;

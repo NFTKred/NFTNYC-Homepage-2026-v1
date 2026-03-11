@@ -16,7 +16,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
     { href: '#about', label: 'About', minStage: 0 },
     { href: '#speakers', label: 'Speakers', minStage: 1 },
     { href: '#ecosystem', label: 'Ecosystem', minStage: 0 },
-    { href: '#brands', label: 'Brands', minStage: 1 },
+    { href: '#brands', label: 'Brands', minStage: 0 },
     { href: '#media', label: 'Media', minStage: 0 },
     { href: '#events', label: 'Events', minStage: 1 },
     { href: '#faq', label: 'FAQ', minStage: 0 },

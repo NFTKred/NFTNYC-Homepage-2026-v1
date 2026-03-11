@@ -6,6 +6,7 @@ import StatsBar from '@/components/StatsBar';
 import SpeakersSection from '@/components/SpeakersSection';
 import EcosystemSection from '@/components/EcosystemSection';
 import BrandQuotes from '@/components/BrandQuotes';
+import WhyNFTs from '@/components/WhyNFTs';
 import AttendeeTestimonials from '@/components/AttendeeTestimonials';
 import MediaCoverage from '@/components/MediaCoverage';
 import WhyNYC from '@/components/WhyNYC';
@@ -134,7 +135,7 @@ export default function Index() {
               maxWidth: '100%',
               wordWrap: 'break-word',
               padding: '0 0.5rem',
-            }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;2–3 SEPTEMBER 2026</p>
+            }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;1–3 SEPTEMBER 2026</p>
           </div>
 
           {/* Neural mesh */}
@@ -309,7 +310,8 @@ export default function Index() {
         {stage >= 1 && <SpeakersSection />}
         <WhyNYC stage={stage} />
         <EcosystemSection />
-        {stage >= 1 && <BrandQuotes />}
+        <BrandQuotes />
+        <WhyNFTs />
         <AttendeeTestimonials />
         <MediaCoverage />
         <PastEvents />
