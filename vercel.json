@@ -1,0 +1,124 @@
+{
+  "redirects": [
+    {
+      "source": "/meet",
+      "destination": "https://meet.google.com/seq-gyst-sie",
+      "permanent": true
+    },
+    {
+      "source": "/discord",
+      "destination": "https://discord.gg/g3vzM2SKPd",
+      "permanent": true
+    },
+    {
+      "source": "/meet1",
+      "destination": "http://meet.google.com/ihq-ystt-fsc",
+      "permanent": true
+    },
+    {
+      "source": "/meet2",
+      "destination": "http://meet.google.com/yfz-fupr-cwt",
+      "permanent": true
+    },
+    {
+      "source": "/meet3",
+      "destination": "http://meet.google.com/kaj-hhzv-qdg",
+      "permanent": true
+    },
+    {
+      "source": "/meet4",
+      "destination": "http://meet.google.com/vqk-wrbe-qjv",
+      "permanent": true
+    },
+    {
+      "source": "/meet5",
+      "destination": "http://meet.google.com/caj-fmig-txw",
+      "permanent": true
+    },
+    {
+      "source": "/youtube",
+      "destination": "https://www.youtube.com/channel/UCEQy7-2gjMoeI9KY0HRmuPA",
+      "permanent": true
+    },
+    {
+      "source": "/slide-deck-template",
+      "destination": "https://docs.google.com/presentation/d/11Hp6Dd4c5xQdcHYCE-SbxUBe_BsSX5eWdo6_U3UJTC4/",
+      "permanent": true
+    },
+    {
+      "source": "/gallery",
+      "destination": "https://0fra.me/rrr-2dx-cx4",
+      "permanent": true
+    },
+    {
+      "source": "/101guide",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/101%20NFT%20Guide%20-%20v5.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/101",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Prerelease%20DRAFT%20The%20NFT.NYC%20NFT%20101%20Guide%20-%202021%20v0.97.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/website-terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT.NYC%20-%20Website%20Terms%20-%20v1%20May%202022.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/PeopleBrowser%20Events%20Pty%20Ltd%20Privacy%20Policy%20-%20April%202023.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/nft-terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT%20NYC%20-%20NFT%20Terms%20of%20Sale%20(Buyer%20Terms)%20v1.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/showcase-terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT.NYC%20Artist%20Showcase%20Terms%202024%20v1%20Oct%202023.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/award-terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT%20NYC%20Award%20Terms%20v3.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/attendee-terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT%20NYC%20Attendee%20Terms%20v1.5.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/nft-sale-terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT%20NYC%20-%20NFT%20Terms%20of%20Sale%20%28Buyer%20Terms%29%20v1.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/sponsorTOS",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT%20Sponsorship%20Agreement%20v7%20%288May2023%29%20.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/nda",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/PeopleBrowsr%20Events%20Pty%20Ltd%20-%20Non-disclosure%20Agreement.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/data",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT.NYC%20-%20Data%20Policy%20v2%202023.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/speakertos",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT.NYC%20Speaker%20Terms%20v6.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/release",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT.NYC%20Speaker%20Release%20v2%20(27Sep2023).pdf",
+      "permanent": true
+    }
+  ]
+}
