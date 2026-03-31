@@ -1,16 +1,16 @@
 const VIBES = [
   {
-    src: 'https://www.nft.nyc/hubfs/TS%20Group.png',
+    src: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/TS%20Group.png',
     alt: 'Attendees watching NFT art on Times Square billboards during NFT.NYC 2025',
     caption: 'Times Square Takeover',
   },
   {
-    src: 'https://www.nft.nyc/hubfs/nftnyc-artistsvillage-cropped.jpg',
+    src: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/nftnyc-artistsvillage-cropped.jpg',
     alt: 'Attendees connecting and viewing digital art at the NFT.NYC 2023 Artists Village',
     caption: 'Community Connection',
   },
   {
-    src: 'https://www.nft.nyc/hubfs/artist%20showcase%20pic.png',
+    src: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/artist%20showcase%20pic.png',
     alt: 'Artists presenting work at the NFT.NYC 2024 Artist Showcase at the Javits Center',
     caption: 'Artist Showcase',
   },

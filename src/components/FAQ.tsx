@@ -61,7 +61,7 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: 'Is the event recorded or streamed?',
-        a: <>We will record select sessions and upload the videos to our YouTube channel - <a href="https://www.nft.nyc/youtube" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC/youtube</a>. We will not be streaming the event this year.</>,
+        a: <>We will record select sessions and upload the videos to our YouTube channel - <a href="https://www.youtube.com/@NFTNYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC/youtube</a>. We will not be streaming the event this year.</>,
       },
       {
         q: 'What do I receive as a speaker?',

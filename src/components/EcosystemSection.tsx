@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { ECOSYSTEMS } from '@/data/nftnyc';
+import { ChevronRight } from 'lucide-react';
 
 function hexToRgba(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -39,68 +41,90 @@ export default function EcosystemSection() {
         </div>
         <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))' }}>
           {ECOSYSTEMS.map(eco => (
-            <article
+            <Link
               key={eco.id}
-              className="fade-in card-with-glow rounded-[0.75rem] p-6"
-              style={{
-                '--glow-c': eco.color,
-                background: 'var(--color-bg)',
-                border: '1px solid var(--card-border)',
-                transition: 'transform 0.2s ease, box-shadow 0.3s ease',
-              } as React.CSSProperties}
+              to={`/${eco.id}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              {/* Rotating glow ring */}
-              <div className="card-glow-ring" />
-              {/* Inner mask - hides glow in card center, shows only at border */}
-              <div
-                className="card-inner-mask"
-                style={{ background: 'var(--color-bg)' }}
-              />
-              {/* Top color bar - above mask */}
-              <div
-                className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[0.75rem]"
-                style={{ background: eco.color, zIndex: 3 }}
-              />
-              {/* Content */}
-              <div className="card-content">
-                <div className="flex items-center gap-3 mb-4 mt-1">
-                  <span style={{ fontSize: 'var(--text-xl)' }}>{eco.icon}</span>
-                  <h3 style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '18px',
-                    fontWeight: 700,
-                    color: 'var(--color-text)',
-                    letterSpacing: '-0.01em',
-                    textTransform: 'uppercase',
-                  }}>{eco.name}</h3>
-                </div>
-                <p style={{
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--color-text-muted)',
-                  lineHeight: 1.6,
-                  marginBottom: '1rem',
-                  maxWidth: '72ch',
-                }}>{eco.desc}</p>
-                {eco.examples.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {eco.examples.map(ex => (
-                      <span
-                        key={ex}
-                        style={{
-                          display: 'inline-flex',
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: '0.375rem',
-                          fontSize: '0.7rem',
-                          fontWeight: 500,
-                          background: hexToRgba(eco.color, 0.1),
-                          color: eco.color,
-                        }}
-                      >{ex}</span>
-                    ))}
+              <article
+                className="fade-in card-with-glow rounded-[0.75rem] p-6"
+                style={{
+                  '--glow-c': eco.color,
+                  background: 'var(--color-bg)',
+                  border: '1px solid var(--card-border)',
+                  transition: 'transform 0.2s ease, box-shadow 0.3s ease',
+                  height: '100%',
+                } as React.CSSProperties}
+              >
+                {/* Rotating glow ring */}
+                <div className="card-glow-ring" />
+                {/* Inner mask - hides glow in card center, shows only at border */}
+                <div
+                  className="card-inner-mask"
+                  style={{ background: 'var(--color-bg)' }}
+                />
+                {/* Top color bar - above mask */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[0.75rem]"
+                  style={{ background: eco.color, zIndex: 3 }}
+                />
+                {/* Content */}
+                <div className="card-content">
+                  <div className="flex items-center gap-3 mb-4 mt-1">
+                    <span style={{ fontSize: 'var(--text-xl)' }}>{eco.icon}</span>
+                    <h3 style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '18px',
+                      fontWeight: 700,
+                      color: 'var(--color-text)',
+                      letterSpacing: '-0.01em',
+                      textTransform: 'uppercase',
+                    }}>{eco.name}</h3>
                   </div>
-                )}
-              </div>
-            </article>
+                  <p style={{
+                    fontSize: 'var(--text-sm)',
+                    color: 'var(--color-text-muted)',
+                    lineHeight: 1.6,
+                    marginBottom: '1rem',
+                    maxWidth: '72ch',
+                  }}>{eco.desc}</p>
+                  <div className="flex items-center justify-between">
+                    {eco.examples.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {eco.examples.map(ex => (
+                          <span
+                            key={ex}
+                            style={{
+                              display: 'inline-flex',
+                              padding: '0.25rem 0.5rem',
+                              borderRadius: '0.375rem',
+                              fontSize: '0.7rem',
+                              fontWeight: 500,
+                              background: hexToRgba(eco.color, 0.1),
+                              color: eco.color,
+                            }}
+                          >{ex}</span>
+                        ))}
+                      </div>
+                    )}
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      fontSize: '0.7rem',
+                      fontWeight: 500,
+                      color: eco.color,
+                      opacity: 0.7,
+                      flexShrink: 0,
+                      marginLeft: 'auto',
+                      paddingLeft: '0.5rem',
+                    }}>
+                      Explore <ChevronRight size={12} />
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </Link>
           ))}
         </div>
       </div>

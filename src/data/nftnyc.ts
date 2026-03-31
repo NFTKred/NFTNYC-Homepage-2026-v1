@@ -156,14 +156,14 @@ export const ATTENDEE_TESTIMONIALS: AttendeeTestimonial[] = [
 ];
 
 export const PRESS_COVERAGE: PressItem[] = [
-  { outlet: 'Forbes', quote: 'The largest and most respected NFT conference in the world.', url: 'https://www.forbes.com/sites/falonfatemi/2022/06/23/how-nftnyc-grew-into-the-super-bowl-of-nfts-according-to-its-co-founder/', image: 'https://www.nft.nyc/hubfs/logo-forbes.jpeg', photo: 'https://www.nft.nyc/hubfs/forbes-testimonial.jpeg' },
-  { outlet: 'New York Times', quote: 'Woodstock is actually a decent comparison to a gathering like NFT.NYC.', url: 'https://www.nytimes.com/2021/11/05/technology/nft-nyc-metaverse.html', image: 'https://www.nft.nyc/hubfs/logo-nytimes.png', photo: 'https://www.nft.nyc/hubfs/nyt-testimonial.jpg' },
-  { outlet: 'Time', quote: 'The First Major NFT Conference.', url: 'https://time.com/6115274/nft-conference-parties-culture/', image: 'https://www.nft.nyc/hubfs/logo-time.jpeg', photo: 'https://www.nft.nyc/hubfs/time-testimonial.jpg' },
-  { outlet: 'Fortune', quote: 'This is the fifth consecutive year NFT.NYC has attracted thousands.', url: 'https://fortune.com/crypto/2023/04/13/nft-nyc-books-bees-dna-web3-write3/', image: 'https://www.nft.nyc/hubfs/NFT.NYC%202023/Testimonials/FortuneMagazine.jpg', photo: 'https://www.nft.nyc/hubfs/fortune1.jpg' },
-  { outlet: 'CoinDesk', quote: 'A momentous week for Non-Fungible Tokens.', url: 'https://www.coindesk.com/business/2021/11/05/nfts-take-over-nyc/', image: 'https://www.nft.nyc/hubfs/logo-coindesk.png', photo: 'https://www.nft.nyc/hubfs/coindesk-testimonial.jpg' },
-  { outlet: 'ARTnews', quote: 'The premier Web3 conference that has served as a barometer for the crypto market since 2019.', url: 'https://www.artnews.com/art-news/market/2023-nft-nyc-conference-opening-day-1234663906/', image: 'https://www.nft.nyc/hubfs/NFT.NYC%202023/Testimonials/artnews.jpg', photo: 'https://www.nft.nyc/hubfs/ARTnews-nft100gala.jpg' },
-  { outlet: 'CoinTelegraph', quote: 'A week of artistic inspiration, community networking and developer innovation.', url: 'https://cointelegraph.com/news/nft-nyc-how-the-web3-space-is-validating-the-work-of-digital-artists', image: 'https://www.nft.nyc/hubfs/logo-cointelegraph.jpeg', photo: 'https://www.nft.nyc/hubfs/cointelegraph-testimonial.jpg' },
-  { outlet: 'Decrypt', quote: 'NFT NYC Again Showcased the Resilience of Web3 Culture.', url: 'https://decrypt.co/136810/nft-nyc-2023-gmoney-ordinals-bitcoin-2023', image: 'https://www.nft.nyc/hubfs/NFT.NYC%202023/Testimonials/decryptmedia.jpg', photo: 'https://www.nft.nyc/hubfs/decrypt.png' },
+  { outlet: 'Forbes', quote: 'The largest and most respected NFT conference in the world.', url: 'https://www.forbes.com/sites/falonfatemi/2022/06/23/how-nftnyc-grew-into-the-super-bowl-of-nfts-according-to-its-co-founder/', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/logo-forbes.jpeg', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/forbes-testimonial.jpeg' },
+  { outlet: 'New York Times', quote: 'Woodstock is actually a decent comparison to a gathering like NFT.NYC.', url: 'https://www.nytimes.com/2021/11/05/technology/nft-nyc-metaverse.html', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/logo-nytimes.png', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/nyt-testimonial.jpg' },
+  { outlet: 'Time', quote: 'The First Major NFT Conference.', url: 'https://time.com/6115274/nft-conference-parties-culture/', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/logo-time.jpeg', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/time-testimonial.jpg' },
+  { outlet: 'Fortune', quote: 'This is the fifth consecutive year NFT.NYC has attracted thousands.', url: 'https://fortune.com/crypto/2023/04/13/nft-nyc-books-bees-dna-web3-write3/', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/NFT.NYC%202023/Testimonials/FortuneMagazine.jpg', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/fortune1.jpg' },
+  { outlet: 'CoinDesk', quote: 'A momentous week for Non-Fungible Tokens.', url: 'https://www.coindesk.com/business/2021/11/05/nfts-take-over-nyc/', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/logo-coindesk.png', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/coindesk-testimonial.jpg' },
+  { outlet: 'ARTnews', quote: 'The premier Web3 conference that has served as a barometer for the crypto market since 2019.', url: 'https://www.artnews.com/art-news/market/2023-nft-nyc-conference-opening-day-1234663906/', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/NFT.NYC%202023/Testimonials/artnews.jpg', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/ARTnews-nft100gala.jpg' },
+  { outlet: 'CoinTelegraph', quote: 'A week of artistic inspiration, community networking and developer innovation.', url: 'https://cointelegraph.com/news/nft-nyc-how-the-web3-space-is-validating-the-work-of-digital-artists', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/logo-cointelegraph.jpeg', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/cointelegraph-testimonial.jpg' },
+  { outlet: 'Decrypt', quote: 'NFT NYC Again Showcased the Resilience of Web3 Culture.', url: 'https://decrypt.co/136810/nft-nyc-2023-gmoney-ordinals-bitcoin-2023', image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/NFT.NYC%202023/Testimonials/decryptmedia.jpg', photo: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/decrypt.png' },
 ];
 
 export const EVENT_STATS = [
@@ -184,7 +184,6 @@ export interface PastEvent {
   speakers: string;
   tracks: string;
   highlights: string[];
-  url: string;
   image: string;
 }
 
@@ -204,8 +203,7 @@ export const PAST_EVENTS: PastEvent[] = [
       '400+ Artists featured across 2 major Times Square Billboards',
       '50+ Artists shown on the Monument curated by Superchief Gallery',
     ],
-    url: 'https://www.nft.nyc/nftnyc2025',
-    image: 'https://www.nft.nyc/hubfs/TS%20Group.png',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/TS%20Group.png',
   },
   {
     name: 'NFT.NYC 2024',
@@ -222,8 +220,7 @@ export const PAST_EVENTS: PastEvent[] = [
       '2,500+ selected Artists featured in the showcase',
       '100+ Artists featured across major Times Square Billboards',
     ],
-    url: 'https://www.nft.nyc/nftnyc2024',
-    image: 'https://www.nft.nyc/hubfs/artist%20showcase%20pic.png',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/artist%20showcase%20pic.png',
   },
   {
     name: 'NFT.NYC 2023',
@@ -240,8 +237,7 @@ export const PAST_EVENTS: PastEvent[] = [
       '2,000+ Artists shown in the Rooftop Artists Village',
       '100+ Artists across 3 major Times Square Billboards',
     ],
-    url: 'https://www.nft.nyc/nftnyc2023',
-    image: 'https://www.nft.nyc/hubfs/nftnyc-artistsvillage-cropped.jpg',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/nftnyc-artistsvillage-cropped.jpg',
   },
   {
     name: 'NFT.London 2022',
@@ -257,8 +253,7 @@ export const PAST_EVENTS: PastEvent[] = [
       'First major NFT event in the United Kingdom',
       '34 Sponsors and 76 Satellite Events',
     ],
-    url: 'https://www.nft.nyc/nftlondon2022',
-    image: 'https://www.nft.nyc/hubfs/pastevents-london2022.png',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-london2022.png',
   },
   {
     name: 'NFT.NYC 2022',
@@ -275,8 +270,7 @@ export const PAST_EVENTS: PastEvent[] = [
       '200+ NFT Artists across 14 major Times Square Billboards',
       '450+ Satellite Events across New York City',
     ],
-    url: 'https://www.nft.nyc/nftnyc2022',
-    image: 'https://www.nft.nyc/hubfs/pastevents-2022.jpeg',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2022.jpeg',
   },
   {
     name: 'NFT.NYC 2021',
@@ -293,8 +287,7 @@ export const PAST_EVENTS: PastEvent[] = [
       'Times Square Takeover across 14 major Billboards',
       '125 Sponsors and 67 Satellite Events',
     ],
-    url: 'https://www.nft.nyc/nftnyc2021',
-    image: 'https://www.nft.nyc/hubfs/pastevents-2021.jpeg',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2021.jpeg',
   },
   {
     name: 'NFT.NYC 2020',
@@ -310,8 +303,7 @@ export const PAST_EVENTS: PastEvent[] = [
       '34 Sponsors supporting the growing NFT ecosystem',
       '12 Satellite Events',
     ],
-    url: 'https://www.nft.nyc/nftnyc2020',
-    image: 'https://www.nft.nyc/hubfs/pastevents-2020.jpg',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2020.jpg',
   },
   {
     name: 'NFT.NYC 2019',
@@ -327,8 +319,7 @@ export const PAST_EVENTS: PastEvent[] = [
       'The first major NFT industry event',
       'Pioneered NFT Swag Bags and NFT Ticketing',
     ],
-    url: 'https://www.nft.nyc/nftnyc2019',
-    image: 'https://www.nft.nyc/hubfs/pastevents-2019.jpg',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2019.jpg',
   },
   {
     name: 'Pre-NFT.NYC 2018',
@@ -344,8 +335,7 @@ export const PAST_EVENTS: PastEvent[] = [
       'Introductory events across 3 cities in 1 week',
       'Where it all began',
     ],
-    url: 'https://www.nft.nyc/pre-nftnyc',
-    image: 'https://www.nft.nyc/hubfs/pastevents-2018.jpg',
+    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2018.jpg',
   },
 ];
 

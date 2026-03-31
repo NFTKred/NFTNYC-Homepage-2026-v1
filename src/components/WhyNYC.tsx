@@ -12,7 +12,7 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
       <div style={{
         position: 'absolute',
         inset: 0,
-        backgroundImage: 'url(https://www.nft.nyc/hubfs/pastevents-2021.jpeg)',
+        backgroundImage: 'url(https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2021.jpeg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -57,19 +57,17 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
           New York City sits at the intersection of art, finance, technology, and entertainment - the four pillars of the NFT economy. And Times Square - the biggest art gallery in the world - is our main stage.
         </p>
 
-        {stage >= 1 && (
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--text-sm)',
-            color: 'rgba(255,255,255,0.65)',
-            lineHeight: 1.7,
-            maxWidth: '640px',
-            marginInline: 'auto',
-            marginBottom: '2rem',
-          }}>
-            The <strong style={{ color: '#fff' }}>TS Billboard Challenge</strong> turns that visibility into opportunity - artists showcase on Times Square billboards, collectors purchase derivatives, and creators earn XP and USDC rewards.
-          </p>
-        )}
+        <p style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: 'var(--text-sm)',
+          color: 'rgba(255,255,255,0.65)',
+          lineHeight: 1.7,
+          maxWidth: '640px',
+          marginInline: 'auto',
+          marginBottom: '2rem',
+        }}>
+          The <strong style={{ color: '#fff' }}>TS Billboard Challenge</strong> turns that visibility into opportunity - artists showcase on Times Square billboards, collectors purchase derivatives, and creators earn XP and USDC rewards.
+        </p>
 
         {/* CTAs */}
         <div style={{
@@ -112,6 +110,38 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
               Join the TS Billboard Challenge
             </a>
           )}
+
+          <a
+            href="/ts-challenge"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '0.65rem 1.75rem',
+              borderRadius: '9999px',
+              fontFamily: 'var(--font-body)',
+              fontWeight: 600,
+              fontSize: '14px',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              border: '1px solid rgba(255,255,255,0.25)',
+              background: 'transparent',
+              color: 'rgba(255,255,255,0.85)',
+              transition: 'all 180ms cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.4)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)';
+            }}
+          >
+            Learn How the TS Challenge Works →
+          </a>
 
           {/* Meet Relay Card */}
           <div
@@ -159,18 +189,8 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
               }}>Born and raised in Times Square, Relay is your local guide to NFT.NYC. Ask Relay anything about past events, what to expect in 2026, or how to get involved.</p>
               <button
                 onClick={() => {
-                  const w = window as any;
-                  if (w.RelayChatWidget?.open) { w.RelayChatWidget.open(); return; }
-                  if (w.Relay?.open) { w.Relay.open(); return; }
-                  const btn = document.querySelector('[data-relay-toggle], .relay-chat-toggle, .relay-launcher, iframe[src*="relay"] ~ button') as HTMLElement;
+                  const btn = document.getElementById('relay-chat-btn') as HTMLElement;
                   if (btn) { btn.click(); return; }
-                  const candidates = document.querySelectorAll('button, div[role="button"]');
-                  for (const el of candidates) {
-                    const rect = (el as HTMLElement).getBoundingClientRect();
-                    if (rect.bottom > window.innerHeight - 100 && rect.right > window.innerWidth - 100) {
-                      (el as HTMLElement).click(); return;
-                    }
-                  }
                 }}
                 style={{
                   display: 'inline-flex',

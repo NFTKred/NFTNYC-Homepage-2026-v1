@@ -262,13 +262,19 @@ export default function NeuralMesh() {
       if (ff < 0.15 || ff > 0.85) {
         const subs = eco.subs || [];
         if (ff > 0.85) {
-          const subLocs = [
-            { x: p.x - 80, y: p.y - 35 },
-            { x: p.x + 80, y: p.y - 35 }
-          ];
+          const now = performance.now();
+          const orbitRadius = 80;
+          const swayAmount = 0.35; // radians of sway (~20 degrees)
+          const swaySpeed = 0.0008; // radians per ms
           subs.forEach((sub, j) => {
-            if (j >= subLocs.length) return;
-            const sl = subLocs[j];
+            // Fixed base angle: left and right of center
+            const baseAngle = j === 0 ? Math.PI : 0;
+            const sway = Math.sin(now * swaySpeed + j * Math.PI) * swayAmount;
+            const angle = baseAngle + sway;
+            const sl = {
+              x: p.x + Math.cos(angle) * orbitRadius,
+              y: p.y - 35 + Math.sin(angle) * orbitRadius * 0.15,
+            };
             const subLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
             subLine.setAttribute('x1', String(p.x)); subLine.setAttribute('y1', String(p.y));
             subLine.setAttribute('x2', String(sl.x)); subLine.setAttribute('y2', String(sl.y));
@@ -343,16 +349,14 @@ export default function NeuralMesh() {
         };
       }
 
-      renderFrame();
-
       if (rawT >= 1) {
         s.transitionStart = null;
         s.featuredIdx = s.nextFeatured;
         s.currentPositions = getRestPositions(s.featuredIdx);
-        renderFrame();
         s.timeoutId = setTimeout(startNextCycle, CYCLE_MS);
       }
     }
+    renderFrame();
     s.rafId = requestAnimationFrame(animationLoop);
   }, [renderFrame, startNextCycle]);
 

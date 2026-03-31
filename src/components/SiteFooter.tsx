@@ -161,6 +161,41 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>
             © 2026 NFT.NYC
           </p>
+          {/* Hidden trigger for Eventbrite widget */}
+          <span id="eb-trigger" style={{ display: 'none' }} />
+          <span
+            onClick={() => {
+              const w = window as any;
+              if (!w._ebWidgetReady) {
+                if (w.EBWidgets?.createWidget) {
+                  w.EBWidgets.createWidget({
+                    widgetType: 'checkout',
+                    eventId: '1985747187292',
+                    promoCode: 'Earlybird',
+                    modal: true,
+                    modalTriggerElementId: 'eb-trigger',
+                    onOrderComplete: () => console.log('Order complete!'),
+                  });
+                  w._ebWidgetReady = true;
+                }
+              }
+              setTimeout(() => {
+                const trigger = document.getElementById('eb-trigger');
+                if (trigger) trigger.click();
+              }, 100);
+            }}
+            style={{
+              display: 'inline-block',
+              marginTop: '1rem',
+              fontSize: '10px',
+              color: 'var(--color-text-faint)',
+              textDecoration: 'none',
+              opacity: 0.15,
+              cursor: 'pointer',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.5'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '0.15'; }}
+          >R</span>
         </div>
       </div>
     </footer>

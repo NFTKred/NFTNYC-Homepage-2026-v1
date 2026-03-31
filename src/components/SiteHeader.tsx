@@ -2,11 +2,33 @@ import { useState } from 'react';
 import nftLogo from '@/assets/nftnyc-logo.svg';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import Countdown from '@/components/Countdown';
+import { SHOW_SPEAK_PAGE } from '@/pages/Speak';
 
 interface HeaderProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   stage?: number;
+}
+
+function openEventbrite() {
+  const w = window as any;
+  if (!w._ebWidgetReady) {
+    if (w.EBWidgets?.createWidget) {
+      w.EBWidgets.createWidget({
+        widgetType: 'checkout',
+        eventId: '1985747187292',
+        promoCode: 'Earlybird',
+        modal: true,
+        modalTriggerElementId: 'eb-trigger',
+        onOrderComplete: () => console.log('Order complete!'),
+      });
+      w._ebWidgetReady = true;
+    }
+  }
+  setTimeout(() => {
+    const trigger = document.getElementById('eb-trigger');
+    if (trigger) trigger.click();
+  }, 100);
 }
 
 export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps) {
@@ -20,6 +42,8 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
     { href: '#media', label: 'Media', minStage: 0 },
     { href: '#events', label: 'Events', minStage: 1 },
     { href: '#faq', label: 'FAQ', minStage: 0 },
+    // Speak nav link hidden for now; uncomment to show:
+    // ...(SHOW_SPEAK_PAGE ? [{ href: '/speak', label: 'Speak', minStage: 0 }] : []),
   ];
 
   const navLinks = allNavLinks.filter(link => stage >= link.minStage);
@@ -27,8 +51,17 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   const extLinks: { href: string; label: string }[] = [];
 
   const handleNavClick = (href: string) => {
+    if (href.startsWith('/')) {
+      window.location.href = href;
+      setMenuOpen(false);
+      return;
+    }
     const target = document.querySelector(href);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    } else if (window.location.pathname !== '/') {
+      window.location.href = '/' + href;
+    }
     setMenuOpen(false);
   };
 
@@ -46,7 +79,9 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
       >
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
           {/* Logo */}
-          <img src={nftLogo} alt="NFT.NYC" style={{ height: '32px', width: 'auto', filter: theme === 'light' ? 'invert(1)' : 'none', transition: 'filter 180ms ease' }} />
+          <a href="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={nftLogo} alt="NFT.NYC" style={{ height: '32px', width: 'auto', filter: theme === 'light' ? 'invert(1)' : 'none', transition: 'filter 180ms ease' }} />
+          </a>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6">
@@ -92,9 +127,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             ))}
             <Countdown compact />
             <button
-              onClick={() => {
-                document.querySelector('#updates')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={openEventbrite}
               style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: '13px',
@@ -119,7 +152,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 (e.currentTarget as HTMLElement).style.boxShadow = 'none';
               }}
             >
-              Get 2026 Updates
+              Earlybird Tickets
             </button>
             <button
               onClick={onToggleTheme}
@@ -200,8 +233,8 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             ))}
             <button
               onClick={() => {
-                document.querySelector('#updates')?.scrollIntoView({ behavior: 'smooth' });
                 setMenuOpen(false);
+                openEventbrite();
               }}
               style={{
                 fontFamily: 'var(--font-body)',
@@ -218,7 +251,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 marginTop: '0.5rem',
               }}
             >
-              Get 2026 Updates
+              Earlybird Tickets
             </button>
           </nav>
         </div>

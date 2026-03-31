@@ -120,5 +120,8 @@
       "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT.NYC%20Speaker%20Release%20v2%20%2827Sep2023%29.pdf",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
