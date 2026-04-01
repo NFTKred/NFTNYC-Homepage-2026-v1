@@ -3,6 +3,7 @@ import useScrollReveal from '@/hooks/useScrollReveal';
 import SiteHeader from '@/components/SiteHeader';
 import NeuralMesh from '@/components/NeuralMesh';
 import StatsBar from '@/components/StatsBar';
+import NotableSpeakers from '@/components/NotableSpeakers';
 import SpeakersSection from '@/components/SpeakersSection';
 import EcosystemSection from '@/components/EcosystemSection';
 import BrandQuotes from '@/components/BrandQuotes';
@@ -145,6 +146,8 @@ export default function Index() {
         </section>
 
         <StatsBar />
+
+        <NotableSpeakers />
 
         {/* ======== STATEMENT ======== */}
         <section
