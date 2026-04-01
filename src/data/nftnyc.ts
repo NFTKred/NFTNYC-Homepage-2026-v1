@@ -108,9 +108,6 @@ export const BRAND_TESTIMONIALS: BrandTestimonial[] = [
   { brand: 'Polygon', quote: 'The event brings together the entire community of creators, devs and entrepreneurs building in the NFT ecosystem.', logo: '/brands/logo-0xpolygon.jpg', photo: '/brands/polygon-testimonial.jpg' },
   { brand: 'Tron DAO', quote: 'The team had a great time interacting with the NFT community and making new friends and connections.', logo: '/brands/tron.jpeg', photo: '/brands/trondao-testimonial.jpg' },
   { brand: 'Immutable', quote: 'We are excited to partner with NFT.NYC to deliver the best experiences for the NFT and gaming communities across the world.', logo: '/brands/IMX.jpeg', photo: '/brands/immutable-testimonial.jpg' },
-  { brand: 'Boson Protocol', quote: 'NFT.NYC was our best marketing of the year.', logo: '/brands/BosonProtocol.jpeg', photo: '/brands/boson-testimonial.jpg' },
-  { brand: 'Pinata', quote: "We're still on a high from all the people we met, and the interactions we had with some of the projects that are pushing the NFT space forward.", logo: '/brands/pinatacloud.jpeg', photo: '/brands/pinata-testimonial.jpg' },
-  { brand: 'Valeria Games', quote: 'Valeria Games showed out this year in New York! Got to meet a ton of amazing community members as well as showcase our Alpha to everyone there!', logo: '/brands/Valeria Games Icon Logotype Glow Black BG.png', photo: '/brands/valeria.jpg' },
 ];
 
 export interface AttendeeTestimonial {
