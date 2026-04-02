@@ -28,6 +28,7 @@ export default function Index() {
   }, []);
 
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const showOptOut = useMemo(() => new URLSearchParams(window.location.search).get('optout') === 'true', []);
   useScrollReveal();
 
   const toggleTheme = () => {
@@ -57,6 +58,20 @@ export default function Index() {
       <SiteHeader theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <main id="main">
+        {showOptOut && (
+          <div style={{
+            background: 'linear-gradient(135deg, #10B981, #3B82F6)',
+            color: '#fff',
+            textAlign: 'center',
+            padding: '1rem 1.5rem',
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--text-base)',
+            fontWeight: 600,
+            letterSpacing: '0.02em',
+          }}>
+            You've successfully opted out
+          </div>
+        )}
         {/* ======== HERO ======== */}
         <section
           id="hero"
