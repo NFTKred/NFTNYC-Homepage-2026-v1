@@ -57,21 +57,27 @@ export default function Index() {
     <div data-theme={theme} style={{ background: 'var(--color-bg)', minHeight: '100dvh' }}>
       <SiteHeader theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
+      {showOptOut && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 200,
+          background: 'linear-gradient(135deg, #10B981, #3B82F6)',
+          color: '#fff',
+          textAlign: 'center',
+          padding: '0.75rem 1.5rem',
+          fontFamily: 'var(--font-body)',
+          fontSize: 'var(--text-base)',
+          fontWeight: 600,
+          letterSpacing: '0.02em',
+        }}>
+          You've successfully opted out
+        </div>
+      )}
+
       <main id="main">
-        {showOptOut && (
-          <div style={{
-            background: 'linear-gradient(135deg, #10B981, #3B82F6)',
-            color: '#fff',
-            textAlign: 'center',
-            padding: '1rem 1.5rem',
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--text-base)',
-            fontWeight: 600,
-            letterSpacing: '0.02em',
-          }}>
-            You've successfully opted out
-          </div>
-        )}
         {/* ======== HERO ======== */}
         <section
           id="hero"
