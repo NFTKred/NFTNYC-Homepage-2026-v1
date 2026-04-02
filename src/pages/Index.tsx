@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 import SiteHeader from '@/components/SiteHeader';
 import NeuralMesh from '@/components/NeuralMesh';
@@ -28,7 +28,14 @@ export default function Index() {
   }, []);
 
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const showOptOut = useMemo(() => new URLSearchParams(window.location.search).get('optout') === 'true', []);
+  const isOptOut = useMemo(() => new URLSearchParams(window.location.search).get('optout') === 'true', []);
+  const [showOptOut, setShowOptOut] = useState(true);
+  useEffect(() => {
+    if (isOptOut) {
+      const timer = setTimeout(() => setShowOptOut(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOptOut]);
   useScrollReveal();
 
   const toggleTheme = () => {
@@ -57,7 +64,7 @@ export default function Index() {
     <div data-theme={theme} style={{ background: 'var(--color-bg)', minHeight: '100dvh' }}>
       <SiteHeader theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
-      {showOptOut && (
+      {isOptOut && (
         <div style={{
           position: 'fixed',
           top: 0,
@@ -72,6 +79,9 @@ export default function Index() {
           fontSize: 'var(--text-base)',
           fontWeight: 600,
           letterSpacing: '0.02em',
+          opacity: showOptOut ? 1 : 0,
+          transition: 'opacity 0.5s ease-out',
+          pointerEvents: showOptOut ? 'auto' : 'none',
         }}>
           You've successfully opted out
         </div>
