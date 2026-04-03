@@ -6,6 +6,7 @@ export interface VerticalResource {
   source: string;
   topicTag: string;
   description?: string;
+  image?: string;
 }
 
 // Last updated: 2026-03-31
@@ -13,10 +14,14 @@ export const VERTICAL_RESOURCES: Record<string, VerticalResource[]> = {
 
   /* ── AI Agent Identity ── */
   ai: [
-    { title: 'New Whitepaper Tackles AI Agent Identity Challenges', url: 'https://openid.net/new-whitepaper-tackles-ai-agent-identity-challenges/', type: 'news', date: '2025-10-07', source: 'OpenID Foundation', topicTag: 'Agent Reputation & Credentials', description: 'Whitepaper on securely authenticating and authorizing autonomous AI agents operating across decentralized systems.' },
-    { title: 'ERC-8004: A New Standard for AI Agent Identity', url: 'https://eips.ethereum.org/EIPS/eip-8004', type: 'paper', date: '2024-11-15', source: 'Ethereum EIPs', topicTag: 'ERC-8004 & Non-Fungible Agents', description: 'The formal EIP proposal for on-chain AI agent reputation and identity tokens.' },
-    { title: 'The Rise of AI Agents in Web3', url: 'https://www.coindesk.com/tech/2025/01/14/the-rise-of-ai-agents-in-web3/', type: 'news', date: '2025-01-14', source: 'CoinDesk', topicTag: 'Open Wallet Standard for Agents', description: 'How autonomous AI agents with crypto wallets are creating a new paradigm for on-chain activity.' },
-    { title: 'The Future of Autonomous Trading — Crypto AI Agents', url: 'https://www.codezeros.com/what-are-crypto-ai-agents-the-future-of-autonomous-trading-in-2025', type: 'blog', date: '2025-01-01', source: 'Codezeros', topicTag: 'Open Wallet Standard for Agents', description: 'Explores crypto AI agents blockchain interaction layers for autonomous trading and DeFi.' },
+    { title: 'AI Agents Gain Trust Via Ethereum: ERC-8004 On Mainnet', url: 'https://www.forbes.com/sites/digital-assets/2026/02/05/ai-agents-gain-trust-via-ethereum-erc-8004-on-mainnet/', type: 'news', date: '2026-02-05', source: 'Forbes', topicTag: 'ERC-8004 & Non-Fungible Agents', description: 'ERC-8004 is live on Ethereum mainnet, adding standard identity and reputation registries for AI agents — each agent identity is an NFT.', image: 'https://imageio.forbes.com/specials-images/imageserve/6984d1219027936a9450b3cd/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds' },
+    { title: 'ERC-8004: A Developer\'s Guide to Trustless AI Agent Identity', url: 'https://blog.quicknode.com/erc-8004-a-developers-guide-to-trustless-ai-agent-identity/', type: 'blog', date: '2026-03-04', source: 'QuickNode', topicTag: 'ERC-8004 & Non-Fungible Agents', description: 'Technical guide to ERC-8004 on-chain registries that enable AI agent discovery, reputation, and trust through NFT-based identity.', image: 'https://blog.quicknode.com/content/images/size/w1200/2026/03/March-Blog-2x1s--1-.png' },
+    { title: 'ERC-8004 Gives AI Agents Identity. RedStone and Credora Power Them with Data', url: 'https://blog.redstone.finance/2026/02/12/erc-8004-gives-ai-agents-identity-redstone-and-credora-power-them-with-data-and-risk-intelligence/', type: 'blog', date: '2026-02-12', source: 'RedStone Finance', topicTag: 'ERC-8004 & Non-Fungible Agents', description: 'Every AI agent registers by minting an NFT — simple, elegant, tamper-proof. The token ID becomes the agent\'s unique identifier.' },
+    { title: 'The Identity Problem in Agentic Commerce: How ENS Can Enable Trust for AI Agents', url: 'https://ens.domains/blog/post/ens-ai-agent-erc8004', type: 'blog', date: '2026-01-15', source: 'ENS Labs', topicTag: 'Agent Reputation & Credentials', description: 'How ENS naming integrates with ERC-8004 to give AI agents human-readable, verifiable on-chain identities.', image: 'https://ens.domains/_next/static/media/cover.3de06369.webp' },
+    { title: 'Onchain AI Identity: What ERC-8004 Unlocks for Agent Infrastructure', url: 'https://allium.so/blog/onchain-ai-identity-what-erc-8004-unlocks-for-agent-infrastructure/', type: 'blog', date: '2026-02-01', source: 'Allium', topicTag: 'ERC-8004 & Non-Fungible Agents', description: 'How ERC-8004 creates a trust layer allowing AI agents to work together with NFT-based verifiable credentials.' },
+    { title: 'Why "Trust the AI" Is Now Your Biggest Security Hole', url: 'https://www.youtube.com/watch?v=OMb5oTlC_q0', type: 'youtube', date: '2026-02-22', source: 'Nate B. Jones', topicTag: 'Agent Reputation & Credentials', description: 'AI strategist Nate Jones argues autonomous agents need structural trust architecture — authenticated identity, reputation systems, and behavioral monitoring.' },
+    { title: 'The Compounding Gap That Makes 2026 the Last Chance to Catch Up', url: 'https://www.youtube.com/watch?v=pOb0pjXpn6Q', type: 'youtube', date: '2026-01-01', source: 'Nate B. Jones', topicTag: 'Autonomous Stablecoin Payments', description: 'Nate Jones on why autonomous agents will need identity layers, permissions, audit logs, and agent control panes — the case for on-chain agent infrastructure.' },
+    { title: 'ERC-8004 + x402 AI Agent Registry Explained', url: 'https://www.youtube.com/watch?v=dIqt1T7XdUI', type: 'youtube', date: '2026-01-20', source: 'Ethereum AI', topicTag: 'ERC-8004 & Non-Fungible Agents', description: 'Video explainer of the world\'s first trustless AI agent economy — NFT-based identity paired with HTTP 402 payments.' },
   ],
 
   /* ── DeFi & Capital Markets ── */

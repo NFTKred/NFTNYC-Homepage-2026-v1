@@ -10,6 +10,9 @@ import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
 import NotFound from "./pages/NotFound";
 import VerticalPage from "./pages/VerticalPage";
+import AdminLogin from "./pages/AdminLogin";
+import Admin from "./pages/Admin";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,8 @@ const App = () => (
           <Route path="/speak" element={<Speak />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/xp-and-kredits" element={<BlogXpKred />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/:verticalId" element={<VerticalPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

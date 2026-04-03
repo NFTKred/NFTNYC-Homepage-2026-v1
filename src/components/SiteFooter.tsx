@@ -66,7 +66,7 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
             color: 'var(--color-text)',
             marginBottom: '1.5rem',
             textTransform: 'uppercase',
-          }}>Join the Conversation</h2>
+          }}>NFTs in Other Industries</h2>
           <div className="flex justify-center gap-4">
             {socialLinks.map(link => (
               <a
