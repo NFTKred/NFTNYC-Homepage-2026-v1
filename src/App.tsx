@@ -26,8 +26,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/ts-challenge" element={<TSChallenge />} />
           <Route path="/speak" element={<Speak />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs/xp-and-kredits" element={<BlogXpKred />} />
+          <Route path="/blog" element={<Blogs />} />
+          <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/:verticalId" element={<VerticalPage />} />
