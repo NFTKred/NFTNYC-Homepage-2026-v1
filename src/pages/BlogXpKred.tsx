@@ -84,7 +84,7 @@ export default function BlogXpKred() {
         <div className="max-w-[720px] mx-auto">
 
           {/* Back link */}
-          <a href="/blogs" style={{
+          <a href="/blog" style={{
             fontFamily: 'var(--font-body)',
             fontSize: 'var(--text-sm)',
             color: 'var(--color-primary)',
@@ -96,7 +96,7 @@ export default function BlogXpKred() {
 
           {/* Title */}
           <h1 style={{ ...heading, fontSize: 'clamp(1.5rem, 1rem + 2vw, 2.5rem)', marginBottom: '0.75rem' }}>
-            What are T-XP and T-Kr? How hub-branded points and Kredits work on PeopleBrowsr
+            What are XP and Kr? How hub-branded points and Kredits work
           </h1>
           <p style={{
             fontFamily: 'var(--font-body)',
@@ -108,7 +108,7 @@ export default function BlogXpKred() {
 
           {/* Intro */}
           <p style={body}>
-            T-XP and T-Kr are hub-branded versions of XP (experience points) and Kredits on the PeopleBrowsr platform. T-XP tracks your engagement within a specific OneHub. T-Kr represents Kredits earned or allocated within that same hub. Together, they form the two stages of the platform economy: XP is for play, and Kredits are for earning collectible NFTs.
+            XP and Kr are hub-branded versions of XP (experience points) and Kredits on the PeopleBrowsr platform. XP tracks your engagement within a specific OneHub. Kr represents Kredits earned or allocated within that same hub. Together, they form the two stages of the platform economy: XP is for play, and Kredits are for earning collectible NFTs.
           </p>
           <p style={{ ...body, marginTop: '1rem' }}>
             This guide explains what each asset is, how they differ, how you earn and use them, and what happens when you graduate from the play stage to the earn stage.
@@ -126,11 +126,11 @@ export default function BlogXpKred() {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>T-XP</td>
+                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>XP</td>
                   <td style={tableCell}>Hub-branded experience points. Off-chain. Tracks engagement. Expires after 60 days (earned) or 12 months (purchased). No KYC required.</td>
                 </tr>
                 <tr>
-                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>T-Kr</td>
+                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>Kr</td>
                   <td style={tableCell}>Hub-branded Kredits. On-chain ERC-1155 tokens. Permanently transfer-locked. Used to redeem collectible NFTs within the platform. No KYC required to earn or spend.</td>
                 </tr>
                 <tr>
@@ -145,8 +145,13 @@ export default function BlogXpKred() {
             </table>
           </div>
 
+          {/* The Times Square Challenge */}
+          <h2 style={{ ...heading, fontSize: 'clamp(1.5rem, 1rem + 2vw, 2rem)', marginBottom: '0.5rem', marginTop: '3rem' }}>
+            The Times Square Challenge - T-XP and T-Kr
+          </h2>
+
           {/* What is T-XP */}
-          <h2 style={sectionTitle}>What is T-XP?</h2>
+          <h3 style={sectionTitle}>What is T-XP?</h3>
           <p style={body}>
             T-XP stands for hub-branded experience points on the PeopleBrowsr platform. The "T" prefix identifies which OneHub the points belong to. Other hubs may use different prefixes (such as E-XP), though they all follow the same mechanics.
           </p>
