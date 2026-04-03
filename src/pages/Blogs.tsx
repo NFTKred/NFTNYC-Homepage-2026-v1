@@ -19,6 +19,7 @@ const BLOG_POSTS: BlogPost[] = [
     description: 'How hub-branded points and Kredits work — earning XP, graduating to Kredits, and redeeming collectible NFTs.',
     slug: 'xp-and-kredits',
     date: '2026-04-01',
+    image: '/blog-xp-kr-hero.png',
     tag: 'Platform',
   },
 ];

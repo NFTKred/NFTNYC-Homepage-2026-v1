@@ -106,6 +106,18 @@ export default function BlogXpKred() {
             marginBottom: '2rem',
           }}>Last updated: April 2026 | Reading time: 8 minutes</p>
 
+          {/* Hero image */}
+          <img
+            src="/blog-xp-kr-hero.png"
+            alt="NYC skyline with a phone displaying XP and Kr coins"
+            style={{
+              width: '100%',
+              borderRadius: '12px',
+              marginBottom: '2rem',
+              border: '1px solid var(--card-border)',
+            }}
+          />
+
           {/* Intro */}
           <p style={body}>
             XP and Kr are hub-branded versions of XP (experience points) and Kredits on the PeopleBrowsr platform. XP tracks your engagement within a specific OneHub. Kr represents Kredits earned or allocated within that same hub. Together, they form the two stages of the platform economy: XP is for play, and Kredits are for earning collectible NFTs.
