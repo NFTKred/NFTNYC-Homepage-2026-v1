@@ -29,6 +29,6 @@ export function useVerticalResources(verticalId: string) {
       }));
     },
     placeholderData: VERTICAL_RESOURCES[verticalId] ?? [],
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000, // 30 seconds — resources update quickly after admin changes
   });
 }

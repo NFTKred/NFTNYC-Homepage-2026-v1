@@ -4,7 +4,8 @@ import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS, type VerticalTopic } from '@/data/verticalTopics';
-import { VERTICAL_RESOURCES, type VerticalResource } from '@/data/verticalResources';
+import { type VerticalResource } from '@/data/verticalResources';
+import { useVerticalResources } from '@/hooks/useVerticalResources';
 import {
   ArrowLeft,
   FileText,
@@ -81,10 +82,12 @@ export default function VerticalPage() {
   const [typeFilter, setTypeFilter] = useState<VerticalResource['type'] | 'all'>('all');
 
   const eco = ECOSYSTEMS.find(e => e.id === verticalId);
+  const { data: allResources = [] } = useVerticalResources(verticalId ?? '');
+
   if (!eco) return <Navigate to="/" replace />;
 
   const topics = VERTICAL_TOPICS[eco.id] ?? [];
-  const resources = (VERTICAL_RESOURCES[eco.id] ?? [])
+  const resources = allResources
     .filter(r => typeFilter === 'all' || r.type === typeFilter)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
