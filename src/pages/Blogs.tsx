@@ -15,6 +15,14 @@ interface BlogPost {
 
 const BLOG_POSTS: BlogPost[] = [
   {
+    title: 'What is the Times Square Billboard Challenge?',
+    description: 'The complete guide to collecting NFT art, earning T-XP, and climbing the leaderboard on onehub.nft.nyc.',
+    slug: 'ts-challenge',
+    date: '2026-04-03',
+    image: '/blog-ts-challenge-hero.png',
+    tag: 'TS Challenge',
+  },
+  {
     title: 'What are XP and Kr?',
     description: 'How hub-branded points and Kredits work — earning XP, graduating to Kredits, and redeeming collectible NFTs.',
     slug: 'xp-and-kredits',
