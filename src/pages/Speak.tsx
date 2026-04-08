@@ -140,21 +140,18 @@ const CHECKLIST = [
 ];
 
 const PAST_SPEAKERS = [
-  { name: 'Busta Rhymes', title: 'Grammy-Nominated Artist' },
-  { name: 'Quentin Tarantino', title: 'Director' },
-  { name: 'Kimbal Musk', title: 'Entrepreneur' },
-  { name: 'Alexis Ohanian', title: 'Co-Founder, Reddit' },
-  { name: 'Spike Lee', title: 'Director' },
-  { name: 'Roham Gharegozlou', title: 'CEO, Dapper Labs' },
-  { name: 'Ivan Soto-Wright', title: 'CEO, MoonPay' },
-  { name: 'Logan Paul', title: 'Entrepreneur & Creator' },
-  { name: 'Sebastien Borget', title: 'COO, The Sandbox' },
-  { name: 'Robby Yung', title: 'CEO, Animoca Brands' },
-  { name: 'Gary Vaynerchuk', title: 'CEO, VaynerMedia' },
-  { name: 'David Schwartz', title: 'CTO, Ripple' },
-  { name: 'David Pakman', title: 'Managing Partner, CoinFund' },
-  { name: 'Tom Bilyeu', title: 'Co-Founder, Quest Nutrition' },
-  { name: 'Devin Finzer', title: 'CEO, OpenSea' },
+  { name: 'Alexis Ohanian', title: 'Founder Reddit' },
+  { name: 'David Pakman', title: 'CoinFund Managing Partner' },
+  { name: 'Devin Finzer', title: 'CEO OpenSea' },
+  { name: 'Gary Vaynerchuk', title: 'Founder Veefriends' },
+  { name: 'Jimmy Wales', title: 'Founder Wikipedia' },
+  { name: 'John Kosner', title: 'ESPN Sports Media Veteran' },
+  { name: 'Kimbal Musk', title: 'Businessman' },
+  { name: 'Michael Casey', title: 'CEO & Co-Founder Tell Network' },
+  { name: 'Quentin Tarantino', title: 'Golden Globe Winner' },
+  { name: 'Robby Yung', title: 'CEO Animoca' },
+  { name: 'Spike Lee', title: 'Academy Award Winner' },
+  { name: 'T.J. Miller', title: 'Comedian' },
 ];
 
 const DETAILED_TIMELINE = [
