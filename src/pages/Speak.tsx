@@ -341,7 +341,7 @@ export default function Speak() {
       <section style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '2rem',
           textAlign: 'center',
         }} className="speak-stats-grid">
@@ -927,7 +927,7 @@ export default function Speak() {
           opacity: 0.5;
         }
         @media (max-width: 768px) {
-          .speak-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .speak-stats-grid { grid-template-columns: repeat(3, 1fr) !important; }
           .speak-benefits-grid { grid-template-columns: 1fr !important; }
           .speak-pathways-grid { grid-template-columns: 1fr !important; }
           .speak-tracks-grid { grid-template-columns: 1fr !important; }
