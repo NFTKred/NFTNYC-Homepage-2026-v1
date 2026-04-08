@@ -34,7 +34,6 @@ const STATS = [
   { value: '205', label: 'Speaking slots' },
   { value: '6', label: 'Fireside chats' },
   { value: '9', label: 'Industry verticals' },
-  { value: '71', label: 'Days to apply' },
 ];
 
 const BENEFITS = [
