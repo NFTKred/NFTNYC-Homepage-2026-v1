@@ -254,6 +254,7 @@ export default function Speak() {
     (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') || 'dark'
   );
   const stage = useMemo(() => Number(localStorage.getItem('nftnyc-stage') ?? 0), []);
+  const [showModal, setShowModal] = useState(false);
 
   if (!SHOW_SPEAK_PAGE) return <Navigate to="/" replace />;
 
@@ -305,16 +306,14 @@ export default function Speak() {
           Times Square, New York City · 1–3 September 2026
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a
-            href={SESSIONIZE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setShowModal(true)}
             style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }}
             onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
             onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
           >
             Submit to speak
-          </a>
+          </button>
           <button
             onClick={() => document.getElementById('tracks')?.scrollIntoView({ behavior: 'smooth' })}
             style={{
@@ -747,17 +746,118 @@ export default function Speak() {
         }}>
           Submissions are reviewed on a rolling basis. Early applications receive priority consideration.
         </p>
-        <a
-          href={SESSIONIZE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => setShowModal(true)}
           style={{ ...ctaGradientStyle, padding: '16px 44px', fontSize: '18px' }}
           onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
           onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
         >
           Submit to speak
-        </a>
+        </button>
       </section>
+
+      {/* ─── SUBMISSION FLOW MODAL ─── */}
+      {showModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px',
+          }}
+          onClick={() => setShowModal(false)}
+        >
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} />
+          <div
+            style={{
+              position: 'relative',
+              background: 'var(--color-bg)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '20px',
+              padding: '48px 40px 40px',
+              maxWidth: '520px',
+              width: '100%',
+              textAlign: 'center',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'none',
+                border: 'none',
+                color: 'rgb(149, 149, 176)',
+                fontSize: '24px',
+                cursor: 'pointer',
+                lineHeight: 1,
+                padding: '4px',
+              }}
+            >{'\u00d7'}</button>
+
+            <p style={{ ...sectionLabel, marginBottom: '0.5rem' }}>Speaker submission flow</p>
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(22px, 3vw, 28px)',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              color: 'var(--color-text)',
+              marginBottom: '2rem',
+            }}>
+              How it <span style={rainbowText}>works</span>
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left', marginBottom: '2.5rem' }}>
+              {[
+                { step: '1', title: 'Share your topic', color: '#10B981' },
+                { step: '2', title: 'Record a short video', color: '#06B6D4' },
+                { step: '3', title: 'Complete your submission', color: '#8B5CF6' },
+                { step: '4', title: 'Community votes', color: '#F59E0B' },
+              ].map(s => (
+                <div key={s.step} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <span style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: `${s.color}1A`,
+                    border: `2px solid ${s.color}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '16px',
+                    fontWeight: 900,
+                    color: s.color,
+                    flexShrink: 0,
+                  }}>{s.step}</span>
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    color: 'var(--color-text)',
+                  }}>{s.title}</span>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href={SESSIONIZE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ ...ctaGradientStyle, padding: '14px 40px', fontSize: '16px' }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+            >
+              Submit now
+            </a>
+          </div>
+        </div>
+      )}
 
       <SiteFooter />
 
