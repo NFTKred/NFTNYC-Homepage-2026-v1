@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey to NFT.NYC 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#00e5a0;--cyan:#00b4d8;--orange:#ff6b35;--yellow:#ffd600;
+  --purple:#8b5cf6;--pink:#ec4899;--red:#ef4444;
+  --dark:#080c14;--card:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);
+  --text:#e2e8f0;--muted:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;background:var(--dark);color:var(--text);
+  line-height:1.6;font-weight:400;overflow-x:hidden;
+}
+h1,h2,h3,h4,h5,h6,.orbitron{font-family:'Orbitron',sans-serif}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+a{color:var(--teal);text-decoration:none}
+
+/* ── Utility ── */
+.section{padding:100px 0}
+.section-label{
+  font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:3px;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:12px;
+}
+.section-heading{
+  font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:700;margin-bottom:16px;
+}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:640px;margin:0 auto 48px;text-align:center}
+
+/* ── Fade-in on scroll ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ══════════════════════════════════════
+   HERO
+   ══════════════════════════════════════ */
+#hero{
+  min-height:50vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;padding:80px 0 40px;
+}
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 55%,rgba(139,92,246,.12) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 35% at 55% 50%,rgba(236,72,153,.10) 0%,transparent 70%);
+  animation:heroGlow 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlow{
+  0%{opacity:.8;transform:scale(1)}
+  100%{opacity:1;transform:scale(1.05)}
+}
+.hero-inner{position:relative;z-index:1;max-width:780px;padding:0 24px}
+.hero-inner h1{
+  font-size:clamp(2.2rem,6vw,3.8rem);font-weight:900;
+  letter-spacing:2px;line-height:1.1;margin-bottom:16px;
+  background:linear-gradient(135deg,#fff 30%,var(--purple),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-inner .sub{
+  font-family:'Orbitron',sans-serif;font-size:clamp(.7rem,1.8vw,1rem);
+  letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;
+}
+.hero-inner .desc{
+  color:var(--muted);font-size:1.05rem;line-height:1.75;max-width:600px;margin:0 auto;
+}
+
+/* ══════════════════════════════════════
+   RACE TRACK — S-CURVE VISUALIZATION
+   (Identical structure to the template)
+   ══════════════════════════════════════ */
+.track-wrapper{position:relative;max-width:1100px;margin:0 auto}
+.track{position:relative;padding:0}
+
+/* SVG Track Layer */
+.track-svg{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;
+}
+
+/* Water shimmer animation */
+.water-shimmer{animation:shimmer 4s ease-in-out infinite}
+@keyframes shimmer{0%,100%{opacity:0.06}50%{opacity:0.18}}
+.water-shimmer2{animation:shimmer2 5.5s ease-in-out infinite}
+@keyframes shimmer2{0%,100%{opacity:0.1}50%{opacity:0.03}}
+.water-flow{animation:waterFlow 6s linear infinite}
+@keyframes waterFlow{to{stroke-dashoffset:-200}}
+
+/* Outer glow breathing (sewer green) */
+.track-glow{animation:trackPulse 4s ease-in-out infinite}
+@keyframes trackPulse{0%,100%{opacity:0.15}50%{opacity:0.3}}
+
+/* Vertical pulse moving down the track */
+.track-pulse-dot{animation:pulseMove 20s ease-in-out infinite}
+@keyframes pulseMove{
+  0%{offset-distance:0%;opacity:0}
+  5%{opacity:1}
+  90%{opacity:1}
+  100%{offset-distance:100%;opacity:0}
+}
+
+/* Zone cards container */
+.track-zones{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;gap:32px;padding:20px 0;
+}
+
+.zone{
+  position:relative;padding:24px 28px;
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  display:grid;grid-template-columns:1fr 140px;gap:20px;align-items:center;
+  transition:border-color 0.3s;width:52%;
+}
+.zone:hover{border-color:rgba(0,229,160,0.3)}
+
+/* Alternating sides */
+.zone:nth-child(odd){align-self:flex-start;margin-left:3%}
+.zone:nth-child(even){align-self:flex-end;margin-right:3%}
+
+/* Zone marker (checkpoint on track) */
+.zone-marker{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;border:3px solid;background:var(--dark);z-index:3;
+}
+.zone:nth-child(odd) .zone-marker{right:-36px;left:auto}
+.zone:nth-child(even) .zone-marker{left:-36px}
+
+/* Zone colors — 10 zones */
+.zone:nth-child(1) .zone-marker{border-color:var(--purple);box-shadow:0 0 24px rgba(139,92,246,0.4)}
+.zone:nth-child(2) .zone-marker{border-color:var(--cyan);box-shadow:0 0 24px rgba(0,180,216,0.4)}
+.zone:nth-child(3) .zone-marker{border-color:var(--pink);box-shadow:0 0 24px rgba(236,72,153,0.4)}
+.zone:nth-child(4) .zone-marker{border-color:var(--orange);box-shadow:0 0 24px rgba(255,107,53,0.4)}
+.zone:nth-child(5) .zone-marker{border-color:var(--teal);box-shadow:0 0 24px rgba(0,229,160,0.4)}
+.zone:nth-child(6) .zone-marker{border-color:var(--yellow);box-shadow:0 0 24px rgba(255,214,0,0.4)}
+.zone:nth-child(7) .zone-marker{border-color:var(--pink);box-shadow:0 0 24px rgba(236,72,153,0.4)}
+.zone:nth-child(8) .zone-marker{border-color:var(--purple);box-shadow:0 0 24px rgba(139,92,246,0.4)}
+.zone:nth-child(9) .zone-marker{border-color:var(--teal);box-shadow:0 0 24px rgba(0,229,160,0.4)}
+.zone:nth-child(10) .zone-marker{border-color:var(--cyan);box-shadow:0 0 24px rgba(0,180,216,0.4)}
+.zone:nth-child(11) .zone-marker{border-color:var(--orange);box-shadow:0 0 24px rgba(255,107,53,0.4)}
+
+.zone-body h4{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;margin-bottom:2px}
+.zone-body .zone-name{
+  font-size:11px;font-weight:600;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:8px;
+}
+.zone:nth-child(1) .zone-name{color:var(--purple)}
+.zone:nth-child(2) .zone-name{color:var(--cyan)}
+.zone:nth-child(3) .zone-name{color:var(--pink)}
+.zone:nth-child(4) .zone-name{color:var(--orange)}
+.zone:nth-child(5) .zone-name{color:var(--teal)}
+.zone:nth-child(6) .zone-name{color:var(--yellow)}
+.zone:nth-child(7) .zone-name{color:var(--pink)}
+.zone:nth-child(8) .zone-name{color:var(--purple)}
+.zone:nth-child(9) .zone-name{color:var(--teal)}
+.zone:nth-child(10) .zone-name{color:var(--cyan)}
+.zone:nth-child(11) .zone-name{color:var(--orange)}
+
+.zone-body p{font-size:13px;color:#94a3b8;line-height:1.6;margin-bottom:8px}
+
+.zone-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px}
+.tag.nft{background:rgba(0,229,160,0.1);color:var(--teal);border:1px solid rgba(0,229,160,0.2)}
+.tag.powered{background:rgba(255,255,255,0.03);color:#475569;border:1px solid rgba(255,255,255,0.06);font-style:italic}
+
+/* Phase badge inside zone card */
+.zone-phase{
+  font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:6px;
+}
+.zone-phase.purple{background:rgba(139,92,246,0.12);color:var(--purple);border:1px solid rgba(139,92,246,0.25)}
+.zone-phase.pink{background:rgba(236,72,153,0.12);color:var(--pink);border:1px solid rgba(236,72,153,0.25)}
+.zone-phase.teal{background:rgba(0,229,160,0.12);color:var(--teal);border:1px solid rgba(0,229,160,0.25)}
+
+/* Engagement meter */
+.zone-metric{text-align:right}
+.zone-metric .val{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:800;color:#fff}
+.zone-metric .lbl{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:1px}
+.zone-metric .meter{margin-top:6px;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;width:100%}
+.zone-metric .meter-fill{height:100%;border-radius:3px;transition:width 0.6s ease}
+
+.zone:nth-child(1) .meter-fill{width:0%;background:var(--purple)}
+.zone:nth-child(2) .meter-fill{width:9%;background:var(--cyan)}
+.zone:nth-child(3) .meter-fill{width:18%;background:var(--pink)}
+.zone:nth-child(4) .meter-fill{width:27%;background:var(--orange)}
+.zone:nth-child(5) .meter-fill{width:36%;background:var(--teal)}
+.zone:nth-child(6) .meter-fill{width:45%;background:var(--yellow)}
+.zone:nth-child(7) .meter-fill{width:55%;background:var(--pink)}
+.zone:nth-child(8) .meter-fill{width:64%;background:var(--purple)}
+.zone:nth-child(9) .meter-fill{width:73%;background:var(--teal)}
+.zone:nth-child(10) .meter-fill{width:82%;background:var(--cyan)}
+.zone:nth-child(11) .meter-fill{width:91%;background:var(--orange)}
+
+/* Finish line */
+.finish-line{
+  position:relative;margin-top:16px;padding:24px 28px;
+  background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(236,72,153,0.08));
+  border:1px solid rgba(139,92,246,0.2);border-radius:16px;
+  text-align:center;width:70%;margin-left:auto;margin-right:auto;z-index:2;
+}
+.finish-line .finish-marker{
+  position:absolute;left:50%;top:-24px;transform:translateX(-50%);
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;border:3px solid var(--purple);background:var(--dark);
+  box-shadow:0 0 30px rgba(139,92,246,0.5);z-index:3;
+}
+.finish-line .finish-metric{
+  font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:2px;margin-top:12px;
+}
+.finish-line p{
+  font-family:'Orbitron',sans-serif;font-size:13px;color:var(--purple);
+  font-weight:600;letter-spacing:1px;
+}
+.finish-line .loop-text{
+  font-family:'Inter',sans-serif;font-size:12px;color:#64748b;
+  margin-top:4px;font-style:italic;letter-spacing:0;
+}
+
+.track-note{text-align:center;margin-top:36px;color:var(--muted);font-size:.92rem;max-width:640px;margin-left:auto;margin-right:auto}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media(max-width:900px){
+  .zone{width:70%!important}
+  .zone:nth-child(odd){margin-left:2%}
+  .zone:nth-child(even){margin-right:2%}
+}
+@media(max-width:600px){
+  .section{padding:64px 0}
+  .zone{width:90%!important;grid-template-columns:1fr!important}
+  .zone:nth-child(odd),.zone:nth-child(even){align-self:center;margin-left:auto;margin-right:auto}
+  .zone-marker{display:none}
+  .zone-metric{text-align:left;margin-top:8px}
+  .finish-line{width:90%}
+  .track-svg{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     HERO
+     ════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-inner">
+    <h1>Journey to NFT.NYC 2026</h1>
+    <p class="sub">The roadmap from 2025 wrap up to NFT.NYC 2026</p>
+    <p class="desc">From the Times Square Billboard Challenge through new platform features, each milestone brings the community closer to NFT.NYC 2026.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     THE JOURNEY TRACK
+     ════════════════════════════════════ -->
+<section class="section reveal">
+  <div class="container" style="text-align:center">
+    <p class="section-label">The Journey</p>
+    <h2 class="section-heading">Your roadmap to NFT.NYC 2026</h2>
+    <p class="section-sub">Eleven milestones. One destination.</p>
+
+    <div class="track-wrapper">
+      <div class="track">
+
+        <!-- SVG Track Layer — populated by JS -->
+        <svg class="track-svg" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="trackGlow" x="-30%" y="-5%" width="160%" height="110%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+            </filter>
+            <filter id="pulseGlow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+            </filter>
+            <filter id="innerShadow" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="shadow"/>
+              <feOffset dx="0" dy="0"/>
+              <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feFlood flood-color="#000" flood-opacity="0.6"/>
+              <feComposite in2="SourceGraphic" operator="in"/>
+              <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+
+            <!-- Brick pattern — offset rows for realism -->
+            <pattern id="brickPattern" x="0" y="0" width="16" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+              <rect width="16" height="8" fill="#3a2a1e"/>
+              <!-- Row 1 -->
+              <rect x="0.5" y="0.5" width="7" height="3" rx="0.3" fill="#5c4030"/>
+              <rect x="8.5" y="0.5" width="7" height="3" rx="0.3" fill="#4d3528"/>
+              <!-- Row 2 offset -->
+              <rect x="4.5" y="4.5" width="7" height="3" rx="0.3" fill="#4d3528"/>
+              <rect x="12.5" y="4.5" width="3" height="3" rx="0.3" fill="#5c4030"/>
+              <rect x="0" y="4.5" width="3.5" height="3" rx="0.3" fill="#5c4030"/>
+              <!-- Mortar lines (grout) -->
+              <line x1="0" y1="4" x2="16" y2="4" stroke="#2a1c12" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="8" y2="4" stroke="#2a1c12" stroke-width="0.6"/>
+              <line x1="4" y1="4" x2="4" y2="8" stroke="#2a1c12" stroke-width="0.6"/>
+              <line x1="12" y1="4" x2="12" y2="8" stroke="#2a1c12" stroke-width="0.6"/>
+            </pattern>
+
+            <!-- 3D arch shading — dark on edges, lighter in the center to fake curvature -->
+            <linearGradient id="tunnelArch" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+              <stop offset="0%" stop-color="#000" stop-opacity="0.7"/>
+              <stop offset="20%" stop-color="#000" stop-opacity="0.2"/>
+              <stop offset="40%" stop-color="#fff" stop-opacity="0.05"/>
+              <stop offset="50%" stop-color="#fff" stop-opacity="0.08"/>
+              <stop offset="60%" stop-color="#fff" stop-opacity="0.05"/>
+              <stop offset="80%" stop-color="#000" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="#000" stop-opacity="0.7"/>
+            </linearGradient>
+
+            <!-- Sewer water — murky green, slightly translucent -->
+            <linearGradient id="sewerWater" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+              <stop offset="0%" stop-color="#1a2e1a" stop-opacity="0"/>
+              <stop offset="25%" stop-color="#1e3a20" stop-opacity="0.5"/>
+              <stop offset="50%" stop-color="#2d5a35" stop-opacity="0.8">
+                <animate attributeName="stop-color" values="#2d5a35;#3a6b40;#2d5a35" dur="3s" repeatCount="indefinite"/>
+              </stop>
+              <stop offset="75%" stop-color="#1e3a20" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#1a2e1a" stop-opacity="0"/>
+            </linearGradient>
+
+            <!-- Moss/slime on the walls -->
+            <linearGradient id="mossGrad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+              <stop offset="0%" stop-color="#2a4a20" stop-opacity="0.4"/>
+              <stop offset="15%" stop-color="#3a5a2a" stop-opacity="0.15"/>
+              <stop offset="50%" stop-color="#3a5a2a" stop-opacity="0"/>
+              <stop offset="85%" stop-color="#3a5a2a" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#2a4a20" stop-opacity="0.4"/>
+            </linearGradient>
+          </defs>
+
+          <!-- L1: Dim green ambient glow around tunnel -->
+          <path class="track-path track-glow" fill="none" stroke="#2a5a30" stroke-width="70" stroke-linecap="round" filter="url(#trackGlow)" d=""/>
+          <!-- L2: Outer pipe rim — dark iron ring -->
+          <path class="track-path" fill="none" stroke="#1a1210" stroke-width="56" stroke-linecap="round" d=""/>
+          <!-- L3: Brick wall layer -->
+          <path class="track-path" fill="none" stroke="url(#brickPattern)" stroke-width="50" stroke-linecap="round" d=""/>
+          <!-- L4: Moss/slime on brick edges -->
+          <path class="track-path" fill="none" stroke="url(#mossGrad)" stroke-width="50" stroke-linecap="round" d=""/>
+          <!-- L5: 3D arch shading overlay — fakes the curvature -->
+          <path class="track-path" fill="none" stroke="url(#tunnelArch)" stroke-width="50" stroke-linecap="round" d=""/>
+          <!-- L6: Inner tunnel void (dark opening) -->
+          <path class="track-path" fill="none" stroke="#0a0c08" stroke-width="28" stroke-linecap="round" d=""/>
+          <!-- L7: Sewer water base (murky green stream) -->
+          <path class="track-path" fill="none" stroke="#1a3020" stroke-width="22" stroke-linecap="round" d=""/>
+          <!-- L8: Water body — darker green with shimmer -->
+          <path class="track-path water-shimmer" fill="none" stroke="#2d6838" stroke-width="16" stroke-linecap="round" opacity="0.4" d=""/>
+          <!-- L9: Water surface — lighter center reflection -->
+          <path class="track-path water-shimmer2" fill="none" stroke="#4a9a55" stroke-width="6" stroke-linecap="round" opacity="0.12" d=""/>
+          <!-- L10: Specular highlight — thin bright line on water surface -->
+          <path class="track-path water-shimmer" fill="none" stroke="rgba(140,220,150,0.15)" stroke-width="2" stroke-linecap="round" d=""/>
+          <!-- L11: Slow-flowing surface current (long soft dashes, barely visible) -->
+          <path class="track-path water-flow" fill="none" stroke="rgba(100,200,120,0.08)" stroke-width="8" stroke-dasharray="80 120" stroke-linecap="round" d=""/>
+          <!-- L12: Inner pipe rim highlight (top light reflection) -->
+          <path class="track-path" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="30" stroke-linecap="round" d=""/>
+
+          <!-- Relay the rat — moving through the tunnel -->
+          <circle class="track-pulse-dot relay-glow" r="30" fill="#2a5a30" filter="url(#pulseGlow)" opacity="0.4"/>
+          <g class="track-pulse-dot relay-rat">
+            <defs><clipPath id="relayClip"><circle cx="0" cy="0" r="26"/></clipPath></defs>
+            <image href="relay.jpg" width="52" height="52" x="-26" y="-26" clip-path="url(#relayClip)"/>
+            <circle cx="0" cy="0" r="26" fill="none" stroke="rgba(60,140,70,0.5)" stroke-width="2"/>
+          </g>
+          <!-- Checkpoint glow circles -->
+          <g class="checkpoint-glows"></g>
+        </svg>
+
+        <div class="track-zones">
+
+          <!-- ZONE 1: TS CHALLENGE -->
+          <div class="zone">
+            <div class="zone-marker">&#127963;</div>
+            <div class="zone-body">
+              <h4>1. TS Challenge</h4>
+              <div class="zone-name">&#128161; Billboard showcase</div>
+              <p>NFT.NYC 2025 Community Artist Showcase art transformed into limited edition Times Square art. Artists featured on the world's most iconic screens.</p>
+              <div class="zone-tags">
+                <span class="tag nft">TS Billboard Art</span>
+                <span class="tag nft">Community Showcase</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">0%</div>
+              <div class="lbl">Starting Line</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 2: POE -->
+          <div class="zone">
+            <div class="zone-marker">&#128220;</div>
+            <div class="zone-body">
+              <h4>2. POE</h4>
+              <div class="zone-name">&#127915; On-chain certificate</div>
+              <p>Artists receive official NFT certificates recognizing their participation in the Times Square Billboard showcase.</p>
+              <div class="zone-tags">
+                <span class="tag nft">NFT Certificate</span>
+                <span class="tag nft">Proof of Exhibition</span>
+                <span class="tag powered">powered by .Kred</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">9%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 3: TS ART -->
+          <div class="zone">
+            <div class="zone-marker">&#127912;</div>
+            <div class="zone-body">
+              <h4>3. TS Art</h4>
+              <div class="zone-name">&#127912; Limited edition art</div>
+              <p>Limited edition art created from the NFT.NYC 2025 Community Artist Showcase submissions. Collectible digital art that captures the Times Square billboard moment.</p>
+              <div class="zone-tags">
+                <span class="tag nft">TS Art</span>
+                <span class="tag nft">Collectible Art</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">18%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 4: GIFTS -->
+          <div class="zone">
+            <div class="zone-marker">&#127873;</div>
+            <div class="zone-body">
+              <h4>4. Gifts</h4>
+              <div class="zone-name">&#127873; NFT gifting</div>
+              <p>Send and receive NFT Gifts to build connections across the community. Every gift is a collectible that strengthens your network.</p>
+              <div class="zone-tags">
+                <span class="tag nft">NFT Gifts</span>
+                <span class="tag nft">Community</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">27%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 5: GIFT STUDIO -->
+          <div class="zone">
+            <div class="zone-marker">&#9881;</div>
+            <div class="zone-body">
+              <h4>5. Gift Studio</h4>
+              <div class="zone-name">&#9881; Create &amp; customize</div>
+              <p>Create unique NFT gifts in the Gift Studio &mdash; including limited-edition templates featuring Times Square billboard artwork. New templates unlock as billboards rotate.</p>
+              <div class="zone-tags">
+                <span class="tag nft">Gift Studio</span>
+                <span class="tag nft">Custom NFTs</span>
+                <span class="tag powered">powered by GiftStudio.Kred</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">36%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 6: T-XP AND T-KR -->
+          <div class="zone">
+            <div class="zone-marker">&#9889;</div>
+            <div class="zone-body">
+              <h4>6. T-XP and T-Kr</h4>
+              <div class="zone-name">&#9889; Earn &amp; engage</div>
+              <p>T-XP: off-chain experience points earned through daily engagement and TS Challenge actions. T-Kr: on-chain community kredits used in the OneHub ecosystem.</p>
+              <div class="zone-tags">
+                <span class="tag nft">T-XP Points</span>
+                <span class="tag nft">T-Kr Kredits</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">45%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 7: REMIX -->
+          <div class="zone">
+            <div class="zone-marker">&#128256;</div>
+            <div class="zone-body">
+              <h4>7. Remix</h4>
+              <div class="zone-name">&#127912; Creative remixing</div>
+              <p>Earn when collectors reimagine your artwork using Remix. A new creative economy where every derivative generates value for the original artist.</p>
+              <div class="zone-tags">
+                <span class="tag nft">Remix NFTs</span>
+                <span class="tag nft">Artist Royalties</span>
+                <span class="tag powered">powered by OneHub</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">55%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 8: SPEAKER SUBMISSIONS -->
+          <div class="zone">
+            <div class="zone-marker">&#127908;</div>
+            <div class="zone-body">
+              <h4>8. NFT.NYC 2026 speaker submissions</h4>
+              <div class="zone-name">&#127908; Call for speakers</div>
+              <p>Submit your talk for NFT.NYC 2026. Share your expertise with the community at the biggest NFT event of the year in Times Square.</p>
+              <div class="zone-tags">
+                <span class="tag nft">Speaker Applications</span>
+                <span class="tag nft">NFT.NYC 2026</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">64%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 9: ART SUBMISSIONS -->
+          <div class="zone">
+            <div class="zone-marker">&#127961;</div>
+            <div class="zone-body">
+              <h4>9. NFT.NYC 2026 art submissions</h4>
+              <div class="zone-name">&#127961; Community showcase</div>
+              <p>Applications for the NFT.NYC 2026 Community Artist Showcase open. Submit your art for the next Times Square Billboard experience.</p>
+              <div class="zone-tags">
+                <span class="tag nft">Art Submission</span>
+                <span class="tag nft">TS Billboard 2026</span>
+                <span class="tag powered">NFT.NYC 2026</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">73%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 10: NEW FEATURES ON ONEHUB -->
+          <div class="zone">
+            <div class="zone-marker">&#128736;</div>
+            <div class="zone-body">
+              <h4>10. New features on OneHub</h4>
+              <div class="zone-name">&#128736; Platform upgrades</div>
+              <p>Updates for listing, minting, and sharing. Streamlined workflows for artists and collectors to create, trade, and showcase digital art.</p>
+              <div class="zone-tags">
+                <span class="tag nft">Minting Tools</span>
+                <span class="tag nft">Listing Updates</span>
+                <span class="tag powered">powered by OneHub</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">82%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+          <!-- ZONE 11: NFT AWARDS -->
+          <div class="zone">
+            <div class="zone-marker">&#127942;</div>
+            <div class="zone-body">
+              <h4>11. NFT Awards</h4>
+              <div class="zone-name">&#11088; Recognition</div>
+              <p>Recognizing achievements across revenue, creativity, community building, and growth. Celebrate top contributors in the NFT ecosystem.</p>
+              <div class="zone-tags">
+                <span class="tag nft">NFT Awards</span>
+                <span class="tag nft">Community Recognition</span>
+                <span class="tag powered">powered by Score.Kred</span>
+              </div>
+            </div>
+            <div class="zone-metric">
+              <div class="val">91%</div>
+              <div class="lbl">Track Progress</div>
+              <div class="meter"><div class="meter-fill"></div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FINISH / DESTINATION -->
+        <div class="finish-line">
+          <div class="finish-marker">&#128509;</div>
+          <div class="finish-metric">NFT.NYC 2026</div>
+          <p>&#127937; New York City &mdash; See You There &#127937;</p>
+          <div class="loop-text">From the TS Challenge through Gifts, Remix, and NFT Awards &mdash; every milestone leads to the biggest NFT event of the year.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="track-note">Each milestone builds on the last. From the TS Challenge and Proof of Exhibition through Gifts, Remix, and new platform features to NFT.NYC 2026, the community grows stronger at every step.</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<section class="section" style="padding:60px 0;text-align:center">
+  <div class="container">
+    <p style="font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase">
+      NFT.NYC 2026 — September 1–3 — Times Square NYC
+    </p>
+    <p style="font-size:.8rem;color:rgba(255,255,255,0.2);margin-top:12px">Journey to NFT.NYC 2026 — v7</p>
+  </div>
+</section>
+
+<script>
+/* ── Reveal on scroll ── */
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.12 });
+reveals.forEach(el => revealObserver.observe(el));
+
+/* ══════════════════════════════════════
+   S-CURVE RACE TRACK — SVG Generation
+   (Identical to template)
+   ══════════════════════════════════════ */
+function buildTrack() {
+  const trackEl = document.querySelector('.track');
+  const zones = document.querySelectorAll('.track-zones .zone');
+  const finishEl = document.querySelector('.finish-line');
+  const svgEl = document.querySelector('.track-svg');
+  const checkpointGroup = document.querySelector('.checkpoint-glows');
+
+  if (!trackEl || !svgEl || zones.length === 0) return;
+
+  const totalW = trackEl.offsetWidth;
+  const totalH = trackEl.offsetHeight;
+
+  // Set SVG viewBox
+  svgEl.setAttribute('viewBox', `0 0 ${totalW} ${totalH}`);
+
+  // Compute waypoints through each zone
+  const points = [];
+  const zoneColors = ['#8b5cf6','#00b4d8','#ec4899','#ff6b35','#00e5a0','#ffd600','#ec4899','#8b5cf6','#00e5a0','#00b4d8','#ff6b35'];
+
+  zones.forEach((z, i) => {
+    const rect = z.getBoundingClientRect();
+    const trackRect = trackEl.getBoundingClientRect();
+    const y = (rect.top - trackRect.top) + rect.height / 2;
+    let x;
+    if (i % 2 === 0) {
+      // Odd child zones (left-aligned): track passes on the right
+      x = (rect.left - trackRect.left) + rect.width + 56;
+    } else {
+      // Even child zones (right-aligned): track passes on the left
+      x = (rect.left - trackRect.left) - 56;
+    }
+    // Clamp x within reasonable bounds
+    x = Math.max(80, Math.min(totalW - 80, x));
+    points.push({ x, y, color: zoneColors[i] || '#00e5a0' });
+  });
+
+  // Add finish line point (center)
+  if (finishEl) {
+    const finishRect = finishEl.getBoundingClientRect();
+    const trackRect = trackEl.getBoundingClientRect();
+    const finishY = (finishRect.top - trackRect.top) + finishRect.height / 2;
+    points.push({ x: totalW / 2, y: finishY, color: '#8b5cf6' });
+  }
+
+  // Build SVG path with smooth S-curves using cubic Beziers
+  const startX = totalW / 2;
+  const startY = 0;
+  let d = `M ${startX},${startY}`;
+
+  // First segment: start to first zone
+  if (points.length > 0) {
+    const first = points[0];
+    const midY0 = (startY + first.y) / 2;
+    d += ` C ${startX},${midY0} ${first.x},${midY0} ${first.x},${first.y}`;
+  }
+
+  // Remaining segments
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const pt = points[i];
+    const midY = (prev.y + pt.y) / 2;
+    d += ` C ${prev.x},${midY} ${pt.x},${midY} ${pt.x},${pt.y}`;
+  }
+
+  // Apply path to all track layers
+  document.querySelectorAll('.track-path').forEach(p => {
+    p.setAttribute('d', d);
+  });
+
+  // Position all moving elements (Relay + glow) along the path
+  const pulseDots = document.querySelectorAll('.track-pulse-dot');
+  const refPath = document.querySelectorAll('.track-path')[0];
+  if (refPath && pulseDots.length > 0) {
+    const pathD = refPath.getAttribute('d');
+    pulseDots.forEach(dot => {
+      dot.style.offsetPath = `path('${pathD}')`;
+      dot.style.offsetRotate = '0deg';
+    });
+  }
+
+  // Clear existing checkpoint glows
+  checkpointGroup.innerHTML = '';
+
+  // Create checkpoint glow circles at each zone waypoint
+  const ns = 'http://www.w3.org/2000/svg';
+  points.forEach((pt, i) => {
+    if (i >= zoneColors.length) return;
+
+    // Outer pulsing ring
+    const ring = document.createElementNS(ns, 'circle');
+    ring.setAttribute('cx', pt.x);
+    ring.setAttribute('cy', pt.y);
+    ring.setAttribute('r', '22');
+    ring.setAttribute('fill', 'none');
+    ring.setAttribute('stroke', pt.color);
+    ring.setAttribute('stroke-width', '2');
+    ring.setAttribute('opacity', '0.4');
+
+    const animR = document.createElementNS(ns, 'animate');
+    animR.setAttribute('attributeName', 'r');
+    animR.setAttribute('values', '22;32;22');
+    animR.setAttribute('dur', `${3 + i * 0.3}s`);
+    animR.setAttribute('repeatCount', 'indefinite');
+    ring.appendChild(animR);
+
+    const animO = document.createElementNS(ns, 'animate');
+    animO.setAttribute('attributeName', 'opacity');
+    animO.setAttribute('values', '0.4;0.1;0.4');
+    animO.setAttribute('dur', `${3 + i * 0.3}s`);
+    animO.setAttribute('repeatCount', 'indefinite');
+    ring.appendChild(animO);
+
+    checkpointGroup.appendChild(ring);
+
+    // Inner glow dot
+    const dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('cx', pt.x);
+    dot.setAttribute('cy', pt.y);
+    dot.setAttribute('r', '6');
+    dot.setAttribute('fill', pt.color);
+    dot.setAttribute('opacity', '0.6');
+    checkpointGroup.appendChild(dot);
+  });
+
+  // Finish line glow
+  if (points.length > zoneColors.length) {
+    const finishPt = points[points.length - 1];
+    const fRing = document.createElementNS(ns, 'circle');
+    fRing.setAttribute('cx', finishPt.x);
+    fRing.setAttribute('cy', finishPt.y);
+    fRing.setAttribute('r', '28');
+    fRing.setAttribute('fill', 'none');
+    fRing.setAttribute('stroke', '#8b5cf6');
+    fRing.setAttribute('stroke-width', '3');
+    fRing.setAttribute('opacity', '0.5');
+
+    const fAnimR = document.createElementNS(ns, 'animate');
+    fAnimR.setAttribute('attributeName', 'r');
+    fAnimR.setAttribute('values', '28;40;28');
+    fAnimR.setAttribute('dur', '2.5s');
+    fAnimR.setAttribute('repeatCount', 'indefinite');
+    fRing.appendChild(fAnimR);
+
+    const fAnimO = document.createElementNS(ns, 'animate');
+    fAnimO.setAttribute('attributeName', 'opacity');
+    fAnimO.setAttribute('values', '0.5;0.15;0.5');
+    fAnimO.setAttribute('dur', '2.5s');
+    fAnimO.setAttribute('repeatCount', 'indefinite');
+    fRing.appendChild(fAnimO);
+
+    checkpointGroup.appendChild(fRing);
+  }
+}
+
+// Build track after DOM is ready and layout has settled
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(buildTrack, 300);
+});
+
+// Rebuild on resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(buildTrack, 200);
+});
+</script>
+</body>
+</html>

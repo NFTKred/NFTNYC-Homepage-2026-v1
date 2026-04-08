@@ -9,6 +9,7 @@ import Speak from "./pages/Speak";
 import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
 import BlogTsChallenge from "./pages/BlogTsChallenge";
+import Journey from "./pages/Journey";
 import NotFound from "./pages/NotFound";
 import VerticalPage from "./pages/VerticalPage";
 import AdminLogin from "./pages/AdminLogin";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/blog" element={<Blogs />} />
           <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
           <Route path="/blog/ts-challenge" element={<BlogTsChallenge />} />
+          <Route path="/journey" element={<Journey />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/:verticalId" element={<VerticalPage />} />
