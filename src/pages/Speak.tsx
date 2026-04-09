@@ -433,7 +433,7 @@ export default function Speak() {
           Three pathways to the <span style={rainbowText}>stage</span>
         </h2>
         <p style={sectionSub}>
-          Every selected speaker receives a VIP speaker pass, an invitation to the opening party on September 1, and speaker cards — collectible credentials your audience can claim, verifiable on LinkedIn.
+          Every selected speaker receives a VIP speaker pass, an invitation to the opening party on September 1, and their own collectible NFT speaker cards for their audience to claim.
         </p>
         <div style={{
           display: 'grid',
