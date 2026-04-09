@@ -87,7 +87,7 @@ const PATHWAYS = [
     bullets: [
       'Submit with talk title, description, and industry vertical',
       'Provide a link to a video of you speaking',
-      'April 7 \u2013 June 16',
+      'April 8 \u2013 June 16',
     ],
     pill: 'Community + Editorial',
     color: '#8B5CF6',
@@ -155,8 +155,8 @@ const PAST_SPEAKERS = [
 ];
 
 const DETAILED_TIMELINE = [
-  { date: 'April 7', title: 'Applications open', desc: 'Submit your application at nft.nyc/speak. Videos published on a rolling basis. Community voting begins.', color: '#10B981' },
-  { date: 'April 7 \u2013 June 16', title: 'General application window', desc: 'Submit your talk title, description, industry vertical, and video link. Community votes accumulate. Pathway 1 outreach progresses in parallel.', color: '#06B6D4' },
+  { date: 'April 8', title: 'Applications open', desc: 'Submit your application at nft.nyc/speak. Videos published on a rolling basis. Community voting begins.', color: '#10B981' },
+  { date: 'April 8 \u2013 June 16', title: 'General application window', desc: 'Submit your talk title, description, industry vertical, and video link. Community votes accumulate. Pathway 1 outreach progresses in parallel.', color: '#06B6D4' },
   { date: 'June 16, 11:59 PM ET', title: 'General applications close', desc: 'Final review period begins. Team evaluates vote strength, video quality, industry diversity across all 9 verticals, and topic balance.', color: '#8B5CF6' },
   { date: 'June 17 \u2013 28', title: 'Late application window', desc: 'Extended submission period for GA ticket holders only. A second chance to apply after the general window closes.', color: '#F97316' },
   { date: 'July 2026', title: 'Selections announced', desc: 'Speakers selected and notified. Each speaker may appear in one accepted session (solo talk, panel, or product pitch).', color: '#EC4899' },
