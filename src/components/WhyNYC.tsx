@@ -12,7 +12,7 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
       <div style={{
         position: 'absolute',
         inset: 0,
-        backgroundImage: 'url(https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2021.jpeg)',
+        backgroundImage: 'url(https://f005.backblazeb2.com/file/PB-HubSpot/pastevents-2021.jpeg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
