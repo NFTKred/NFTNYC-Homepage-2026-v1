@@ -368,9 +368,9 @@ export default function Speak() {
           background: 'rgba(0, 0, 0, 0.75)',
           zIndex: 0,
         }} />
-        <p style={{ ...sectionLabel, paddingInline: '32px', position: 'relative', zIndex: 1 }}>You're in great company</p>
+        <p style={{ ...sectionLabel, paddingInline: '32px', position: 'relative', zIndex: 1 }}>Influential Voices from NFT.NYC</p>
         <h2 style={{ ...sectionHeading, paddingInline: '32px', marginBottom: '3rem', position: 'relative', zIndex: 1 }}>
-          <span style={rainbowText}>Past speakers</span>
+          <span style={rainbowText}>12 Notable Past Speakers</span>
         </h2>
         <div className="speak-marquee-wrap" style={{ position: 'relative', zIndex: 1 }}>
           <div className="speak-marquee-track">

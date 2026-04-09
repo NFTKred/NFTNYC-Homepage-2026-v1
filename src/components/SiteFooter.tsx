@@ -1,26 +1,73 @@
-import { useEffect, useRef } from 'react';
-import { FEED_POSTS } from '@/data/nftnyc';
+import { useEffect, useRef, useState } from 'react';
+import { ECOSYSTEMS } from '@/data/nftnyc';
+import { VERTICAL_RESOURCES } from '@/data/verticalResources';
+import { supabase } from '@/lib/supabase';
 
-function buildFeedHTML(): string {
-  return FEED_POSTS.map(p => `
-    <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem 1.25rem;background:var(--color-surface);border:1px solid var(--card-border);border-radius:0.75rem;flex-shrink:0;">
+interface FeedItem {
+  title: string;
+  url: string;
+  color: string;
+  vertical: string;
+}
+
+const ECO_MAP = Object.fromEntries(ECOSYSTEMS.map(e => [e.id, { name: e.name, color: e.color }]));
+
+function getStaticFeedItems(): FeedItem[] {
+  const items: FeedItem[] = [];
+  for (const [vid, resources] of Object.entries(VERTICAL_RESOURCES)) {
+    const eco = ECO_MAP[vid];
+    if (!eco) continue;
+    for (const r of resources) {
+      items.push({ title: r.title, url: r.url, color: eco.color, vertical: eco.name });
+    }
+  }
+  return items.sort((a, b) => b.title.localeCompare(a.title)).slice(0, 20);
+}
+
+function buildFeedHTML(items: FeedItem[]): string {
+  return items.map(p => `
+    <a href="${p.url}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 1rem;background:var(--color-surface);border:1px solid var(--card-border);border-radius:0.75rem;flex-shrink:0;text-decoration:none;transition:border-color 150ms ease;">
       <span style="width:8px;height:8px;border-radius:9999px;background:${p.color};flex-shrink:0;animation:feedDotPulse 3s ease-in-out infinite;"></span>
-      <span style="font-family:var(--font-body);font-size:var(--text-sm);font-weight:500;color:var(--color-text);letter-spacing:-0.01em;">${p.title}</span>
-    </div>
+      <span style="flex:1;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--color-text);letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.title.replace(/'/g, '&#39;')}</span>
+      <span style="font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${p.color};background:${p.color}1A;padding:2px 6px;border-radius:4px;flex-shrink:0;white-space:nowrap;">${p.vertical.replace(/'/g, '&#39;')}</span>
+    </a>
   `).join('');
 }
 
 export default function SiteFooter({ stage = 0 }: { stage?: number }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [feedItems, setFeedItems] = useState<FeedItem[]>(getStaticFeedItems);
+
+  // Fetch from Supabase, fall back to static
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from('resources')
+          .select('title, url, vertical_id')
+          .eq('status', 'approved')
+          .order('date', { ascending: false })
+          .limit(30);
+        if (!error && data && data.length > 0) {
+          setFeedItems(data.map(r => ({
+            title: r.title,
+            url: r.url,
+            color: ECO_MAP[r.vertical_id]?.color ?? '#3B82F6',
+            vertical: ECO_MAP[r.vertical_id]?.name ?? r.vertical_id,
+          })));
+        }
+      } catch { /* keep static fallback */ }
+    })();
+  }, []);
 
   useEffect(() => {
-    if (trackRef.current) {
-      const items = buildFeedHTML();
-      trackRef.current.innerHTML = items + items;
-      const duration = `${FEED_POSTS.length * 2}s`;
+    if (trackRef.current && feedItems.length > 0) {
+      const html = buildFeedHTML(feedItems);
+      trackRef.current.innerHTML = html + html;
+      const duration = `${Math.max(feedItems.length * 2, 14)}s`;
       trackRef.current.parentElement?.style.setProperty('--feed-duration', duration);
     }
-  }, []);
+  }, [feedItems]);
 
   const socialLinks = [
     {
