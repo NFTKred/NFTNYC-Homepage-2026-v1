@@ -66,7 +66,7 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
           marginInline: 'auto',
           marginBottom: '2rem',
         }}>
-          The <strong style={{ color: '#fff' }}>TS Billboard Challenge</strong> turns that visibility into opportunity - artists showcase on Times Square billboards, collectors purchase derivatives, and creators earn XP and USDC rewards.
+          The <strong style={{ color: '#fff' }}>TS Billboard Challenge</strong> turns that visibility into opportunity - artists showcase on Times Square billboards, collectors purchase derivatives, and creators receive XP and USDC rewards.
         </p>
 
         {/* CTAs */}

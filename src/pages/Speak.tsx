@@ -140,18 +140,18 @@ const CHECKLIST = [
 ];
 
 const PAST_SPEAKERS = [
-  { name: 'Alexis Ohanian', title: 'Founder Reddit' },
-  { name: 'David Pakman', title: 'CoinFund Managing Partner' },
-  { name: 'Devin Finzer', title: 'CEO OpenSea' },
-  { name: 'Gary Vaynerchuk', title: 'Founder Veefriends' },
-  { name: 'Jimmy Wales', title: 'Founder Wikipedia' },
-  { name: 'John Kosner', title: 'ESPN Sports Media Veteran' },
-  { name: 'Kimbal Musk', title: 'Businessman' },
-  { name: 'Michael Casey', title: 'CEO & Co-Founder Tell Network' },
-  { name: 'Quentin Tarantino', title: 'Golden Globe Winner' },
-  { name: 'Robby Yung', title: 'CEO Animoca' },
-  { name: 'Spike Lee', title: 'Academy Award Winner' },
-  { name: 'T.J. Miller', title: 'Comedian' },
+  { name: 'Alexis Ohanian', title: 'Founder Reddit', image: '/speakers/Alexis Ohanian.jpeg' },
+  { name: 'David Pakman', title: 'CoinFund Managing Partner', image: '/speakers/davidpakman.jpeg' },
+  { name: 'Devin Finzer', title: 'CEO OpenSea', image: '/speakers/devin.jpeg' },
+  { name: 'Gary Vaynerchuk', title: 'Founder Veefriends', image: '/speakers/garyvee.jpg' },
+  { name: 'Jimmy Wales', title: 'Founder Wikipedia', image: '/speakers/jimmywale.jpeg' },
+  { name: 'John Kosner', title: 'ESPN Sports Media Veteran', image: '/speakers/johnkosner.jpeg' },
+  { name: 'Kimbal Musk', title: 'Businessman', image: '/speakers/kimbal.png' },
+  { name: 'Michael Casey', title: 'CEO & Co-Founder Tell Network', image: '/speakers/casey.jpeg' },
+  { name: 'Quentin Tarantino', title: 'Golden Globe Winner', image: '/speakers/taratino.jpeg' },
+  { name: 'Robby Yung', title: 'CEO Animoca', image: '/speakers/robby.jpeg' },
+  { name: 'Spike Lee', title: 'Academy Award Winner', image: '/speakers/spikelee.jpg' },
+  { name: 'T.J. Miller', title: 'Comedian', image: '/speakers/TJ-Miller-featured-pic.jpg' },
 ];
 
 const DETAILED_TIMELINE = [
@@ -375,13 +375,50 @@ export default function Speak() {
         <div className="speak-marquee-wrap" style={{ position: 'relative', zIndex: 1 }}>
           <div className="speak-marquee-track">
             {[...PAST_SPEAKERS, ...PAST_SPEAKERS].map((speaker, i) => (
-              <span key={i} className="speak-marquee-item">
-                <span className="speak-marquee-name-block">
-                  <span className="speak-marquee-name">{speaker.name}</span>
-                  <span className="speak-marquee-title">{speaker.title}</span>
-                </span>
-                <span className="speak-marquee-dot" />
-              </span>
+              <div key={i} className="speak-marquee-item" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                padding: '0.6rem 1rem',
+                borderRadius: '0.75rem',
+                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(8px)',
+                marginRight: '0.75rem',
+                flexShrink: 0,
+              }}>
+                <img
+                  src={speaker.image}
+                  alt={speaker.name}
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    flexShrink: 0,
+                    border: '2px solid rgba(255,255,255,0.15)',
+                  }}
+                />
+                <div>
+                  <p style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    color: '#fff',
+                    textTransform: 'uppercase',
+                    letterSpacing: '-0.01em',
+                    lineHeight: 1.2,
+                    whiteSpace: 'nowrap',
+                  }}>{speaker.name}</p>
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    color: 'rgba(255,255,255,0.6)',
+                    marginTop: '2px',
+                    whiteSpace: 'nowrap',
+                  }}>{speaker.title}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -880,48 +917,10 @@ export default function Speak() {
           animation-play-state: paused;
         }
         .speak-marquee-item {
-          display: inline-flex;
-          align-items: center;
-          gap: 0;
-          white-space: nowrap;
-          cursor: default;
-          padding: 0 0.5rem;
-          opacity: 1;
+          transition: opacity 200ms ease;
         }
-        .speak-marquee-name-block {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .speak-marquee-name {
-          font-family: var(--font-display);
-          font-size: clamp(20px, 3vw, 32px);
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: -0.5px;
-          color: rgba(255,255,255,1);
-          line-height: 1.2;
-        }
-        .speak-marquee-title {
-          font-family: var(--font-body);
-          font-size: clamp(11px, 1.2vw, 14px);
-          font-weight: 400;
-          color: rgb(149, 149, 176);
-          text-transform: none;
-          letter-spacing: 0.5px;
-          line-height: 1.3;
-          margin-top: 2px;
-        }
-        .speak-marquee-dot {
-          display: inline-block;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #E85D2B, #3DBFB8);
-          margin-left: 1.5rem;
-          margin-right: 1rem;
-          flex-shrink: 0;
-          opacity: 0.5;
+        .speak-marquee-item:hover {
+          opacity: 0.8;
         }
         @media (max-width: 768px) {
           .speak-stats-grid { grid-template-columns: repeat(3, 1fr) !important; }
