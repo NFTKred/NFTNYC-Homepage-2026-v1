@@ -510,16 +510,14 @@ export default function Speak() {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a
-            href="https://vote.nft.nyc"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            Vote now
-          </a>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '16px',
+            fontWeight: 600,
+            color: 'rgba(255,255,255,0.5)',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+          }}>Voting opens 1 May</p>
         </div>
       </section>
 
