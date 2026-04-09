@@ -26,10 +26,10 @@ function getStaticFeedItems(): FeedItem[] {
 
 function buildFeedHTML(items: FeedItem[]): string {
   return items.map(p => `
-    <a href="${p.url}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 1rem;background:var(--color-surface);border:1px solid var(--card-border);border-radius:0.75rem;flex-shrink:0;text-decoration:none;transition:border-color 150ms ease;">
+    <a href="${p.url}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:0.75rem;padding:0.6rem 1rem;background:var(--color-surface);border:1px solid var(--card-border);border-radius:0.75rem;flex-shrink:0;text-decoration:none;transition:border-color 150ms ease;text-align:left;">
       <span style="width:8px;height:8px;border-radius:9999px;background:${p.color};flex-shrink:0;animation:feedDotPulse 3s ease-in-out infinite;"></span>
-      <span style="flex:1;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--color-text);letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.title.replace(/'/g, '&#39;')}</span>
-      <span style="font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${p.color};background:${p.color}1A;padding:2px 6px;border-radius:4px;flex-shrink:0;white-space:nowrap;">${p.vertical.replace(/'/g, '&#39;')}</span>
+      <span style="flex:1;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--color-text);letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;">${p.title.replace(/'/g, '&#39;')}</span>
+      <span style="font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${p.color};background:${p.color}1A;padding:2px 6px;border-radius:4px;flex-shrink:0;white-space:nowrap;text-align:right;margin-left:auto;">${p.vertical.replace(/'/g, '&#39;')}</span>
     </a>
   `).join('');
 }
@@ -147,9 +147,9 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
 
         {/* Activity Feed */}
         <div
-          className="overflow-hidden mx-auto mb-8 relative"
+          className="overflow-hidden mb-8 relative"
           style={{
-            maxWidth: '480px',
+            maxWidth: '100%',
             height: '168px',
             maskImage: 'linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)',
             WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)',
