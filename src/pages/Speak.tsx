@@ -126,7 +126,7 @@ const TIPS_DONT = [
   'Product pitches in the open application track will be declined \u2014 paid sponsors have a separate format',
   'Remote speaking requests will be declined \u2014 this is an in-person event at the Edison Times Square NYC',
   'Generic \u201ccrypto\u201d or \u201cWeb3\u201d framing without a tokenization angle will be declined',
-  'Broken video links, videos over 2 minutes, or missing videos mean automatic disqualification',
+  'Broken video links, videos over 1 minute, or missing videos mean automatic disqualification',
 ];
 
 const CHECKLIST = [
