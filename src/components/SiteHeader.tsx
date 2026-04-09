@@ -36,14 +36,13 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
 
   const allNavLinks = [
     { href: '#about', label: 'About', minStage: 0 },
-    { href: '#speakers', label: 'Speakers', minStage: 1 },
+    { href: '/speak', label: 'Speak', minStage: 0 },
     { href: '#ecosystem', label: 'Ecosystem', minStage: 0 },
+    { href: '#speakers', label: 'Speakers', minStage: 1 },
     { href: '#brands', label: 'Brands', minStage: 0 },
     { href: '#media', label: 'Media', minStage: 0 },
     { href: '#events', label: 'Events', minStage: 1 },
     { href: '#faq', label: 'FAQ', minStage: 0 },
-    // Speak nav link hidden for now; uncomment to show:
-    // ...(SHOW_SPEAK_PAGE ? [{ href: '/speak', label: 'Speak', minStage: 0 }] : []),
   ];
 
   const navLinks = allNavLinks.filter(link => stage >= link.minStage);
@@ -200,7 +199,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
                 style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: 'var(--font-body)',
                   fontSize: 'var(--text-2xl)',
                   fontWeight: 600,
                   color: 'var(--color-text)',

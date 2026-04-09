@@ -40,6 +40,7 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
 
   // Fetch from Supabase, fall back to static
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       try {
         const { data, error } = await supabase
@@ -48,7 +49,7 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
           .eq('status', 'approved')
           .order('date', { ascending: false })
           .limit(30);
-        if (!error && data && data.length > 0) {
+        if (!cancelled && !error && data && data.length > 0) {
           setFeedItems(data.map(r => ({
             title: r.title,
             url: r.url,
@@ -56,8 +57,11 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
             vertical: ECO_MAP[r.vertical_id]?.name ?? r.vertical_id,
           })));
         }
-      } catch { /* keep static fallback */ }
+      } catch {
+        // Supabase unavailable — keep static fallback
+      }
     })();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {

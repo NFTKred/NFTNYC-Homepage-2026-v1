@@ -473,6 +473,9 @@ export default function Speak() {
             </div>
           ))}
         </div>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to speak</a>
+        </div>
       </section>
 
       {dividerLine}
@@ -583,6 +586,9 @@ export default function Speak() {
               </div>
             </div>
           ))}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to speak</a>
         </div>
       </section>
 
@@ -707,6 +713,9 @@ export default function Speak() {
               </li>
             ))}
           </ul>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>I'm ready — submit to speak</a>
         </div>
       </section>
 
