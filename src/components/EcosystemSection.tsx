@@ -71,17 +71,18 @@ export default function EcosystemSection() {
                 />
                 {/* Content */}
                 <div className="card-content">
-                  <div className="flex items-center gap-3 mb-4 mt-1">
-                    <EcoIcon ecoId={eco.id} color={eco.color} size={48} />
-                    <h3 style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '18px',
-                      fontWeight: 700,
-                      color: 'var(--color-text)',
-                      letterSpacing: '-0.01em',
-                      textTransform: 'uppercase',
-                    }}>{eco.name}</h3>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', marginTop: '0.5rem' }}>
+                    <EcoIcon ecoId={eco.id} color={eco.color} size={100} />
                   </div>
+                  <h3 style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '18px',
+                    fontWeight: 700,
+                    color: 'var(--color-text)',
+                    letterSpacing: '-0.01em',
+                    textTransform: 'uppercase',
+                    marginBottom: '0.75rem',
+                  }}>{eco.name}</h3>
                   <p style={{
                     fontSize: 'var(--text-sm)',
                     color: 'var(--color-text-muted)',
