@@ -136,7 +136,7 @@ export default function VerticalPage() {
           <ArrowLeft size={14} /> Back to ecosystem
         </Link>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-          <EcoIcon ecoId={eco.id} color={eco.color} size={64} />
+          <EcoIcon ecoId={eco.id} color={eco.color} size={150} />
         </div>
         <p style={{
           fontFamily: 'var(--font-body)',
