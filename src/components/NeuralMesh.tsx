@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { ECOSYSTEMS, CONNECTIONS, Ecosystem } from '@/data/nftnyc';
+import { getEcoIconDataUri } from '@/components/EcoIcon';
 
 const W = 1000, H = 720;
 const CYCLE_MS = 4000;
@@ -249,8 +250,14 @@ export default function NeuralMesh() {
       fill.setAttribute('opacity', String(0.7 + 0.3 * ff));
       g.appendChild(fill);
 
-      const iconSize = 16 + 6 * ff;
-      addSvgText(g, p.x, p.y - (6 + 8 * ff), eco.icon, '#fff', 'sans-serif', iconSize, '400', 'middle');
+      const iconSize = 18 + 8 * ff;
+      const iconImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+      iconImg.setAttribute('href', getEcoIconDataUri(eco.id, eco.color, iconSize));
+      iconImg.setAttribute('x', String(p.x - iconSize / 2));
+      iconImg.setAttribute('y', String(p.y - (8 + 10 * ff) - iconSize / 2));
+      iconImg.setAttribute('width', String(iconSize));
+      iconImg.setAttribute('height', String(iconSize));
+      g.appendChild(iconImg);
 
       const nameSize = 9 + 5 * ff;
       const nameWeight = ff > 0.5 ? '700' : '600';

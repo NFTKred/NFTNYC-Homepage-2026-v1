@@ -6,6 +6,7 @@ import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS, type VerticalTopic } from '@/data/verticalTopics';
 import { type VerticalResource } from '@/data/verticalResources';
 import { useVerticalResources } from '@/hooks/useVerticalResources';
+import EcoIcon from '@/components/EcoIcon';
 import {
   ArrowLeft,
   FileText,
@@ -135,7 +136,7 @@ export default function VerticalPage() {
           <ArrowLeft size={14} /> Back to ecosystem
         </Link>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-          <span style={{ fontSize: '48px' }}>{eco.icon}</span>
+          <EcoIcon ecoId={eco.id} color={eco.color} size={64} />
         </div>
         <p style={{
           fontFamily: 'var(--font-body)',

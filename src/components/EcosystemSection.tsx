@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { ChevronRight } from 'lucide-react';
+import EcoIcon from '@/components/EcoIcon';
 
 function hexToRgba(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -71,7 +72,7 @@ export default function EcosystemSection() {
                 {/* Content */}
                 <div className="card-content">
                   <div className="flex items-center gap-3 mb-4 mt-1">
-                    <span style={{ fontSize: 'var(--text-xl)' }}>{eco.icon}</span>
+                    <EcoIcon ecoId={eco.id} color={eco.color} size={48} />
                     <h3 style={{
                       fontFamily: 'var(--font-display)',
                       fontSize: '18px',
