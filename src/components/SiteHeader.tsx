@@ -76,8 +76,10 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
           className="fixed top-0 left-0 right-0 z-[101]"
           style={{
             height: '36px',
-            background: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15))',
-            borderBottom: '1px solid rgba(16,185,129,0.2)',
+            background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,182,212,0.12))',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            borderBottom: '1px solid rgba(16,185,129,0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
