@@ -64,11 +64,70 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
     setMenuOpen(false);
   };
 
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const showBanner = !bannerDismissed;
+  const bannerHeight = showBanner ? 36 : 0;
+
   return (
     <>
+      {/* ─── URGENCY BANNER ─── */}
+      {showBanner && (
+        <div
+          className="fixed top-0 left-0 right-0 z-[101]"
+          style={{
+            height: '36px',
+            background: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15))',
+            borderBottom: '1px solid rgba(16,185,129,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          <a
+            href="/speak"
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '13px',
+              fontWeight: 500,
+              color: '#fff',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <span style={{ color: '#10B981', fontWeight: 700 }}>Round 1</span>
+            Speaker Submissions Close 30 April.
+            <span style={{
+              fontWeight: 700,
+              color: '#10B981',
+              textDecoration: 'underline',
+              textUnderlineOffset: '2px',
+            }}>Apply Now →</span>
+          </a>
+          <button
+            onClick={e => { e.stopPropagation(); setBannerDismissed(true); }}
+            style={{
+              position: 'absolute',
+              right: '12px',
+              background: 'none',
+              border: 'none',
+              color: 'rgba(255,255,255,0.4)',
+              cursor: 'pointer',
+              fontSize: '16px',
+              lineHeight: 1,
+              padding: '4px',
+            }}
+            aria-label="Dismiss banner"
+          >×</button>
+        </div>
+      )}
+
       <header
-        className="fixed top-0 left-0 right-0 z-[100] px-6 py-4"
+        className="fixed left-0 right-0 z-[100] px-6 py-4"
         style={{
+          top: `${bannerHeight}px`,
           background: 'oklch(from var(--color-bg) l c h / 0.85)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
