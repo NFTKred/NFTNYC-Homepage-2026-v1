@@ -87,7 +87,7 @@ const PATHWAYS = [
     bullets: [
       'Submit with talk title, description, and industry vertical',
       'Provide a link to a video of you speaking',
-      'April 8 \u2013 June 16',
+      'Round 1: April 8\u201330 · Round 2: May · Round 3: June',
     ],
     pill: 'Community + Editorial',
     color: '#8B5CF6',
@@ -155,10 +155,10 @@ const PAST_SPEAKERS = [
 ];
 
 const DETAILED_TIMELINE = [
-  { date: 'April 8', title: 'Applications open', desc: 'Submit your application at nft.nyc/speak. Videos published on a rolling basis. Community voting begins.', color: '#10B981' },
-  { date: 'April 8 \u2013 June 16', title: 'General application window', desc: 'Submit your talk title, description, industry vertical, and video link. Community votes accumulate. Pathway 1 outreach progresses in parallel.', color: '#06B6D4' },
-  { date: 'June 16, 11:59 PM ET', title: 'General applications close', desc: 'Final review period begins. Team evaluates vote strength, video quality, industry diversity across all 9 verticals, and topic balance.', color: '#8B5CF6' },
-  { date: 'June 17 \u2013 28', title: 'Late application window', desc: 'Extended submission period for GA ticket holders only. A second chance to apply after the general window closes.', color: '#F97316' },
+  { date: 'April 8 \u2013 30', title: 'Round 1 open', desc: 'Submit your application now. First group reviewed, highest selection rates. Videos published on a rolling basis.', color: '#10B981' },
+  { date: '1 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Public, GA, and VIP ticket holders can vote.', color: '#10B981' },
+  { date: 'May', title: 'Round 2 open', desc: 'Second submission window opens. Round 1 applicants already under review and accumulating votes.', color: '#06B6D4' },
+  { date: 'June', title: 'Round 3 open', desc: 'Final submission window. Remaining slots only. Team evaluates vote strength, video quality, and topic balance.', color: '#8B5CF6' },
   { date: 'July 2026', title: 'Selections announced', desc: 'Speakers selected and notified. Each speaker may appear in one accepted session (solo talk, panel, or product pitch).', color: '#EC4899' },
   { date: 'September 1\u20133', title: 'NFT.NYC 2026', desc: 'The Edison, Times Square NYC. Program published August 2026. Speaker prep begins upon acceptance.', color: '#F5A623' },
 ];
@@ -330,6 +330,201 @@ export default function Speak() {
             Explore the tracks
           </button>
         </div>
+      </section>
+
+      {dividerLine}
+
+      {/* ─── SUBMISSION ROUNDS ─── */}
+      <section style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
+        <p style={sectionLabel}>Submissions are in rounds</p>
+        <h2 style={sectionHeading}>
+          Round 1 is <span style={rainbowText}>open now</span>
+        </h2>
+        <p style={sectionSub}>
+          Early applicants get seen first. Each round closes before the next opens — don't wait.
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1rem',
+          maxWidth: '900px',
+          margin: '0 auto',
+        }} className="speak-rounds-grid">
+          {/* Round 1 */}
+          <div style={{
+            ...cardStyle,
+            borderColor: '#10B981',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '3px',
+              background: '#10B981',
+            }} />
+            <div style={{
+              display: 'inline-block',
+              fontSize: '10px',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: '#fff',
+              background: '#10B981',
+              padding: '4px 10px',
+              borderRadius: '4px',
+              marginBottom: '1rem',
+            }}>Open now</div>
+            <h3 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '22px',
+              fontWeight: 700,
+              color: '#fff',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.5px',
+              marginBottom: '0.5rem',
+            }}>Round 1</h3>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '32px',
+              fontWeight: 700,
+              color: '#10B981',
+              lineHeight: 1.1,
+              marginBottom: '0.5rem',
+            }}>April 8 – 30</p>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '13px',
+              color: 'rgb(149, 149, 176)',
+              lineHeight: 1.5,
+              marginBottom: '1rem',
+            }}>Submit now to be in the first group reviewed. Round 1 voting opens May 1.</p>
+            <button
+              onClick={() => setShowModal(true)}
+              style={{ ...ctaGradientStyle, padding: '10px 24px', fontSize: '14px', width: '100%', justifyContent: 'center' }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
+            >
+              Apply now
+            </button>
+          </div>
+
+          {/* Round 2 */}
+          <div style={{
+            ...cardStyle,
+            position: 'relative',
+            overflow: 'hidden',
+            opacity: 0.6,
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '3px',
+              background: '#06B6D4',
+            }} />
+            <div style={{
+              display: 'inline-block',
+              fontSize: '10px',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'rgb(90, 90, 117)',
+              background: 'rgba(255,255,255,0.06)',
+              padding: '4px 10px',
+              borderRadius: '4px',
+              marginBottom: '1rem',
+            }}>Coming soon</div>
+            <h3 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '22px',
+              fontWeight: 700,
+              color: '#fff',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.5px',
+              marginBottom: '0.5rem',
+            }}>Round 2</h3>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '32px',
+              fontWeight: 700,
+              color: '#06B6D4',
+              lineHeight: 1.1,
+              marginBottom: '0.5rem',
+            }}>May</p>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '13px',
+              color: 'rgb(149, 149, 176)',
+              lineHeight: 1.5,
+            }}>Second submission window. Round 1 applicants have the advantage — don't wait.</p>
+          </div>
+
+          {/* Round 3 */}
+          <div style={{
+            ...cardStyle,
+            position: 'relative',
+            overflow: 'hidden',
+            opacity: 0.4,
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '3px',
+              background: '#8B5CF6',
+            }} />
+            <div style={{
+              display: 'inline-block',
+              fontSize: '10px',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'rgb(90, 90, 117)',
+              background: 'rgba(255,255,255,0.06)',
+              padding: '4px 10px',
+              borderRadius: '4px',
+              marginBottom: '1rem',
+            }}>Coming later</div>
+            <h3 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '22px',
+              fontWeight: 700,
+              color: '#fff',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.5px',
+              marginBottom: '0.5rem',
+            }}>Round 3</h3>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '32px',
+              fontWeight: 700,
+              color: '#8B5CF6',
+              lineHeight: 1.1,
+              marginBottom: '0.5rem',
+            }}>June</p>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '13px',
+              color: 'rgb(149, 149, 176)',
+              lineHeight: 1.5,
+            }}>Final submission window. Remaining slots only. Early rounds have higher selection rates.</p>
+          </div>
+        </div>
+
+        <p style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: '14px',
+          color: '#10B981',
+          textAlign: 'center',
+          marginTop: '1.5rem',
+          fontWeight: 600,
+        }}>⏰ Round 1 closes April 30 — historically, early applicants see a 55% selection rate vs. 13% for late applicants</p>
       </section>
 
       {dividerLine}
@@ -931,6 +1126,7 @@ export default function Speak() {
         }
         @media (max-width: 768px) {
           .speak-stats-grid { grid-template-columns: repeat(3, 1fr) !important; }
+          .speak-rounds-grid { grid-template-columns: 1fr !important; }
           .speak-benefits-grid { grid-template-columns: 1fr !important; }
           .speak-pathways-grid { grid-template-columns: 1fr !important; }
           .speak-tracks-grid { grid-template-columns: 1fr !important; }
