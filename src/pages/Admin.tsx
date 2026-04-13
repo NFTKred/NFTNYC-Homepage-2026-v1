@@ -84,21 +84,53 @@ function firstName(fullName: string): string {
   return fullName.replace(/\s*\([^)]*\)\s*/g, '').trim().split(/\s+/)[0] ?? fullName;
 }
 
+// A short hook about the content itself — uses description when available,
+// otherwise a topic-tag sentence. Trimmed to keep the draft readable.
+function contentHook(resource: Resource): string {
+  const raw = (resource.description ?? '').trim();
+  if (raw) {
+    // Keep first sentence or the first ~220 chars, whichever is shorter.
+    const firstSentence = raw.split(/(?<=[.!?])\s+/)[0] ?? raw;
+    const clipped = firstSentence.length > 220 ? firstSentence.slice(0, 217).trimEnd() + '…' : firstSentence;
+    return clipped;
+  }
+  return `covering ${resource.topic_tag || resource.title}`;
+}
+
 function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): string {
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
 
   if (!resource || !speaker.resource_relationship) {
-    return `${name},\n\n[Add a reference to a piece of their content here]\nWe're putting together the ${verticalLabel} track for NFT.NYC 2026 — would love to have your voice on stage.\n\n${pageUrl}`;
+    return [
+      `${name},`,
+      '',
+      `[Add a reference to a specific piece of their content here — title, a one-line insight, and the URL.]`,
+      '',
+      `We're putting together the ${verticalLabel} track for NFT.NYC 2026 and would love to have your voice on stage.`,
+      '',
+      pageUrl,
+    ].join('\n');
   }
 
   const noun = RESOURCE_NOUN[resource.type] ?? 'piece';
   const rel = RELATIONSHIP_CLAUSE[speaker.resource_relationship] ?? RELATIONSHIP_CLAUSE.mentioned;
   const aboutClause = rel.about ? ` ${rel.about}` : '';
-  const topic = resource.topic_tag || resource.title;
+  const hook = contentHook(resource);
+  const publisher = resource.source ? ` on ${resource.source}` : '';
 
-  return `${name},\n\nI saw ${rel.possessive} great ${noun}${aboutClause} about ${topic}.\nWe've added it to our ${verticalLabel} tokenization resource page for our community: ${pageUrl}`;
+  return [
+    `${name},`,
+    '',
+    `I saw ${rel.possessive} great ${noun}${aboutClause}${publisher} — "${resource.title}" (${resource.url}).`,
+    `The bit that stood out: ${hook}`,
+    '',
+    `We've added it to our ${verticalLabel} tokenization resource page so the NFT.NYC community can dig deeper:`,
+    pageUrl,
+    '',
+    `Would love to get you on stage in September to take this further — open to a quick chat?`,
+  ].join('\n');
 }
 
 const STATUS_COLORS: Record<string, string> = {
