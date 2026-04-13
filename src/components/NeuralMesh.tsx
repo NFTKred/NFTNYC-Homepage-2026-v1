@@ -262,20 +262,24 @@ export default function NeuralMesh() {
       fill.setAttribute('opacity', String(0.7 + 0.3 * ff));
       g.appendChild(fill);
 
-      const iconSize = 18 + 8 * ff;
+      const iconSize = nodeR * 1.7;
       const iconImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
       iconImg.setAttribute('href', getEcoIconDataUri(eco.id, eco.color, iconSize));
       iconImg.setAttribute('x', String(p.x - iconSize / 2));
-      iconImg.setAttribute('y', String(p.y - (8 + 10 * ff) - iconSize / 2));
+      iconImg.setAttribute('y', String(p.y - iconSize / 2));
       iconImg.setAttribute('width', String(iconSize));
       iconImg.setAttribute('height', String(iconSize));
+      iconImg.setAttribute('opacity', '0.35');
       g.appendChild(iconImg);
 
       const nameSize = 9 + 5 * ff;
       const nameWeight = ff > 0.5 ? '700' : '600';
       const nameLines = wrapText(eco.name, 14);
+      const lineH = nameSize + 3;
       nameLines.forEach((line, li) => {
-        addSvgText(g, p.x, p.y + 10 + li * 12, line, '#fff', "'Clash Display', sans-serif", nameSize, nameWeight, 'middle');
+        const ty = p.y + (li - (nameLines.length - 1) / 2) * lineH;
+        const t = addSvgText(g, p.x, ty, line, '#fff', "'Space Grotesk', sans-serif", nameSize, nameWeight, 'middle');
+        t.setAttribute('style', 'paint-order: stroke; stroke: rgba(10,10,15,0.85); stroke-width: 3; stroke-linejoin: round;');
       });
 
       if (ff < 0.15 || ff > 0.85) {
@@ -308,7 +312,7 @@ export default function NeuralMesh() {
             dot.setAttribute('fill', eco.color);
             dot.setAttribute('opacity', '0.85');
             g.appendChild(dot);
-            addSvgText(g, sl.x, sl.y - 12, sub, hexToRgba(eco.color, 0.9), "'Inter', sans-serif", '9', '600', 'middle');
+            addSvgText(g, sl.x, sl.y - 12, sub, hexToRgba(eco.color, 0.9), "'Space Grotesk', sans-serif", '9', '600', 'middle');
           });
         } else {
           const baseAngle = Math.atan2(p.y - 360, p.x - 500);
@@ -335,7 +339,7 @@ export default function NeuralMesh() {
 
             const isRight = sx > 500;
             addSvgText(g, isRight ? sx + 8 : sx - 8, sy + 1, sub,
-              'rgba(255,255,255,0.65)', "'Inter', sans-serif", '8', '500',
+              'rgba(255,255,255,0.65)', "'Space Grotesk', sans-serif", '8', '500',
               isRight ? 'start' : 'end');
           });
         }
@@ -708,8 +712,8 @@ export default function NeuralMesh() {
       line1.setAttribute('text-anchor', 'middle');
       line1.setAttribute('dominant-baseline', 'middle');
       line1.setAttribute('fill', TOKENIZATION_NODE_STYLE === 'prism' ? '#fff' : 'url(#tokenizationHeroGrad)');
-      line1.setAttribute('font-family', "'Monument Extended', sans-serif");
-      line1.setAttribute('font-size', '22');
+      line1.setAttribute('font-family', "'Space Grotesk', sans-serif");
+      line1.setAttribute('font-size', '19');
       line1.setAttribute('font-weight', '900');
       line1.setAttribute('letter-spacing', '0.08em');
       line1.textContent = 'TOKENIZATION';
@@ -717,12 +721,12 @@ export default function NeuralMesh() {
       nodesGroup.appendChild(line1);
 
       const line2 = document.createElementNS(SVG_NS, 'text');
-      line2.setAttribute('x', String(CX)); line2.setAttribute('y', String(CY + 20));
+      line2.setAttribute('x', String(CX)); line2.setAttribute('y', String(CY + 17));
       line2.setAttribute('text-anchor', 'middle');
       line2.setAttribute('dominant-baseline', 'middle');
       line2.setAttribute('fill', TOKENIZATION_NODE_STYLE === 'prism' ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.85)');
-      line2.setAttribute('font-family', "'Monument Extended', sans-serif");
-      line2.setAttribute('font-size', '22');
+      line2.setAttribute('font-family', "'Space Grotesk', sans-serif");
+      line2.setAttribute('font-size', '19');
       line2.setAttribute('font-weight', '900');
       line2.setAttribute('letter-spacing', '0.08em');
       line2.textContent = 'LAYER';
