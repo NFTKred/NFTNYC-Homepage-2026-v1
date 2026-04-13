@@ -90,7 +90,16 @@ export default function VerticalPage() {
   const topics = VERTICAL_TOPICS[eco.id] ?? [];
   const resources = allResources
     .filter(r => typeFilter === 'all' || r.type === typeFilter)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => {
+      // Admin-defined order wins. Rows without a display_order fall back
+      // to date desc, and sit after all manually-ordered rows.
+      const aHas = a.displayOrder != null;
+      const bHas = b.displayOrder != null;
+      if (aHas && bHas) return (a.displayOrder! - b.displayOrder!);
+      if (aHas) return -1;
+      if (bHas) return 1;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 
   const keyTopics = topics.filter(t => t.status === 'key');
   const emergingTopics = topics.filter(t => t.status === 'emerging');

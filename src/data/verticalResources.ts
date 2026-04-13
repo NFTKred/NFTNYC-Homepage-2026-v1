@@ -7,6 +7,7 @@ export interface VerticalResource {
   topicTag: string;
   description?: string;
   image?: string;
+  displayOrder?: number | null;
 }
 
 // Last updated: 2026-03-31

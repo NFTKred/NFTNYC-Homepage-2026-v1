@@ -27,6 +27,7 @@ export function useVerticalResources(verticalId: string) {
         topicTag: r.topic_tag,
         description: r.description ?? undefined,
         image: r.image ?? undefined,
+        displayOrder: r.display_order ?? null,
       }));
     },
     placeholderData: VERTICAL_RESOURCES[verticalId] ?? [],
