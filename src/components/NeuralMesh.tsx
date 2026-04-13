@@ -626,11 +626,11 @@ export default function NeuralMesh() {
 
         // Stroke polygon (crisper outline)
         const prismStroke = document.createElementNS(SVG_NS, 'polygon');
-        prismStroke.setAttribute('fill', 'url(#tokenizationHeroGrad)');
-        prismStroke.setAttribute('fill-opacity', '0.18');
-        prismStroke.setAttribute('stroke', 'url(#tokenizationHeroGradRotated)');
-        prismStroke.setAttribute('stroke-width', '1.5');
-        prismStroke.setAttribute('stroke-opacity', '0.7');
+        prismStroke.setAttribute('fill', '#ffffff');
+        prismStroke.setAttribute('fill-opacity', '0.04');
+        prismStroke.setAttribute('stroke', '#ffffff');
+        prismStroke.setAttribute('stroke-width', '1');
+        prismStroke.setAttribute('stroke-opacity', '0.18');
         prismStroke.setAttribute('stroke-linejoin', 'round');
         prismStroke.setAttribute('points', keyframes[0]);
         const anim1 = document.createElementNS(SVG_NS, 'animate');
@@ -662,9 +662,10 @@ export default function NeuralMesh() {
           innerKeyframes.push(pts.join(' '));
         }
         const prismInner = document.createElementNS(SVG_NS, 'polygon');
-        prismInner.setAttribute('fill', 'url(#tokenizationHeroGrad)');
-        prismInner.setAttribute('fill-opacity', '0.28');
-        prismInner.setAttribute('stroke', 'rgba(255,255,255,0.35)');
+        prismInner.setAttribute('fill', '#ffffff');
+        prismInner.setAttribute('fill-opacity', '0.06');
+        prismInner.setAttribute('stroke', '#ffffff');
+        prismInner.setAttribute('stroke-opacity', '0.22');
         prismInner.setAttribute('stroke-width', '0.8');
         prismInner.setAttribute('stroke-linejoin', 'round');
         prismInner.setAttribute('points', innerKeyframes[0]);
