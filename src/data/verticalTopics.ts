@@ -49,16 +49,7 @@ export const VERTICAL_TOPICS: Record<string, VerticalTopic[]> = {
     { label: 'Community Co-Creation & Remixing', description: 'Platforms enable token-holders to remix, extend, and build upon shared creative assets with on-chain provenance tracking, turning collectors into active contributors.', status: 'emerging' },
   ],
 
-  /* ── NFT Communities ── */
-  communities: [
-    { label: 'DAO-Governed Collections', description: 'NFT holders use on-chain governance to vote on collection roadmaps, treasury allocation, and community initiatives, giving token-gated voting power to engaged members.', status: 'key' },
-    { label: 'PFP Collections as Digital Identity', description: 'Profile-picture NFT collections with multichain rarity analytics serve as digital identity layers, enabling cross-platform recognition and token-gated access to exclusive communities.', status: 'key' },
-    { label: 'Meme Culture Meets NFTs', description: 'Meme-driven NFT projects bridge memecoin speculation with digital collectibles, using airdrops and community engagement to build internet-native cultural movements with tokenized value.', status: 'key' },
-    { label: 'AI-Powered Community Analytics', description: 'Tools use AI to detect scams, monitor holder retention, and surface engagement patterns, helping communities make data-driven decisions and maintain trust.', status: 'emerging' },
-    { label: 'Anti-Fraud & Wash Trade Detection', description: 'On-chain analytics platforms detect wash trading and fraudulent activity within NFT communities, building trust through transparent security scores shared publicly with holders.', status: 'emerging' },
-  ],
-
-  /* ── Creator & IP Economy ── */
+  /* ── Creator Economy ── */
   creator: [
     { label: 'Token-Gated Media & Memberships', description: 'Creators use NFTs to gate access to exclusive content, communities, and experiences, shifting from platform-dependent ad revenue to direct fan monetization with verifiable access rights.', status: 'key' },
     { label: 'On-Chain Royalty Enforcement', description: 'Smart contracts automate creator royalty payments on secondary sales, providing persistent revenue streams that follow the asset across marketplaces and ownership transfers.', status: 'key' },
@@ -76,13 +67,42 @@ export const VERTICAL_TOPICS: Record<string, VerticalTopic[]> = {
     { label: 'AI-Driven Brand Community Analytics', description: 'Brands use on-chain analytics and AI tools to monitor holder behavior, tailor NFT drops to collector preferences, and maintain authentic community engagement.', status: 'emerging' },
   ],
 
-  /* ── Culture: Art & Music ── */
+  /* ── Culture, Art & Music (incl. Communities) ── */
   culture: [
     { label: 'On-Chain Generative Art', description: 'Fully on-chain generative art creates unique algorithmic pieces at mint time with immutable provenance, establishing a category where the code itself is the collectible.', status: 'key' },
-    { label: 'Digital Art Market Infrastructure', description: 'Blockchain-based provenance, forgery detection, and digital portfolio management tools professionalize the art market, blending online discovery with transparent ownership records.', status: 'key' },
+    { label: 'Music Royalty NFTs', description: 'Musicians tokenize royalty streams as NFTs, allowing fans to invest in songs and earn proportional revenue from streaming, sync licensing, and performance rights.', status: 'key' },
+    { label: 'PFP Collections as Digital Identity', description: 'Profile-picture NFT collections serve as digital identity layers, enabling cross-platform recognition and token-gated access to internet-native communities.', status: 'key' },
+    { label: 'DAO-Governed Collections', description: 'NFT holders use on-chain governance to vote on collection roadmaps, treasury allocation, and community initiatives, giving token-gated voting power to engaged members.', status: 'key' },
+    { label: 'Meme Culture Meets NFTs', description: 'Meme-driven NFT projects bridge memecoin speculation with digital collectibles, using airdrops and community engagement to build internet-native cultural movements.', status: 'key' },
     { label: 'AI-Human Collaborative Art', description: 'Artists use AI as a co-creator to generate base assets for human refinement, with blockchain providing provenance and attribution for hybrid human-AI creative works.', status: 'emerging' },
-    { label: 'Music Royalty NFTs', description: 'Musicians tokenize royalty streams as NFTs, allowing fans to invest in songs and earn proportional revenue from streaming, sync licensing, and performance rights.', status: 'emerging' },
     { label: 'Cultural Preservation Through Tokenization', description: 'Art institutions tokenize heritage works for verifiable digital preservation, enabling fractional ownership and global access while maintaining provenance records.', status: 'emerging' },
+  ],
+
+  /* ── RWA Tokenization ── */
+  rwa: [
+    { label: 'Tokenized Treasuries', description: 'Government bonds and money market funds are issued on-chain, offering 24/7 settlement, fractional access, and programmable yield distribution. Driven by BlackRock BUIDL, Franklin Templeton, and Ondo Finance.', status: 'key' },
+    { label: 'Real Estate Tokenization', description: 'Fractional ownership of properties via NFTs and security tokens unlocks global liquidity for traditionally illiquid assets, with on-chain rent distribution and automated compliance.', status: 'key' },
+    { label: 'Commodities On-Chain', description: 'Gold, silver, oil, and agricultural commodities are tokenized with verifiable physical backing, enabling 24/7 trading and use as DeFi collateral.', status: 'key' },
+    { label: 'Tokenized Equities & Securities', description: 'Public and private company shares represented on-chain enable atomic settlement, programmable cap tables, and global access to traditionally restricted markets.', status: 'emerging' },
+    { label: 'Programmable Compliance', description: 'Smart contracts encode regulatory requirements like KYC/AML and accreditation directly into RWA tokens, enabling permissioned trading at the asset level.', status: 'emerging' },
+  ],
+
+  /* ── DNS ENS Domain Tokens ── */
+  domains: [
+    { label: 'ENS as the Identity Layer', description: 'Ethereum Name Service transforms wallet addresses into human-readable names, becoming the universal identity primitive for wallets, dApps, and decentralized websites.', status: 'key' },
+    { label: 'DNS to ENS Bridge', description: 'Traditional DNS domains can now be claimed and used as ENS names, bridging Web2 namespaces with onchain identity and creating universal addressing.', status: 'key' },
+    { label: '.Kred Premium TLDs', description: 'Branded top-level domains issued as NFTs let projects, communities, and individuals own naming infrastructure with transferable, verifiable rights.', status: 'emerging' },
+    { label: 'AI Agent Naming', description: 'As AI agents transact onchain, ENS names paired with ERC-8004 identity create human-readable, verifiable agent identifiers across the agentic economy.', status: 'emerging' },
+    { label: 'Domain-Backed Reputation', description: 'Long-held, premium domain NFTs accumulate transferable reputation scores, creating a new class of digital prestige assets with measurable value.', status: 'emerging' },
+  ],
+
+  /* ── DeSci · Longevity Tokenization ── */
+  desci: [
+    { label: 'Tokenized Longevity IP', description: 'Anti-aging research, drug compounds, and clinical data are tokenized as IP-NFTs, enabling community ownership of breakthrough science. VitaDAO has funded over a dozen longevity studies.', status: 'key' },
+    { label: 'Research DAOs', description: 'Decentralized autonomous organizations pool capital, govern research priorities, and own resulting IP — democratizing science funding outside grant bottlenecks.', status: 'key' },
+    { label: 'Patient-Owned Health Data', description: 'NFTs grant patients true ownership of their genomic and medical data, letting them monetize contributions to research while preserving privacy via ZK proofs.', status: 'emerging' },
+    { label: 'IP-NFT Licensing', description: 'Programmable licensing terms encoded in NFTs let researchers control how their work is commercialized, with automatic royalty splits to all contributors.', status: 'emerging' },
+    { label: 'Onchain Clinical Trial Funding', description: 'Trial-specific tokens let participants and supporters fund early-stage longevity research, sharing in upside if discoveries reach commercialization.', status: 'emerging' },
   ],
 
   /* ── NFT Marketplaces ── */

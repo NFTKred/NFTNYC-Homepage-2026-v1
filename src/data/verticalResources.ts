@@ -53,13 +53,7 @@ export const VERTICAL_RESOURCES: Record<string, VerticalResource[]> = {
     { title: 'Farcaster in 2025: The Protocol Paradox', url: 'https://blockeden.xyz/blog/2025/10/28/farcaster-in-2025-the-protocol-paradox/', type: 'blog', date: '2025-10-28', source: 'BlockEden', topicTag: 'Community Co-Creation & Remixing', description: 'Analyzes Farcaster challenges and evolution as a decentralized social protocol in the SocialFi space.' },
   ],
 
-  /* ── NFT Communities ── */
-  communities: [
-    { title: 'DAO Models to Watch in 2025: From Protocol DAOs to Community DAOs', url: 'https://digitap.app/news/guide/dao-models-to-watch-in-2025', type: 'news', date: '2025-01-01', source: 'Digitap', topicTag: 'DAO-Governed Collections', description: 'Highlights community DAOs where membership NFTs grant voting rights, exclusive access, and transparent governance.' },
-    { title: 'DAO-Enabled NFT Platforms: Ultimate Guide', url: 'https://www.rapidinnovation.io/post/all-about-dao-enabled-nft-platform', type: 'blog', date: '2024-01-01', source: 'Rapid Innovation', topicTag: 'DAO-Governed Collections', description: 'Explains how DAO-enabled NFT platforms use community governance via tokens for voting on NFT minting and collective ownership.' },
-  ],
-
-  /* ── Creator & IP Economy ── */
+  /* ── Creator Economy ── */
   creator: [
     { title: 'NFTs for Content Creators: Monetize Digital Art in 2025', url: 'https://www.cypherock.com/blogs/nfts-and-the-empowerment-of-content-creators', type: 'blog', date: '2025-01-21', source: 'Cypherock', topicTag: 'On-Chain Royalty Enforcement', description: 'Details how content creators set royalty percentages when minting NFTs, enabling ongoing earnings from resales.' },
     { title: 'The Comprehensive Guide to NFT Royalties', url: 'https://www.platinumcryptoacademy.com/cryptocurrency-investment/the-comprehensive-guide-to-nft-royalties-in-2024-understanding-the-future-of-digital-ownership/', type: 'blog', date: '2024-01-01', source: 'Platinum Crypto Academy', topicTag: 'On-Chain Royalty Enforcement', description: 'Explains how creators embed royalties into NFT smart contracts during minting, ensuring automatic payments on resales.' },
@@ -72,11 +66,34 @@ export const VERTICAL_RESOURCES: Record<string, VerticalResource[]> = {
     { title: 'IYK: Bridging Physical Products to On-Chain', url: 'https://www.iyk.app/', type: 'blog', date: '2024-11-05', source: 'IYK', topicTag: 'Phygital Products & Authentication', description: 'NFC-to-blockchain infrastructure connecting physical goods with digital ownership.' },
   ],
 
-  /* ── Culture: Art & Music ── */
+  /* ── Culture, Art & Music (incl. Communities) ── */
   culture: [
-    { title: 'Digital Art Isn\'t Dead — But It Is at a Crossroads', url: 'https://nftnow.com/newsletter/now-newsletter-digital-art-isnt-dead-but-it-is-at-a-crossroads/', type: 'news', date: '2024-10-01', source: 'nft now', topicTag: 'Digital Art Market Infrastructure', description: 'Covers Q4 2024 digital art NFT market trends, trading volumes, and the state of the art NFT ecosystem.' },
     { title: 'Art Blocks and the Generative Art Movement', url: 'https://www.artblocks.io/', type: 'blog', date: '2024-06-15', source: 'Art Blocks', topicTag: 'On-Chain Generative Art', description: 'The platform that turned code-based art into a legitimate artistic medium with on-chain generative collections.' },
     { title: 'Royal: Fans Can Now Own Music Royalties', url: 'https://royal.io/', type: 'blog', date: '2024-10-20', source: 'Royal', topicTag: 'Music Royalty NFTs', description: 'How Royal lets fans invest in songs and earn alongside their favorite artists through tokenized royalty shares.' },
+    { title: 'Digital Art Isn\'t Dead — But It Is at a Crossroads', url: 'https://nftnow.com/newsletter/now-newsletter-digital-art-isnt-dead-but-it-is-at-a-crossroads/', type: 'news', date: '2024-10-01', source: 'nft now', topicTag: 'On-Chain Generative Art', description: 'Covers Q4 2024 digital art NFT market trends, trading volumes, and the state of the art NFT ecosystem.' },
+    { title: 'DAO Models to Watch: From Protocol DAOs to Community DAOs', url: 'https://digitap.app/news/guide/dao-models-to-watch-in-2025', type: 'news', date: '2025-01-01', source: 'Digitap', topicTag: 'DAO-Governed Collections', description: 'Highlights community DAOs where membership NFTs grant voting rights, exclusive access, and transparent governance.' },
+    { title: 'DAO-Enabled NFT Platforms: Ultimate Guide', url: 'https://www.rapidinnovation.io/post/all-about-dao-enabled-nft-platform', type: 'blog', date: '2024-01-01', source: 'Rapid Innovation', topicTag: 'DAO-Governed Collections', description: 'Explains how DAO-enabled NFT platforms use community governance via tokens for voting on NFT minting and collective ownership.' },
+  ],
+
+  /* ── RWA Tokenization ── */
+  rwa: [
+    { title: 'BlackRock Brings Its Tokenized Money Market Fund to Multiple Chains', url: 'https://www.coindesk.com/business/2024/11/13/blackrock-buidl-fund-tokenized', type: 'news', date: '2024-11-13', source: 'CoinDesk', topicTag: 'Tokenized Treasuries', description: 'BlackRock BUIDL fund expands cross-chain, signaling institutional demand for onchain treasury exposure.' },
+    { title: 'Real-World Assets on Ethereum: The Trillion-Dollar Opportunity', url: 'https://www.coindesk.com/consensus-magazine/2024/03/15/real-world-assets-tokenization/', type: 'news', date: '2024-03-15', source: 'CoinDesk', topicTag: 'Real Estate Tokenization', description: 'Institutional adoption of tokenized real estate, treasuries, and commodities reshapes capital markets.' },
+    { title: 'Ondo Finance: Tokenized Treasuries for the World', url: 'https://ondo.finance/', type: 'blog', date: '2024-09-01', source: 'Ondo Finance', topicTag: 'Tokenized Treasuries', description: 'Leading platform for tokenized US Treasuries with permissionless access and 24/7 settlement.' },
+  ],
+
+  /* ── DNS ENS Domain Tokens ── */
+  domains: [
+    { title: 'ENS Is Staying on Ethereum', url: 'https://ens.domains/blog/post/ens-staying-on-ethereum', type: 'blog', date: '2026-02-01', source: 'ENS Labs', topicTag: 'ENS as the Identity Layer', description: 'ENSv2 deploys exclusively on Ethereum L1, citing massive gas fee reductions and identity layer commitments.' },
+    { title: 'ENSv2: The Next Generation of ENS', url: 'https://ens.domains/blog/post/ensv2', type: 'blog', date: '2024-06-01', source: 'ENS Labs', topicTag: 'ENS as the Identity Layer', description: 'Architectural improvements to the Ethereum naming protocol designed to scale onchain identity.' },
+    { title: 'The Identity Problem in Agentic Commerce: How ENS Can Enable Trust for AI Agents', url: 'https://ens.domains/blog/post/ens-ai-agent-erc8004', type: 'blog', date: '2026-01-15', source: 'ENS Labs', topicTag: 'AI Agent Naming', description: 'How ENS naming integrates with ERC-8004 to give AI agents human-readable, verifiable on-chain identities.' },
+  ],
+
+  /* ── DeSci · Longevity Tokenization ── */
+  desci: [
+    { title: 'VitaDAO: Decentralized Funding for Longevity Research', url: 'https://www.vitadao.com/', type: 'blog', date: '2024-09-01', source: 'VitaDAO', topicTag: 'Tokenized Longevity IP', description: 'The leading DeSci DAO funding longevity research with IP-NFTs representing ownership of breakthrough science.' },
+    { title: 'IP-NFTs: A Primer on Tokenized Intellectual Property', url: 'https://medium.com/molecule-blog/ip-nfts-a-primer-on-tokenized-intellectual-property', type: 'blog', date: '2024-06-15', source: 'Molecule', topicTag: 'IP-NFT Licensing', description: 'How IP-NFTs let researchers tokenize patents, data, and discoveries while encoding programmable licensing terms.' },
+    { title: 'The DeSci Movement: Decentralizing Science Funding', url: 'https://www.coindesk.com/web3/desci-decentralized-science-funding', type: 'news', date: '2025-02-15', source: 'CoinDesk', topicTag: 'Research DAOs', description: 'How research DAOs are challenging traditional grant models for biotech and longevity research.' },
   ],
 
   /* ── NFT Marketplaces ── */

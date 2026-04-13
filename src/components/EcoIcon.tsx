@@ -4,19 +4,23 @@
  * These are non-animated versions suitable for the website.
  */
 
-type EcoShape = 'neural' | 'hexgrid' | 'chain' | 'social' | 'rings' | 'burst' | 'bars' | 'diamond' | 'wave';
+type EcoShape = 'neural' | 'hexgrid' | 'chain' | 'social' | 'rings' | 'burst' | 'bars' | 'diamond' | 'wave' | 'pillars' | 'orbit' | 'helix';
 
 const SHAPE_MAP: Record<string, EcoShape> = {
   ai: 'neural',
   gaming: 'hexgrid',
   infra: 'chain',
   social: 'social',
-  communities: 'rings',
   creator: 'burst',
   defi: 'bars',
+  rwa: 'pillars',
   brands: 'diamond',
-  culture: 'wave',
-  marketplaces: 'rings', // fallback
+  culture: 'wave', // now includes former communities
+  domains: 'orbit',
+  desci: 'helix',
+  marketplaces: 'rings',
+  // Legacy fallback
+  communities: 'wave',
 };
 
 interface EcoIconProps {
@@ -249,6 +253,89 @@ function ShapeContent({ shape, color, animated = false }: { shape: EcoShape; col
           })}
         </g>
       );
+
+    case 'pillars':
+      // RWA Tokenization — classical building columns representing real-world institutions
+      return (
+        <g>
+          {/* Roof */}
+          <polygon points="60,100 260,100 240,75 80,75" fill={color} opacity={0.7} />
+          <rect x={70} y={100} width={180} height={8} fill={color} opacity={0.5} />
+          {/* 4 columns */}
+          {[0, 1, 2, 3].map(i => {
+            const x = 80 + i * 50;
+            return (
+              <g key={i}>
+                <rect x={x} y={108} width={20} height={120} fill={color} opacity={0.4 + i * 0.1} />
+                <rect x={x - 4} y={108} width={28} height={6} fill={color} opacity={0.6} />
+                <rect x={x - 4} y={222} width={28} height={6} fill={color} opacity={0.6} />
+              </g>
+            );
+          })}
+          {/* Base */}
+          <rect x={60} y={228} width={200} height={14} fill={color} opacity={0.6} />
+          <rect x={50} y={242} width={220} height={8} fill={color} opacity={0.5} />
+        </g>
+      );
+
+    case 'orbit':
+      // DNS / ENS Domains — central node with 3 orbiting satellites at different orbital paths
+      return (
+        <g>
+          {/* Outer orbit */}
+          <ellipse cx={160} cy={160} rx={110} ry={42} fill="none" stroke={color} strokeWidth={1.5} opacity={0.25} className={animated ? 'eco-rotate-slow' : undefined} />
+          {/* Mid orbit */}
+          <ellipse cx={160} cy={160} rx={42} ry={110} fill="none" stroke={color} strokeWidth={1.5} opacity={0.35} className={animated ? 'eco-rotate-reverse' : undefined} />
+          {/* Diagonal orbit */}
+          <ellipse cx={160} cy={160} rx={95} ry={50} fill="none" stroke={color} strokeWidth={1.5} opacity={0.3} transform="rotate(45 160 160)" className={animated ? 'eco-rotate' : undefined} />
+          {/* Satellites */}
+          <circle cx={270} cy={160} r={10} fill={color} opacity={0.8} />
+          <circle cx={160} cy={50} r={8} fill={color} opacity={0.7} />
+          <circle cx={95} cy={225} r={9} fill={color} opacity={0.75} />
+          {/* Central node */}
+          <circle cx={160} cy={160} r={22} fill={color} opacity={0.9} />
+          <circle cx={160} cy={160} r={28} fill="none" stroke={color} strokeWidth={1.5} opacity={0.4} />
+        </g>
+      );
+
+    case 'helix':
+      // DeSci / Longevity — DNA double helix, two interweaving strands
+      return (
+        <g>
+          {/* Two strands (sine waves offset by PI) */}
+          {Array.from({ length: 2 }, (_, strand) => {
+            const phase = strand * Math.PI;
+            const points = Array.from({ length: 40 }, (_, i) => {
+              const t = i / 39;
+              const y = 50 + t * 220;
+              const x = 160 + Math.sin(t * Math.PI * 3 + phase) * 60;
+              return `${x},${y}`;
+            }).join(' ');
+            return (
+              <polyline
+                key={strand}
+                points={points}
+                fill="none"
+                stroke={color}
+                strokeWidth={3}
+                opacity={0.7}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            );
+          })}
+          {/* Rungs connecting strands at intervals */}
+          {Array.from({ length: 8 }, (_, i) => {
+            const t = (i + 0.5) / 8;
+            const y = 50 + t * 220;
+            const x1 = 160 + Math.sin(t * Math.PI * 3) * 60;
+            const x2 = 160 + Math.sin(t * Math.PI * 3 + Math.PI) * 60;
+            return (
+              <line key={i} x1={x1} y1={y} x2={x2} y2={y} stroke={color} strokeWidth={1.5} opacity={0.35} />
+            );
+          })}
+        </g>
+      );
   }
 }
 
@@ -283,5 +370,11 @@ function getShapeSvgString(shape: EcoShape, c: string): string {
       return `${[0,1,2].map(i=>{const s=40+i*30;return `<rect x="${160-s}" y="${160-s}" width="${s*2}" height="${s*2}" rx="8" fill="none" stroke="${c}" stroke-width="2" opacity="${0.7-i*0.2}" transform="rotate(${45+i*5} 160 160)"/>`}).join('')}<rect x="145" y="145" width="30" height="30" rx="4" fill="${c}" opacity="0.8" transform="rotate(45 160 160)"/>`;
     case 'wave':
       return Array.from({length:5},(_,row)=>{const pts=Array.from({length:20},(_,i)=>`${40+i*13},${100+row*35+Math.sin(i*0.5+row)*(15+row*3)}`).join(' ');return `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="2.5" opacity="${0.2+row*0.15}" stroke-linecap="round" stroke-linejoin="round"/>`}).join('');
+    case 'pillars':
+      return `<polygon points="60,100 260,100 240,75 80,75" fill="${c}" opacity="0.7"/><rect x="70" y="100" width="180" height="8" fill="${c}" opacity="0.5"/>${[0,1,2,3].map(i=>{const x=80+i*50;return `<rect x="${x}" y="108" width="20" height="120" fill="${c}" opacity="${0.4+i*0.1}"/><rect x="${x-4}" y="108" width="28" height="6" fill="${c}" opacity="0.6"/><rect x="${x-4}" y="222" width="28" height="6" fill="${c}" opacity="0.6"/>`}).join('')}<rect x="60" y="228" width="200" height="14" fill="${c}" opacity="0.6"/><rect x="50" y="242" width="220" height="8" fill="${c}" opacity="0.5"/>`;
+    case 'orbit':
+      return `<ellipse cx="160" cy="160" rx="110" ry="42" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.25"/><ellipse cx="160" cy="160" rx="42" ry="110" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/><ellipse cx="160" cy="160" rx="95" ry="50" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.3" transform="rotate(45 160 160)"/><circle cx="270" cy="160" r="10" fill="${c}" opacity="0.8"/><circle cx="160" cy="50" r="8" fill="${c}" opacity="0.7"/><circle cx="95" cy="225" r="9" fill="${c}" opacity="0.75"/><circle cx="160" cy="160" r="22" fill="${c}" opacity="0.9"/><circle cx="160" cy="160" r="28" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>`;
+    case 'helix':
+      return `${Array.from({length:2},(_,strand)=>{const phase=strand*Math.PI;const pts=Array.from({length:40},(_,i)=>{const t=i/39;const y=50+t*220;const x=160+Math.sin(t*Math.PI*3+phase)*60;return `${x.toFixed(1)},${y.toFixed(1)}`}).join(' ');return `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="3" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>`}).join('')}${Array.from({length:8},(_,i)=>{const t=(i+0.5)/8;const y=50+t*220;const x1=160+Math.sin(t*Math.PI*3)*60;const x2=160+Math.sin(t*Math.PI*3+Math.PI)*60;return `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5" opacity="0.35"/>`}).join('')}`;
   }
 }
