@@ -7,6 +7,16 @@ const CYCLE_MS = 4000;
 const TRANSITION_MS = 1200;
 const N = ECOSYSTEMS.length;
 
+/**
+ * Style of the "TOKENIZATION LAYER" central hero node.
+ * Change this to try different designs:
+ *   'glass'         — frosted glass circle with bright border and soft gradient fill
+ *   'gradient-ring' — dark inner circle with animated rainbow gradient ring
+ *   'prism'         — solid gradient-filled circle with inner shadow
+ *   'orbital'       — multi-layer concentric rings with slow rotation
+ */
+const TOKENIZATION_NODE_STYLE: 'glass' | 'gradient-ring' | 'prism' | 'orbital' = 'prism';
+
 const FEATURED_POS = { x: 500, y: 115 };
 const ORBIT_SLOTS = [
   { x: 175, y: 175 },
@@ -461,60 +471,185 @@ export default function NeuralMesh() {
     spineSharp2.setAttribute('stroke-dasharray', '8 12');
     linesGroup.appendChild(spineSharp2);
 
-    // Spine labels — the "TOKENIZATION LAYER" hero label
+    // Spine labels — the "TOKENIZATION LAYER" central hero node
     {
-      // Rainbow gradient definition (once per render)
+      const CX = 500, CY = 360;
       const svg = nodesGroup.ownerSVGElement;
-      if (svg && !svg.querySelector('#tokenizationHeroGrad')) {
-        const defs = svg.querySelector('defs') || (() => { const d = document.createElementNS('http://www.w3.org/2000/svg','defs'); svg.insertBefore(d, svg.firstChild); return d; })();
+      const SVG_NS = 'http://www.w3.org/2000/svg';
 
-        const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      // Define shared gradient + filters in <defs> once
+      if (svg && !svg.querySelector('#tokenizationHeroGrad')) {
+        const defs = svg.querySelector('defs') || (() => { const d = document.createElementNS(SVG_NS,'defs'); svg.insertBefore(d, svg.firstChild); return d; })();
+
+        // Linear rainbow gradient
+        const grad = document.createElementNS(SVG_NS, 'linearGradient');
         grad.setAttribute('id', 'tokenizationHeroGrad');
         grad.setAttribute('x1', '0%'); grad.setAttribute('y1', '0%');
-        grad.setAttribute('x2', '100%'); grad.setAttribute('y2', '0%');
+        grad.setAttribute('x2', '100%'); grad.setAttribute('y2', '100%');
         [
           ['0%', '#3B82F6'], ['20%', '#8B5CF6'], ['40%', '#EC4899'],
           ['60%', '#F59E0B'], ['80%', '#10B981'], ['100%', '#06B6D4'],
         ].forEach(([offset, color]) => {
-          const s = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+          const s = document.createElementNS(SVG_NS, 'stop');
           s.setAttribute('offset', offset); s.setAttribute('stop-color', color);
           grad.appendChild(s);
         });
         defs.appendChild(grad);
 
-        // Glow filter
-        const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+        // Conic-style rotating gradient (approximated with radial + rotation)
+        const conicGrad = document.createElementNS(SVG_NS, 'linearGradient');
+        conicGrad.setAttribute('id', 'tokenizationHeroGradRotated');
+        conicGrad.setAttribute('x1', '0%'); conicGrad.setAttribute('y1', '0%');
+        conicGrad.setAttribute('x2', '100%'); conicGrad.setAttribute('y2', '100%');
+        [
+          ['0%', '#3B82F6'], ['16%', '#8B5CF6'], ['33%', '#EC4899'],
+          ['50%', '#F59E0B'], ['66%', '#10B981'], ['83%', '#06B6D4'], ['100%', '#3B82F6'],
+        ].forEach(([offset, color]) => {
+          const s = document.createElementNS(SVG_NS, 'stop');
+          s.setAttribute('offset', offset); s.setAttribute('stop-color', color);
+          conicGrad.appendChild(s);
+        });
+        defs.appendChild(conicGrad);
+
+        // Soft glow filter for halo
+        const filter = document.createElementNS(SVG_NS, 'filter');
         filter.setAttribute('id', 'tokenizationHeroGlow');
         filter.setAttribute('x', '-50%'); filter.setAttribute('y', '-50%');
         filter.setAttribute('width', '200%'); filter.setAttribute('height', '200%');
-        filter.innerHTML = '<feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>';
+        filter.innerHTML = '<feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>';
         defs.appendChild(filter);
       }
 
-      // Background glow halo behind the text
-      const halo = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-      halo.setAttribute('cx', '500'); halo.setAttribute('cy', '345');
-      halo.setAttribute('rx', '220'); halo.setAttribute('ry', '38');
+      // Outer halo — common to all styles
+      const halo = document.createElementNS(SVG_NS, 'circle');
+      halo.setAttribute('cx', String(CX)); halo.setAttribute('cy', String(CY));
+      halo.setAttribute('r', '130');
       halo.setAttribute('fill', 'url(#tokenizationHeroGrad)');
-      halo.setAttribute('opacity', '0.18');
-      halo.setAttribute('filter', 'blur(18px)');
+      halo.setAttribute('opacity', '0.14');
+      halo.setAttribute('filter', 'blur(28px)');
       halo.classList.add('spine-label-halo');
       nodesGroup.appendChild(halo);
 
-      // Hero text
-      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      t.setAttribute('x', '500'); t.setAttribute('y', '352');
-      t.setAttribute('text-anchor', 'middle');
-      t.setAttribute('dominant-baseline', 'middle');
-      t.setAttribute('fill', 'url(#tokenizationHeroGrad)');
-      t.setAttribute('font-family', "'Monument Extended', sans-serif");
-      t.setAttribute('font-size', '34');
-      t.setAttribute('font-weight', '900');
-      t.setAttribute('letter-spacing', '0.04em');
-      t.setAttribute('filter', 'url(#tokenizationHeroGlow)');
-      t.textContent = 'TOKENIZATION LAYER';
-      t.classList.add('spine-label');
-      nodesGroup.appendChild(t);
+      // Style-specific body
+      if (TOKENIZATION_NODE_STYLE === 'glass') {
+        // Frosted glass disc
+        const disc = document.createElementNS(SVG_NS, 'circle');
+        disc.setAttribute('cx', String(CX)); disc.setAttribute('cy', String(CY));
+        disc.setAttribute('r', '82');
+        disc.setAttribute('fill', 'rgba(20,20,35,0.65)');
+        disc.setAttribute('stroke', 'url(#tokenizationHeroGrad)');
+        disc.setAttribute('stroke-width', '1.5');
+        nodesGroup.appendChild(disc);
+        // Inner soft gradient tint
+        const tint = document.createElementNS(SVG_NS, 'circle');
+        tint.setAttribute('cx', String(CX)); tint.setAttribute('cy', String(CY));
+        tint.setAttribute('r', '82');
+        tint.setAttribute('fill', 'url(#tokenizationHeroGrad)');
+        tint.setAttribute('opacity', '0.08');
+        nodesGroup.appendChild(tint);
+      } else if (TOKENIZATION_NODE_STYLE === 'gradient-ring') {
+        // Dark inner circle + bright gradient ring
+        const ring = document.createElementNS(SVG_NS, 'circle');
+        ring.setAttribute('cx', String(CX)); ring.setAttribute('cy', String(CY));
+        ring.setAttribute('r', '82');
+        ring.setAttribute('fill', 'none');
+        ring.setAttribute('stroke', 'url(#tokenizationHeroGradRotated)');
+        ring.setAttribute('stroke-width', '2.5');
+        ring.classList.add('tok-ring-rotate');
+        nodesGroup.appendChild(ring);
+        // Secondary outer ring
+        const outerRing = document.createElementNS(SVG_NS, 'circle');
+        outerRing.setAttribute('cx', String(CX)); outerRing.setAttribute('cy', String(CY));
+        outerRing.setAttribute('r', '95');
+        outerRing.setAttribute('fill', 'none');
+        outerRing.setAttribute('stroke', 'url(#tokenizationHeroGrad)');
+        outerRing.setAttribute('stroke-width', '0.8');
+        outerRing.setAttribute('opacity', '0.4');
+        outerRing.setAttribute('stroke-dasharray', '4 8');
+        nodesGroup.appendChild(outerRing);
+        // Dark disc
+        const disc = document.createElementNS(SVG_NS, 'circle');
+        disc.setAttribute('cx', String(CX)); disc.setAttribute('cy', String(CY));
+        disc.setAttribute('r', '78');
+        disc.setAttribute('fill', 'rgba(10,10,18,0.92)');
+        nodesGroup.appendChild(disc);
+      } else if (TOKENIZATION_NODE_STYLE === 'prism') {
+        // Outer concentric rings (from orbital style)
+        [110, 95].forEach((r, i) => {
+          const ring = document.createElementNS(SVG_NS, 'circle');
+          ring.setAttribute('cx', String(CX)); ring.setAttribute('cy', String(CY));
+          ring.setAttribute('r', String(r));
+          ring.setAttribute('fill', 'none');
+          ring.setAttribute('stroke', 'url(#tokenizationHeroGrad)');
+          ring.setAttribute('stroke-width', '1');
+          ring.setAttribute('opacity', String(0.35 + i * 0.15));
+          ring.setAttribute('stroke-dasharray', `${6 + i * 4} ${4 + i * 2}`);
+          if (i === 0) ring.classList.add('tok-ring-rotate-slow');
+          if (i === 1) ring.classList.add('tok-ring-rotate-reverse');
+          nodesGroup.appendChild(ring);
+        });
+        // Solid gradient-filled disc
+        const disc = document.createElementNS(SVG_NS, 'circle');
+        disc.setAttribute('cx', String(CX)); disc.setAttribute('cy', String(CY));
+        disc.setAttribute('r', '82');
+        disc.setAttribute('fill', 'url(#tokenizationHeroGrad)');
+        disc.setAttribute('opacity', '0.85');
+        nodesGroup.appendChild(disc);
+        // Dark inner overlay for text legibility
+        const overlay = document.createElementNS(SVG_NS, 'circle');
+        overlay.setAttribute('cx', String(CX)); overlay.setAttribute('cy', String(CY));
+        overlay.setAttribute('r', '72');
+        overlay.setAttribute('fill', 'rgba(10,10,18,0.55)');
+        nodesGroup.appendChild(overlay);
+      } else if (TOKENIZATION_NODE_STYLE === 'orbital') {
+        // 3 concentric rings + solid dark core
+        [110, 95, 82].forEach((r, i) => {
+          const ring = document.createElementNS(SVG_NS, 'circle');
+          ring.setAttribute('cx', String(CX)); ring.setAttribute('cy', String(CY));
+          ring.setAttribute('r', String(r));
+          ring.setAttribute('fill', 'none');
+          ring.setAttribute('stroke', 'url(#tokenizationHeroGrad)');
+          ring.setAttribute('stroke-width', String(i === 2 ? '2.5' : '1'));
+          ring.setAttribute('opacity', String(0.3 + i * 0.2));
+          if (i !== 2) ring.setAttribute('stroke-dasharray', `${6 + i * 4} ${4 + i * 2}`);
+          if (i === 0) ring.classList.add('tok-ring-rotate-slow');
+          if (i === 1) ring.classList.add('tok-ring-rotate-reverse');
+          nodesGroup.appendChild(ring);
+        });
+        // Dark core
+        const core = document.createElementNS(SVG_NS, 'circle');
+        core.setAttribute('cx', String(CX)); core.setAttribute('cy', String(CY));
+        core.setAttribute('r', '78');
+        core.setAttribute('fill', 'rgba(10,10,18,0.94)');
+        nodesGroup.appendChild(core);
+      }
+
+      // Two-line text — same across all variants
+      const line1 = document.createElementNS(SVG_NS, 'text');
+      line1.setAttribute('x', String(CX)); line1.setAttribute('y', String(CY - 8));
+      line1.setAttribute('text-anchor', 'middle');
+      line1.setAttribute('dominant-baseline', 'middle');
+      line1.setAttribute('fill', TOKENIZATION_NODE_STYLE === 'prism' ? '#fff' : 'url(#tokenizationHeroGrad)');
+      line1.setAttribute('font-family', "'Monument Extended', sans-serif");
+      line1.setAttribute('font-size', '22');
+      line1.setAttribute('font-weight', '900');
+      line1.setAttribute('letter-spacing', '0.08em');
+      line1.textContent = 'TOKENIZATION';
+      line1.classList.add('spine-label');
+      nodesGroup.appendChild(line1);
+
+      const line2 = document.createElementNS(SVG_NS, 'text');
+      line2.setAttribute('x', String(CX)); line2.setAttribute('y', String(CY + 20));
+      line2.setAttribute('text-anchor', 'middle');
+      line2.setAttribute('dominant-baseline', 'middle');
+      line2.setAttribute('fill', TOKENIZATION_NODE_STYLE === 'prism' ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.85)');
+      line2.setAttribute('font-family', "'Monument Extended', sans-serif");
+      line2.setAttribute('font-size', '22');
+      line2.setAttribute('font-weight', '900');
+      line2.setAttribute('letter-spacing', '0.08em');
+      line2.textContent = 'LAYER';
+      line2.classList.add('spine-label');
+      nodesGroup.appendChild(line2);
     }
 
     // Spine pulses
@@ -578,6 +713,13 @@ export default function NeuralMesh() {
             <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
+          <style>{`
+            @keyframes tokRingRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            @keyframes tokRingRotateReverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+            .tok-ring-rotate { animation: tokRingRotate 18s linear infinite; transform-origin: 500px 360px; }
+            .tok-ring-rotate-slow { animation: tokRingRotate 40s linear infinite; transform-origin: 500px 360px; }
+            .tok-ring-rotate-reverse { animation: tokRingRotateReverse 28s linear infinite; transform-origin: 500px 360px; }
+          `}</style>
         </defs>
         <g id="meshLines"></g>
         <g id="meshNodes"></g>
