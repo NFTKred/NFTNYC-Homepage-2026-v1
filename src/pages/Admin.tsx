@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2 } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical } from 'lucide-react';
 
 /* ─── Types ─── */
 interface Resource {
@@ -21,6 +21,7 @@ interface Resource {
   status: string;
   auto_found: boolean;
   created_at: string;
+  display_order: number | null;
 }
 
 interface Speaker {
@@ -41,6 +42,64 @@ const RESOURCE_TYPES = ['blog', 'youtube', 'podcast', 'tweet', 'paper', 'news'] 
 const OUTREACH_CHANNELS = ['twitter_dm', 'email', 'linkedin', 'telegram', 'intro', 'other'] as const;
 const OUTREACH_STATUSES = ['not_started', 'contacted', 'responded', 'confirmed', 'declined'] as const;
 const RESOURCE_RELATIONSHIPS = ['authored', 'mentioned', 'interviewed', 'quoted', 'topic_expert'] as const;
+
+/* ─── Outreach draft template ─── */
+
+const RESOURCE_NOUN: Record<string, string> = {
+  blog: 'blog post',
+  youtube: 'video',
+  podcast: 'podcast',
+  tweet: 'tweet',
+  paper: 'paper',
+  news: 'article',
+};
+
+// How to refer to the speaker's connection to the resource in the outreach.
+const RELATIONSHIP_CLAUSE: Record<string, { possessive: 'your' | 'the'; about: string }> = {
+  authored:     { possessive: 'your', about: '' },               // their own content — no "mentioning you"
+  interviewed:  { possessive: 'the',  about: 'interviewing you' },
+  quoted:       { possessive: 'the',  about: 'quoting you' },
+  mentioned:    { possessive: 'the',  about: 'mentioning you' },
+  topic_expert: { possessive: 'the',  about: 'featuring you' },
+};
+
+// Short name used in the draft ("our <X> tokenization resource page").
+const VERTICAL_LABEL: Record<string, string> = {
+  ai:           'AI Identity',
+  gaming:       'Gaming',
+  infra:        'Infrastructure',
+  social:       'Social NFT',
+  creator:      'Creator Economy',
+  defi:         'DeFi',
+  rwa:          'RWA',
+  brands:       'Brands & Engagement',
+  culture:      'Culture, Art & Music',
+  domains:      'ENS Domains',
+  desci:        'DeSci',
+  marketplaces: 'NFT Marketplace',
+};
+
+function firstName(fullName: string): string {
+  // "Yat Siu" → "Yat"; "Snowfro (Erick Calderon)" → "Snowfro"; "Yat Siu (alt)" → "Yat"
+  return fullName.replace(/\s*\([^)]*\)\s*/g, '').trim().split(/\s+/)[0] ?? fullName;
+}
+
+function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): string {
+  const name = firstName(speaker.name);
+  const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
+  const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
+
+  if (!resource || !speaker.resource_relationship) {
+    return `${name},\n\n[Add a reference to a piece of their content here]\nWe're putting together the ${verticalLabel} track for NFT.NYC 2026 — would love to have your voice on stage.\n\n${pageUrl}`;
+  }
+
+  const noun = RESOURCE_NOUN[resource.type] ?? 'piece';
+  const rel = RELATIONSHIP_CLAUSE[speaker.resource_relationship] ?? RELATIONSHIP_CLAUSE.mentioned;
+  const aboutClause = rel.about ? ` ${rel.about}` : '';
+  const topic = resource.topic_tag || resource.title;
+
+  return `${name},\n\nI saw ${rel.possessive} great ${noun}${aboutClause} about ${topic}.\nWe've added it to our ${verticalLabel} tokenization resource page for our community: ${pageUrl}`;
+}
 
 const STATUS_COLORS: Record<string, string> = {
   not_started: '#6B7280',
@@ -107,12 +166,19 @@ export default function Admin() {
   const [editingSpeaker, setEditingSpeaker] = useState<Speaker | null>(null);
   const [seeking, setSeeking] = useState(false);
   const [seekResult, setSeekResult] = useState<string | null>(null);
+  const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
 
   /* ─── Queries ─── */
   const resourcesQuery = useQuery({
     queryKey: ['admin-resources', activeVertical],
     queryFn: async () => {
-      let q = supabase.from('resources').select('*').order('date', { ascending: false });
+      let q = supabase
+        .from('resources')
+        .select('*')
+        .order('display_order', { ascending: true, nullsFirst: false })
+        .order('date', { ascending: false });
       if (activeVertical !== 'all') q = q.eq('vertical_id', activeVertical);
       const { data, error } = await q;
       if (error) throw error;
@@ -134,10 +200,46 @@ export default function Admin() {
   /* ─── Mutations ─── */
   const deleteResource = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('resources').delete().eq('id', id);
+      // .select() forces Supabase to return the deleted rows, so we can
+      // detect the silent-fail case where RLS blocks the DELETE and no
+      // error is raised but 0 rows are affected.
+      const { data, error } = await supabase
+        .from('resources')
+        .delete()
+        .eq('id', id)
+        .select();
       if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error(
+          'No rows deleted. This usually means your user is not in the admin_users table, or the row does not exist. Check Supabase → admin_users table for your email.'
+        );
+      }
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-resources'] }),
+    onError: (err: Error) => alert(`Delete failed: ${err.message}`),
+  });
+
+  // Persist a new order for a subset of resources (all within one vertical).
+  // Calls Supabase in parallel; React Query handles the refetch.
+  const reorderResources = useMutation({
+    mutationFn: async (ordered: { id: string; display_order: number }[]) => {
+      const results = await Promise.all(
+        ordered.map(({ id, display_order }) =>
+          supabase.from('resources').update({ display_order }).eq('id', id).select()
+        )
+      );
+      const firstErr = results.find(r => r.error)?.error;
+      if (firstErr) throw firstErr;
+      const silent = results.find(r => !r.error && (!r.data || r.data.length === 0));
+      if (silent) {
+        throw new Error('Reorder blocked by RLS — check your admin_users entry.');
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-resources'] });
+      queryClient.invalidateQueries({ queryKey: ['resources'] });
+    },
+    onError: (err: Error) => alert(`Reorder failed: ${err.message}`),
   });
 
   const updateResourceStatus = useMutation({
@@ -150,9 +252,19 @@ export default function Admin() {
 
   const deleteSpeaker = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from('speakers').delete().eq('id', id);
+      const { data, error } = await supabase
+        .from('speakers')
+        .delete()
+        .eq('id', id)
+        .select();
       if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error(
+          'No rows deleted. Your user is probably not in admin_users, or the speaker no longer exists.'
+        );
+      }
     },
+    onError: (err: Error) => alert(`Delete failed: ${err.message}`),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-speakers'] }),
   });
 
@@ -318,10 +430,16 @@ export default function Admin() {
               borderRadius: '6px',
             }}>{seekResult}</p>
           )}
+          {activeVertical === 'all' && approvedResources.length > 0 && (
+            <p style={{ fontSize: '12px', color: 'rgb(149,149,176)', marginBottom: '0.75rem' }}>
+              Select a single vertical above to drag-and-drop resources into your preferred order.
+            </p>
+          )}
           <div style={{ overflowX: 'auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
+                  <th style={{ ...headerCellStyle, width: '28px' }}></th>
                   <th style={headerCellStyle}>Title</th>
                   <th style={headerCellStyle}>Vertical</th>
                   <th style={headerCellStyle}>Type</th>
@@ -333,9 +451,54 @@ export default function Admin() {
               </thead>
               <tbody>
                 {approvedResources.length === 0 ? (
-                  <tr><td colSpan={7} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No resources yet</td></tr>
-                ) : approvedResources.map(r => (
-                  <tr key={r.id}>
+                  <tr><td colSpan={8} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No resources yet</td></tr>
+                ) : approvedResources.map(r => {
+                  const dragEnabled = activeVertical !== 'all';
+                  const isDragging = draggingId === r.id;
+                  const isDragOver = dragOverId === r.id && draggingId !== r.id;
+                  return (
+                  <tr
+                    key={r.id}
+                    draggable={dragEnabled}
+                    onDragStart={() => { if (dragEnabled) setDraggingId(r.id); }}
+                    onDragEnd={() => { setDraggingId(null); setDragOverId(null); }}
+                    onDragOver={(e) => {
+                      if (!dragEnabled || !draggingId || draggingId === r.id) return;
+                      e.preventDefault();
+                      if (dragOverId !== r.id) setDragOverId(r.id);
+                    }}
+                    onDrop={(e) => {
+                      if (!dragEnabled || !draggingId || draggingId === r.id) return;
+                      e.preventDefault();
+                      const from = approvedResources.findIndex(x => x.id === draggingId);
+                      const to = approvedResources.findIndex(x => x.id === r.id);
+                      if (from < 0 || to < 0) return;
+                      const next = approvedResources.slice();
+                      const [moved] = next.splice(from, 1);
+                      next.splice(to, 0, moved);
+                      // Optimistic: update the cached query data immediately
+                      queryClient.setQueryData(['admin-resources', activeVertical], (old: Resource[] | undefined) => {
+                        if (!old) return old;
+                        const reordered = next.map((x, i) => ({ ...x, display_order: i + 1 }));
+                        // Preserve any pending-status rows at their original positions
+                        const byId = new Map(reordered.map(x => [x.id, x]));
+                        return old.map(x => byId.get(x.id) ?? x);
+                      });
+                      reorderResources.mutate(
+                        next.map((x, i) => ({ id: x.id, display_order: i + 1 }))
+                      );
+                      setDraggingId(null);
+                      setDragOverId(null);
+                    }}
+                    style={{
+                      opacity: isDragging ? 0.4 : 1,
+                      background: isDragOver ? 'rgba(59,130,246,0.08)' : 'transparent',
+                      borderTop: isDragOver ? '2px solid #3B82F6' : undefined,
+                    }}
+                  >
+                    <td style={{ ...cellStyle, textAlign: 'center', color: dragEnabled ? 'rgb(149, 149, 176)' : 'rgb(60, 60, 80)', cursor: dragEnabled ? 'grab' : 'not-allowed' }} title={dragEnabled ? 'Drag to reorder' : 'Select a single vertical to enable reordering'}>
+                      <GripVertical size={14} />
+                    </td>
                     <td style={cellStyle}>
                       <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'none' }}>{r.title}</a>
                     </td>
@@ -349,13 +512,14 @@ export default function Admin() {
                         <button onClick={() => { setEditingResource(r); setShowResourceForm(true); }} style={{ background: 'none', border: 'none', color: 'rgb(149, 149, 176)', cursor: 'pointer', padding: '4px' }}>
                           <Pencil size={14} />
                         </button>
-                        <button onClick={() => deleteResource.mutate(r.id)} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '4px' }}>
+                        <button onClick={() => { if (window.confirm(`Delete resource "${r.title}"?`)) deleteResource.mutate(r.id); }} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '4px' }}>
                           <Trash2 size={14} />
                         </button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -422,11 +586,40 @@ export default function Admin() {
                     </td>
                     <td style={{ ...cellStyle, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.outreach_notes}</td>
                     <td style={cellStyle}>
-                      <div style={{ display: 'flex', gap: '0.25rem' }}>
+                      <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+                        <button
+                          onClick={async () => {
+                            const draft = buildOutreachDraft(s, relatedResource);
+                            try {
+                              await navigator.clipboard.writeText(draft);
+                              setCopiedDraftId(s.id);
+                              setTimeout(() => setCopiedDraftId(prev => prev === s.id ? null : prev), 1500);
+                            } catch {
+                              window.prompt('Copy outreach draft:', draft);
+                            }
+                          }}
+                          title={relatedResource ? 'Copy outreach draft' : 'No linked resource — draft will have a placeholder'}
+                          style={{
+                            background: copiedDraftId === s.id ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.12)',
+                            border: 'none',
+                            color: copiedDraftId === s.id ? '#10B981' : '#3B82F6',
+                            cursor: 'pointer',
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          {copiedDraftId === s.id ? <Check size={12} /> : <Copy size={12} />}
+                          {copiedDraftId === s.id ? 'Copied' : 'Copy Draft'}
+                        </button>
                         <button onClick={() => { setEditingSpeaker(s); setShowSpeakerForm(true); }} style={{ background: 'none', border: 'none', color: 'rgb(149, 149, 176)', cursor: 'pointer', padding: '4px' }}>
                           <Pencil size={14} />
                         </button>
-                        <button onClick={() => deleteSpeaker.mutate(s.id)} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '4px' }}>
+                        <button onClick={() => { if (window.confirm(`Delete speaker "${s.name}"?`)) deleteSpeaker.mutate(s.id); }} style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '4px' }}>
                           <Trash2 size={14} />
                         </button>
                       </div>

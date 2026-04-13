@@ -16,7 +16,6 @@ import SatelliteEvents from '@/components/SatelliteEvents';
 import NewsletterCapture from '@/components/NewsletterCapture';
 import FAQ from '@/components/FAQ';
 import SiteFooter from '@/components/SiteFooter';
-import RotatingStar from '@/components/RotatingStar';
 
 export default function Index() {
   const stage = useMemo(() => {
@@ -274,7 +273,6 @@ export default function Index() {
 
             {/* Core Values */}
             <div className="flex flex-col items-center scroll-fade-up" style={{ marginTop: '3.5rem', marginBottom: '1.5rem' }}>
-              <RotatingStar size={120} />
               <h3 style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'var(--text-lg)',

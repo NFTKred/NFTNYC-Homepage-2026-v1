@@ -11,6 +11,7 @@ export function useVerticalResources(verticalId: string) {
         .select('*')
         .eq('vertical_id', verticalId)
         .eq('status', 'approved')
+        .order('display_order', { ascending: true, nullsFirst: false })
         .order('date', { ascending: false });
 
       if (error || !data || data.length === 0) {
