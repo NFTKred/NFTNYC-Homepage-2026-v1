@@ -461,27 +461,57 @@ export default function NeuralMesh() {
     spineSharp2.setAttribute('stroke-dasharray', '8 12');
     linesGroup.appendChild(spineSharp2);
 
-    // Spine labels
+    // Spine labels — the "TOKENIZATION LAYER" hero label
     {
-      const pill = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      pill.setAttribute('x', '420'); pill.setAttribute('y', '334');
-      pill.setAttribute('width', '160'); pill.setAttribute('height', '22');
-      pill.setAttribute('rx', '11');
-      pill.setAttribute('fill', 'rgba(139,92,246,0.12)');
-      pill.setAttribute('stroke', 'rgba(139,92,246,0.25)');
-      pill.setAttribute('stroke-width', '0.5');
-      pill.classList.add('spine-label-pill');
-      nodesGroup.appendChild(pill);
+      // Rainbow gradient definition (once per render)
+      const svg = nodesGroup.ownerSVGElement;
+      if (svg && !svg.querySelector('#tokenizationHeroGrad')) {
+        const defs = svg.querySelector('defs') || (() => { const d = document.createElementNS('http://www.w3.org/2000/svg','defs'); svg.insertBefore(d, svg.firstChild); return d; })();
 
+        const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        grad.setAttribute('id', 'tokenizationHeroGrad');
+        grad.setAttribute('x1', '0%'); grad.setAttribute('y1', '0%');
+        grad.setAttribute('x2', '100%'); grad.setAttribute('y2', '0%');
+        [
+          ['0%', '#3B82F6'], ['20%', '#8B5CF6'], ['40%', '#EC4899'],
+          ['60%', '#F59E0B'], ['80%', '#10B981'], ['100%', '#06B6D4'],
+        ].forEach(([offset, color]) => {
+          const s = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+          s.setAttribute('offset', offset); s.setAttribute('stop-color', color);
+          grad.appendChild(s);
+        });
+        defs.appendChild(grad);
+
+        // Glow filter
+        const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+        filter.setAttribute('id', 'tokenizationHeroGlow');
+        filter.setAttribute('x', '-50%'); filter.setAttribute('y', '-50%');
+        filter.setAttribute('width', '200%'); filter.setAttribute('height', '200%');
+        filter.innerHTML = '<feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>';
+        defs.appendChild(filter);
+      }
+
+      // Background glow halo behind the text
+      const halo = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      halo.setAttribute('cx', '500'); halo.setAttribute('cy', '345');
+      halo.setAttribute('rx', '220'); halo.setAttribute('ry', '38');
+      halo.setAttribute('fill', 'url(#tokenizationHeroGrad)');
+      halo.setAttribute('opacity', '0.18');
+      halo.setAttribute('filter', 'blur(18px)');
+      halo.classList.add('spine-label-halo');
+      nodesGroup.appendChild(halo);
+
+      // Hero text
       const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      t.setAttribute('x', '500'); t.setAttribute('y', '345');
+      t.setAttribute('x', '500'); t.setAttribute('y', '352');
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('dominant-baseline', 'middle');
-      t.setAttribute('fill', 'rgba(200,180,255,0.75)');
+      t.setAttribute('fill', 'url(#tokenizationHeroGrad)');
       t.setAttribute('font-family', "'Monument Extended', sans-serif");
-      t.setAttribute('font-size', '11');
+      t.setAttribute('font-size', '34');
       t.setAttribute('font-weight', '900');
-      t.setAttribute('letter-spacing', '0.15em');
+      t.setAttribute('letter-spacing', '0.04em');
+      t.setAttribute('filter', 'url(#tokenizationHeroGlow)');
       t.textContent = 'TOKENIZATION LAYER';
       t.classList.add('spine-label');
       nodesGroup.appendChild(t);
