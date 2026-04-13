@@ -601,6 +601,83 @@ export default function NeuralMesh() {
         overlay.setAttribute('r', '72');
         overlay.setAttribute('fill', 'rgba(10,10,18,0.55)');
         nodesGroup.appendChild(overlay);
+
+        // Morphing prismatic polygon — 7 keyframes of varying radii per vertex
+        // Creates a shape that constantly "breathes" and reshapes, evoking the
+        // evolving flux of surrounding ecosystem nodes.
+        const NUM_VERTICES = 8;
+        const BASE_R = 58;
+        // Generate 7 keyframes of varying radii (last matches first for seamless loop)
+        const keyframes: string[] = [];
+        for (let k = 0; k < 7; k++) {
+          const pts: string[] = [];
+          for (let i = 0; i < NUM_VERTICES; i++) {
+            const angle = (i / NUM_VERTICES) * Math.PI * 2 - Math.PI / 2;
+            // Different radius perturbation per keyframe and vertex
+            const phase = k === 6 ? 0 : k; // last keyframe same as first for loop
+            const rOffset = Math.sin(phase * 0.9 + i * 1.3) * 14 + Math.cos(phase * 1.7 + i * 0.7) * 8;
+            const r = BASE_R + rOffset;
+            const x = CX + Math.cos(angle) * r;
+            const y = CY + Math.sin(angle) * r;
+            pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+          }
+          keyframes.push(pts.join(' '));
+        }
+
+        // Stroke polygon (crisper outline)
+        const prismStroke = document.createElementNS(SVG_NS, 'polygon');
+        prismStroke.setAttribute('fill', 'url(#tokenizationHeroGrad)');
+        prismStroke.setAttribute('fill-opacity', '0.18');
+        prismStroke.setAttribute('stroke', 'url(#tokenizationHeroGradRotated)');
+        prismStroke.setAttribute('stroke-width', '1.5');
+        prismStroke.setAttribute('stroke-opacity', '0.7');
+        prismStroke.setAttribute('stroke-linejoin', 'round');
+        prismStroke.setAttribute('points', keyframes[0]);
+        const anim1 = document.createElementNS(SVG_NS, 'animate');
+        anim1.setAttribute('attributeName', 'points');
+        anim1.setAttribute('values', keyframes.join(';'));
+        anim1.setAttribute('dur', '11s');
+        anim1.setAttribute('repeatCount', 'indefinite');
+        anim1.setAttribute('calcMode', 'spline');
+        anim1.setAttribute('keySplines', Array(6).fill('0.45 0.05 0.55 0.95').join(';'));
+        anim1.setAttribute('keyTimes', '0;0.166;0.333;0.5;0.666;0.833;1');
+        prismStroke.appendChild(anim1);
+        nodesGroup.appendChild(prismStroke);
+
+        // Second inner polygon — smaller, rotating opposite direction
+        const innerKeyframes: string[] = [];
+        const INNER_R = 32;
+        for (let k = 0; k < 7; k++) {
+          const pts: string[] = [];
+          const rotOffset = (k / 7) * -Math.PI * 0.4; // rotate counter
+          for (let i = 0; i < NUM_VERTICES; i++) {
+            const angle = (i / NUM_VERTICES) * Math.PI * 2 + rotOffset;
+            const phase = k === 6 ? 0 : k;
+            const rOffset = Math.sin(phase * 1.3 + i * 0.9) * 8;
+            const r = INNER_R + rOffset;
+            const x = CX + Math.cos(angle) * r;
+            const y = CY + Math.sin(angle) * r;
+            pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+          }
+          innerKeyframes.push(pts.join(' '));
+        }
+        const prismInner = document.createElementNS(SVG_NS, 'polygon');
+        prismInner.setAttribute('fill', 'url(#tokenizationHeroGrad)');
+        prismInner.setAttribute('fill-opacity', '0.28');
+        prismInner.setAttribute('stroke', 'rgba(255,255,255,0.35)');
+        prismInner.setAttribute('stroke-width', '0.8');
+        prismInner.setAttribute('stroke-linejoin', 'round');
+        prismInner.setAttribute('points', innerKeyframes[0]);
+        const anim2 = document.createElementNS(SVG_NS, 'animate');
+        anim2.setAttribute('attributeName', 'points');
+        anim2.setAttribute('values', innerKeyframes.join(';'));
+        anim2.setAttribute('dur', '8s');
+        anim2.setAttribute('repeatCount', 'indefinite');
+        anim2.setAttribute('calcMode', 'spline');
+        anim2.setAttribute('keySplines', Array(6).fill('0.45 0.05 0.55 0.95').join(';'));
+        anim2.setAttribute('keyTimes', '0;0.166;0.333;0.5;0.666;0.833;1');
+        prismInner.appendChild(anim2);
+        nodesGroup.appendChild(prismInner);
       } else if (TOKENIZATION_NODE_STYLE === 'orbital') {
         // 3 concentric rings + solid dark core
         [110, 95, 82].forEach((r, i) => {
