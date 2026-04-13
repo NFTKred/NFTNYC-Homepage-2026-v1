@@ -128,8 +128,6 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
     '',
     `We've added it to our ${verticalLabel} tokenization resource page so the NFT.NYC community can dig deeper:`,
     pageUrl,
-    '',
-    `Would love to get you on stage in September to take this further — open to a quick chat?`,
   ].join('\n');
 }
 
