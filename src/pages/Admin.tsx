@@ -280,6 +280,15 @@ export default function Admin() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-resources'] }),
   });
 
+  const updateSpeakerField = useMutation({
+    mutationFn: async ({ id, field, value }: { id: string; field: string; value: string | null }) => {
+      const { error } = await supabase.from('speakers').update({ [field]: value }).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-speakers'] }),
+    onError: (err: Error) => alert(`Update failed: ${err.message}`),
+  });
+
   const deleteSpeaker = useMutation({
     mutationFn: async (id: string) => {
       const { data, error } = await supabase
@@ -602,17 +611,34 @@ export default function Admin() {
                         <span style={{ background: 'rgba(139,92,246,0.15)', color: '#8B5CF6', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 500 }}>{s.resource_relationship.replace('_', ' ')}</span>
                       ) : <span style={{ color: 'rgb(60, 60, 80)' }}>—</span>}
                     </td>
-                    <td style={cellStyle}>{s.outreach_channel?.replace('_', ' ')}</td>
                     <td style={cellStyle}>
-                      <span style={{
-                        display: 'inline-block',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        background: `${STATUS_COLORS[s.outreach_status] ?? '#6B7280'}22`,
-                        color: STATUS_COLORS[s.outreach_status] ?? '#6B7280',
-                      }}>{s.outreach_status.replace('_', ' ')}</span>
+                      <select
+                        value={s.outreach_channel ?? ''}
+                        onChange={e => updateSpeakerField.mutate({ id: s.id, field: 'outreach_channel', value: e.target.value || null })}
+                        style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '4px', color: 'rgba(255,255,255,0.8)', fontSize: '11px', padding: '2px 4px', cursor: 'pointer', outline: 'none' }}
+                      >
+                        <option value="" style={{ background: '#1a1a2e' }}>—</option>
+                        {OUTREACH_CHANNELS.map(ch => <option key={ch} value={ch} style={{ background: '#1a1a2e' }}>{ch.replace('_', ' ')}</option>)}
+                      </select>
+                    </td>
+                    <td style={cellStyle}>
+                      <select
+                        value={s.outreach_status}
+                        onChange={e => updateSpeakerField.mutate({ id: s.id, field: 'outreach_status', value: e.target.value })}
+                        style={{
+                          background: `${STATUS_COLORS[s.outreach_status] ?? '#6B7280'}22`,
+                          border: `1px solid ${STATUS_COLORS[s.outreach_status] ?? '#6B7280'}44`,
+                          borderRadius: '4px',
+                          color: STATUS_COLORS[s.outreach_status] ?? '#6B7280',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          padding: '2px 4px',
+                          cursor: 'pointer',
+                          outline: 'none',
+                        }}
+                      >
+                        {OUTREACH_STATUSES.map(st => <option key={st} value={st} style={{ background: '#1a1a2e', color: STATUS_COLORS[st] }}>{st.replace('_', ' ')}</option>)}
+                      </select>
                     </td>
                     <td style={{ ...cellStyle, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.outreach_notes}</td>
                     <td style={cellStyle}>
