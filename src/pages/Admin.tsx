@@ -84,19 +84,6 @@ function firstName(fullName: string): string {
   return fullName.replace(/\s*\([^)]*\)\s*/g, '').trim().split(/\s+/)[0] ?? fullName;
 }
 
-// A short hook about the content itself — uses description when available,
-// otherwise a topic-tag sentence. Trimmed to keep the draft readable.
-function contentHook(resource: Resource): string {
-  const raw = (resource.description ?? '').trim();
-  if (raw) {
-    // Keep first sentence or the first ~220 chars, whichever is shorter.
-    const firstSentence = raw.split(/(?<=[.!?])\s+/)[0] ?? raw;
-    const clipped = firstSentence.length > 220 ? firstSentence.slice(0, 217).trimEnd() + '…' : firstSentence;
-    return clipped;
-  }
-  return `covering ${resource.topic_tag || resource.title}`;
-}
-
 function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): string {
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
@@ -106,30 +93,31 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
     return [
       `${name},`,
       '',
-      `[Add a reference to a specific piece of their content here — title, a one-line insight, and the URL.]`,
+      `[Add a reference to a specific piece of their content here.]`,
       '',
-      `We've featured it on our ${verticalLabel} resource page for the NFT.NYC community:`,
-      pageUrl,
+      `We're building the ${verticalLabel} track for NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) and think you would be a great fit. Happy to share details if you're interested.`,
       '',
-      `NFT.NYC 2026 is September 1\u20133 at The Edison in Times Square. We'd like to invite you to speak on the ${verticalLabel} track \u2014 I can send over the details if you're open to it.`,
+      `We've featured you on our ${verticalLabel} resource page: ${pageUrl}`,
+      '',
+      'Best,',
+      'Team NFT.NYC',
     ].join('\n');
   }
 
   const noun = RESOURCE_NOUN[resource.type] ?? 'piece';
   const rel = RELATIONSHIP_CLAUSE[speaker.resource_relationship] ?? RELATIONSHIP_CLAUSE.mentioned;
   const aboutClause = rel.about ? ` ${rel.about}` : '';
-  const hook = contentHook(resource);
   const publisher = resource.source ? ` on ${resource.source}` : '';
 
   return [
     `${name},`,
     '',
-    `Our speaker programming team came across ${rel.possessive} ${noun}${aboutClause}${publisher} \u2014 "${resource.title}" (${resource.url}). ${hook}`,
+    `Our speaker programming team came across ${rel.possessive} ${noun}${aboutClause}${publisher} (${resource.url}). We're building the ${verticalLabel} track for NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) and think you would be a great fit. Happy to share details if you're interested.`,
     '',
-    `We've featured it on our ${verticalLabel} resource page for the NFT.NYC community:`,
-    pageUrl,
+    `We've featured you on our ${verticalLabel} resource page: ${pageUrl}`,
     '',
-    `NFT.NYC 2026 is September 1\u20133 at The Edison in Times Square. We'd like to invite you to speak on the ${verticalLabel} track \u2014 I can send over the details if you're open to it.`,
+    'Best,',
+    'Team NFT.NYC',
   ].join('\n');
 }
 
