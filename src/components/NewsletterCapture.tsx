@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
-const API_URL = 'https://nrzjmocvppijinjszlyg.supabase.co/functions/v1/add-contact';
-const WEBHOOK_SECRET = 'j45tkjbkj4t5jbh45tjhb4jfdfgh';
+// ── Anti-spam: route through our proxy Edge Function which validates
+// Turnstile, checks the honeypot, and then forwards to add-contact.
+const SUBSCRIBE_URL = 'https://zgryfbuoarrlmocavodo.supabase.co/functions/v1/subscribe';
+
+const TURNSTILE_SITE_KEY = '0x4AAAAAAC9g5alRCRTjMTnh';
 
 const PARTICIPATION_OPTIONS = [
   { label: "I'd like to attend", listId: '4547c3c7-e7db-4a6f-ae1d-5400496aeb70' },
@@ -33,58 +36,89 @@ export default function NewsletterCapture() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Turnstile token — set by the widget callback.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
+
+  // Honeypot — hidden field that bots fill, humans don't.
+  const [honeypot, setHoneypot] = useState('');
+
+  // Load the Turnstile script once.
+  useEffect(() => {
+    if (document.querySelector('script[src*="turnstile"]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }, []);
+
+  // Render the widget once the script + container are ready.
+  useEffect(() => {
+    if (!turnstileRef.current) return;
+    const el = turnstileRef.current;
+
+    const tryRender = () => {
+      const w = (window as any).turnstile;
+      if (!w) return false;
+      // Avoid double-render if the container already has a widget.
+      if (el.dataset.widgetId) return true;
+      const id = w.render(el, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token: string) => setTurnstileToken(token),
+        'expired-callback': () => setTurnstileToken(null),
+        'error-callback': () => setTurnstileToken(null),
+        theme: 'dark',
+        size: 'flexible',
+      });
+      el.dataset.widgetId = id;
+      return true;
+    };
+
+    if (tryRender()) return;
+    // Script may still be loading — poll briefly.
+    const timer = setInterval(() => {
+      if (tryRender()) clearInterval(timer);
+    }, 200);
+    return () => clearInterval(timer);
+  }, [submitted]);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName || !lastName || !email || !participation) return;
-
-    setSubmitting(true);
-    setError('');
 
     const selected = PARTICIPATION_OPTIONS.find(o => o.label === participation);
     if (!selected) return;
 
-    const GENERAL_LIST_ID = '24950fb1-4d98-4b3c-94b1-ea0ebc28141f';
+    setSubmitting(true);
+    setError('');
 
     try {
-      // Add to persona-specific list first
-      const resPersona = await fetch(API_URL, {
+      const res = await fetch(SUBSCRIBE_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-webhook-secret': WEBHOOK_SECRET,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           firstName,
           lastName,
           email,
           listId: selected.listId,
+          turnstileToken,
+          website: honeypot, // honeypot field — should always be empty
         }),
       });
 
-      // Then add to general list
-      const resGeneral = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-webhook-secret': WEBHOOK_SECRET,
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          listId: GENERAL_LIST_ID,
-        }),
-      });
-
-      if (!resPersona.ok && !resGeneral.ok) throw new Error('Failed to subscribe');
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error || 'Failed to subscribe');
+      }
 
       setSubmitted(true);
-    } catch {
-      setError('Something went wrong. Please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.');
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [firstName, lastName, email, participation, turnstileToken, honeypot]);
 
   return (
     <section
@@ -160,6 +194,21 @@ export default function NewsletterCapture() {
               onFocus={e => (e.currentTarget.style.borderColor = 'var(--color-primary)')}
               onBlur={e => (e.currentTarget.style.borderColor = 'var(--color-border)')}
             />
+
+            {/* ── Honeypot: invisible to humans, filled by bots ── */}
+            <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={e => setHoneypot(e.target.value)}
+              />
+            </div>
+
             <select
               required
               value={participation}
@@ -184,9 +233,16 @@ export default function NewsletterCapture() {
                 <option key={opt.listId} value={opt.label}>{opt.label}</option>
               ))}
             </select>
+
+            {/* ── Turnstile widget ── */}
+            <div
+              ref={turnstileRef}
+              style={{ display: 'flex', justifyContent: 'center', minHeight: '65px' }}
+            />
+
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || !turnstileToken}
               style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: 'var(--text-sm)',
@@ -194,31 +250,29 @@ export default function NewsletterCapture() {
                 padding: '0.75rem 1.5rem',
                 borderRadius: '9999px',
                 border: 'none',
-                background: submitting
+                background: (submitting || !turnstileToken)
                   ? 'var(--color-text-faint)'
                   : 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
                 backgroundSize: '300% 300%',
-                animation: submitting ? 'none' : 'liquidGradient 12s ease-in-out infinite',
+                animation: (submitting || !turnstileToken) ? 'none' : 'liquidGradient 12s ease-in-out infinite',
                 color: '#fff',
-                cursor: submitting ? 'not-allowed' : 'pointer',
+                cursor: (submitting || !turnstileToken) ? 'not-allowed' : 'pointer',
                 transition: 'transform 150ms ease, box-shadow 150ms ease',
                 whiteSpace: 'nowrap',
                 width: '100%',
               }}
               onMouseEnter={e => {
-                if (!submitting) {
+                if (!submitting && turnstileToken) {
                   (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
                   (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(139,92,246,0.4)';
                 }
               }}
               onMouseLeave={e => {
-                if (!submitting) {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                }
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
               }}
             >
-              {submitting ? 'Submitting...' : 'Subscribe'}
+              {submitting ? 'Submitting...' : !turnstileToken ? 'Verifying...' : 'Subscribe'}
             </button>
             {error && (
               <p style={{
