@@ -66,6 +66,7 @@ export default function Sponsor() {
           color: 'var(--color-text)',
           textAlign: 'center',
           marginBottom: '2rem',
+          textTransform: 'uppercase',
         }}>Choose Your Path</h2>
 
         <div style={{
