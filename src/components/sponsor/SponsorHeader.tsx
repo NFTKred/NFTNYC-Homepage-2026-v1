@@ -22,7 +22,7 @@ export default function Header() {
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-teal/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-brand-orange/5 rounded-full blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-32 text-center">
+      <div className="relative max-w-7xl mx-auto px-6 pt-40 pb-20 md:pt-48 md:pb-32 text-center">
         <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-brand-teal/30 bg-brand-teal/10 text-brand-teal text-sm font-medium mb-8">
           Partnership Opportunities
         </div>

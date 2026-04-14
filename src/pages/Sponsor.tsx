@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Header from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import SponsorHeader from "@/components/sponsor/SponsorHeader";
 import PackageCard from "@/components/sponsor/PackageCard";
 import AlaCarteCard from "@/components/sponsor/AlaCarteCard";
@@ -9,8 +11,18 @@ import TrackPackages from "@/components/sponsor/TrackPackages";
 import { defaultPackages, defaultAlaCarte } from "@/data/sponsor/packages";
 
 export default function Sponsor() {
+  const [theme, setTheme] = useState<'dark' | 'light'>(() =>
+    (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') || 'dark'
+  );
+  const stage = useMemo(() => Number(localStorage.getItem('nftnyc-stage') ?? 0), []);
   const [filter, setFilter] = useState("all");
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+  };
 
   const filteredPackages =
     filter === "all"
@@ -20,7 +32,9 @@ export default function Sponsor() {
       : defaultPackages.filter((p) => p.tier === "standard");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
+
       <SponsorHeader />
       <SponsorPartners />
       <TrackTiles selected={selectedTrack} onSelect={(t) => setSelectedTrack(t || null)} />
@@ -32,11 +46,11 @@ export default function Sponsor() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
           <div>
             <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-2">Sponsorships</p>
-            <h2 className="text-3xl font-bold text-foreground mb-2">Partnership Packages</h2>
-            <p className="text-muted-foreground">Premium sponsorship opportunities with maximum brand visibility</p>
+            <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Partnership Packages</h2>
+            <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Premium sponsorship opportunities with maximum brand visibility</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex bg-secondary rounded-lg p-1 border border-border">
+            <div className="flex rounded-lg p-1 border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
               {[
                 { key: "all", label: "All" },
                 { key: "premium", label: "Premium" },
@@ -45,11 +59,18 @@ export default function Sponsor() {
                 <button
                   key={f.key}
                   onClick={() => setFilter(f.key)}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                    filter === f.key
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  style={{
+                    padding: '0.375rem 1rem',
+                    borderRadius: '0.375rem',
+                    fontSize: '14px',
+                    fontFamily: 'var(--font-body)',
+                    fontWeight: 500,
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 180ms ease',
+                    background: filter === f.key ? '#14b8a6' : 'transparent',
+                    color: filter === f.key ? '#fff' : 'var(--color-text-muted)',
+                  }}
                 >
                   {f.label}
                 </button>
@@ -76,8 +97,8 @@ export default function Sponsor() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
           <div>
             <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-2">Add-Ons</p>
-            <h2 className="text-3xl font-bold text-foreground mb-2">A La Carte Options</h2>
-            <p className="text-muted-foreground">Add individual sponsorship elements to customize your presence</p>
+            <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>A La Carte Options</h2>
+            <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Add individual sponsorship elements to customize your presence</p>
           </div>
         </div>
 
@@ -96,20 +117,7 @@ export default function Sponsor() {
       {/* Community Partner Program */}
       <CommunityPartner />
 
-      {/* Footer */}
-      <footer className="relative py-16 text-center">
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-teal/20 to-transparent" />
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-extrabold text-foreground mb-1 tracking-tight">
-            <span>NFT.NYC </span>
-            <span className="text-gradient-rainbow">2026</span>
-          </h2>
-          <p className="text-muted-foreground mb-8">Where Builders, Brands, and Creators Shape the Future of Digital Ownership</p>
-          <p className="text-xs text-muted-foreground/50 tracking-wide uppercase">
-            Late sponsorship pricing increases apply. Contact us for custom packages.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter stage={stage} />
     </div>
   );
 }
