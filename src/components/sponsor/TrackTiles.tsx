@@ -24,7 +24,7 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
   const selectedTrack = selected ? trackIcons[selected] : null;
 
   return (
-    <section className="relative bg-background py-20">
+    <section className="relative bg-background pt-20 pb-8">
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="max-w-7xl mx-auto px-6">
         <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal text-center mb-3">
