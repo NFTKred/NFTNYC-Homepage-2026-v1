@@ -904,12 +904,17 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
     e.preventDefault();
     setSaving(true);
     const payload = { ...form, status: 'approved', auto_found: false };
+    let error: { message: string } | null = null;
     if (initial) {
-      await supabase.from('resources').update(payload).eq('id', initial.id);
+      ({ error } = await supabase.from('resources').update(payload).eq('id', initial.id));
     } else {
-      await supabase.from('resources').insert(payload);
+      ({ error } = await supabase.from('resources').insert(payload));
     }
     setSaving(false);
+    if (error) {
+      alert(`Save failed: ${error.message}`);
+      return;
+    }
     onSave();
   };
 
@@ -965,19 +970,29 @@ function SpeakerForm({ initial, defaultVertical, resources, onSave }: { initial:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const payload = {
+    const payload: Record<string, unknown> = {
       ...form,
-      email: form.email || null,
       related_resource_id: form.related_resource_id || null,
       resource_relationship: form.resource_relationship || null,
       outreach_channel: form.outreach_channel || null,
     };
-    if (initial) {
-      await supabase.from('speakers').update(payload).eq('id', initial.id);
+    // Only include email in payload if the user entered one — avoids errors if the column doesn't exist yet
+    if (form.email) {
+      payload.email = form.email;
     } else {
-      await supabase.from('speakers').insert(payload);
+      delete payload.email;
+    }
+    let error: { message: string } | null = null;
+    if (initial) {
+      ({ error } = await supabase.from('speakers').update(payload).eq('id', initial.id));
+    } else {
+      ({ error } = await supabase.from('speakers').insert(payload));
     }
     setSaving(false);
+    if (error) {
+      alert(`Save failed: ${error.message}`);
+      return;
+    }
     onSave();
   };
 
