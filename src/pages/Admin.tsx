@@ -40,7 +40,7 @@ interface Speaker {
 
 const RESOURCE_TYPES = ['blog', 'youtube', 'podcast', 'tweet', 'paper', 'news'] as const;
 const OUTREACH_CHANNELS = ['twitter_dm', 'email', 'linkedin', 'telegram', 'intro', 'other'] as const;
-const OUTREACH_STATUSES = ['not_started', 'contacted', 'responded', 'confirmed', 'declined'] as const;
+const OUTREACH_STATUSES = ['not_started', 'drafted', 'contacted', 'responded', 'confirmed', 'declined'] as const;
 const RESOURCE_RELATIONSHIPS = ['authored', 'mentioned', 'interviewed', 'quoted', 'topic_expert'] as const;
 
 /* ─── Outreach draft template ─── */
@@ -133,6 +133,7 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
 
 const STATUS_COLORS: Record<string, string> = {
   not_started: '#6B7280',
+  drafted: '#A78BFA',
   contacted: '#F59E0B',
   responded: '#3B82F6',
   confirmed: '#10B981',
@@ -595,16 +596,22 @@ export default function Admin() {
                   <tr><td colSpan={10} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No speakers yet</td></tr>
                 ) : speakers.map(s => {
                   const relatedResource = resources.find(r => r.id === s.related_resource_id);
+                  const verticalResources = resources.filter(r => r.vertical_id === s.vertical_id);
                   return (
                   <tr key={s.id}>
                     <td style={{ ...cellStyle, fontWeight: 600 }}>{s.name}</td>
                     <td style={cellStyle}>{s.role}</td>
                     <td style={cellStyle}>{s.vertical_id}</td>
-                    <td style={cellStyle}>{s.handle && <span style={{ color: '#3B82F6' }}>@{s.handle}</span>}</td>
-                    <td style={{ ...cellStyle, maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {relatedResource ? (
-                        <a href={relatedResource.url} target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'none', fontSize: '12px' }}>{relatedResource.title}</a>
-                      ) : <span style={{ color: 'rgb(60, 60, 80)' }}>—</span>}
+                    <td style={cellStyle}>{s.handle && <a href={`https://x.com/${s.handle}`} target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'none' }}>@{s.handle}</a>}</td>
+                    <td style={{ ...cellStyle, maxWidth: '220px' }}>
+                      <select
+                        value={s.related_resource_id ?? ''}
+                        onChange={e => updateSpeakerField.mutate({ id: s.id, field: 'related_resource_id', value: e.target.value || null })}
+                        style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '4px', color: s.related_resource_id ? '#3B82F6' : 'rgb(60, 60, 80)', fontSize: '11px', padding: '2px 4px', cursor: 'pointer', outline: 'none', width: '100%', maxWidth: '210px', textOverflow: 'ellipsis' }}
+                      >
+                        <option value="" style={{ background: '#1a1a2e' }}>—</option>
+                        {verticalResources.map(r => <option key={r.id} value={r.id} style={{ background: '#1a1a2e' }}>{r.title}</option>)}
+                      </select>
                     </td>
                     <td style={cellStyle}>
                       {s.resource_relationship ? (
