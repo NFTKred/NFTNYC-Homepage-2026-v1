@@ -45,7 +45,6 @@ export default function Sponsor() {
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <SponsorHeader />
-      <SponsorPartners />
 
       {/* ─── Tab Selector ─── */}
       <section style={{ padding: '3.5rem 1.5rem 0', maxWidth: '1200px', margin: '0 auto' }}>
@@ -206,6 +205,7 @@ export default function Sponsor() {
         <CommunityPartner />
       )}
 
+      <SponsorPartners />
       <SiteFooter stage={stage} />
     </div>
   );
