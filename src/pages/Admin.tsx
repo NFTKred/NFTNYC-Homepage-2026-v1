@@ -1,10 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail } from 'lucide-react';
+
+/* ─── Twenty CRM lookup ─── */
+const TWENTY_API_KEY = import.meta.env.VITE_TWENTY_API_KEY ?? '';
+const TWENTY_API_BASE = 'https://peoplebrowsr.twenty.com/rest';
+
+async function lookupCRMEmail(fullName: string): Promise<string | null> {
+  if (!TWENTY_API_KEY) return null;
+  const parts = fullName.replace(/\s*\([^)]*\)\s*/g, '').trim().split(/\s+/);
+  const first = parts[0] ?? '';
+  const last = parts.slice(1).join(' ') ?? '';
+  if (!first) return null;
+  try {
+    const filter = last
+      ? `and(name.firstName[eq]:${first},name.lastName[eq]:${last})`
+      : `name.firstName[eq]:${first}`;
+    const res = await fetch(
+      `${TWENTY_API_BASE}/people?filter=${encodeURIComponent(filter)}&limit=1`,
+      { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, 'Content-Type': 'application/json' } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    const email = json?.data?.people?.[0]?.emails?.primaryEmail;
+    return email || null;
+  } catch {
+    return null;
+  }
+}
 
 /* ─── Types ─── */
 interface Resource {
@@ -29,6 +56,7 @@ interface Speaker {
   vertical_id: string;
   name: string;
   role: string;
+  email: string | null;
   handle: string | null;
   related_resource_id: string | null;
   resource_relationship: string | null;
@@ -187,6 +215,22 @@ export default function Admin() {
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [crmEmails, setCrmEmails] = useState<Record<string, string | null>>({});
+
+  /* ─── CRM email auto-lookup ─── */
+  const lookupSpeakerEmails = useCallback(async (speakerList: Speaker[]) => {
+    if (!TWENTY_API_KEY) return;
+    const unchecked = speakerList.filter(s => !(s.id in crmEmails));
+    if (unchecked.length === 0) return;
+    const results: Record<string, string | null> = {};
+    // Lookup in batches of 5 to avoid hammering the API
+    for (let i = 0; i < unchecked.length; i += 5) {
+      const batch = unchecked.slice(i, i + 5);
+      const lookups = await Promise.all(batch.map(s => lookupCRMEmail(s.name)));
+      batch.forEach((s, idx) => { results[s.id] = lookups[idx]; });
+    }
+    setCrmEmails(prev => ({ ...prev, ...results }));
+  }, [crmEmails]);
 
   /* ─── Queries ─── */
   const resourcesQuery = useQuery({
@@ -329,6 +373,11 @@ export default function Admin() {
   const approvedResources = resources.filter(r => r.status === 'approved');
   const pendingResources = resources.filter(r => r.status === 'pending');
 
+  // Auto-lookup CRM emails when speakers load
+  useEffect(() => {
+    if (speakers.length > 0) lookupSpeakerEmails(speakers);
+  }, [speakers, lookupSpeakerEmails]);
+
   const exportSpeakersCSV = async () => {
     // Fetch all speakers and resources across all verticals
     const [speakerRes, resourceRes] = await Promise.all([
@@ -345,14 +394,18 @@ export default function Admin() {
       return val;
     };
 
-    const headers = ['Name', 'Role', 'Vertical', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Draft'];
-    const rows = allSpeakers.map(s => {
+    // Lookup CRM emails for all speakers
+    const emailLookups = await Promise.all(allSpeakers.map(s => lookupCRMEmail(s.name)));
+
+    const headers = ['Name', 'Role', 'Vertical', 'Email', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Draft'];
+    const rows = allSpeakers.map((s, i) => {
       const r = allResources.find(res => res.id === s.related_resource_id);
       const draft = buildOutreachDraft(s, r);
       return [
         s.name,
         s.role,
         s.vertical_id,
+        s.email || emailLookups[i] || '',
         s.handle ? `https://x.com/${s.handle}` : '',
         r?.url ?? '',
         r?.date ?? '',
@@ -620,6 +673,7 @@ export default function Admin() {
                   <th style={headerCellStyle}>Name</th>
                   <th style={headerCellStyle}>Role</th>
                   <th style={headerCellStyle}>Vertical</th>
+                  <th style={headerCellStyle}>Email</th>
                   <th style={headerCellStyle}>Handle</th>
                   <th style={headerCellStyle}>Related Resource</th>
                   <th style={headerCellStyle}>Relationship</th>
@@ -631,7 +685,7 @@ export default function Admin() {
               </thead>
               <tbody>
                 {speakers.length === 0 ? (
-                  <tr><td colSpan={10} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No speakers yet</td></tr>
+                  <tr><td colSpan={11} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No speakers yet</td></tr>
                 ) : speakers.map(s => {
                   const relatedResource = resources.find(r => r.id === s.related_resource_id);
                   const verticalResources = resources.filter(r => r.vertical_id === s.vertical_id);
@@ -640,6 +694,21 @@ export default function Admin() {
                     <td style={{ ...cellStyle, fontWeight: 600 }}>{s.name}</td>
                     <td style={cellStyle}>{s.role}</td>
                     <td style={cellStyle}>{s.vertical_id}</td>
+                    <td style={cellStyle}>
+                      {s.email ? (
+                        <a href={`mailto:${s.email}`} style={{ color: '#10B981', textDecoration: 'none', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Mail size={11} />{s.email}
+                        </a>
+                      ) : crmEmails[s.id] === undefined ? (
+                        <Loader2 size={12} className="animate-spin" style={{ color: 'rgb(90, 90, 117)' }} />
+                      ) : crmEmails[s.id] ? (
+                        <a href={`mailto:${crmEmails[s.id]}`} style={{ color: '#F59E0B', textDecoration: 'none', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }} title="From CRM — click edit to save to speaker record">
+                          <Mail size={11} />{crmEmails[s.id]}
+                        </a>
+                      ) : (
+                        <span style={{ color: 'rgb(60, 60, 80)', fontSize: '11px' }}>—</span>
+                      )}
+                    </td>
                     <td style={cellStyle}>{s.handle && <a href={`https://x.com/${s.handle}`} target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'none' }}>@{s.handle}</a>}</td>
                     <td style={{ ...cellStyle, maxWidth: '220px' }}>
                       <select
@@ -883,6 +952,7 @@ function SpeakerForm({ initial, defaultVertical, resources, onSave }: { initial:
     vertical_id: initial?.vertical_id ?? defaultVertical,
     name: initial?.name ?? '',
     role: initial?.role ?? '',
+    email: initial?.email ?? '',
     handle: initial?.handle ?? '',
     related_resource_id: initial?.related_resource_id ?? '',
     resource_relationship: initial?.resource_relationship ?? '',
@@ -897,6 +967,7 @@ function SpeakerForm({ initial, defaultVertical, resources, onSave }: { initial:
     setSaving(true);
     const payload = {
       ...form,
+      email: form.email || null,
       related_resource_id: form.related_resource_id || null,
       resource_relationship: form.resource_relationship || null,
       outreach_channel: form.outreach_channel || null,
@@ -922,6 +993,7 @@ function SpeakerForm({ initial, defaultVertical, resources, onSave }: { initial:
       </label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Name<input value={form.name} onChange={e => set('name', e.target.value)} required style={{ ...inputStyle, marginTop: '4px' }} /></label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Role / Company<input value={form.role} onChange={e => set('role', e.target.value)} required style={{ ...inputStyle, marginTop: '4px' }} /></label>
+      <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Email<input value={form.email} onChange={e => set('email', e.target.value)} type="email" style={{ ...inputStyle, marginTop: '4px' }} /></label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Handle (Twitter/X)<input value={form.handle} onChange={e => set('handle', e.target.value)} style={{ ...inputStyle, marginTop: '4px' }} /></label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>
         Related Resource
