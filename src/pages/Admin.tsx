@@ -501,9 +501,11 @@ export default function Admin() {
               <button onClick={() => { setEditingResource(null); setShowResourceForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
                 <Plus size={14} /> Add Resource
               </button>
-              <button onClick={exportSpeakersCSV} style={{ ...btnStyle, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <Download size={14} /> Export CSV
-              </button>
+              {activeVertical === 'all' && (
+                <button onClick={exportSpeakersCSV} style={{ ...btnStyle, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <Download size={14} /> Export CSV
+                </button>
+              )}
             </div>
           </div>
           {seekResult && (
