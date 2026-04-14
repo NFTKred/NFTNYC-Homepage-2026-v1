@@ -24,20 +24,19 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
   const selectedTrack = selected ? trackIcons[selected] : null;
 
   return (
-    <section className="relative bg-background pt-20 pb-8">
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+    <section className="relative bg-background pt-10 pb-8">
       <div className="max-w-7xl mx-auto px-6">
-        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal text-center mb-3">
+        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">
           Community
         </p>
-        <h2 className="text-3xl font-bold text-foreground text-center mb-3">
+        <h2 className="text-3xl font-bold text-foreground mb-3">
           Sponsorship by Community
         </h2>
-        <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-muted-foreground mb-10 max-w-2xl">
           Target the specific segment of the NFT.NYC community that aligns with your brand and product
         </p>
 
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap gap-2">
           {trackNames.map((name) => {
             const isSelected = selected === name;
             return (

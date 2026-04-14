@@ -25,7 +25,7 @@ export default function Sponsor() {
   const stage = useMemo(() => Number(localStorage.getItem('nftnyc-stage') ?? 0), []);
   const [activeTab, setActiveTab] = useState<PartnerTab>('community');
   const [filter, setFilter] = useState("all");
-  const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
+  const [selectedTrack, setSelectedTrack] = useState<string | null>('AI Identity Tokenization');
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -127,12 +127,12 @@ export default function Sponsor() {
       {activeTab === 'packages' && (
         <>
           {/* Partnership Packages */}
-          <section className="relative max-w-7xl mx-auto px-6 py-20">
+          <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
               <div>
-                <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-2">Sponsorships</p>
+                <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">Sponsorships</p>
                 <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Partnership Packages</h2>
-                <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Premium sponsorship opportunities with maximum brand visibility</p>
+                <p style={{ color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>Premium sponsorship opportunities with maximum brand visibility</p>
               </div>
               <div className="flex items-center gap-3">
                 <div className="flex rounded-lg p-1 border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
@@ -177,13 +177,13 @@ export default function Sponsor() {
           </section>
 
           {/* A La Carte Options */}
-          <section className="relative max-w-7xl mx-auto px-6 py-20">
+          <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
             <div className="absolute top-0 inset-x-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
               <div>
-                <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-2">Add-Ons</p>
+                <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">Add-Ons</p>
                 <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>A La Carte Options</h2>
-                <p style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Add individual sponsorship elements to customize your presence</p>
+                <p style={{ color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>Add individual sponsorship elements to customize your presence</p>
               </div>
             </div>
 

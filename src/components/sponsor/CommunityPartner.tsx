@@ -68,17 +68,15 @@ export default function CommunityPartner() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <section className="relative max-w-7xl mx-auto px-6 py-20">
-      {/* Top gradient border */}
-      <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+    <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
 
       {/* Header */}
-      <div className="text-center mb-14">
-        <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-4">
+      <div className="mb-14">
+        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">
           Earn Your Way In
-        </span>
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Community Partner Program</h2>
-        <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+        </p>
+        <h2 className="text-3xl font-bold text-foreground mb-3">Community Partner Program</h2>
+        <p className="text-muted-foreground max-w-3xl leading-relaxed">
           Earn your way to a sponsorship. Enroll for $1,000, sell tickets through your affiliate link, and turn commissions into sponsor credits toward any NFT.NYC 2026 package.
         </p>
       </div>
@@ -103,8 +101,8 @@ export default function CommunityPartner() {
 
       {/* Milestones */}
       <div className="mb-14">
-        <h3 className="text-xl font-bold text-foreground text-center mb-2">Credit Milestones</h3>
-        <p className="text-sm text-muted-foreground text-center mb-8">
+        <h3 className="text-xl font-bold text-foreground mb-2">Credit Milestones</h3>
+        <p className="text-sm text-muted-foreground mb-8">
           Rewards are cumulative — reaching 100 tickets includes all previous milestone rewards.
         </p>
 
@@ -139,7 +137,7 @@ export default function CommunityPartner() {
       </div>
 
       {/* CTA */}
-      <div className="text-center mb-12">
+      <div className="mb-12">
         <button
           onClick={() => setModalOpen(true)}
           className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
