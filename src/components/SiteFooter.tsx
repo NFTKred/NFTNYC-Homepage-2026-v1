@@ -34,7 +34,7 @@ function buildFeedHTML(items: FeedItem[]): string {
   `).join('');
 }
 
-export default function SiteFooter({ stage = 0 }: { stage?: number }) {
+export default function SiteFooter({ stage = 0, hideIndustryFeed = false }: { stage?: number; hideIndustryFeed?: boolean }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [feedItems, setFeedItems] = useState<FeedItem[]>(getStaticFeedItems);
 
@@ -109,7 +109,7 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
       }}
     >
       <div className="max-w-[960px] mx-auto text-center">
-        <div className="mb-8">
+        {!hideIndustryFeed && <div className="mb-8">
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'var(--text-xl)',
@@ -166,7 +166,7 @@ export default function SiteFooter({ stage = 0 }: { stage?: number }) {
               animation: 'feedScrollUp var(--feed-duration, 14s) linear infinite',
             }}
           />
-        </div>
+        </div>}
 
         {stage >= 1 && (
           <div className="flex gap-4 justify-center flex-wrap mb-10">

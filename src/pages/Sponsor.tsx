@@ -206,7 +206,7 @@ export default function Sponsor() {
       )}
 
       <SponsorPartners />
-      <SiteFooter stage={stage} />
+      <SiteFooter stage={stage} hideIndustryFeed />
     </div>
   );
 }
