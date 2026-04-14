@@ -215,22 +215,35 @@ export default function Admin() {
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
-  const [crmEmails, setCrmEmails] = useState<Record<string, string | null>>({});
+  const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
 
-  /* ─── CRM email auto-lookup ─── */
+  /* ─── CRM email auto-lookup (persists results to Supabase) ─── */
   const lookupSpeakerEmails = useCallback(async (speakerList: Speaker[]) => {
     if (!TWENTY_API_KEY) return;
-    const unchecked = speakerList.filter(s => !(s.id in crmEmails));
+    // Only lookup speakers that don't already have a stored email AND haven't been checked this session
+    const unchecked = speakerList.filter(s => !s.email && !crmChecked.has(s.id));
     if (unchecked.length === 0) return;
-    const results: Record<string, string | null> = {};
+    const newChecked = new Set(crmChecked);
     // Lookup in batches of 5 to avoid hammering the API
     for (let i = 0; i < unchecked.length; i += 5) {
       const batch = unchecked.slice(i, i + 5);
       const lookups = await Promise.all(batch.map(s => lookupCRMEmail(s.name)));
-      batch.forEach((s, idx) => { results[s.id] = lookups[idx]; });
+      for (let j = 0; j < batch.length; j++) {
+        const speaker = batch[j];
+        const email = lookups[j];
+        newChecked.add(speaker.id);
+        if (email) {
+          // Persist to Supabase so we never look this up again
+          await supabase.from('speakers').update({ email }).eq('id', speaker.id).then(({ error }) => {
+            if (error) console.warn(`Could not save CRM email for ${speaker.name}:`, error.message);
+          });
+        }
+      }
     }
-    setCrmEmails(prev => ({ ...prev, ...results }));
-  }, [crmEmails]);
+    setCrmChecked(newChecked);
+    // Refresh speakers to show the newly saved emails
+    queryClient.invalidateQueries({ queryKey: ['admin-speakers'] });
+  }, [crmChecked, queryClient]);
 
   /* ─── Queries ─── */
   const resourcesQuery = useQuery({
@@ -394,18 +407,15 @@ export default function Admin() {
       return val;
     };
 
-    // Lookup CRM emails for all speakers
-    const emailLookups = await Promise.all(allSpeakers.map(s => lookupCRMEmail(s.name)));
-
     const headers = ['Name', 'Role', 'Vertical', 'Email', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Draft'];
-    const rows = allSpeakers.map((s, i) => {
+    const rows = allSpeakers.map(s => {
       const r = allResources.find(res => res.id === s.related_resource_id);
       const draft = buildOutreachDraft(s, r);
       return [
         s.name,
         s.role,
         s.vertical_id,
-        s.email || emailLookups[i] || '',
+        s.email || '',
         s.handle ? `https://x.com/${s.handle}` : '',
         r?.url ?? '',
         r?.date ?? '',
@@ -699,12 +709,8 @@ export default function Admin() {
                         <a href={`mailto:${s.email}`} style={{ color: '#10B981', textDecoration: 'none', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                           <Mail size={11} />{s.email}
                         </a>
-                      ) : crmEmails[s.id] === undefined ? (
+                      ) : !crmChecked.has(s.id) && TWENTY_API_KEY ? (
                         <Loader2 size={12} className="animate-spin" style={{ color: 'rgb(90, 90, 117)' }} />
-                      ) : crmEmails[s.id] ? (
-                        <a href={`mailto:${crmEmails[s.id]}`} style={{ color: '#F59E0B', textDecoration: 'none', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }} title="From CRM — click edit to save to speaker record">
-                          <Mail size={11} />{crmEmails[s.id]}
-                        </a>
                       ) : (
                         <span style={{ color: 'rgb(60, 60, 80)', fontSize: '11px' }}>—</span>
                       )}
