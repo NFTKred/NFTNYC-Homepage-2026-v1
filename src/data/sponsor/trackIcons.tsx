@@ -10,7 +10,7 @@ export const trackIcons: Record<string, { icon: React.ReactNode; color: string }
       eco.name,
       {
         color: eco.color,
-        icon: <EcoIcon ecoId={eco.id} color={eco.color} size={48} animated={false} />,
+        icon: <EcoIcon ecoId={eco.id} color={eco.color} size={48} animated={true} />,
       },
     ])
   );

@@ -58,9 +58,9 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
         </div>
 
         {selected && selectedTrack && (
-          <div className="flex flex-col items-center gap-4 mt-12 mb-4 animate-fade-in">
+          <div className="flex flex-col items-center mt-12 mb-4 animate-fade-in">
             <div className="transition-transform duration-300 scale-[2.5]">{selectedTrack.icon}</div>
-            <h3 className="text-2xl font-bold text-foreground">{selected}</h3>
+            <h3 className="text-2xl font-bold text-foreground mt-10">{selected}</h3>
           </div>
         )}
       </div>
