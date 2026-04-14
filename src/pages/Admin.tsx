@@ -365,7 +365,7 @@ export default function Admin() {
         s.name,
         s.role,
         s.vertical_id,
-        s.handle ?? '',
+        s.handle ? `https://x.com/${s.handle}` : '',
         r?.url ?? '',
         r?.date ?? '',
         r?.source ?? '',
