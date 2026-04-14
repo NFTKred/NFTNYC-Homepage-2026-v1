@@ -25,6 +25,11 @@ const partners = [
   { name: "Messari", logo: "/sponsors/messari.svg" },
 ];
 
+const LOGO_FILTERS: Record<string, string> = {
+  "Christie's": "invert(1)",
+  "MoonPay": "brightness(20) contrast(0) invert(1)",
+};
+
 function PartnerLogo({ name, logo }: { name: string; logo: string }) {
   return (
     <div className="flex flex-col items-center justify-center px-3 py-5 rounded-xl bg-secondary/50 border border-border hover:border-brand-teal/30 transition-colors gap-2">
@@ -33,6 +38,7 @@ function PartnerLogo({ name, logo }: { name: string; logo: string }) {
         alt={`${name} logo`}
         className="h-8 w-auto object-contain max-w-[80px]"
         loading="lazy"
+        style={LOGO_FILTERS[name] ? { filter: LOGO_FILTERS[name] } : undefined}
       />
       <span className="text-xs font-medium text-muted-foreground text-center leading-tight">
         {name}
