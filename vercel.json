@@ -1,11 +1,6 @@
 {
   "redirects": [
     {
-      "source": "/test",
-      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/files/Screenshot_2026-04-14_at_12.37.25_PM.png",
-      "permanent": false
-    },
-    {
       "source": "/meet",
       "destination": "https://meet.google.com/seq-gyst-sie",
       "permanent": true
