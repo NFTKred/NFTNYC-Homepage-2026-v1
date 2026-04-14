@@ -107,12 +107,11 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
   const noun = RESOURCE_NOUN[resource.type] ?? 'piece';
   const rel = RELATIONSHIP_CLAUSE[speaker.resource_relationship] ?? RELATIONSHIP_CLAUSE.mentioned;
   const aboutClause = rel.about ? ` ${rel.about}` : '';
-  const publisher = resource.source ? ` on ${resource.source}` : '';
 
   return [
     `${name},`,
     '',
-    `Our speaker programming team came across ${rel.possessive} ${noun}${aboutClause}${publisher} (${resource.url}). We're building the ${verticalLabel} track for NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) and think you would be a great fit. Happy to share details if you're interested.`,
+    `Our speaker programming team came across ${rel.possessive} ${noun}${aboutClause} \u2014 ${resource.title} ${resource.url}. We're building the ${verticalLabel} track for NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) and think you would be a great fit. Happy to share details if you're interested.`,
     '',
     `We've featured you on our ${verticalLabel} resource page: ${pageUrl}`,
     '',
