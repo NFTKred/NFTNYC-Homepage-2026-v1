@@ -46,9 +46,10 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
                 onClick={() => onSelect(isSelected ? "" : name)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
                   isSelected
-                    ? "bg-primary text-primary-foreground border-primary"
+                    ? "text-white border-transparent"
                     : "bg-secondary text-muted-foreground border-border hover:text-foreground hover:border-foreground/20"
                 }`}
+                style={isSelected ? { backgroundColor: trackIcons[name]?.color ?? '#14b8a6', borderColor: trackIcons[name]?.color ?? '#14b8a6' } : undefined}
               >
                 {name}
               </button>
