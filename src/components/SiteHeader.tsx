@@ -18,6 +18,11 @@ function openEventbrite() {
         widgetType: 'checkout',
         eventId: '1985747187292',
         promoCode: 'Earlybird',
+        themeSettings: {
+          brandColor: '#D1410C',
+          fontColor: '#FFFFFF',
+          background: '#000000',
+        },
         modal: true,
         modalTriggerElementId: 'eb-trigger',
         onOrderComplete: () => console.log('Order complete!'),
