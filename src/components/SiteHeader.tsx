@@ -19,9 +19,9 @@ function openEventbrite() {
         eventId: '1985747187292',
         promoCode: 'Earlybird',
         themeSettings: {
-          brandColor: '#111118',
+          brandColor: '#f06347',
           fontColor: '#FFFFFF',
-          background: '#000000',
+          background: '#111118',
         },
         modal: true,
         modalTriggerElementId: 'eb-trigger',
