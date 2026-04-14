@@ -1,50 +1,39 @@
-import { useState } from "react";
-
 const partners = [
-  { name: "Polygon", domain: "polygon.technology" },
-  { name: "Flow", domain: "flow.com" },
-  { name: "TRON", domain: "tron.network" },
-  { name: "Immutable", domain: "immutable.com" },
-  { name: "Algorand", domain: "algorand.com" },
-  { name: "WAX", domain: "wax.io" },
-  { name: "AWS", domain: "aws.amazon.com" },
-  { name: "PwC", domain: "pwc.com" },
-  { name: "Canon", domain: "canon.com" },
-  { name: "Samsung NEXT", domain: "samsungnext.com" },
-  { name: "Christie's", domain: "christies.com" },
-  { name: "Sony", domain: "sony.com" },
-  { name: "McCain", domain: "mccain.com" },
-  { name: "Brave", domain: "brave.com" },
-  { name: "DraftKings", domain: "draftkings.com" },
-  { name: "EY", domain: "ey.com" },
-  { name: "MoonPay", domain: "moonpay.com" },
-  { name: "Magic Eden", domain: "magiceden.io" },
-  { name: "0x", domain: "0x.org" },
-  { name: "Doodles", domain: "doodles.app" },
-  { name: "ConsenSys", domain: "consensys.io" },
-  { name: "Rarible", domain: "rarible.com" },
-  { name: "DappRadar", domain: "dappradar.com" },
-  { name: "Messari", domain: "messari.io" },
+  { name: "Polygon", logo: "/sponsors/polygon.svg" },
+  { name: "Flow", logo: "/sponsors/flow.svg" },
+  { name: "TRON", logo: "/sponsors/tron.svg" },
+  { name: "Immutable", logo: "/sponsors/immutable.svg" },
+  { name: "Algorand", logo: "/sponsors/algorand.svg" },
+  { name: "WAX", logo: "/sponsors/wax.svg" },
+  { name: "AWS", logo: "/sponsors/aws.svg" },
+  { name: "PwC", logo: "/sponsors/pwc.svg" },
+  { name: "Canon", logo: "/sponsors/canon.svg" },
+  { name: "Samsung NEXT", logo: "/sponsors/samsung-next.png" },
+  { name: "Christie's", logo: "/sponsors/christies.svg" },
+  { name: "Sony", logo: "/sponsors/sony.svg" },
+  { name: "McCain", logo: "/sponsors/mccain.svg" },
+  { name: "Brave", logo: "/sponsors/brave.svg" },
+  { name: "DraftKings", logo: "/sponsors/draftkings.svg" },
+  { name: "EY", logo: "/sponsors/ey.svg" },
+  { name: "MoonPay", logo: "/sponsors/moonpay.svg" },
+  { name: "Magic Eden", logo: "/sponsors/magic-eden.svg" },
+  { name: "0x", logo: "/sponsors/0x.svg" },
+  { name: "Doodles", logo: "/sponsors/doodles.svg" },
+  { name: "ConsenSys", logo: "/sponsors/consensys.svg" },
+  { name: "Rarible", logo: "/sponsors/rarible.svg" },
+  { name: "DappRadar", logo: "/sponsors/dappradar.svg" },
+  { name: "Messari", logo: "/sponsors/messari.svg" },
 ];
 
-function PartnerLogo({ name, domain }: { name: string; domain: string }) {
-  const [imgError, setImgError] = useState(false);
-
+function PartnerLogo({ name, logo }: { name: string; logo: string }) {
   return (
     <div className="flex flex-col items-center justify-center px-3 py-5 rounded-xl bg-secondary/50 border border-border hover:border-brand-teal/30 transition-colors gap-2">
-      {!imgError ? (
-        <img
-          src={`https://logo.clearbit.com/${domain}`}
-          alt={`${name} logo`}
-          className="h-8 w-8 object-contain"
-          onError={() => setImgError(true)}
-          loading="lazy"
-        />
-      ) : (
-        <div className="h-8 w-8 rounded-md bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground">
-          {name.charAt(0)}
-        </div>
-      )}
+      <img
+        src={logo}
+        alt={`${name} logo`}
+        className="h-8 w-auto object-contain max-w-[80px]"
+        loading="lazy"
+      />
       <span className="text-xs font-medium text-muted-foreground text-center leading-tight">
         {name}
       </span>
@@ -69,7 +58,7 @@ export default function Partners() {
 
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
           {partners.map((p) => (
-            <PartnerLogo key={p.name} name={p.name} domain={p.domain} />
+            <PartnerLogo key={p.name} name={p.name} logo={p.logo} />
           ))}
         </div>
       </div>
