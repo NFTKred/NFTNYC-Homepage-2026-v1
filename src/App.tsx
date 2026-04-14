@@ -15,6 +15,7 @@ import VerticalPage from "./pages/VerticalPage";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import TSOptout from "./pages/TSOptout";
+import Sponsor from "./pages/Sponsor";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/blog/ts-challenge" element={<BlogTsChallenge />} />
           <Route path="/journey" element={<Journey />} />
           <Route path="/ts-optout" element={<TSOptout />} />
+          <Route path="/sponsor" element={<Sponsor />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/:verticalId" element={<VerticalPage />} />
