@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download } from 'lucide-react';
 
 /* ─── Types ─── */
 interface Resource {
@@ -342,6 +342,50 @@ export default function Admin() {
   const approvedResources = resources.filter(r => r.status === 'approved');
   const pendingResources = resources.filter(r => r.status === 'pending');
 
+  const exportSpeakersCSV = async () => {
+    // Fetch all speakers and resources across all verticals
+    const [speakerRes, resourceRes] = await Promise.all([
+      supabase.from('speakers').select('*').order('name'),
+      supabase.from('resources').select('*'),
+    ]);
+    const allSpeakers = (speakerRes.data ?? []) as Speaker[];
+    const allResources = (resourceRes.data ?? []) as Resource[];
+
+    const escapeCSV = (val: string) => {
+      if (val.includes(',') || val.includes('"') || val.includes('\n')) {
+        return `"${val.replace(/"/g, '""')}"`;
+      }
+      return val;
+    };
+
+    const headers = ['Name', 'Role', 'Vertical', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status'];
+    const rows = allSpeakers.map(s => {
+      const r = allResources.find(res => res.id === s.related_resource_id);
+      return [
+        s.name,
+        s.role,
+        s.vertical_id,
+        s.handle ?? '',
+        r?.url ?? '',
+        r?.date ?? '',
+        r?.source ?? '',
+        r?.description ?? '',
+        s.resource_relationship ?? '',
+        s.outreach_channel?.replace('_', ' ') ?? '',
+        s.outreach_status.replace('_', ' '),
+      ].map(v => escapeCSV(v)).join(',');
+    });
+
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `nftnyc-speakers-outreach-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div style={{ minHeight: '100vh', background: 'rgb(10, 10, 15)', color: '#fff' }}>
       {/* Header */}
@@ -571,9 +615,14 @@ export default function Admin() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>
               Speakers & Outreach ({speakers.length})
             </h2>
-            <button onClick={() => { setEditingSpeaker(null); setShowSpeakerForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
-              <Plus size={14} /> Add Speaker
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button onClick={exportSpeakersCSV} style={{ ...btnStyle, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <Download size={14} /> Export CSV
+              </button>
+              <button onClick={() => { setEditingSpeaker(null); setShowSpeakerForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
+                <Plus size={14} /> Add Speaker
+              </button>
+            </div>
           </div>
           <div style={{ overflowX: 'auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
