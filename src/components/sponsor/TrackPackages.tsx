@@ -19,7 +19,7 @@ export default function TrackPackages({ trackName }: TrackPackagesProps) {
   if (!packages) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-6 pb-16 animate-fade-in">
+    <section className="max-w-7xl mx-auto px-6 pt-2 pb-16 animate-fade-in">
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {packages.map((pkg) => {
           const config = typeConfig[pkg.type];
