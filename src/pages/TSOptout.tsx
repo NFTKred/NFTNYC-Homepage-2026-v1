@@ -41,8 +41,6 @@ export default function TSOptout() {
           'x-webhook-secret': WEBHOOK_SECRET,
         },
         body: JSON.stringify({
-          firstName: 'TS-Optout',
-          lastName: paramId,
           email,
           listId: LIST_ID,
         }),
