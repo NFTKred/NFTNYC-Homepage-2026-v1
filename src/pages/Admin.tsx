@@ -108,9 +108,10 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
       '',
       `[Add a reference to a specific piece of their content here — title, a one-line insight, and the URL.]`,
       '',
-      `We're putting together the ${verticalLabel} track for NFT.NYC 2026 and would love to have your voice on stage.`,
-      '',
+      `We've featured it on our ${verticalLabel} resource page for the NFT.NYC community:`,
       pageUrl,
+      '',
+      `NFT.NYC 2026 is September 1\u20133 at The Edison in Times Square. We'd like to invite you to speak on the ${verticalLabel} track \u2014 I can send over the details if you're open to it.`,
     ].join('\n');
   }
 
@@ -123,11 +124,12 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
   return [
     `${name},`,
     '',
-    `I saw ${rel.possessive} great ${noun}${aboutClause}${publisher} — "${resource.title}" (${resource.url}).`,
-    `The bit that stood out: ${hook}`,
+    `Our speaker programming team came across ${rel.possessive} ${noun}${aboutClause}${publisher} \u2014 "${resource.title}" (${resource.url}). ${hook}`,
     '',
-    `We've added it to our ${verticalLabel} tokenization resource page so the NFT.NYC community can dig deeper:`,
+    `We've featured it on our ${verticalLabel} resource page for the NFT.NYC community:`,
     pageUrl,
+    '',
+    `NFT.NYC 2026 is September 1\u20133 at The Edison in Times Square. We'd like to invite you to speak on the ${verticalLabel} track \u2014 I can send over the details if you're open to it.`,
   ].join('\n');
 }
 
@@ -358,9 +360,10 @@ export default function Admin() {
       return val;
     };
 
-    const headers = ['Name', 'Role', 'Vertical', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status'];
+    const headers = ['Name', 'Role', 'Vertical', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Draft'];
     const rows = allSpeakers.map(s => {
       const r = allResources.find(res => res.id === s.related_resource_id);
+      const draft = buildOutreachDraft(s, r);
       return [
         s.name,
         s.role,
@@ -373,6 +376,7 @@ export default function Admin() {
         s.resource_relationship ?? '',
         s.outreach_channel?.replace('_', ' ') ?? '',
         s.outreach_status.replace('_', ' '),
+        draft,
       ].map(v => escapeCSV(v)).join(',');
     });
 
