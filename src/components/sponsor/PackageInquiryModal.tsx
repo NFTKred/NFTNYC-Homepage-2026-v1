@@ -134,8 +134,7 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage }:
             <p className="text-foreground font-semibold mb-2 text-lg">Thank you!</p>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               The NFT.NYC partnerships team will reach out to{" "}
-              <span className="text-foreground">{email}</span> shortly to discuss the{" "}
-              <span className="text-foreground">{basePackage.name}</span> package.
+              <span className="text-foreground">{email}</span> shortly to discuss your selected package.
             </p>
           </div>
         ) : (
