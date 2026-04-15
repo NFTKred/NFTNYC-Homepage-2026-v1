@@ -31,15 +31,23 @@ const LOGO_FILTERS: Record<string, string> = {
   "WAX": "saturate(0) brightness(1.5)",
 };
 
+// Override default h-8 (2rem) image height for specific logos.
+const LOGO_HEIGHTS: Record<string, string> = {
+  "Sony": "4rem", // 2x
+};
+
 function PartnerLogo({ name, logo }: { name: string; logo: string }) {
   return (
     <div className="flex flex-col items-center justify-center px-3 py-5 rounded-xl bg-secondary/50 border border-border hover:border-brand-teal/30 transition-colors gap-2">
       <img
         src={logo}
         alt={`${name} logo`}
-        className="h-8 w-auto object-contain max-w-[80px]"
+        className={`w-auto object-contain max-w-[80px] ${LOGO_HEIGHTS[name] ? '' : 'h-8'}`}
         loading="lazy"
-        style={LOGO_FILTERS[name] ? { filter: LOGO_FILTERS[name] } : undefined}
+        style={{
+          ...(LOGO_FILTERS[name] ? { filter: LOGO_FILTERS[name] } : {}),
+          ...(LOGO_HEIGHTS[name] ? { height: LOGO_HEIGHTS[name] } : {}),
+        }}
       />
       <span className="text-xs font-medium text-muted-foreground text-center leading-tight">
         {name}
