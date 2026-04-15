@@ -28,6 +28,7 @@ const partners = [
 const LOGO_FILTERS: Record<string, string> = {
   "Christie's": "invert(1)",
   "Samsung NEXT": "saturate(0) brightness(2.5)",
+  "WAX": "saturate(0) brightness(1.5)",
 };
 
 function PartnerLogo({ name, logo }: { name: string; logo: string }) {
