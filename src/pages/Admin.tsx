@@ -98,6 +98,9 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
+  // Auto-generated screenshot of the vertical page (thum.io, no API key required,
+  // refreshed daily so the image stays current).
+  const screenshotUrl = `https://image.thum.io/get/width/1200/maxAge/1/${pageUrl}`;
 
   const resourceLine = resource
     ? `We have featured \u2014 ${resource.title} (${resource.url}) on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`
@@ -110,7 +113,7 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
     '',
     resourceLine,
     '',
-    '[SCREENSHOT or PAGE]',
+    screenshotUrl,
   ].join('\n');
 }
 
