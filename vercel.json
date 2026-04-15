@@ -22,8 +22,8 @@
     },
     {
       "source": "/meet2",
-      "destination": "http://meet.google.com/yfz-fupr-cwt",
-      "permanent": true
+      "destination": "https://meet.google.com/wsp-orue-xkn",
+      "permanent": false
     },
     {
       "source": "/meet3",
