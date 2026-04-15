@@ -264,7 +264,7 @@ Deno.serve(async (req) => {
       <p style="font-size: 13px; color: #666; margin: 0;">Times Square, New York City &nbsp;|&nbsp; 1–3 September 2026</p>
 
       <p style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5ea; font-size: 11px; color: #999;">
-        This is an automated acknowledgement. The partnerships team will follow up personally within 1 business day. If you didn't submit this, just ignore this email.
+        This is an automated acknowledgement. If you didn't submit this, just ignore this email.
       </p>
     </div>
   `.trim();
