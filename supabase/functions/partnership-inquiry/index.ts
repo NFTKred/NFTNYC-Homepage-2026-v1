@@ -51,6 +51,24 @@ function escape(s: string): string {
     .replace(/>/g, "&gt;");
 }
 
+/**
+ * Parse a human-formatted price string like "$75,000", "$2,500", or
+ * "$5,000 or $25,000" into a number. For ranges we take the LOWER bound
+ * (conservative sum). Returns 0 when no number can be extracted.
+ */
+function parsePrice(raw: string | undefined): number {
+  if (!raw) return 0;
+  // Grab the first digit sequence with optional commas.
+  const match = raw.replace(/,/g, "").match(/\$?\s*(\d+(?:\.\d+)?)/);
+  if (!match) return 0;
+  const n = Number(match[1]);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function formatUSD(n: number): string {
+  return "$" + n.toLocaleString("en-US");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -100,9 +118,24 @@ Deno.serve(async (req) => {
   const tabLabel =
     basePackage.context === "community" ? "Community-Focused Packages" : "Build Your Perfect Package";
 
+  // Total opportunity value = base package + all selected add-ons (lower
+  // bound when a price is a range like "$5,000 or $25,000").
+  const baseValue = parsePrice(basePackage.price);
+  const addonsValue = (addons ?? []).reduce((sum, a) => sum + parsePrice(a.price), 0);
+  const totalValue = baseValue + addonsValue;
+  const totalFormatted = formatUSD(totalValue);
+
+  // Subject: ALERT: $X,XXX Sponsor Opportunity - <Name> from <Company>
+  const emailSubject = `ALERT: ${totalFormatted} Sponsor Opportunity - ${name} from ${company}`;
+
   const emailHtml = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
-      <h2 style="margin: 0 0 16px; font-size: 20px;">New Partnership Inquiry</h2>
+      <div style="background: linear-gradient(135deg, #f97316, #ef4444); color: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px;">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.25em; opacity: 0.9; margin-bottom: 6px;">ALERT</div>
+        <div style="font-size: 20px; font-weight: 700; line-height: 1.3;">${escape(totalFormatted)} Sponsor Opportunity</div>
+        <div style="font-size: 14px; margin-top: 4px; opacity: 0.95;">${escape(name)} from ${escape(company)}</div>
+      </div>
+
       <div style="background: #f5f5f7; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
         <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 4px;">${escape(tabLabel)}${basePackage.trackName ? " · " + escape(basePackage.trackName) : ""}</div>
         <div style="font-size: 18px; font-weight: 700;">${escape(basePackage.name)}</div>
@@ -114,6 +147,7 @@ Deno.serve(async (req) => {
         <tr><td style="padding: 6px 0; color: #666;">Company</td><td style="padding: 6px 0; font-weight: 600;">${escape(company)}</td></tr>
         <tr><td style="padding: 6px 0; color: #666;">Email</td><td style="padding: 6px 0;"><a href="mailto:${escape(email)}">${escape(email)}</a></td></tr>
         ${phone ? `<tr><td style="padding: 6px 0; color: #666;">Phone</td><td style="padding: 6px 0;">${escape(phone)}</td></tr>` : ""}
+        <tr><td style="padding: 6px 0; color: #666;">Total Opportunity</td><td style="padding: 6px 0; font-weight: 700; color: #0f766e;">${escape(totalFormatted)}</td></tr>
       </table>
 
       ${notes ? `
@@ -135,8 +169,6 @@ Deno.serve(async (req) => {
       </p>
     </div>
   `.trim();
-
-  const emailSubject = `New Partnership Inquiry: ${basePackage.name}`;
 
   // Send email via Resend
   let emailOk = false;
