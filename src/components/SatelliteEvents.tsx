@@ -10,7 +10,7 @@ export default function SatelliteEvents() {
         'Featured on the NFT.NYC event program',
         'Your branding, image, and CTA included',
         'Host within the venue or at your own space',
-        'Cross-promotion to 70,000+ NFT.NYC alumni',
+        'Cross-promotion to 200,000+ NFT.NYC alumni',
       ],
       cta: 'Become an Official Event',
       href: 'mailto:team@nft.nyc?subject=NFT.NYC%202026%20Official%20Event%20Inquiry',

@@ -53,7 +53,7 @@ export default function Header() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
           {[
-            { value: "70k+", label: "Alumni" },
+            { value: "200k+", label: "Alumni" },
             { value: "3,900+", label: "Speakers to Date" },
             { value: "9th", label: "Annual Event" },
             { value: "100+", label: "Countries" },
