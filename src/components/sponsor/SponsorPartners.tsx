@@ -1,6 +1,6 @@
 const partners = [
   { name: "Polygon", logo: "/sponsors/polygon.svg" },
-  { name: "Flow", logo: "/sponsors/flow.svg" },
+  { name: "Flow", logo: "https://f005.backblazeb2.com/file/PB-HubSpot/files/flow-logo-white.svg" },
   { name: "TRON", logo: "/sponsors/tron.svg" },
   { name: "Immutable", logo: "/sponsors/immutable.svg" },
   { name: "Algorand", logo: "/sponsors/algorand.svg" },
