@@ -4,7 +4,7 @@ const partners = [
   { name: "TRON", logo: "/sponsors/tron.svg" },
   { name: "Immutable", logo: "/sponsors/immutable.svg" },
   { name: "Algorand", logo: "/sponsors/algorand.svg" },
-  { name: "WAX", logo: "/sponsors/wax.svg" },
+  { name: "WAX", logo: "https://f005.backblazeb2.com/file/PB-HubSpot/files/wax-logo.png" },
   { name: "AWS", logo: "/sponsors/aws.svg" },
   { name: "PwC", logo: "/sponsors/pwc.svg" },
   { name: "Canon", logo: "/sponsors/canon.svg" },
