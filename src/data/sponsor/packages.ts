@@ -254,7 +254,7 @@ export const defaultAlaCarte: AlaCarteItem[] = [
     id: 101,
     name: "Times Square Billboard",
     price: "$12,000",
-    description: "15 second video clip featured across major Times Square Billboards during 1 Hour Kickoff Roadblock. Clip played 25 times in total.",
+    description: "15 second video clip featured in Times Square, included in the NFT.NYC 1 Hour Kickoff Roadblock. Reach the NFT.NYC community AND the ~330,000 daily pedestrians in Times Square — ~1.5M daily impressions, part of 50M visitors per year (Times Square Alliance).",
     availability: "Limited"
   },
   {

@@ -22,9 +22,10 @@ const marketingIncludes = [
 ];
 
 const billboardIncludes = [
-  "15 second video clip featured across major Times Square billboards",
-  "Clip played 25 times during 1 Hour Kickoff Roadblock",
+  "15 second video clip featured in Times Square",
+  "Clip included in NFT.NYC 1 Hour Kickoff Roadblock",
   "Premium placement alongside NFT.NYC branded content",
+  "Reach the NFT.NYC community AND ~1.5M daily Times Square passers-by (330,000+ pedestrians/day, 50M visitors/year per the Times Square Alliance)",
 ];
 
 interface BillboardMeta {
@@ -32,54 +33,57 @@ interface BillboardMeta {
   description: string;
 }
 
+// Appended to every billboard track description to quantify the broader Times Square reach.
+const TIMES_SQUARE_REACH = " Beyond the NFT.NYC community, your clip also reaches the ~330,000 daily pedestrians — ~1.5 million daily impressions and part of the 50 million annual Times Square audience (Times Square Alliance).";
+
 const billboardByTrack: Record<string, BillboardMeta> = {
   "AI Identity Tokenization": {
-    name: "Showcase your AI identity technology on Times Square",
-    description: "Showcase your AI identity solution on some of Times Square's biggest screens — reach the NFT.NYC AI and identity community with a demo of your verification technology, credential issuance, or AI-powered authentication.",
+    name: "Showcase your AI identity technology in Times Square",
+    description: "Showcase your AI identity solution on some of Times Square's biggest screens — reach the NFT.NYC AI and identity community with a demo of your verification technology, credential issuance, or AI-powered authentication." + TIMES_SQUARE_REACH,
   },
   "Game Tokenization": {
-    name: "Showcase your gaming technology on Times Square",
-    description: "Showcase an ad or preview of your tokenized game experience on some of Times Square's biggest screens — capture the attention of NFT.NYC's gaming community with gameplay footage, in-game asset reveals, or tournament highlights.",
+    name: "Showcase your gaming technology in Times Square",
+    description: "Showcase an ad or preview of your tokenized game experience on some of Times Square's biggest screens — capture the attention of NFT.NYC's gaming community with gameplay footage, in-game asset reveals, or tournament highlights." + TIMES_SQUARE_REACH,
   },
   "On-Chain Infrastructure": {
-    name: "Showcase your infrastructure technology on Times Square",
-    description: "Showcase your chain, protocol, or developer tools on some of Times Square's biggest screens — reach the NFT.NYC builder and developer community with a visualization of your network's speed, scalability, or cross-chain capabilities.",
+    name: "Showcase your infrastructure technology in Times Square",
+    description: "Showcase your chain, protocol, or developer tools on some of Times Square's biggest screens — reach the NFT.NYC builder and developer community with a visualization of your network's speed, scalability, or cross-chain capabilities." + TIMES_SQUARE_REACH,
   },
   "Social NFTs": {
-    name: "Showcase your social platform on Times Square",
-    description: "Showcase your social platform or community tools on some of Times Square's biggest screens — connect with the NFT.NYC social and community-building audience through your social graph, token-gated experiences, or engagement features.",
+    name: "Showcase your social platform in Times Square",
+    description: "Showcase your social platform or community tools on some of Times Square's biggest screens — connect with the NFT.NYC social and community-building audience through your social graph, token-gated experiences, or engagement features." + TIMES_SQUARE_REACH,
   },
   "Creator Economy": {
-    name: "Showcase your creator tools on Times Square",
-    description: "Showcase your creator tools or monetization platform on some of Times Square's biggest screens — reach the NFT.NYC creator community with creator success stories, minting experiences, or royalty infrastructure.",
+    name: "Showcase your creator tools in Times Square",
+    description: "Showcase your creator tools or monetization platform on some of Times Square's biggest screens — reach the NFT.NYC creator community with creator success stories, minting experiences, or royalty infrastructure." + TIMES_SQUARE_REACH,
   },
   "DeFi": {
-    name: "Showcase your DeFi protocol on Times Square",
-    description: "Showcase your DeFi protocol or NFT-fi product on some of Times Square's biggest screens — reach the NFT.NYC DeFi community with your yield strategies, lending mechanics, or portfolio dashboard.",
+    name: "Showcase your DeFi protocol in Times Square",
+    description: "Showcase your DeFi protocol or NFT-fi product on some of Times Square's biggest screens — reach the NFT.NYC DeFi community with your yield strategies, lending mechanics, or portfolio dashboard." + TIMES_SQUARE_REACH,
   },
   "RWA Tokenization": {
-    name: "Showcase your RWA platform on Times Square",
-    description: "Showcase your tokenized asset platform on some of Times Square's biggest screens — reach the NFT.NYC institutional and RWA community with real estate fractionalization, commodity tokenization, or compliance workflows.",
+    name: "Showcase your RWA platform in Times Square",
+    description: "Showcase your tokenized asset platform on some of Times Square's biggest screens — reach the NFT.NYC institutional and RWA community with real estate fractionalization, commodity tokenization, or compliance workflows." + TIMES_SQUARE_REACH,
   },
   "Brands & Engagement": {
-    name: "Showcase your brand experience on Times Square",
-    description: "Showcase your brand engagement or loyalty platform on some of Times Square's biggest screens — reach the NFT.NYC enterprise and brand community with your web3 loyalty program, digital collectibles, or consumer experience.",
+    name: "Showcase your brand experience in Times Square",
+    description: "Showcase your brand engagement or loyalty platform on some of Times Square's biggest screens — reach the NFT.NYC enterprise and brand community with your web3 loyalty program, digital collectibles, or consumer experience." + TIMES_SQUARE_REACH,
   },
   "Culture, Art & Music": {
-    name: "Showcase your art or music on Times Square",
-    description: "Showcase your digital art, music, or cultural project on some of Times Square's biggest screens — reach the NFT.NYC creative community with stunning artwork, music visuals, or a live creative experience.",
+    name: "Showcase your art or music in Times Square",
+    description: "Showcase your digital art, music, or cultural project on some of Times Square's biggest screens — reach the NFT.NYC creative community with stunning artwork, music visuals, or a live creative experience." + TIMES_SQUARE_REACH,
   },
   "DNS ENS Domain Tokens": {
-    name: "Showcase your domain platform on Times Square",
-    description: "Showcase your domain or naming platform on some of Times Square's biggest screens — reach the NFT.NYC identity and domain community with ENS integrations, web3 identity resolution, or decentralized hosting capabilities.",
+    name: "Showcase your domain platform in Times Square",
+    description: "Showcase your domain or naming platform on some of Times Square's biggest screens — reach the NFT.NYC identity and domain community with ENS integrations, web3 identity resolution, or decentralized hosting capabilities." + TIMES_SQUARE_REACH,
   },
   "DeSci · Longevity Tokenization": {
-    name: "Showcase your DeSci platform on Times Square",
-    description: "Showcase your DeSci platform or longevity research on some of Times Square's biggest screens — reach the NFT.NYC science and biotech community with tokenized research projects, biotech IP, or crowd-funded science.",
+    name: "Showcase your DeSci platform in Times Square",
+    description: "Showcase your DeSci platform or longevity research on some of Times Square's biggest screens — reach the NFT.NYC science and biotech community with tokenized research projects, biotech IP, or crowd-funded science." + TIMES_SQUARE_REACH,
   },
   "NFT Marketplaces": {
-    name: "Showcase your marketplace on Times Square",
-    description: "Showcase your NFT marketplace on some of Times Square's biggest screens — reach the NFT.NYC collector and trader community with curated collections, live auction previews, or trading highlights.",
+    name: "Showcase your marketplace in Times Square",
+    description: "Showcase your NFT marketplace on some of Times Square's biggest screens — reach the NFT.NYC collector and trader community with curated collections, live auction previews, or trading highlights." + TIMES_SQUARE_REACH,
   },
 };
 
