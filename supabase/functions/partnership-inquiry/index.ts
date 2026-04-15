@@ -13,6 +13,9 @@
  *   ADD_CONTACT_URL           — same as the subscribe function
  *   ADD_CONTACT_SECRET        — same as the subscribe function
  *   PARTNERSHIP_LIST_ID       — Twenty.com list ID for "Partnership Inquiries"
+ *   SPONSOR_PIPELINE_URL      — sponsor pipeline endpoint on the sister
+ *                               project (inbound-sponsor-lead). If unset the
+ *                               pipeline integration is simply skipped.
  */
 
 const corsHeaders = {
@@ -67,6 +70,23 @@ function parsePrice(raw: string | undefined): number {
 
 function formatUSD(n: number): string {
   return "$" + n.toLocaleString("en-US");
+}
+
+/**
+ * Map the total opportunity value to the sponsor pipeline's tiered
+ * package_id enum (platinum / gold / silver / bronze). The pipeline also
+ * accepts the real package_name + amount as free-text context, but still
+ * requires a tier slot for its kanban stage column.
+ *   ≥ $100,000 → platinum
+ *   $50,000 – $99,999 → gold
+ *   $15,000 – $49,999 → silver
+ *   < $15,000 → bronze
+ */
+function tierFor(amount: number): "platinum" | "gold" | "silver" | "bronze" {
+  if (amount >= 100_000) return "platinum";
+  if (amount >= 50_000) return "gold";
+  if (amount >= 15_000) return "silver";
+  return "bronze";
 }
 
 Deno.serve(async (req) => {
@@ -196,14 +216,18 @@ Deno.serve(async (req) => {
     console.error("Resend fetch failed:", err);
   }
 
-  // Also log to CRM (fire-and-forget — we don't block success on this)
+  const SPONSOR_PIPELINE_URL = Deno.env.get("SPONSOR_PIPELINE_URL");
+
+  // Fire the CRM log AND the sponsor-pipeline push in parallel. Both are
+  // non-blocking — if either fails the inquiry still succeeds for the user
+  // and we keep the email notification as the source of truth.
+  const sideEffects: Promise<unknown>[] = [];
+
   if (ADD_CONTACT_URL && ADD_CONTACT_SECRET && PARTNERSHIP_LIST_ID) {
     const [firstName, ...lastParts] = name.trim().split(/\s+/);
     const lastName = lastParts.join(" ") || name;
-    const addonSummary = (addons ?? []).map(a => a.name).join(", ");
-
-    try {
-      await fetch(ADD_CONTACT_URL, {
+    sideEffects.push(
+      fetch(ADD_CONTACT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -219,13 +243,47 @@ Deno.serve(async (req) => {
           // Note: the CRM doesn't have package fields, so we surface them in
           // the email. The CRM entry just records that this person inquired.
         }),
-      });
-      // If the notes include package info we want in the CRM, we rely on the
-      // email for detail. Package + addon context lives in the email body.
-      void addonSummary;
-    } catch (err) {
-      console.error("CRM log failed (non-fatal):", err);
-    }
+      }).catch(err => { console.error("CRM log failed (non-fatal):", err); })
+    );
+  }
+
+  if (SPONSOR_PIPELINE_URL) {
+    // Push to the sister project's sponsor pipeline at the inbound hot-lead
+    // stage. `package_id` is a tier bucket they require; the real details
+    // flow through in `package_name`, `amount`, `addons`, `notes`, `source`.
+    sideEffects.push(
+      fetch(SPONSOR_PIPELINE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          company_name: company,
+          package_id: tierFor(totalValue),
+          package_name: basePackage.name,
+          amount: totalValue,
+          addons: (addons ?? []).map(a => ({ name: a.name, price: a.price })),
+          notes: [
+            notes,
+            phone ? `Phone: ${phone}` : "",
+            basePackage.trackName ? `Track: ${basePackage.trackName}` : "",
+            `Tab: ${tabLabel}`,
+          ].filter(Boolean).join("\n"),
+          source: "nft.nyc/sponsor",
+        }),
+      }).then(async res => {
+        if (!res.ok) {
+          const errText = await res.text();
+          console.error("Sponsor pipeline error:", res.status, errText);
+        }
+      }).catch(err => { console.error("Sponsor pipeline fetch failed (non-fatal):", err); })
+    );
+  }
+
+  // Kick off side effects without blocking the response on their completion.
+  // They execute in parallel with the email send above.
+  if (sideEffects.length) {
+    await Promise.allSettled(sideEffects);
   }
 
   if (!emailOk) {
