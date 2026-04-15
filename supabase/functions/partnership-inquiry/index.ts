@@ -218,10 +218,82 @@ Deno.serve(async (req) => {
 
   const SPONSOR_PIPELINE_URL = Deno.env.get("SPONSOR_PIPELINE_URL");
 
-  // Fire the CRM log AND the sponsor-pipeline push in parallel. Both are
-  // non-blocking — if either fails the inquiry still succeeds for the user
-  // and we keep the email notification as the source of truth.
+  // Fire the CRM log, sponsor-pipeline push, and the submitter confirmation
+  // email in parallel. All three are non-blocking — if any fails the inquiry
+  // still succeeds for the user and the team alert email above remains the
+  // source of truth.
   const sideEffects: Promise<unknown>[] = [];
+
+  // ── Confirmation email to the submitter ─────────────────────────────────
+  // Sends a warm acknowledgement and invites them to book a meeting with the
+  // partnerships team via the /book Calendly vanity link. The reply-to is
+  // set to team@nft.nyc so a reply lands with the partnerships team, not
+  // the sending mailbox.
+  const firstNameOnly = name.trim().split(/\s+/)[0] || name;
+  const confirmSubject = `We received your NFT.NYC 2026 partnership inquiry`;
+  const confirmHtml = `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #111; line-height: 1.55;">
+      <p style="font-size: 16px; margin: 0 0 16px;">Hi ${escape(firstNameOnly)},</p>
+
+      <p style="font-size: 15px; margin: 0 0 16px;">
+        Thanks for your interest in partnering with NFT.NYC 2026 — we've received your expression of interest and the partnerships team will be in touch shortly to work through the details.
+      </p>
+
+      <div style="background: #f5f5f7; border-radius: 8px; padding: 16px 20px; margin: 20px 0;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">${escape(tabLabel)}${basePackage.trackName ? " · " + escape(basePackage.trackName) : ""}</div>
+        <div style="font-size: 17px; font-weight: 700; color: #111;">${escape(basePackage.name)}</div>
+        <div style="font-size: 15px; color: #14b8a6; margin-top: 4px;">${escape(basePackage.price)}</div>
+        ${addonList ? `
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #e5e5ea;">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">With these add-ons</div>
+            <ul style="margin: 0; padding-left: 20px; font-size: 14px;">${addonList}</ul>
+          </div>
+        ` : ""}
+      </div>
+
+      <p style="font-size: 15px; margin: 0 0 16px;">
+        Want to move faster? Grab a slot directly on the NFT.NYC partnerships team calendar:
+      </p>
+
+      <p style="margin: 20px 0;">
+        <a href="https://www.nft.nyc/book" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ef4444); color: #fff; text-decoration: none; font-weight: 600; padding: 12px 28px; border-radius: 9999px; font-size: 15px;">Schedule a meeting →</a>
+      </p>
+
+      <p style="font-size: 14px; color: #444; margin: 0 0 16px;">
+        Or reply to this email with the best time for a call — we'll make it work.
+      </p>
+
+      <p style="font-size: 15px; margin: 24px 0 4px;">Looking forward to building something great together.</p>
+      <p style="font-size: 15px; margin: 0 0 4px; font-weight: 600;">The NFT.NYC Partnerships Team</p>
+      <p style="font-size: 13px; color: #666; margin: 0;">Times Square, New York City &nbsp;|&nbsp; 1–3 September 2026</p>
+
+      <p style="margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5ea; font-size: 11px; color: #999;">
+        This is an automated acknowledgement. The partnerships team will follow up personally within 1 business day. If you didn't submit this, just ignore this email.
+      </p>
+    </div>
+  `.trim();
+
+  sideEffects.push(
+    fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: `NFT.NYC Partnerships <${ALERT_FROM_EMAIL}>`,
+        to: [email],
+        reply_to: TEAM_ALERT_EMAIL,
+        subject: confirmSubject,
+        html: confirmHtml,
+      }),
+    }).then(async res => {
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Confirmation email error:", res.status, errText);
+      }
+    }).catch(err => { console.error("Confirmation email fetch failed (non-fatal):", err); })
+  );
 
   if (ADD_CONTACT_URL && ADD_CONTACT_SECRET && PARTNERSHIP_LIST_ID) {
     const [firstName, ...lastParts] = name.trim().split(/\s+/);
