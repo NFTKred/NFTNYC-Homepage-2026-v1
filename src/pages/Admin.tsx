@@ -98,9 +98,10 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
-  // Auto-generated screenshot of the vertical page (thum.io, no API key required,
-  // refreshed daily so the image stays current).
-  const screenshotUrl = `https://image.thum.io/get/width/1200/maxAge/1/${pageUrl}`;
+  // Auto-generated screenshot of the vertical page via Microlink (no API key
+  // required). `embed=screenshot.url` returns the image directly so the URL
+  // inlines as a preview in most email clients.
+  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(pageUrl)}&screenshot=true&embed=screenshot.url`;
 
   const resourceLine = resource
     ? `We have featured \u2014 ${resource.title} (${resource.url}) on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`
