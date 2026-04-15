@@ -28,9 +28,13 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   basePackage: BasePackage | null;
+  /** Optional page-specific label for the notes field. Default: "Anything else to share? (optional)" */
+  notesLabel?: string;
+  /** Optional page-specific placeholder for the notes field. */
+  notesPlaceholder?: string;
 }
 
-export default function PackageInquiryModal({ open, onOpenChange, basePackage }: Props) {
+export default function PackageInquiryModal({ open, onOpenChange, basePackage, notesLabel, notesPlaceholder }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
@@ -191,10 +195,10 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage }:
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="pi-notes" className="text-foreground text-sm">Anything else to share? (optional)</Label>
+              <Label htmlFor="pi-notes" className="text-foreground text-sm">{notesLabel ?? "Anything else to share? (optional)"}</Label>
               <Textarea
                 id="pi-notes"
-                placeholder="Goals, questions, specific activations you're interested in…"
+                placeholder={notesPlaceholder ?? "Goals, questions, specific activations you're interested in…"}
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
                 rows={3}
