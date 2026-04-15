@@ -233,6 +233,11 @@ Deno.serve(async (req) => {
   const confirmSubject = `We received your NFT.NYC 2026 partnership inquiry`;
   const confirmHtml = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #111; line-height: 1.55;">
+      <img
+        src="https://f005.backblazeb2.com/file/PB-HubSpot/nftnyc-emailheader-v1.png"
+        alt="NFT.NYC 2026"
+        style="display: block; width: 100%; height: auto; margin: 0 0 24px; border-radius: 8px;"
+      />
       <p style="font-size: 16px; margin: 0 0 16px;">Hi ${escape(firstNameOnly)},</p>
 
       <p style="font-size: 15px; margin: 0 0 16px;">
