@@ -94,28 +94,57 @@ function firstName(fullName: string): string {
   return fullName.replace(/\s*\([^)]*\)\s*/g, '').trim().split(/\s+/)[0] ?? fullName;
 }
 
-function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): string {
+interface OutreachDraft {
+  text: string;
+  html: string;
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): OutreachDraft {
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
   // Auto-generated screenshot of the vertical page via Microlink (no API key
-  // required). `embed=screenshot.url` returns the image directly so the URL
-  // inlines as a preview in most email clients.
+  // required). `embed=screenshot.url` returns the image directly so Gmail /
+  // Outlook render it inline when the HTML clipboard payload is pasted.
   const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(pageUrl)}&screenshot=true&embed=screenshot.url`;
 
-  const resourceLine = resource
+  const resourceLineText = resource
     ? `We have featured \u2014 ${resource.title} (${resource.url}) on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`
     : `We have featured [resource] on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`;
 
-  return [
+  const text = [
     `${name},`,
     '',
     `NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) is including interesting ${verticalLabel} tokenization projects.`,
     '',
-    resourceLine,
+    resourceLineText,
     '',
     screenshotUrl,
   ].join('\n');
+
+  const resourceLineHtml = resource
+    ? `We have featured &mdash; <a href="${escapeHtml(resource.url)}">${escapeHtml(resource.title)}</a> on our <a href="${escapeHtml(pageUrl)}">NFT.NYC/${escapeHtml(verticalLabel)} projects page</a>.`
+    : `We have featured [resource] on our <a href="${escapeHtml(pageUrl)}">NFT.NYC/${escapeHtml(verticalLabel)} projects page</a>.`;
+
+  const html = [
+    `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5;color:#111;">`,
+    `<p>${escapeHtml(name)},</p>`,
+    `<p>NFT.NYC 2026 (Sept 1&ndash;3, The Edison, Times Square) is including interesting ${escapeHtml(verticalLabel)} tokenization projects.</p>`,
+    `<p>${resourceLineHtml}</p>`,
+    `<p><a href="${escapeHtml(pageUrl)}"><img src="${escapeHtml(screenshotUrl)}" alt="NFT.NYC ${escapeHtml(verticalLabel)} projects page" style="max-width:600px;width:100%;height:auto;border:1px solid #ddd;border-radius:6px;" /></a></p>`,
+    `</div>`,
+  ].join('');
+
+  return { text, html };
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -382,7 +411,7 @@ export default function Admin() {
     const headers = ['Name', 'Role', 'Vertical', 'Email', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Draft'];
     const rows = allSpeakers.map(s => {
       const r = allResources.find(res => res.id === s.related_resource_id);
-      const draft = buildOutreachDraft(s, r);
+      const { text: draft } = buildOutreachDraft(s, r);
       return [
         s.name,
         s.role,
@@ -737,13 +766,22 @@ export default function Admin() {
                       <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
                         <button
                           onClick={async () => {
-                            const draft = buildOutreachDraft(s, relatedResource);
+                            const { text, html } = buildOutreachDraft(s, relatedResource);
                             try {
-                              await navigator.clipboard.writeText(draft);
+                              if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
+                                await navigator.clipboard.write([
+                                  new ClipboardItem({
+                                    'text/plain': new Blob([text], { type: 'text/plain' }),
+                                    'text/html':  new Blob([html], { type: 'text/html'  }),
+                                  }),
+                                ]);
+                              } else {
+                                await navigator.clipboard.writeText(text);
+                              }
                               setCopiedDraftId(s.id);
                               setTimeout(() => setCopiedDraftId(prev => prev === s.id ? null : prev), 1500);
                             } catch {
-                              window.prompt('Copy outreach draft:', draft);
+                              window.prompt('Copy outreach draft:', text);
                             }
                           }}
                           title={relatedResource ? 'Copy outreach draft' : 'No linked resource — draft will have a placeholder'}
