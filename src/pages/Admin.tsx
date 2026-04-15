@@ -73,25 +73,7 @@ const RESOURCE_RELATIONSHIPS = ['authored', 'mentioned', 'interviewed', 'quoted'
 
 /* ─── Outreach draft template ─── */
 
-const RESOURCE_NOUN: Record<string, string> = {
-  blog: 'blog post',
-  youtube: 'video',
-  podcast: 'podcast',
-  tweet: 'tweet',
-  paper: 'paper',
-  news: 'article',
-};
-
-// How to refer to the speaker's connection to the resource in the outreach.
-const RELATIONSHIP_CLAUSE: Record<string, { possessive: 'your' | 'the'; about: string }> = {
-  authored:     { possessive: 'your', about: '' },               // their own content — no "mentioning you"
-  interviewed:  { possessive: 'the',  about: 'interviewing you' },
-  quoted:       { possessive: 'the',  about: 'quoting you' },
-  mentioned:    { possessive: 'the',  about: 'mentioning you' },
-  topic_expert: { possessive: 'the',  about: 'featuring you' },
-};
-
-// Short name used in the draft ("our <X> tokenization resource page").
+// Short name used in the draft ("our NFT.NYC/<X> projects page").
 const VERTICAL_LABEL: Record<string, string> = {
   ai:           'AI Identity',
   gaming:       'Gaming',
@@ -117,32 +99,18 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): s
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
 
-  if (!resource || !speaker.resource_relationship) {
-    return [
-      `${name},`,
-      '',
-      `[Add a reference to a specific piece of their content here.]`,
-      '',
-      `We're building the ${verticalLabel} track for NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) and have added it to our resource page so the NFT.NYC community can learn more: ${pageUrl}`,
-      '',
-      'Best,',
-      'Team NFT.NYC',
-    ].join('\n');
-  }
-
-  const noun = RESOURCE_NOUN[resource.type] ?? 'piece';
-  const rel = RELATIONSHIP_CLAUSE[speaker.resource_relationship] ?? RELATIONSHIP_CLAUSE.mentioned;
-  const aboutClause = rel.about ? ` ${rel.about}` : '';
+  const resourceLine = resource
+    ? `We have featured \u2014 ${resource.title} (${resource.url}) on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`
+    : `We have featured [resource] on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`;
 
   return [
     `${name},`,
     '',
-    `Our team came across this ${noun}${aboutClause} \u2014 ${resource.title} (${resource.url}).`,
+    `NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) is including interesting ${verticalLabel} tokenization projects.`,
     '',
-    `We're building the ${verticalLabel} track for NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) and have added it to our resource page so the NFT.NYC community can learn more: ${pageUrl}`,
+    resourceLine,
     '',
-    'Best,',
-    'Team NFT.NYC',
+    '[SCREENSHOT or PAGE]',
   ].join('\n');
 }
 
