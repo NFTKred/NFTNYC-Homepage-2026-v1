@@ -252,15 +252,11 @@ Deno.serve(async (req) => {
       </div>
 
       <p style="font-size: 15px; margin: 0 0 16px;">
-        Want to move faster? Grab a slot directly on the NFT.NYC partnerships team calendar:
+        Grab a slot directly on the NFT.NYC partnerships team calendar:
       </p>
 
       <p style="margin: 20px 0;">
         <a href="https://www.nft.nyc/book" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ef4444); color: #fff; text-decoration: none; font-weight: 600; padding: 12px 28px; border-radius: 9999px; font-size: 15px;">Schedule a meeting →</a>
-      </p>
-
-      <p style="font-size: 14px; color: #444; margin: 0 0 16px;">
-        Or reply to this email with the best time for a call — we'll make it work.
       </p>
 
       <p style="font-size: 15px; margin: 24px 0 4px;">Looking forward to building something great together.</p>
