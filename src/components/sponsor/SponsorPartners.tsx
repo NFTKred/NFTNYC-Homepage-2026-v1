@@ -15,7 +15,7 @@ const partners = [
   { name: "Brave", logo: "/sponsors/brave.svg" },
   { name: "DraftKings", logo: "/sponsors/draftkings.svg" },
   { name: "EY", logo: "/sponsors/ey.svg" },
-  { name: "MoonPay", logo: "/sponsors/moonpay.svg" },
+  { name: "MoonPay", logo: "https://f005.backblazeb2.com/file/PB-HubSpot/moonpay-logo-full.png" },
   { name: "Magic Eden", logo: "/sponsors/magic-eden.svg" },
   { name: "0x", logo: "/sponsors/0x.svg" },
   { name: "Doodles", logo: "/sponsors/doodles.svg" },
@@ -27,7 +27,6 @@ const partners = [
 
 const LOGO_FILTERS: Record<string, string> = {
   "Christie's": "invert(1)",
-  "MoonPay": "brightness(20) contrast(0) invert(1)",
   "Samsung NEXT": "saturate(0) brightness(2.5)",
 };
 
