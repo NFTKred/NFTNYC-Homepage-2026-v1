@@ -251,6 +251,14 @@ Deno.serve(async (req) => {
     // Push to the sister project's sponsor pipeline at the inbound hot-lead
     // stage. `package_id` is a tier bucket they require; the real details
     // flow through in `package_name`, `amount`, `addons`, `notes`, `source`.
+    //
+    // NOTE: the pipeline renders `addons` as a string in its kanban notes,
+    // so we flatten the structured list here to a human-readable form. We
+    // keep it readable at-a-glance ("Name — Price, Name — Price").
+    const addonsPretty = (addons ?? [])
+      .map(a => `${a.name} — ${a.price}`)
+      .join(", ");
+
     sideEffects.push(
       fetch(SPONSOR_PIPELINE_URL, {
         method: "POST",
@@ -262,12 +270,14 @@ Deno.serve(async (req) => {
           package_id: tierFor(totalValue),
           package_name: basePackage.name,
           amount: totalValue,
-          addons: (addons ?? []).map(a => ({ name: a.name, price: a.price })),
+          addons: addonsPretty,
           notes: [
             notes,
             phone ? `Phone: ${phone}` : "",
             basePackage.trackName ? `Track: ${basePackage.trackName}` : "",
             `Tab: ${tabLabel}`,
+            `Base package: ${basePackage.name} (${basePackage.price})`,
+            addonsPretty ? `Add-ons: ${addonsPretty}` : "",
           ].filter(Boolean).join("\n"),
           source: "nft.nyc/sponsor",
         }),
