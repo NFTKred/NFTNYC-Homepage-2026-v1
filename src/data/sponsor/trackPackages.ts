@@ -8,8 +8,8 @@ export interface TrackPackage {
 
 const demoIncludes = [
   "High-top table and two bar stools",
-  "10' x 10' rooftop expo space",
-  "Logo in rooftop AV screen rotation (Sept 2-3)",
+  "10' x 10' expo space",
+  "Logo in AV screen rotation (Sept 2-3)",
   "Logo in digital program",
   "1 VIP + 4 GA + 2 staff tickets",
 ];
@@ -122,7 +122,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom experience for the NFT.NYC AI identity community. Examples include real-time AI-powered identity verification stations, deepfake detection demos, or on-chain credential issuance — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -140,7 +140,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "demo",
       name: "Introduce your AI Identity technology with a demo table",
       price: "$5,000",
-      description: "Meet the NFT.NYC AI identity community face-to-face from a dedicated demo table on the rooftop — perfect for live demonstrations of identity verification, credential issuance, or AI-powered authentication to qualified prospects.",
+      description: "Meet the NFT.NYC AI identity community face-to-face at a dedicated demo table — perfect for live demonstrations of identity verification, credential issuance, or AI-powered authentication to qualified prospects.",
       includes: [...demoIncludes],
     },
     {
@@ -185,7 +185,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom gaming experience for the NFT.NYC gaming community. Examples include playable blockchain game demos, live tournament setups, or on-chain reward competitions — the format is yours to design.",
       includes: [
-        "20' x 10' premium activation space on rooftop",
+        "20' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -203,7 +203,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "demo",
       name: "Introduce your gaming technology with a demo table",
       price: "$5,000",
-      description: "Meet the NFT.NYC gaming community at a dedicated demo table on the rooftop — let gamers, developers, and studio founders experience your blockchain game hands-on.",
+      description: "Meet the NFT.NYC gaming community at a dedicated demo table — let gamers, developers, and studio founders experience your blockchain game hands-on.",
       includes: [...demoIncludes],
     },
     {
@@ -248,7 +248,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom developer experience for the NFT.NYC builder community. Examples include hands-on SDK workshops, mini-hackathons, or live contract deployment stations — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -311,7 +311,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom social experience for the NFT.NYC community builders. Examples include token-gated lounges, social minting stations, or DAO onboarding experiences — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -374,7 +374,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom creator experience for the NFT.NYC creative community. Examples include live minting studios, digital art creation stations, or collaborative design workshops — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -437,7 +437,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom DeFi experience for the NFT.NYC finance community. Examples include live trading simulations, yield farming demos, or NFT-backed lending showcases — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -500,7 +500,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom RWA experience for the NFT.NYC institutional community. Examples include tokenized real estate walkthroughs, luxury goods authentication demos, or commodity fractionalization showcases — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -563,7 +563,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom brand experience for the NFT.NYC enterprise community. Examples include interactive loyalty program demos, digital collectible claim stations, or immersive web3 engagement showcases — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -626,7 +626,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom art or music experience for the NFT.NYC creative community. Examples include curated digital galleries, live music performances, or interactive minting installations — the format is yours to design.",
       includes: [
-        "20' x 10' premium activation space on rooftop",
+        "20' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -689,7 +689,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom domain experience for the NFT.NYC identity community. Examples include live ENS registration kiosks, web3 profile setup stations, or decentralized hosting demos — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -752,7 +752,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom DeSci experience for the NFT.NYC science community. Examples include tokenized research funding demos, crowd-funded experiment stations, or longevity data visualizations — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
@@ -815,7 +815,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom marketplace experience for the NFT.NYC collector community. Examples include live auction stations, curated collection displays, or interactive bidding experiences — the format is yours to design.",
       includes: [
-        "10' x 10' premium activation space on rooftop",
+        "10' x 10' premium activation space",
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
