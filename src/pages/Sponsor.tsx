@@ -8,7 +8,10 @@ import SponsorPartners from "@/components/sponsor/SponsorPartners";
 import CommunityPartner from "@/components/sponsor/CommunityPartner";
 import TrackTiles from "@/components/sponsor/TrackTiles";
 import TrackPackages from "@/components/sponsor/TrackPackages";
+import PackageInquiryModal, { type BasePackage as InquiryBasePackage } from "@/components/sponsor/PackageInquiryModal";
 import { defaultPackages, defaultAlaCarte } from "@/data/sponsor/packages";
+import type { Package } from "@/data/sponsor/packages";
+import type { TrackPackage } from "@/data/sponsor/trackPackages";
 
 type PartnerTab = 'community' | 'packages' | 'partner-program';
 
@@ -26,6 +29,19 @@ export default function Sponsor() {
   const [activeTab, setActiveTab] = useState<PartnerTab>('community');
   const [filter, setFilter] = useState("all");
   const [selectedTrack, setSelectedTrack] = useState<string | null>('AI Identity Tokenization');
+  const [inquiry, setInquiry] = useState<InquiryBasePackage | null>(null);
+
+  const openPackageInquiry = (pkg: Package) => {
+    setInquiry({ name: pkg.name, price: pkg.price, tier: pkg.tier, context: 'packages' });
+  };
+  const openTrackInquiry = (pkg: TrackPackage) => {
+    setInquiry({
+      name: pkg.name,
+      price: pkg.price,
+      context: 'community',
+      trackName: selectedTrack ?? undefined,
+    });
+  };
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -120,7 +136,7 @@ export default function Sponsor() {
       {activeTab === 'community' && (
         <>
           <TrackTiles selected={selectedTrack} onSelect={(t) => setSelectedTrack(t || null)} />
-          {selectedTrack && <TrackPackages trackName={selectedTrack} />}
+          {selectedTrack && <TrackPackages trackName={selectedTrack} onSelect={openTrackInquiry} />}
         </>
       )}
 
@@ -169,8 +185,7 @@ export default function Sponsor() {
                 <PackageCard
                   key={pkg.id}
                   pkg={pkg}
-                  onEdit={() => {}}
-                  onDelete={() => {}}
+                  onSelect={openPackageInquiry}
                 />
               ))}
             </div>
@@ -204,6 +219,12 @@ export default function Sponsor() {
       {activeTab === 'partner-program' && (
         <CommunityPartner />
       )}
+
+      <PackageInquiryModal
+        open={!!inquiry}
+        onOpenChange={(o) => { if (!o) setInquiry(null); }}
+        basePackage={inquiry}
+      />
 
       <SponsorPartners />
       <SiteFooter stage={stage} hideIndustryFeed />

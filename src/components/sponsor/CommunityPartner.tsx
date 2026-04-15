@@ -5,8 +5,8 @@ import CommunityPartnerModal from "./CommunityPartnerModal";
 const steps = [
   {
     num: 1,
-    title: "Enroll for $1,000",
-    desc: "Register as a Community Partner and receive your unique affiliate ticket link. Your $1,000 enrollment includes a 5-minute speaking slot, your logo on the NFT.NYC website, and counts as your first $1,000 in sponsor credits.",
+    title: "Enroll for $1,500",
+    desc: "Register as a Community Partner and receive your unique affiliate ticket link. Your $1,500 enrollment includes a 5-minute speaking slot, your logo on the NFT.NYC website, and counts as your first $1,500 in sponsor credits.",
   },
   {
     num: 2,
@@ -22,8 +22,8 @@ const steps = [
                 GA ticket sold
               </td>
               <td className="pr-3 py-0.5">=</td>
-              <td className="pr-3 py-0.5 text-foreground font-medium">$50 credit</td>
-              <td className="py-0.5">(10% of ticket price)</td>
+              <td className="pr-3 py-0.5 text-foreground font-medium">$100 credit</td>
+              <td className="py-0.5">(20% of ticket price)</td>
             </tr>
             <tr>
               <td className="pr-3 py-0.5 flex items-center gap-2">
@@ -31,8 +31,8 @@ const steps = [
                 VIP ticket sold
               </td>
               <td className="pr-3 py-0.5">=</td>
-              <td className="pr-3 py-0.5 text-foreground font-medium">$200 credit</td>
-              <td className="py-0.5">(~13% of ticket price)</td>
+              <td className="pr-3 py-0.5 text-foreground font-medium">$500 credit</td>
+              <td className="py-0.5">(~33% of ticket price)</td>
             </tr>
           </tbody>
         </table>
@@ -42,26 +42,27 @@ const steps = [
   {
     num: 3,
     title: "Redeem credits toward any package",
-    desc: "Apply your accumulated credits toward any sponsorship package or a la carte item. Credits can cover up to 50% of a package price. Combine credits with a cash payment to unlock larger packages.",
+    desc: "Apply your accumulated credits toward any sponsorship package or a la carte item. Credits can cover up to 50% of a package price.",
   },
 ];
 
 const milestones = [
-  { icon: Mic, label: "Enrollment", reward: "5 min speaking slot and logo on website", credits: "$1,000", pct: 6 },
-  { icon: Gift, label: "25 GA tickets sold", reward: "2 GA passes to the event", credits: "$2,250", pct: 14 },
-  { icon: Star, label: "50 GA tickets sold", reward: "Featured profile on NFT Giveaway site", credits: "$3,500", pct: 22 },
-  { icon: Target, label: "100 GA tickets sold", reward: "Standard rooftop booth (fully earned)", credits: "$6,000", pct: 38 },
-  { icon: Trophy, label: "200 GA tickets sold", reward: "Medium rooftop booth (fully earned)", credits: "$11,000", pct: 69 },
-  { icon: Rocket, label: "300+ GA tickets sold", reward: "Credits toward any package + 5 min main stage speaking slot", credits: "$16,000+", pct: 100 },
+  { icon: Mic, label: "Enrollment", reward: "5 min speaking slot and logo on website", credits: "$1,500", pct: 7 },
+  { icon: Gift, label: "10 GA tickets sold", reward: "2 GA passes to the event", credits: "$2,500", pct: 12 },
+  { icon: Star, label: "25 GA tickets sold", reward: "Featured profile on Times Square Challenge site", credits: "$4,000", pct: 19 },
+  { icon: Target, label: "50 GA tickets sold", reward: "Demo Table (fully earned)", credits: "$6,500", pct: 30 },
+  { icon: Trophy, label: "100 GA tickets sold", reward: "Medium Expo Booth (fully earned)", credits: "$11,500", pct: 53 },
+  { icon: Rocket, label: "200+ GA tickets sold", reward: "Large Expo Booth + 5 min main stage speaking slot", credits: "$21,500+", pct: 100 },
 ];
 
 const fineprint = [
   "Credits apply to sponsorship packages and a la carte items only — they cannot be redeemed for cash",
   "Credits can cover up to 50% of any package price (the remainder is paid in cash)",
-  "Your $1,000 enrollment fee counts toward your credit balance",
+  "Your $1,500 enrollment fee counts toward your credit balance",
+  "VIP ticket sales also earn credits ($500 each), so credit totals accelerate with mixed GA/VIP sales",
   "Affiliate links must be registered to a company or project (individual registrations are not eligible)",
   "Credits must be redeemed by August 1, 2026. Unredeemed credits after this date are forfeited. This ensures all sponsorship logistics can be finalized before the event. Credits do not carry over",
-  "If you do not reach any ticket sales milestone, your $1,000 enrollment still guarantees a 5-minute speaking slot and logo placement on the NFT.NYC website",
+  "If you do not reach any ticket sales milestone, your $1,500 enrollment still guarantees a 5-minute speaking slot and logo placement on the NFT.NYC website",
 ];
 
 export default function CommunityPartner() {
@@ -69,7 +70,6 @@ export default function CommunityPartner() {
 
   return (
     <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
-
       {/* Header */}
       <div className="mb-14">
         <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">
@@ -77,7 +77,7 @@ export default function CommunityPartner() {
         </p>
         <h2 className="text-3xl font-bold text-foreground mb-3">Community Partner Program</h2>
         <p className="text-muted-foreground max-w-3xl leading-relaxed">
-          Earn your way to a sponsorship. Enroll for $1,000, sell tickets through your affiliate link, and turn commissions into sponsor credits toward any NFT.NYC 2026 package.
+          Earn your way to a sponsorship. Enroll for $1,500, sell tickets through your affiliate link, and turn commissions into sponsor credits toward any NFT.NYC 2026 package.
         </p>
       </div>
 
@@ -142,7 +142,7 @@ export default function CommunityPartner() {
           onClick={() => setModalOpen(true)}
           className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
         >
-          Become a Community Partner — $1,000
+          Become a Community Partner — $1,500
         </button>
       </div>
 
@@ -159,9 +159,6 @@ export default function CommunityPartner() {
           ))}
         </ul>
       </div>
-
-      {/* Bottom gradient border */}
-      <div className="absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
     </section>
   );
 }

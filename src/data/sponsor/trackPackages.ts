@@ -4,6 +4,9 @@ export interface TrackPackage {
   price: string;
   description: string;
   includes: string[];
+  // Optional structured ticket counts so the UI can render VIP/GA/Staff boxes
+  // consistent with PackageCard in the Build Your Perfect Package tab.
+  tickets?: { vip: number; ga: number; staff?: number };
 }
 
 const demoIncludes = [
@@ -11,11 +14,11 @@ const demoIncludes = [
   "10' x 10' expo space",
   "Logo in AV screen rotation (Sept 2-3)",
   "Logo in digital program",
-  "1 VIP + 4 GA + 2 staff tickets",
+  "1 VIP + 2 GA tickets",
 ];
 
 const marketingIncludes = [
-  "Dedicated email to targeted community members in this vertical",
+  "Dedicated feature in an NFT.NYC community update sent to targeted community members in this vertical",
   "2 supporting social media posts across NFT.NYC channels (175K+ followers)",
   "Custom audience segmentation based on community interest and registration data",
   "Performance reporting with open rates, clicks, and engagement metrics",
@@ -26,6 +29,7 @@ const billboardIncludes = [
   "Clip included in NFT.NYC 1 Hour Kickoff Roadblock",
   "Premium placement alongside NFT.NYC branded content",
   "Reach the NFT.NYC community AND ~1.5M daily Times Square passers-by (330,000+ pedestrians/day, 50M visitors/year per the Times Square Alliance)",
+  "2 VIP tickets",
 ];
 
 interface BillboardMeta {
@@ -97,11 +101,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all AI Identity track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the AI Identity stage",
+        "15 min keynote on the AI Identity stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -113,8 +118,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded social content promoting the challenge",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -126,8 +133,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -135,6 +142,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["AI Identity Tokenization"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -142,6 +150,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC AI identity community face-to-face at a dedicated demo table — perfect for live demonstrations of identity verification, credential issuance, or AI-powered authentication to qualified prospects.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -160,11 +169,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Game Tokenization track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the gaming stage",
+        "15 min keynote on the gaming stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -176,8 +186,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded social content and leaderboard highlights",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -189,8 +201,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -198,6 +210,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["Game Tokenization"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -205,6 +218,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC gaming community at a dedicated demo table — let gamers, developers, and studio founders experience your blockchain game hands-on.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -223,11 +237,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Infrastructure track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the infrastructure stage",
+        "15 min keynote on the infrastructure stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -239,8 +254,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded developer-focused social content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -252,8 +269,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -261,6 +278,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["On-Chain Infrastructure"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -268,6 +286,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC builder and developer community at a dedicated demo table — ideal for one-on-one conversations about your chain, SDK, or developer tools with technical decision-makers.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -286,11 +305,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Social NFTs track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the social stage",
+        "15 min keynote on the social stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -302,8 +322,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded community content and highlights",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -315,8 +337,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -324,6 +346,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["Social NFTs"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -331,6 +354,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC social and community-building audience at a dedicated demo table — perfect for live demos of social graphs, token-gated experiences, and community engagement features to qualified community builders.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -349,11 +373,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Creator Economy track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the creator stage",
+        "15 min keynote on the creator stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -365,8 +390,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded creator spotlight social content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -378,8 +405,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -387,6 +414,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["Creator Economy"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -394,6 +422,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC creator community at a dedicated demo table — let creators experience your minting platform, royalty infrastructure, or monetization tools hands-on.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -412,11 +441,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all DeFi track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the DeFi stage",
+        "15 min keynote on the DeFi stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -428,8 +458,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded DeFi education content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -441,8 +473,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -450,6 +482,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["DeFi"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -457,6 +490,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC DeFi community at a dedicated demo table — walk traders, yield strategists, and NFT-fi builders through your protocol's features one-on-one.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -475,11 +509,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all RWA track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the RWA stage",
+        "15 min keynote on the RWA stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -491,8 +526,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded institutional-focused social content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -504,8 +541,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -513,6 +550,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["RWA Tokenization"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -520,6 +558,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC institutional and RWA community at a dedicated demo table — walk fund managers and asset tokenizers through real estate fractionalization, commodity tokenization, or securities compliance workflows.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -538,11 +577,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Brands track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the brands stage",
+        "15 min keynote on the brands stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -554,8 +594,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded case study social content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -567,8 +609,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -576,6 +618,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["Brands & Engagement"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -583,6 +626,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC enterprise and brand community at a dedicated demo table — show CMOs and brand strategists your loyalty platform, digital collectible tools, or engagement solution in action.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -601,11 +645,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Culture track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the culture stage",
+        "15 min keynote on the culture stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -617,8 +662,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded artist spotlight social content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -630,8 +677,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -639,6 +686,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["Culture, Art & Music"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -646,6 +694,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC creative community at a dedicated demo table — let artists, musicians, and collectors experience your digital art platform or music NFT tools up close.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -664,11 +713,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Domain track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the domain stage",
+        "15 min keynote on the domain stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -680,8 +730,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded domain education content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -693,8 +745,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -702,6 +754,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["DNS ENS Domain Tokens"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -709,6 +762,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC domain and identity community at a dedicated demo table — walk ENS enthusiasts and domain investors through your registration tools, identity resolution, or decentralized hosting platform.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -727,11 +781,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all DeSci track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the DeSci stage",
+        "15 min keynote on the DeSci stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -743,8 +798,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded science communication content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -756,8 +813,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -765,6 +822,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["DeSci · Longevity Tokenization"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -772,6 +830,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC science and biotech community at a dedicated demo table — engage researchers and investors in one-on-one conversations about your DeSci platform, research IP marketplace, or longevity data tools.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",
@@ -790,11 +849,12 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       includes: [
         "Branded stage backdrop for all Marketplaces track sessions",
         "Logo on all track session intro slides and interstitials",
-        "15 min keynote or 25 min panel on the marketplaces stage",
+        "15 min keynote on the marketplaces stage",
         "Track-exclusive branding in digital program",
         "Social media announcement as track sponsor",
         "4 VIP + 8 GA tickets",
       ],
+      tickets: { vip: 4, ga: 8 },
     },
     {
       type: "timessquare",
@@ -806,8 +866,10 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Branded presence throughout the online challenge interface",
         "Co-branded auction and trading highlights social content",
         "Post-event engagement data and community insights",
+        "10 min speaking slot to share your experience on stage",
         "2 VIP + 4 GA tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "activation",
@@ -819,8 +881,8 @@ export const trackPackages: Record<string, TrackPackage[]> = {
         "Full creative control over your custom installation",
         "5 min speaking slot on event stage",
         "2 VIP + 4 GA tickets",
-        "2 exhibition staff tickets",
       ],
+      tickets: { vip: 2, ga: 4 },
     },
     {
       type: "billboard",
@@ -828,6 +890,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$12,000",
       description: billboardByTrack["NFT Marketplaces"].description,
       includes: [...billboardIncludes],
+      tickets: { vip: 2, ga: 0 },
     },
     {
       type: "demo",
@@ -835,6 +898,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       price: "$5,000",
       description: "Meet the NFT.NYC collector and trader community at a dedicated demo table — let collectors and creators explore your marketplace, curation tools, or trading platform hands-on.",
       includes: [...demoIncludes],
+      tickets: { vip: 1, ga: 2 },
     },
     {
       type: "marketing",

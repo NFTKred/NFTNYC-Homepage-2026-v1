@@ -16,11 +16,12 @@ function Badge({ children, variant = "default" }: { children: React.ReactNode; v
 
 interface PackageCardProps {
   pkg: Package;
-  onEdit: (pkg: Package) => void;
-  onDelete: (id: number | null) => void;
+  onEdit?: (pkg: Package) => void;
+  onDelete?: (id: number | null) => void;
+  onSelect?: (pkg: Package) => void;
 }
 
-export default function PackageCard({ pkg, onEdit, onDelete }: PackageCardProps) {
+export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
   const [expanded, setExpanded] = useState(false);
   const isSoldOut = pkg.availability === "Sold Out";
 
@@ -31,8 +32,8 @@ export default function PackageCard({ pkg, onEdit, onDelete }: PackageCardProps)
       )}
 
       <div className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1">
+        <div className="flex items-start justify-between mb-3 gap-3">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               {pkg.tier === "premium" && <Badge variant="premium">Premium</Badge>}
               <Badge variant={isSoldOut ? "soldOut" : "default"}>
@@ -41,6 +42,14 @@ export default function PackageCard({ pkg, onEdit, onDelete }: PackageCardProps)
             </div>
             <h3 className="text-xl font-bold text-foreground">{pkg.name}</h3>
           </div>
+          {onSelect && !isSoldOut && (
+            <button
+              onClick={() => onSelect(pkg)}
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-teal text-white text-xs font-semibold hover:bg-brand-teal/90 transition-colors whitespace-nowrap"
+            >
+              Select
+            </button>
+          )}
         </div>
 
         <p className="text-2xl font-bold text-brand-orange mb-3">{pkg.price}</p>

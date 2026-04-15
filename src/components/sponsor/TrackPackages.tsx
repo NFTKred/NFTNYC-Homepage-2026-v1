@@ -12,9 +12,10 @@ const typeConfig: Record<TrackPackage["type"], { label: string; icon: typeof Mic
 
 interface TrackPackagesProps {
   trackName: string;
+  onSelect?: (pkg: TrackPackage) => void;
 }
 
-export default function TrackPackages({ trackName }: TrackPackagesProps) {
+export default function TrackPackages({ trackName, onSelect }: TrackPackagesProps) {
   const packages = trackPackages[trackName];
   if (!packages) return null;
 
@@ -29,13 +30,42 @@ export default function TrackPackages({ trackName }: TrackPackagesProps) {
               key={pkg.type}
               className="flex flex-col rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-brand-teal/30 hover:shadow-[0_0_24px_rgba(20,184,166,0.08)]"
             >
-              <div className={`inline-flex items-center gap-1.5 self-start rounded-full border px-3 py-1 text-xs font-medium mb-4 ${config.badgeColor}`}>
-                <Icon size={12} />
-                {config.label}
+              <div className="flex items-start justify-between mb-4 gap-3">
+                <div className={`inline-flex items-center gap-1.5 self-start rounded-full border px-3 py-1 text-xs font-medium ${config.badgeColor}`}>
+                  <Icon size={12} />
+                  {config.label}
+                </div>
+                {onSelect && (
+                  <button
+                    onClick={() => onSelect(pkg)}
+                    className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-teal text-white text-xs font-semibold hover:bg-brand-teal/90 transition-colors whitespace-nowrap"
+                  >
+                    Select
+                  </button>
+                )}
               </div>
               <h3 className="text-lg font-bold text-foreground mb-1">{pkg.name}</h3>
               <p className="text-2xl font-extrabold text-brand-teal mb-3">{pkg.price}</p>
               <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{pkg.description}</p>
+
+              {/* Ticket boxes — shown when the package has structured ticket counts. */}
+              {pkg.tickets && (
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  <div className="bg-secondary rounded-lg p-3 text-center">
+                    <div className="text-xs text-muted-foreground mb-1">VIP</div>
+                    <div className="text-lg font-bold text-foreground">{pkg.tickets.vip}</div>
+                  </div>
+                  <div className="bg-secondary rounded-lg p-3 text-center">
+                    <div className="text-xs text-muted-foreground mb-1">GA</div>
+                    <div className="text-lg font-bold text-foreground">{pkg.tickets.ga}</div>
+                  </div>
+                  <div className="bg-secondary rounded-lg p-3 text-center">
+                    <div className="text-xs text-muted-foreground mb-1">Staff</div>
+                    <div className="text-lg font-bold text-foreground">{pkg.tickets.staff ?? 0}</div>
+                  </div>
+                </div>
+              )}
+
               <div className="mt-auto">
                 <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-3">Includes</p>
                 <ul className="space-y-2">

@@ -10,7 +10,7 @@ const partners = [
   { name: "Canon", logo: "/sponsors/canon.svg" },
   { name: "Samsung NEXT", logo: "/sponsors/samsung-next.png" },
   { name: "Christie's", logo: "/sponsors/christies.svg" },
-  { name: "Sony", logo: "/sponsors/sony.svg" },
+  { name: "Sony", logo: "https://f005.backblazeb2.com/file/PB-HubSpot/files/sony-logo.svg" },
   { name: "McCain", logo: "/sponsors/mccain.svg" },
   { name: "Brave", logo: "/sponsors/brave.svg" },
   { name: "DraftKings", logo: "/sponsors/draftkings.svg" },

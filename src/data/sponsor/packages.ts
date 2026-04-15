@@ -53,7 +53,7 @@ export const defaultPackages: Package[] = [
     tickets: { vip: 30, ga: 50, staff: 15 },
     billboard: "Premier placement in Times Square Kickoff Roadblock",
     speaking: "Featured main stage session (20 min)",
-    expoSpace: "20' x 20' premier rooftop position",
+    expoSpace: "20'x 20' premium position",
     availability: "Limited"
   },
   {
@@ -69,8 +69,8 @@ export const defaultPackages: Package[] = [
       "Session intro slides featuring sponsor logo",
       "Stage hanging banner (3' x 12')",
       "10x7 graphic walls (QTY 2)",
-      "**Rooftop activation:**",
-      "20' x 20' expo space in premier rooftop position",
+      "**Expo activation:**",
+      "20'x 20' expo space in premium position",
       "Second-largest footprint after the Title Sponsor",
       "**Digital and content:**",
       "Standard AV logo 15 sec clips (QTY 2)",
@@ -83,7 +83,7 @@ export const defaultPackages: Package[] = [
     tickets: { vip: 10, ga: 20, staff: 8 },
     billboard: "15 sec Times Square Billboard Ad",
     speaking: "15 min Talk or 25 min Panel",
-    expoSpace: "20' x 20' rooftop activation",
+    expoSpace: "20'x 20' expo activation",
     availability: "Limited"
   },
   {
@@ -91,15 +91,15 @@ export const defaultPackages: Package[] = [
     tier: "standard",
     name: "Edison Ballroom South — Single Day",
     price: "$120,000",
-    description: "Brand the Edison Ballroom South stage for one activation day (Sept 2 or Sept 3). Available only if the full two-day stage sponsorship is unsold. Includes stage ownership, a rooftop activation, and a speaking slot.",
+    description: "Brand the Edison Ballroom South stage for one activation day (Sept 2 or Sept 3). Available only if the full two-day stage sponsorship is unsold. Includes stage ownership, an expo activation, and a speaking slot.",
     branding: [
       "**Stage branding (one day):**",
       "Stage backdrop and podium branding for your selected day",
       "Interstitial screen branding between sessions on your day",
       "Session intro slides featuring sponsor logo",
       "Stage hanging banner (3' x 12')",
-      "**Rooftop activation:**",
-      "20' x 10' expo space on the rooftop",
+      "**Expo activation:**",
+      "20'x 10' expo space",
       "**Digital and content:**",
       "Standard AV logo 15 sec clip (QTY 1)",
       "Branding in digital program",
@@ -108,7 +108,7 @@ export const defaultPackages: Package[] = [
     tickets: { vip: 4, ga: 10, staff: 6 },
     billboard: "Purchase through a la carte options",
     speaking: "10 min Talk",
-    expoSpace: "20' x 10' rooftop activation",
+    expoSpace: "20'x 10' expo activation",
     availability: "Limited"
   },
   {
@@ -196,18 +196,18 @@ export const defaultPackages: Package[] = [
   {
     id: 12,
     tier: "standard",
-    name: "Large Rooftop Booth",
+    name: "Large Expo Booth",
     price: "$25,000",
-    description: "Maximum activation footprint on the NFT.NYC rooftop expo floor. Prominent positioning, a speaking slot, and logo visibility across rooftop AV screens throughout the event.",
+    description: "Maximum activation footprint on the NFT.NYC expo floor. Prominent positioning, a speaking slot, and logo visibility across event AV screens throughout the event.",
     branding: [
-      "20' x 20' rooftop expo space",
-      "Logo in rooftop AV screen rotation (Sept 2-3)",
+      "20' x 20' expo space",
+      "Logo in AV screen rotation (Sept 2-3)",
       "5 min speaking slot on event stage",
       "Logo in digital program",
       "Opt-in media list"
     ],
     tickets: { vip: 4, ga: 10, staff: 6 },
-    billboard: "Logo on rooftop AV loop",
+    billboard: "Logo on event AV loop",
     speaking: "5 min Talk",
     expoSpace: "20' x 20'",
     availability: "Limited"
@@ -215,17 +215,17 @@ export const defaultPackages: Package[] = [
   {
     id: 13,
     tier: "standard",
-    name: "Medium Rooftop Booth",
+    name: "Medium Expo Booth",
     price: "$15,000",
-    description: "A strong rooftop presence with a speaking opportunity and AV screen visibility. Ideal for demos, product showcases, and community engagement.",
+    description: "A strong expo presence with a speaking opportunity and AV screen visibility. Ideal for demos, product showcases, and community engagement.",
     branding: [
-      "10' x 10' rooftop expo space",
-      "Logo in rooftop AV screen rotation (Sept 2-3)",
+      "10' x 10' expo space",
+      "Logo in AV screen rotation (Sept 2-3)",
       "5 min speaking slot on event stage",
       "Logo in digital program"
     ],
     tickets: { vip: 2, ga: 6, staff: 4 },
-    billboard: "Logo on rooftop AV loop",
+    billboard: "Logo on event AV loop",
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
     availability: "Limited"
@@ -233,16 +233,17 @@ export const defaultPackages: Package[] = [
   {
     id: 14,
     tier: "standard",
-    name: "Standard Rooftop Booth",
+    name: "Demo Table",
     price: "$5,000",
-    description: "Entry-level rooftop presence at NFT.NYC 2026. A dedicated booth space with logo visibility on the rooftop AV screens.",
+    description: "Entry-level expo presence at NFT.NYC 2026. A dedicated high-top demo table with logo visibility on the event AV screens.",
     branding: [
-      "10' x 10' rooftop expo space",
-      "Logo in rooftop AV screen rotation (Sept 2-3)",
+      "High-top table and two bar stools",
+      "10' x 10' expo space",
+      "Logo in AV screen rotation (Sept 2-3)",
       "Logo in digital program"
     ],
-    tickets: { vip: 1, ga: 4, staff: 2 },
-    billboard: "Logo on rooftop AV loop",
+    tickets: { vip: 1, ga: 2, staff: 0 },
+    billboard: "Logo on event AV loop",
     speaking: "—",
     expoSpace: "10' x 10'",
     availability: "Limited"
@@ -275,20 +276,20 @@ export const defaultAlaCarte: AlaCarteItem[] = [
     id: 104,
     name: "Featured Profile or Banner Ad",
     price: "$2,500",
-    description: "Promote your brand with a featured Profile Tile or a custom banner ad on the NFT Giveaway website. Featured for 3 months.",
+    description: "Featured profile or banner ad placement on the NFT.NYC Times Square Challenge site — put your brand in front of every visitor exploring the on-chain art collection. Featured for 3 months.",
     availability: "Limited"
   },
   {
     id: 105,
     name: "Social Media Post",
-    price: "$2,000",
+    price: "$2,500",
     description: "Provide us with a copy of your message and media asset for us to share with our actively engaged NFT community on one of our social platforms.",
     availability: "Limited"
   },
   {
     id: 107,
     name: "Community Email",
-    price: "$3,000",
+    price: "$3,500",
     description: "Email copy included in an NFT.NYC Community Email sent to 50K+ community members. Covers 1 newsworthy piece of content targeted to a segment of your choice.",
     availability: "Limited"
   },
