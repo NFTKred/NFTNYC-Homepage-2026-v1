@@ -13,7 +13,7 @@ import { defaultPackages, defaultAlaCarte } from "@/data/sponsor/packages";
 type PartnerTab = 'community' | 'packages' | 'partner-program';
 
 const TABS: { key: PartnerTab; label: string; description: string }[] = [
-  { key: 'community', label: 'Sponsorship by Community', description: 'Target the specific segment of the NFT.NYC community that aligns with your brand' },
+  { key: 'community', label: 'Reach Your Community', description: 'Target the specific segment of the NFT.NYC community that aligns with your brand' },
   { key: 'packages', label: 'Build Your Perfect Package', description: 'Premium sponsorship opportunities with maximum brand visibility' },
   { key: 'partner-program', label: 'Community Partner Program', description: 'Earn your way in — sell tickets, earn credits, unlock sponsorship benefits' },
 ];

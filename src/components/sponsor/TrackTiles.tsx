@@ -27,7 +27,7 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
     <section className="relative bg-background pt-10 pb-8">
       <div className="max-w-7xl mx-auto px-6">
         <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">
-          Reach your niche
+          Industry Focused
         </p>
         <h2 className="text-3xl font-bold text-foreground mb-3">
           Sponsorship by Community
