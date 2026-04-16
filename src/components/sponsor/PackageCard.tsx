@@ -121,6 +121,15 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
             })}
           </ul>
         )}
+
+        {onSelect && !isSoldOut && (
+          <button
+            onClick={() => onSelect(pkg)}
+            className="w-full mt-4 py-2.5 rounded-lg border border-brand-teal/40 text-brand-teal text-sm font-semibold hover:bg-brand-teal/10 transition-colors"
+          >
+            Select Add-Ons
+          </button>
+        )}
       </div>
     </div>
   );
