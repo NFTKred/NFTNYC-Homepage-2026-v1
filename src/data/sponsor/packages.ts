@@ -206,7 +206,7 @@ export const defaultPackages: Package[] = [
       "Logo in digital program",
       "Opt-in media list"
     ],
-    tickets: { vip: 4, ga: 10, staff: 6 },
+    tickets: { vip: 2, ga: 4, staff: 2 },
     billboard: "Logo on event AV loop",
     speaking: "5 min Talk",
     expoSpace: "20' x 20'",
