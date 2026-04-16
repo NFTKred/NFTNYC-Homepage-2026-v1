@@ -119,16 +119,17 @@ export default function SponsorTSChallenge() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <p style={sectionLabel}>Featured Sponsorship · $35,000</p>
           <h1 style={{
-            fontFamily: 'var(--font-display)',
+            fontFamily: "'Monument Extended', var(--font-display)",
             fontSize: 'clamp(36px, 6vw, 64px)',
             fontWeight: 700,
             letterSpacing: '-1.5px',
             lineHeight: 1.05,
             color: 'var(--color-text)',
+            textTransform: 'uppercase',
             marginBottom: '1.5rem',
             maxWidth: '900px',
           }}>
-            Sponsor the Times Square Challenge.
+            Be a part of the<br /><span style={{ whiteSpace: 'nowrap' }}>Times Square Challenge</span>
           </h1>
           <p style={{
             fontFamily: 'var(--font-body)',
