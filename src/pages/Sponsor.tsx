@@ -82,7 +82,7 @@ export default function Sponsor() {
       <SponsorHeader />
 
       {/* ─── Choose Your Path ─── */}
-      <section style={{ padding: '3.5rem 1.5rem 3rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <section className="max-w-7xl mx-auto" style={{ padding: '3.5rem 1.5rem 3rem' }}>
         <p style={{
           fontFamily: 'var(--font-body)',
           fontSize: '12px',
@@ -105,10 +105,8 @@ export default function Sponsor() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '1rem',
-          maxWidth: '960px',
-          margin: '0 auto',
         }}>
           {PATHS.map(path => {
             const Icon = path.icon;

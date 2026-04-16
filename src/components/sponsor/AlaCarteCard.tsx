@@ -12,7 +12,7 @@ export default function AlaCarteCard({ item, onEdit, onDelete }: AlaCarteCardPro
       <div className="flex items-start justify-between mb-2">
         <h4 className="text-base font-semibold text-foreground">{item.name}</h4>
       </div>
-      <p className="text-lg font-bold text-brand-orange mb-2">{item.price}</p>
+      <p className="text-lg font-bold text-brand-coral mb-2">{item.price}</p>
       <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
     </div>
   );

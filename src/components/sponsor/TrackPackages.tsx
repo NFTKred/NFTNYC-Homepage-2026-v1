@@ -4,7 +4,7 @@ import { Mic, MapPin, Ticket, TableProperties, Megaphone, Monitor } from "lucide
 
 const typeConfig: Record<TrackPackage["type"], { label: string; icon: typeof Mic; badgeColor: string }> = {
   track: { label: "Track Sponsorship", icon: Mic, badgeColor: "text-brand-coral border-brand-coral/30 bg-brand-coral/10" },
-  timessquare: { label: "Times Square Challenge", icon: MapPin, badgeColor: "text-brand-orange border-brand-orange/30 bg-brand-orange/10" },
+  timessquare: { label: "Times Square Challenge", icon: MapPin, badgeColor: "text-brand-coral border-brand-coral/30 bg-brand-coral/10" },
   activation: { label: "IRL Activation", icon: Ticket, badgeColor: "text-purple-400 border-purple-400/30 bg-purple-400/10" },
   billboard: { label: "Times Square Billboard", icon: Monitor, badgeColor: "text-amber-400 border-amber-400/30 bg-amber-400/10" },
   demo: { label: "Demo Table", icon: TableProperties, badgeColor: "text-sky-400 border-sky-400/30 bg-sky-400/10" },

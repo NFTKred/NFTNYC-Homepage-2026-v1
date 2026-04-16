@@ -101,8 +101,8 @@ export default function CommunityPartner() {
 
       {/* Milestones */}
       <div className="mb-14">
-        <h3 className="text-xl font-bold text-foreground mb-2">Discount Milestones</h3>
-        <p className="text-sm text-muted-foreground mb-8">
+        <h3 className="text-xl font-bold text-foreground mb-2 text-center">Discount Milestones</h3>
+        <p className="text-sm text-muted-foreground mb-8 text-center">
           Rewards are cumulative — reaching 100 tickets includes all previous milestone rewards.
         </p>
 
@@ -137,7 +137,7 @@ export default function CommunityPartner() {
       </div>
 
       {/* CTA */}
-      <div className="mb-12">
+      <div className="mb-12 text-center">
         <button
           onClick={() => setModalOpen(true)}
           className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand-coral text-white font-semibold text-base hover:bg-brand-coral/90 transition-colors shadow-lg shadow-brand-coral/20"

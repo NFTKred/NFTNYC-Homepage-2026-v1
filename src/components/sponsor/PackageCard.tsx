@@ -5,7 +5,7 @@ function Badge({ children, variant = "default" }: { children: React.ReactNode; v
   const styles = {
     default: "bg-brand-coral/10 text-brand-coral border-brand-coral/30",
     soldOut: "bg-red-900/30 text-red-400 border-red-500/30",
-    premium: "bg-brand-orange/15 text-brand-orange border-brand-orange/30",
+    premium: "bg-brand-coral/15 text-brand-coral border-brand-coral/30",
   };
   return (
     <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium border ${styles[variant]}`}>
@@ -59,7 +59,7 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
           )}
         </div>
 
-        <p className="text-2xl font-bold text-brand-orange mb-3">{pkg.price}</p>
+        <p className="text-2xl font-bold text-brand-coral mb-3">{pkg.price}</p>
         <p className="text-muted-foreground text-sm mb-4">{pkg.description}</p>
 
         <div className="grid grid-cols-3 gap-3 mb-4">
