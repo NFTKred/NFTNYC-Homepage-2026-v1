@@ -223,7 +223,7 @@ export const defaultPackages: Package[] = [
     speaking: "5 min Talk",
     expoSpace: "20' x 20'",
     availability: "Limited",
-    image: BB + "expo-floor-busy.png"
+    image: BB + "expo-booth-atomichub.png"
   },
   {
     id: 13,
