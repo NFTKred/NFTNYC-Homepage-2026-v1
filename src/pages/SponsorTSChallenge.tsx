@@ -45,22 +45,46 @@ const HIGHLIGHTS = [
   },
 ];
 
-const FAQ = [
+type FaqItem = { q: string; a: (open: () => void) => React.ReactNode };
+
+const FAQ: FaqItem[] = [
   {
     q: "What is the Times Square Challenge?",
-    a: "A month-long community-wide online experience running before, during, and after NFT.NYC 2026. Participants complete missions — minting, collecting, curating, or interacting with sponsor activations — to earn T-XP and a spot on the leaderboard. The highest-engaged moments play out live on Times Square billboards.",
+    a: () => "A month-long community-wide online experience running before, during, and after NFT.NYC 2026. Participants complete missions — minting, collecting, curating, or interacting with sponsor activations — to earn T-XP and a spot on the leaderboard. The highest-engaged moments play out live on Times Square billboards.",
   },
   {
     q: "How does my sponsorship show up?",
-    a: "Your product, token, game, or activation becomes a mission in the Challenge. Participants complete it to earn rewards. Your brand sits alongside NFT.NYC's in all Challenge interfaces, social, email, and the Times Square moments themselves.",
+    a: () => "Your product, token, game, or activation becomes a mission in the Challenge. Participants complete it to earn rewards. Your brand sits alongside NFT.NYC's in all Challenge interfaces, social, email, and the Times Square moments themselves.",
   },
   {
     q: "Can we integrate a custom experience?",
-    a: "Yes. Use the form below to describe what you'd like to include — a playable demo, a collectible drop, an on-chain action, a video, a Times Square takeover moment — and our team will scope the integration with you.",
+    a: (open) => (
+      <>
+        Yes.{" "}
+        <button
+          onClick={open}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            color: '#f06347',
+            fontFamily: 'inherit',
+            fontSize: 'inherit',
+            fontWeight: 600,
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            textUnderlineOffset: '3px',
+          }}
+        >
+          Click here
+        </button>{" "}
+        and describe what you'd like to include — a playable demo, a collectible drop, an on-chain action, a video, a Times Square takeover moment — and our team will scope the integration with you.
+      </>
+    ),
   },
   {
     q: "What does it cost?",
-    a: "$35,000. Includes full integration into the Challenge, the amplification package, 10 minutes on the main NFT.NYC stage to share your experience, plus 2 VIP and 4 GA tickets.",
+    a: () => "$35,000. Includes full integration into the Challenge, the amplification package, 10 minutes on the main NFT.NYC stage to share your experience, plus 2 VIP and 4 GA tickets.",
   },
 ];
 
@@ -89,7 +113,7 @@ export default function SponsorTSChallenge() {
     fontWeight: 500,
     letterSpacing: '0.25em',
     textTransform: 'uppercase',
-    color: '#f97316',
+    color: '#f06347',
     marginBottom: '0.75rem',
   };
 
@@ -101,34 +125,43 @@ export default function SponsorTSChallenge() {
       <section style={{
         position: 'relative',
         padding: 'clamp(6rem, 14vw, 10rem) 1.5rem 4rem',
-        maxWidth: '1100px',
-        margin: '0 auto',
-        textAlign: 'left',
+        textAlign: 'center',
+        overflow: 'hidden',
       }}>
         <div style={{
           position: 'absolute',
-          top: '25%', left: '20%',
-          width: '500px', height: '500px',
-          background: 'rgba(249, 115, 22, 0.08)',
-          borderRadius: '50%',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
+          inset: 0,
+          backgroundImage: `url(${BB}times-square-crowd-night.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.7,
           zIndex: 0,
         }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(180deg, rgba(10,10,15,0.5) 0%, rgba(10,10,15,0.7) 60%, var(--color-bg) 100%)',
+          zIndex: 0,
+        }} />
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1100px', margin: '0 auto' }}>
           <p style={sectionLabel}>Featured Sponsorship · $35,000</p>
           <h1 style={{
             fontFamily: "'Monument Extended', var(--font-display)",
-            fontSize: 'clamp(36px, 6vw, 64px)',
+            fontSize: 'clamp(28px, 5.5vw, 64px)',
             fontWeight: 700,
-            letterSpacing: '-1.5px',
-            lineHeight: 1.05,
+            letterSpacing: '-1px',
+            lineHeight: 1.1,
             color: 'var(--color-text)',
             textTransform: 'uppercase',
             marginBottom: '1.5rem',
             maxWidth: '900px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}>
-            Be a part of the<br /><span style={{ whiteSpace: 'nowrap' }}>Times Square Challenge</span>
+            <span style={{ display: 'block' }}>Be a part of the</span>
+            {/* Times\u00A0Square never breaks (joined by non-breaking space).
+                Between "Square" and "Challenge" we allow a break on narrow screens. */}
+            <span style={{ display: 'block' }}>Times&nbsp;Square Challenge</span>
           </h1>
           <p style={{
             fontFamily: 'var(--font-body)',
@@ -136,20 +169,20 @@ export default function SponsorTSChallenge() {
             color: 'var(--color-text-muted)',
             lineHeight: 1.55,
             maxWidth: '720px',
-            marginBottom: '2.5rem',
+            margin: '0 auto 2.5rem',
           }}>
             A month-long, community-wide experience running <strong style={{ color: 'var(--color-text)' }}>before, during, and after NFT.NYC 2026</strong>.
             Integrate your product, token, or artwork into a mission that the NFT.NYC community plays through — live from Times Square.
           </p>
 
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
             <button
               onClick={() => setInquiryOpen(true)}
               style={{
                 padding: '1rem 2rem',
                 borderRadius: '9999px',
                 border: 'none',
-                background: 'linear-gradient(135deg, #f97316, #ef4444)',
+                background: '#f06347',
                 color: '#fff',
                 fontFamily: 'var(--font-body)',
                 fontSize: '15px',
@@ -192,36 +225,9 @@ export default function SponsorTSChallenge() {
         </div>
       </section>
 
-      {/* ─── Image hero ─── */}
-      <section style={{ maxWidth: '1100px', margin: '0 auto 4rem', padding: '0 1.5rem' }}>
-        {TS_IMAGES.map((img, i) => (
-          <figure key={i} style={{ margin: 0 }}>
-            <img
-              src={img.src}
-              alt={img.alt}
-              style={{
-                width: '100%',
-                height: 'clamp(280px, 50vw, 520px)',
-                objectFit: 'cover',
-                borderRadius: '1rem',
-                border: '1px solid var(--color-border)',
-                display: 'block',
-              }}
-            />
-            <figcaption style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '12px',
-              color: 'var(--color-text-faint)',
-              marginTop: '0.75rem',
-              textAlign: 'center',
-              fontStyle: 'italic',
-            }}>{img.caption}</figcaption>
-          </figure>
-        ))}
-      </section>
 
       {/* ─── Why sponsor highlights ─── */}
-      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem' }}>
+      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem', textAlign: 'center' }}>
         <p style={sectionLabel}>Why sponsor</p>
         <h2 style={{
           fontFamily: "'Space Grotesk', var(--font-body)",
@@ -230,6 +236,7 @@ export default function SponsorTSChallenge() {
           color: 'var(--color-text)',
           marginBottom: '3rem',
           maxWidth: '700px',
+          margin: '0 auto 3rem',
         }}>
           The partnership that extends outside the event walls.
         </h2>
@@ -238,6 +245,7 @@ export default function SponsorTSChallenge() {
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
           gap: '1.5rem',
+          textAlign: 'left',
         }}>
           {HIGHLIGHTS.map(h => {
             const Icon = h.icon;
@@ -248,7 +256,7 @@ export default function SponsorTSChallenge() {
                 borderRadius: '1rem',
                 padding: '1.75rem',
               }}>
-                <Icon size={28} style={{ color: '#f97316', marginBottom: '1rem' }} />
+                <Icon size={28} style={{ color: '#f06347', marginBottom: '1rem' }} />
                 <h3 style={{
                   fontFamily: "'Space Grotesk', var(--font-body)",
                   fontSize: '18px',
@@ -269,7 +277,7 @@ export default function SponsorTSChallenge() {
       </section>
 
       {/* ─── What's included ─── */}
-      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem' }}>
+      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem', textAlign: 'center' }}>
         <div style={{
           background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(239, 68, 68, 0.04))',
           border: '1px solid rgba(249, 115, 22, 0.25)',
@@ -290,11 +298,11 @@ export default function SponsorTSChallenge() {
             fontFamily: 'var(--font-body)',
             fontSize: '28px',
             fontWeight: 700,
-            color: '#f97316',
+            color: '#f06347',
             marginBottom: '2rem',
           }}>$35,000</p>
 
-          <ul style={{ display: 'grid', gap: '0.75rem', maxWidth: '760px', padding: 0, margin: 0, listStyle: 'none' }}>
+          <ul style={{ display: 'grid', gap: '0.75rem', maxWidth: '760px', padding: 0, margin: '0 auto', listStyle: 'none', textAlign: 'left' }}>
             {INCLUDES.map((item, i) => (
               <li key={i} style={{
                 display: 'flex',
@@ -340,7 +348,7 @@ export default function SponsorTSChallenge() {
       </section>
 
       {/* ─── Product/service integration CTA ─── */}
-      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem' }}>
+      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem', textAlign: 'center' }}>
         <p style={sectionLabel}>How integration works</p>
         <h2 style={{
           fontFamily: "'Space Grotesk', var(--font-body)",
@@ -349,6 +357,8 @@ export default function SponsorTSChallenge() {
           color: 'var(--color-text)',
           marginBottom: '1.5rem',
           maxWidth: '780px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}>
           Tell us about the product or service you want to weave into the Challenge.
         </h2>
@@ -358,7 +368,7 @@ export default function SponsorTSChallenge() {
           color: 'var(--color-text-muted)',
           lineHeight: 1.6,
           maxWidth: '760px',
-          marginBottom: '2.5rem',
+          margin: '0 auto 2.5rem',
         }}>
           Our team will scope the integration with you — from a playable demo in the Challenge UI, to an on-chain mint or action, to a Times Square billboard moment tied to participant milestones.
           Use the notes field in the registration form to describe what you have in mind; we follow up within one business day.
@@ -369,6 +379,7 @@ export default function SponsorTSChallenge() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
           gap: '1.25rem',
           marginBottom: '2.5rem',
+          textAlign: 'left',
         }}>
           {[
             { icon: Mic, title: '1. Submit details', desc: 'Share the product, activation, or experience you\'d like to feature.' },
@@ -383,7 +394,7 @@ export default function SponsorTSChallenge() {
                 borderRadius: '1rem',
                 padding: '1.5rem',
               }}>
-                <Icon size={22} style={{ color: '#f97316', marginBottom: '0.75rem' }} />
+                <Icon size={22} style={{ color: '#f06347', marginBottom: '0.75rem' }} />
                 <h3 style={{
                   fontFamily: "'Space Grotesk', var(--font-body)",
                   fontSize: '16px',
@@ -402,36 +413,75 @@ export default function SponsorTSChallenge() {
           })}
         </div>
 
-        <button
-          onClick={() => setInquiryOpen(true)}
-          style={{
-            padding: '1rem 2rem',
-            borderRadius: '9999px',
-            border: 'none',
-            background: 'linear-gradient(135deg, #f97316, #ef4444)',
-            color: '#fff',
-            fontFamily: 'var(--font-body)',
-            fontSize: '15px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'transform 180ms ease, box-shadow 180ms ease',
-            boxShadow: '0 8px 24px rgba(249, 115, 22, 0.3)',
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-            (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 32px rgba(249, 115, 22, 0.45)';
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-            (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(249, 115, 22, 0.3)';
-          }}
-        >
-          Register your interest →
-        </button>
+      </section>
+
+      {/* ─── Put Your Experience on the Map CTA ─── */}
+      <section style={{
+        position: 'relative',
+        padding: 'clamp(4rem, 10vw, 8rem) 1.5rem',
+        overflow: 'hidden',
+        textAlign: 'center',
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${BB}nyc-map-dark.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.9,
+          zIndex: 0,
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(180deg, var(--color-bg) 0%, rgba(10,10,15,0.5) 20%, rgba(10,10,15,0.5) 80%, var(--color-bg) 100%)',
+          zIndex: 0,
+        }} />
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '900px', margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: "'Monument Extended', var(--font-display)",
+            fontSize: 'clamp(36px, 5.5vw, 64px)',
+            fontWeight: 700,
+            letterSpacing: '-1px',
+            lineHeight: 1.05,
+            color: 'var(--color-text)',
+            textTransform: 'uppercase',
+            marginBottom: '2rem',
+          }}>
+            Put your experience<br />on the map.
+          </h2>
+          <button
+            onClick={() => setInquiryOpen(true)}
+            style={{
+              padding: '1.1rem 2.4rem',
+              borderRadius: '9999px',
+              border: 'none',
+              background: '#f06347',
+              color: '#fff',
+              fontFamily: 'var(--font-body)',
+              fontSize: '16px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'transform 180ms ease, box-shadow 180ms ease, background 180ms ease',
+              boxShadow: '0 10px 32px rgba(240, 99, 71, 0.45)',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 14px 40px rgba(240, 99, 71, 0.6)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 32px rgba(240, 99, 71, 0.45)';
+            }}
+          >
+            Register your interest →
+          </button>
+        </div>
       </section>
 
       {/* ─── FAQ ─── */}
-      <section style={{ maxWidth: '880px', margin: '0 auto', padding: '4rem 1.5rem' }}>
+      <section style={{ maxWidth: '880px', margin: '0 auto', padding: '4rem 1.5rem', textAlign: 'center' }}>
         <p style={sectionLabel}>FAQ</p>
         <h2 style={{
           fontFamily: "'Space Grotesk', var(--font-body)",
@@ -440,7 +490,7 @@ export default function SponsorTSChallenge() {
           color: 'var(--color-text)',
           marginBottom: '2.5rem',
         }}>Frequently asked</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left' }}>
           {FAQ.map((f, i) => (
             <div key={i} style={{
               background: 'var(--color-surface)',
@@ -455,12 +505,12 @@ export default function SponsorTSChallenge() {
                 color: 'var(--color-text)',
                 marginBottom: '0.5rem',
               }}>{f.q}</h3>
-              <p style={{
+              <div style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: '14px',
                 color: 'var(--color-text-muted)',
                 lineHeight: 1.6,
-              }}>{f.a}</p>
+              }}>{f.a(() => setInquiryOpen(true))}</div>
             </div>
           ))}
         </div>
