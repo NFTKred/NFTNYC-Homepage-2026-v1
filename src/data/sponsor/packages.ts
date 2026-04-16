@@ -1,6 +1,6 @@
 export interface Package {
   id: number | null;
-  tier: "premium" | "standard";
+  tier: "standard" | "standard";
   name: string;
   price: string;
   description: string;
@@ -23,7 +23,7 @@ export interface AlaCarteItem {
 export const defaultPackages: Package[] = [
   {
     id: 0,
-    tier: "premium",
+    tier: "standard",
     name: 'Title Sponsor — "NFT.NYC 2026 presented by [Brand]"',
     price: "$500,000",
     description: "The defining partnership of NFT.NYC 2026. Your brand becomes synonymous with the event — from the main stage at the Edison Ballroom to every attendee touchpoint. Includes event naming rights, main stage ownership, and category exclusivity.",
@@ -54,11 +54,11 @@ export const defaultPackages: Package[] = [
     billboard: "Premier placement in Times Square Kickoff Roadblock",
     speaking: "Featured main stage session (20 min)",
     expoSpace: "20'x 20' premium position",
-    availability: "Limited"
+    availability: "1 remaining"
   },
   {
     id: 2,
-    tier: "premium",
+    tier: "standard",
     name: "Edison Ballroom South Stage Sponsor",
     price: "$200,000",
     description: "Own the secondary stage at NFT.NYC 2026. Full branding and programming collaboration across the Edison Ballroom South for both activation days (Sept 2-3). The highest-visibility speaking platform after the main stage.",
@@ -84,7 +84,7 @@ export const defaultPackages: Package[] = [
     billboard: "15 sec Times Square Billboard Ad",
     speaking: "15 min Talk or 25 min Panel",
     expoSpace: "20'x 20' expo activation",
-    availability: "Limited"
+    availability: "1 remaining"
   },
   {
     id: 11,
@@ -109,11 +109,11 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "10 min Talk",
     expoSpace: "20'x 10' expo activation",
-    availability: "Limited"
+    availability: "2 remaining"
   },
   {
     id: 4,
-    tier: "premium",
+    tier: "standard",
     name: "Branded Barista Coffee Cart (per day)",
     price: "$20,000",
     description: "Fuel the community with a branded barista coffee experience — one of the most visited spots at the event.",
@@ -128,7 +128,7 @@ export const defaultPackages: Package[] = [
     billboard: "15 sec Billboard Ad",
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
-    availability: "Limited"
+    availability: "2 remaining"
   },
   {
     id: 8,
@@ -145,7 +145,7 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
-    availability: "Limited"
+    availability: "2 remaining"
   },
   {
     id: 9,
@@ -173,7 +173,7 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "10 min Talk",
     expoSpace: "Chandelier Room lounge area",
-    availability: "Limited"
+    availability: "1 remaining"
   },
   {
     id: 10,
@@ -191,7 +191,7 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "5 min Talk",
     expoSpace: "20' x 10'",
-    availability: "Limited"
+    availability: "1 remaining"
   },
   {
     id: 12,

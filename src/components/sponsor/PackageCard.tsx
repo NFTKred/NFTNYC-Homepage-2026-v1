@@ -27,15 +27,10 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
 
   return (
     <div className={`group relative bg-card border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/40 ${isSoldOut ? "border-red-500/20 opacity-75" : "border-border"}`}>
-      {pkg.tier === "premium" && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-orange via-brand-teal to-brand-orange" />
-      )}
-
       <div className="p-6">
         <div className="flex items-start justify-between mb-3 gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
-              {pkg.tier === "premium" && <Badge variant="premium">Premium</Badge>}
               <Badge variant={isSoldOut ? "soldOut" : "default"}>
                 {pkg.availability}
               </Badge>
