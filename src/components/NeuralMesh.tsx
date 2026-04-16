@@ -224,16 +224,11 @@ export default function NeuralMesh() {
       g.setAttribute('role', 'link');
       g.setAttribute('tabindex', '0');
       g.setAttribute('aria-label', `${eco.name} — view vertical page`);
-      g.addEventListener('click', (e) => {
-        e.stopPropagation();
-        navigate(`/${eco.id}`);
-      });
-      g.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          navigate(`/${eco.id}`);
-        }
-      });
+      // Event delegation: the SVG-level listener reads this attr to navigate.
+      g.setAttribute('data-eco-id', eco.id);
+      // pointer-events: bounding-box makes the entire node area clickable,
+      // not just the painted shapes — more forgiving for rapid animations.
+      g.style.pointerEvents = 'bounding-box';
 
       const baseR = 34, featR = 45;
       const nodeR = baseR + (featR - baseR) * ff;
@@ -788,6 +783,35 @@ export default function NeuralMesh() {
       clearTimeout(s.timeoutId);
     };
   }, [buildMesh]);
+
+  // Delegated click handler on the SVG container so we don't have to
+  // re-attach listeners to node groups on every animation frame.
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const handleClick = (e: MouseEvent) => {
+      const target = (e.target as Element | null)?.closest('[data-eco-id]') as SVGElement | null;
+      if (!target) return;
+      const id = target.getAttribute('data-eco-id');
+      if (id) navigate(`/${id}`);
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const target = (e.target as Element | null)?.closest('[data-eco-id]') as SVGElement | null;
+      if (!target) return;
+      const id = target.getAttribute('data-eco-id');
+      if (id) {
+        e.preventDefault();
+        navigate(`/${id}`);
+      }
+    };
+    svg.addEventListener('click', handleClick);
+    svg.addEventListener('keydown', handleKey);
+    return () => {
+      svg.removeEventListener('click', handleClick);
+      svg.removeEventListener('keydown', handleKey);
+    };
+  }, [navigate]);
 
   return (
     <div
