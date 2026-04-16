@@ -32,7 +32,8 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
           <img
             src={pkg.image}
             alt={pkg.name}
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: pkg.imagePosition ?? 'center' }}
             loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />

@@ -13,6 +13,7 @@ export interface Package {
   expoSpace: string;
   availability: string;
   image?: string;
+  imagePosition?: string;
 }
 
 export interface AlaCarteItem {
@@ -240,7 +241,8 @@ export const defaultPackages: Package[] = [
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
     availability: "Limited",
-    image: BB + "expo-space-branded.png"
+    image: BB + "expo-space-branded.png",
+    imagePosition: "top"
   },
   {
     id: 14,
