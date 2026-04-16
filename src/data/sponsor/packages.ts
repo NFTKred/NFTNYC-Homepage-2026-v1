@@ -1,3 +1,5 @@
+const BB = "https://f005.backblazeb2.com/file/PB-HubSpot/";
+
 export interface Package {
   id: number | null;
   tier: "standard" | "standard";
@@ -10,6 +12,7 @@ export interface Package {
   speaking: string;
   expoSpace: string;
   availability: string;
+  image?: string;
 }
 
 export interface AlaCarteItem {
@@ -54,7 +57,8 @@ export const defaultPackages: Package[] = [
     billboard: "Premier placement in Times Square Kickoff Roadblock",
     speaking: "Featured main stage session (20 min)",
     expoSpace: "20'x 20' premium position",
-    availability: "1 remaining"
+    availability: "1 remaining",
+    image: BB + "stage-branding-edison.png"
   },
   {
     id: 2,
@@ -84,7 +88,8 @@ export const defaultPackages: Package[] = [
     billboard: "15 sec Times Square Billboard Ad",
     speaking: "15 min Talk or 25 min Panel",
     expoSpace: "20'x 20' expo activation",
-    availability: "1 remaining"
+    availability: "1 remaining",
+    image: BB + "av-branding-xy-finance.png"
   },
   {
     id: 11,
@@ -109,7 +114,8 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "10 min Talk",
     expoSpace: "20'x 10' expo activation",
-    availability: "2 remaining"
+    availability: "2 remaining",
+    image: BB + "coinbase-theater-entrance.png"
   },
   {
     id: 4,
@@ -128,7 +134,8 @@ export const defaultPackages: Package[] = [
     billboard: "15 sec Billboard Ad",
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
-    availability: "2 remaining"
+    availability: "2 remaining",
+    image: BB + "barista-coffee-cart.jpg"
   },
   {
     id: 8,
@@ -145,7 +152,8 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
-    availability: "2 remaining"
+    availability: "2 remaining",
+    image: BB + "vip-opening-party.png"
   },
   {
     id: 9,
@@ -173,7 +181,8 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "10 min Talk",
     expoSpace: "Chandelier Room lounge area",
-    availability: "1 remaining"
+    availability: "1 remaining",
+    image: BB + "chandelier-room-activation.png"
   },
   {
     id: 10,
@@ -191,12 +200,13 @@ export const defaultPackages: Package[] = [
     billboard: "Purchase through a la carte options",
     speaking: "5 min Talk",
     expoSpace: "20' x 10'",
-    availability: "1 remaining"
+    availability: "1 remaining",
+    image: BB + "live-screenprinting.jpg"
   },
   {
     id: 12,
     tier: "standard",
-    name: "Large Expo Booth",
+    name: "Large Expo Space",
     price: "$25,000",
     description: "Maximum activation footprint on the NFT.NYC expo floor. Prominent positioning, a speaking slot, and logo visibility across event AV screens throughout the event.",
     branding: [
@@ -210,12 +220,13 @@ export const defaultPackages: Package[] = [
     billboard: "Logo on event AV loop",
     speaking: "5 min Talk",
     expoSpace: "20' x 20'",
-    availability: "Limited"
+    availability: "Limited",
+    image: BB + "expo-floor-busy.png"
   },
   {
     id: 13,
     tier: "standard",
-    name: "Medium Expo Booth",
+    name: "Medium Expo Space",
     price: "$15,000",
     description: "A strong expo presence with a speaking opportunity and AV screen visibility. Ideal for demos, product showcases, and community engagement.",
     branding: [
@@ -228,7 +239,8 @@ export const defaultPackages: Package[] = [
     billboard: "Logo on event AV loop",
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
-    availability: "Limited"
+    availability: "Limited",
+    image: BB + "expo-space-branded.png"
   },
   {
     id: 14,
@@ -246,7 +258,8 @@ export const defaultPackages: Package[] = [
     billboard: "Logo on event AV loop",
     speaking: "—",
     expoSpace: "10' x 10'",
-    availability: "Limited"
+    availability: "Limited",
+    image: BB + "demo-table-mintangible.jpg"
   }
 ];
 

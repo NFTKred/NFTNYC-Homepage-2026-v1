@@ -27,6 +27,17 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
 
   return (
     <div className={`group relative bg-card border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/40 flex flex-col ${isSoldOut ? "border-red-500/20 opacity-75" : "border-border"}`}>
+      {pkg.image && (
+        <div className="relative h-40 overflow-hidden">
+          <img
+            src={pkg.image}
+            alt={pkg.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
+        </div>
+      )}
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3 gap-3">
           <div className="flex-1 min-w-0">

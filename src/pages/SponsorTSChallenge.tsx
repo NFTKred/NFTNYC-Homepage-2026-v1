@@ -7,8 +7,11 @@ import { MapPin, Mic, Users, Palette, Megaphone, Sparkles, Gift, Check } from "l
 // Replace these URLs once you have final TS Challenge screenshots on Backblaze.
 // Each slot is a visual moment in the flow: collector view, artist upload,
 // live Times Square moment, on-chain leaderboard, etc.
+const BB = "https://f005.backblazeb2.com/file/PB-HubSpot/";
+
 const TS_IMAGES = [
-  { src: "https://f005.backblazeb2.com/file/PB-HubSpot/pastevents-2021.jpeg", alt: "NFT.NYC community activating Times Square in past events", caption: "Photo: NFT.NYC alumni in Times Square" },
+  { src: BB + "times-square-crowd-night.png", alt: "NFT.NYC community in Times Square at night with NFT art on billboards", caption: "NFT.NYC community taking over Times Square" },
+  { src: BB + "times-square-billboard-nftnyc.jpg", alt: "#NFTNYC projected on Times Square buildings at night", caption: "#NFTNYC lighting up Times Square" },
 ];
 
 const INCLUDES = [
@@ -308,6 +311,32 @@ export default function SponsorTSChallenge() {
             ))}
           </ul>
         </div>
+      </section>
+
+      {/* ─── Boson Protocol billboard example ─── */}
+      <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '2rem 1.5rem' }}>
+        <figure style={{ margin: 0 }}>
+          <img
+            src={BB + "times-square-boson-billboard.png"}
+            alt="Boson Protocol branded Times Square billboard during NFT.NYC"
+            style={{
+              width: '100%',
+              height: 'clamp(200px, 35vw, 380px)',
+              objectFit: 'cover',
+              borderRadius: '1rem',
+              border: '1px solid var(--color-border)',
+              display: 'block',
+            }}
+          />
+          <figcaption style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '12px',
+            color: 'var(--color-text-faint)',
+            marginTop: '0.75rem',
+            textAlign: 'center',
+            fontStyle: 'italic',
+          }}>Boson Protocol's Times Square billboard during NFT.NYC — "our best marketing of the year"</figcaption>
+        </figure>
       </section>
 
       {/* ─── Product/service integration CTA ─── */}

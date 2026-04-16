@@ -51,8 +51,8 @@ const milestones = [
   { icon: Gift, label: "10 GA tickets sold", reward: "2 GA passes to the event", discount: "$2,500", pct: 12 },
   { icon: Star, label: "25 GA tickets sold", reward: "Featured profile on Times Square Challenge site", discount: "$4,000", pct: 19 },
   { icon: Target, label: "50 GA tickets sold", reward: "Demo Table (fully earned)", discount: "$6,500", pct: 30 },
-  { icon: Trophy, label: "100 GA tickets sold", reward: "Medium Expo Booth (fully earned)", discount: "$11,500", pct: 53 },
-  { icon: Rocket, label: "200+ GA tickets sold", reward: "Large Expo Booth + 5 min main stage speaking slot", discount: "$21,500+", pct: 100 },
+  { icon: Trophy, label: "100 GA tickets sold", reward: "Medium Expo Space (fully earned)", discount: "$11,500", pct: 53 },
+  { icon: Rocket, label: "200+ GA tickets sold", reward: "Large Expo Space + 5 min main stage speaking slot", discount: "$21,500+", pct: 100 },
 ];
 
 const fineprint = [

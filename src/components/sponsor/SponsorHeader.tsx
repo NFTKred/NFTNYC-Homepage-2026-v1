@@ -19,6 +19,14 @@ export default function Header() {
 
   return (
     <header className="relative overflow-hidden bg-background">
+      <div className="absolute inset-0">
+        <img
+          src="https://f005.backblazeb2.com/file/PB-HubSpot/venue-exterior-hudson-yards.jpg"
+          alt="NFT.NYC venue"
+          className="w-full h-full object-cover opacity-15"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
+      </div>
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-teal/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-brand-orange/5 rounded-full blur-3xl" />
 
