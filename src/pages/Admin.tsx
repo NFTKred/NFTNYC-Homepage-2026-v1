@@ -140,10 +140,7 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
-  // Auto-generated screenshot of the vertical page via Microlink (no API key
-  // required). `embed=screenshot.url` returns the image directly so Gmail /
-  // Outlook render it inline when the HTML clipboard payload is pasted.
-  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(pageUrl)}&screenshot=true&embed=screenshot.url`;
+  const imageUrl = resource?.image ?? null;
 
   const resourceLineText = resource
     ? `We have featured \u2014 ${resource.title} (${resource.url}) on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`
@@ -155,20 +152,23 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
     `NFT.NYC 2026 (Sept 1\u20133, The Edison, Times Square) is including interesting ${verticalLabel} tokenization projects.`,
     '',
     resourceLineText,
-    '',
-    screenshotUrl,
+    ...(imageUrl ? ['', imageUrl] : []),
   ].join('\n');
 
   const resourceLineHtml = resource
     ? `We have featured &mdash; <a href="${escapeHtml(resource.url)}">${escapeHtml(resource.title)}</a> on our <a href="${escapeHtml(pageUrl)}">NFT.NYC/${escapeHtml(verticalLabel)} projects page</a>.`
     : `We have featured [resource] on our <a href="${escapeHtml(pageUrl)}">NFT.NYC/${escapeHtml(verticalLabel)} projects page</a>.`;
 
+  const imageHtml = imageUrl
+    ? `<p><a href="${escapeHtml(resource?.url ?? pageUrl)}"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(resource?.title ?? 'Resource image')}" style="max-width:600px;width:100%;height:auto;border:1px solid #ddd;border-radius:6px;" /></a></p>`
+    : '';
+
   const html = [
     `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5;color:#111;">`,
     `<p>${escapeHtml(name)},</p>`,
     `<p>NFT.NYC 2026 (Sept 1&ndash;3, The Edison, Times Square) is including interesting ${escapeHtml(verticalLabel)} tokenization projects.</p>`,
     `<p>${resourceLineHtml}</p>`,
-    `<p><a href="${escapeHtml(pageUrl)}"><img src="${escapeHtml(screenshotUrl)}" alt="NFT.NYC ${escapeHtml(verticalLabel)} projects page" style="max-width:600px;width:100%;height:auto;border:1px solid #ddd;border-radius:6px;" /></a></p>`,
+    imageHtml,
     `</div>`,
   ].join('');
 
