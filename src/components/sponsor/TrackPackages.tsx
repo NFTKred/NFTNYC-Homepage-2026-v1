@@ -3,7 +3,7 @@ import { trackPackages, type TrackPackage } from "@/data/sponsor/trackPackages";
 import { Mic, MapPin, Ticket, TableProperties, Megaphone, Monitor } from "lucide-react";
 
 const typeConfig: Record<TrackPackage["type"], { label: string; icon: typeof Mic; badgeColor: string }> = {
-  track: { label: "Track Sponsorship", icon: Mic, badgeColor: "text-brand-teal border-brand-teal/30 bg-brand-teal/10" },
+  track: { label: "Track Sponsorship", icon: Mic, badgeColor: "text-brand-coral border-brand-coral/30 bg-brand-coral/10" },
   timessquare: { label: "Times Square Challenge", icon: MapPin, badgeColor: "text-brand-orange border-brand-orange/30 bg-brand-orange/10" },
   activation: { label: "IRL Activation", icon: Ticket, badgeColor: "text-purple-400 border-purple-400/30 bg-purple-400/10" },
   billboard: { label: "Times Square Billboard", icon: Monitor, badgeColor: "text-amber-400 border-amber-400/30 bg-amber-400/10" },
@@ -37,7 +37,7 @@ function TrackCard({ pkg, onSelect }: { pkg: TrackPackage; onSelect?: (pkg: Trac
   const hasSummary = summary.billboard !== "—" || summary.speaking !== "—" || summary.expoSpace !== "—";
 
   return (
-    <div className="flex flex-col rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-brand-teal/30 hover:shadow-[0_0_24px_rgba(20,184,166,0.08)]">
+    <div className="flex flex-col rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-brand-coral/30 hover:shadow-[0_0_24px_rgba(240,99,71,0.08)]">
       <div className="flex items-start justify-between mb-4 gap-3">
         <div className={`inline-flex items-center gap-1.5 self-start rounded-full border px-3 py-1 text-xs font-medium ${config.badgeColor}`}>
           <Icon size={12} />
@@ -46,14 +46,14 @@ function TrackCard({ pkg, onSelect }: { pkg: TrackPackage; onSelect?: (pkg: Trac
         {onSelect && (
           <button
             onClick={() => onSelect(pkg)}
-            className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-teal text-white text-xs font-semibold hover:bg-brand-teal/90 transition-colors whitespace-nowrap"
+            className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-coral text-white text-xs font-semibold hover:bg-brand-coral/90 transition-colors whitespace-nowrap"
           >
             Select
           </button>
         )}
       </div>
       <h3 className="text-lg font-bold text-foreground mb-1">{pkg.name}</h3>
-      <p className="text-2xl font-extrabold text-brand-teal mb-3">{pkg.price}</p>
+      <p className="text-2xl font-extrabold text-brand-coral mb-3">{pkg.price}</p>
       <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{pkg.description}</p>
 
       {/* Ticket boxes */}
@@ -100,7 +100,7 @@ function TrackCard({ pkg, onSelect }: { pkg: TrackPackage; onSelect?: (pkg: Trac
         {/* Package Details accordion */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full text-sm text-primary hover:text-primary/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-primary/5 transition-colors"
+          className="w-full text-sm text-brand-coral hover:text-brand-coral/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-brand-coral/5 transition-colors"
         >
           {expanded ? "Hide" : "Show"} Package Details
           <svg className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,7 +112,7 @@ function TrackCard({ pkg, onSelect }: { pkg: TrackPackage; onSelect?: (pkg: Trac
           <ul className="mt-3 space-y-2 border-t border-border pt-3">
             {pkg.includes.map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-teal shrink-0" />
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-coral shrink-0" />
                 {item}
               </li>
             ))}
@@ -122,7 +122,7 @@ function TrackCard({ pkg, onSelect }: { pkg: TrackPackage; onSelect?: (pkg: Trac
         {onSelect && (
           <button
             onClick={() => onSelect(pkg)}
-            className="w-full mt-4 py-2.5 rounded-lg border border-brand-teal/40 text-brand-teal text-sm font-semibold hover:bg-brand-teal/10 transition-colors"
+            className="w-full mt-4 py-2.5 rounded-lg border border-brand-coral/40 text-brand-coral text-sm font-semibold hover:bg-brand-coral/10 transition-colors"
           >
             Select Add-Ons
           </button>

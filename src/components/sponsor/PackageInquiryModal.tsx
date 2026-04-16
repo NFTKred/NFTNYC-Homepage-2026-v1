@@ -123,10 +123,10 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
           </DialogTitle>
           <DialogDescription asChild>
             <div className="mt-3">
-              <div className="rounded-lg border border-brand-teal/30 bg-brand-teal/5 px-4 py-3 mb-3">
+              <div className="rounded-lg border border-brand-coral/30 bg-brand-coral/5 px-4 py-3 mb-3">
                 <div className="text-foreground font-semibold text-base leading-tight">{basePackage.name}</div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-brand-teal font-bold text-lg">{basePackage.price}</span>
+                  <span className="text-brand-coral font-bold text-lg">{basePackage.price}</span>
                   {basePackage.trackName && (
                     <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
                   )}
@@ -212,7 +212,7 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
 
             {/* Add-ons */}
             <div className="pt-2">
-              <p className="text-xs font-medium tracking-[0.2em] uppercase text-brand-teal mb-2">
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-brand-coral mb-2">
                 Add-ons (optional)
               </p>
               <p className="text-xs text-muted-foreground mb-3">
@@ -227,20 +227,20 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
                       key={id}
                       className={`flex items-start gap-2 rounded-lg border p-2.5 cursor-pointer text-sm transition-colors ${
                         checked
-                          ? "border-brand-teal/60 bg-brand-teal/5"
-                          : "border-brand-border bg-secondary hover:border-brand-teal/30"
+                          ? "border-brand-coral/60 bg-brand-coral/5"
+                          : "border-brand-border bg-secondary hover:border-brand-coral/30"
                       }`}
                     >
                       <input
                         type="checkbox"
                         checked={checked}
                         onChange={() => toggleAddon(id)}
-                        className="mt-0.5 accent-[#14b8a6]"
+                        className="mt-0.5 accent-[#f06347]"
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <span className="font-medium text-foreground leading-tight">{a.name}</span>
-                          <span className="text-xs font-semibold text-brand-teal shrink-0">{a.price}</span>
+                          <span className="text-xs font-semibold text-brand-coral shrink-0">{a.price}</span>
                         </div>
                       </div>
                     </label>

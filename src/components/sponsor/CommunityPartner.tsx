@@ -18,7 +18,7 @@ const steps = [
           <tbody>
             <tr>
               <td className="pr-3 py-0.5 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-coral shrink-0" />
                 GA ticket sold
               </td>
               <td className="pr-3 py-0.5">=</td>
@@ -27,7 +27,7 @@ const steps = [
             </tr>
             <tr>
               <td className="pr-3 py-0.5 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-coral shrink-0" />
                 VIP ticket sold
               </td>
               <td className="pr-3 py-0.5">=</td>
@@ -72,7 +72,7 @@ export default function CommunityPartner() {
     <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
       {/* Header */}
       <div className="mb-14">
-        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">
+        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-coral mb-3">
           Earn Your Way In
         </p>
         <h2 className="text-3xl font-bold text-foreground mb-3">Community Partner Program</h2>
@@ -89,7 +89,7 @@ export default function CommunityPartner() {
             className="relative rounded-2xl border border-brand-border bg-card p-6 hover:border-primary/40 transition-colors"
           >
             <div className="flex items-center gap-3 mb-4">
-              <span className="flex items-center justify-center w-9 h-9 rounded-full bg-primary text-primary-foreground text-sm font-bold shrink-0">
+              <span className="flex items-center justify-center w-9 h-9 rounded-full bg-brand-coral text-white text-sm font-bold shrink-0">
                 {s.num}
               </span>
               <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
@@ -114,7 +114,7 @@ export default function CommunityPartner() {
             className="hidden md:block absolute top-[2.25rem] left-0 h-1 rounded-full"
             style={{
               width: "100%",
-              background: "linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.3) 100%)",
+              background: "linear-gradient(90deg, #f06347 0%, hsl(var(--primary)/0.3) 100%)",
             }}
           />
 
@@ -124,9 +124,9 @@ export default function CommunityPartner() {
               return (
                 <div key={i} className="flex flex-col items-center text-center group">
                   <div className="relative z-10 flex items-center justify-center w-[4.5rem] h-[4.5rem] rounded-2xl bg-card border-2 border-primary/30 group-hover:border-primary transition-colors mb-3">
-                    <Icon className="w-6 h-6 text-primary" />
+                    <Icon className="w-6 h-6 text-brand-coral" />
                   </div>
-                  <span className="text-xs font-semibold text-primary mb-1">{m.discount}</span>
+                  <span className="text-xs font-semibold text-brand-coral mb-1">{m.discount}</span>
                   <span className="text-xs font-medium text-foreground mb-1 leading-tight">{m.label}</span>
                   <span className="text-[11px] text-muted-foreground leading-snug">{m.reward}</span>
                 </div>
@@ -140,7 +140,7 @@ export default function CommunityPartner() {
       <div className="mb-12">
         <button
           onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand-coral text-white font-semibold text-base hover:bg-brand-coral/90 transition-colors shadow-lg shadow-brand-coral/20"
         >
           Become a Community Partner — $1,500
         </button>

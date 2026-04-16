@@ -38,7 +38,7 @@ const LOGO_HEIGHTS: Record<string, string> = {
 
 function PartnerLogo({ name, logo }: { name: string; logo: string }) {
   return (
-    <div className="flex flex-col items-center justify-center px-3 py-5 rounded-xl bg-secondary/50 border border-border hover:border-brand-teal/30 transition-colors gap-2">
+    <div className="flex flex-col items-center justify-center px-3 py-5 rounded-xl bg-secondary/50 border border-border hover:border-brand-coral/30 transition-colors gap-2">
       <img
         src={logo}
         alt={`${name} logo`}
@@ -61,7 +61,7 @@ export default function Partners() {
     <section className="relative bg-background py-20">
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="max-w-7xl mx-auto px-6">
-        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal text-center mb-3">
+        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-coral text-center mb-3">
           Our Partners
         </p>
         <h2 className="text-3xl font-bold text-foreground text-center mb-3">

@@ -27,11 +27,11 @@ export default function Header() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
       </div>
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-teal/5 rounded-full blur-3xl" />
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-coral/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-brand-orange/5 rounded-full blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto px-6 pt-40 pb-20 md:pt-48 md:pb-32 text-center">
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-brand-teal/30 bg-brand-teal/10 text-brand-teal text-sm font-medium mb-8">
+        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-brand-coral/30 bg-brand-coral/10 text-brand-coral text-sm font-medium mb-8">
           Partnership Opportunities
         </div>
 
@@ -45,7 +45,7 @@ export default function Header() {
           </p>
           <p
             key={`source-${activeQuote}`}
-            className="text-brand-teal font-semibold mt-4 text-sm tracking-wide uppercase animate-fade-in"
+            className="text-brand-coral font-semibold mt-4 text-sm tracking-wide uppercase animate-fade-in"
           >
             &mdash; {quotes[activeQuote].source}
           </p>
@@ -74,7 +74,7 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-teal/30 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-coral/30 to-transparent" />
     </header>
   );
 }

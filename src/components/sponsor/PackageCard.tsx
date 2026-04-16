@@ -3,7 +3,7 @@ import type { Package } from "@/data/packages";
 
 function Badge({ children, variant = "default" }: { children: React.ReactNode; variant?: "default" | "soldOut" | "premium" }) {
   const styles = {
-    default: "bg-primary/10 text-primary border-primary/30",
+    default: "bg-brand-coral/10 text-brand-coral border-brand-coral/30",
     soldOut: "bg-red-900/30 text-red-400 border-red-500/30",
     premium: "bg-brand-orange/15 text-brand-orange border-brand-orange/30",
   };
@@ -52,7 +52,7 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
           {onSelect && !isSoldOut && (
             <button
               onClick={() => onSelect(pkg)}
-              className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-teal text-white text-xs font-semibold hover:bg-brand-teal/90 transition-colors whitespace-nowrap"
+              className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-coral text-white text-xs font-semibold hover:bg-brand-coral/90 transition-colors whitespace-nowrap"
             >
               Select
             </button>
@@ -99,7 +99,7 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
         <div className="mt-auto">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="w-full text-sm text-primary hover:text-primary/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-primary/5 transition-colors"
+            className="w-full text-sm text-brand-coral hover:text-brand-coral/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-brand-coral/5 transition-colors"
           >
             {expanded ? "Hide" : "Show"} Package Details
             <svg className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -120,7 +120,7 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
                 }
                 return (
                   <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <span className="text-primary mt-1 shrink-0">&bull;</span>
+                    <span className="text-brand-coral mt-1 shrink-0">&bull;</span>
                     {item}
                   </li>
                 );
@@ -131,7 +131,7 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
           {onSelect && !isSoldOut && (
             <button
               onClick={() => onSelect(pkg)}
-              className="w-full mt-4 py-2.5 rounded-lg border border-brand-teal/40 text-brand-teal text-sm font-semibold hover:bg-brand-teal/10 transition-colors"
+              className="w-full mt-4 py-2.5 rounded-lg border border-brand-coral/40 text-brand-coral text-sm font-semibold hover:bg-brand-coral/10 transition-colors"
             >
               Select Add-Ons
             </button>

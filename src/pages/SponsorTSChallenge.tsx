@@ -305,7 +305,7 @@ export default function SponsorTSChallenge() {
                 color: 'var(--color-text)',
                 lineHeight: 1.55,
               }}>
-                <Check size={18} style={{ color: '#14b8a6', marginTop: '3px', flexShrink: 0 }} />
+                <Check size={18} style={{ color: '#f06347', marginTop: '3px', flexShrink: 0 }} />
                 <span>{item}</span>
               </li>
             ))}

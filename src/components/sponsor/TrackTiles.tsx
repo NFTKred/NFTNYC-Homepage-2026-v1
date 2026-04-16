@@ -26,7 +26,7 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
   return (
     <section className="relative bg-background pt-10 pb-8">
       <div className="max-w-7xl mx-auto px-6">
-        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">
+        <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-coral mb-3">
           Industry Focused
         </p>
         <h2 className="text-3xl font-bold text-foreground mb-3">
@@ -48,7 +48,7 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
                     ? "text-white border-transparent"
                     : "bg-secondary text-muted-foreground border-border hover:text-foreground hover:border-foreground/20"
                 }`}
-                style={isSelected ? { backgroundColor: trackIcons[name]?.color ?? '#14b8a6', borderColor: trackIcons[name]?.color ?? '#14b8a6' } : undefined}
+                style={isSelected ? { backgroundColor: trackIcons[name]?.color ?? '#f06347', borderColor: trackIcons[name]?.color ?? '#f06347' } : undefined}
               >
                 {name}
               </button>

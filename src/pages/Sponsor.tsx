@@ -89,7 +89,7 @@ export default function Sponsor() {
           fontWeight: 500,
           letterSpacing: '0.25em',
           textTransform: 'uppercase',
-          color: '#14b8a6',
+          color: '#f06347',
           textAlign: 'center',
           marginBottom: '0.75rem',
         }}>How Would You Like to Partner?</p>
@@ -130,15 +130,15 @@ export default function Sponsor() {
                   gap: '0.75rem',
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.borderColor = '#14b8a6';
-                  (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(20,184,166,0.1), rgba(20,184,166,0.03))';
+                  (e.currentTarget as HTMLElement).style.borderColor = '#f06347';
+                  (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(240,99,71,0.1), rgba(240,99,71,0.03))';
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-border)';
                   (e.currentTarget as HTMLElement).style.background = 'var(--color-surface)';
                 }}
               >
-                <Icon size={28} style={{ color: '#14b8a6' }} />
+                <Icon size={28} style={{ color: '#f06347' }} />
                 <span style={{
                   fontSize: '17px',
                   fontWeight: 700,
@@ -153,7 +153,7 @@ export default function Sponsor() {
                 <span style={{
                   fontSize: '13px',
                   fontWeight: 600,
-                  color: '#14b8a6',
+                  color: '#f06347',
                 }}>View packages ↓</span>
               </button>
             );
@@ -174,7 +174,7 @@ export default function Sponsor() {
           <div className="absolute top-0 inset-x-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
             <div>
-              <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">Choose from flexible packages</p>
+              <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-coral mb-3">Choose from flexible packages</p>
               <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Partnership Packages</h2>
               <p style={{ color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>Premium sponsorship opportunities with maximum brand visibility</p>
             </div>
@@ -196,7 +196,7 @@ export default function Sponsor() {
           <div className="absolute top-0 inset-x-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
             <div>
-              <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-teal mb-3">Add-Ons</p>
+              <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-coral mb-3">Add-Ons</p>
               <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>A La Carte Options</h2>
               <p style={{ color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>Add individual sponsorship elements to customize your presence</p>
             </div>
