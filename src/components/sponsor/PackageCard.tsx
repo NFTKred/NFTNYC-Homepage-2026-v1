@@ -93,7 +93,7 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
           onClick={() => setExpanded(!expanded)}
           className="w-full text-sm text-primary hover:text-primary/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-primary/5 transition-colors"
         >
-          {expanded ? "Hide" : "Show"} Branding Details
+          {expanded ? "Hide" : "Show"} Package Details
           <svg className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
