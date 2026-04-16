@@ -123,6 +123,7 @@ function firstName(fullName: string): string {
 }
 
 interface OutreachDraft {
+  subject: string;
   text: string;
   html: string;
 }
@@ -141,6 +142,7 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
   const imageUrl = resource?.image ?? null;
+  const subject = `${speaker.name}: You're featured on NFT.NYC ${verticalLabel}`;
 
   const resourceLineText = resource
     ? `We have featured \u2014 ${resource.title} (${resource.url}) on our NFT.NYC/${verticalLabel} projects page: ${pageUrl}`
@@ -172,7 +174,7 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
     `</div>`,
   ].join('');
 
-  return { text, html };
+  return { subject, text, html };
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -436,10 +438,10 @@ export default function Admin() {
       return val;
     };
 
-    const headers = ['Name', 'Role', 'Vertical', 'Email', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Draft'];
+    const headers = ['Name', 'Role', 'Vertical', 'Email', 'Handle', 'Related Resource', 'Date of Resource', 'Resource Source', 'Related Resource Description', 'Relationship', 'Channel', 'Status', 'Subject', 'Draft'];
     const rows = allSpeakers.map(s => {
       const r = allResources.find(res => res.id === s.related_resource_id);
-      const { text: draft } = buildOutreachDraft(s, r);
+      const { subject, text: draft } = buildOutreachDraft(s, r);
       return [
         s.name,
         s.role,
@@ -453,6 +455,7 @@ export default function Admin() {
         s.resource_relationship ?? '',
         s.outreach_channel?.replace('_', ' ') ?? '',
         s.outreach_status.replace('_', ' '),
+        subject,
         draft,
       ].map(v => escapeCSV(v)).join(',');
     });
@@ -794,22 +797,24 @@ export default function Admin() {
                       <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
                         <button
                           onClick={async () => {
-                            const { text, html } = buildOutreachDraft(s, relatedResource);
+                            const { subject, text, html } = buildOutreachDraft(s, relatedResource);
+                            const fullText = `Subject: ${subject}\n\n${text}`;
+                            const fullHtml = `<p style="font-weight:600;color:#555;font-size:13px;margin:0 0 12px;">Subject: ${escapeHtml(subject)}</p>${html}`;
                             try {
                               if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
                                 await navigator.clipboard.write([
                                   new ClipboardItem({
-                                    'text/plain': new Blob([text], { type: 'text/plain' }),
-                                    'text/html':  new Blob([html], { type: 'text/html'  }),
+                                    'text/plain': new Blob([fullText], { type: 'text/plain' }),
+                                    'text/html':  new Blob([fullHtml], { type: 'text/html'  }),
                                   }),
                                 ]);
                               } else {
-                                await navigator.clipboard.writeText(text);
+                                await navigator.clipboard.writeText(fullText);
                               }
                               setCopiedDraftId(s.id);
                               setTimeout(() => setCopiedDraftId(prev => prev === s.id ? null : prev), 1500);
                             } catch {
-                              window.prompt('Copy outreach draft:', text);
+                              window.prompt('Copy outreach draft:', fullText);
                             }
                           }}
                           title={relatedResource ? 'Copy outreach draft' : 'No linked resource — draft will have a placeholder'}
