@@ -114,8 +114,8 @@ export const defaultPackages: Package[] = [
   {
     id: 4,
     tier: "premium",
-    name: "Cafe Area with Barista Coffee Cart",
-    price: "$100,000",
+    name: "Branded Barista Coffee Cart (per day)",
+    price: "$20,000",
     description: "Fuel the community with a branded barista coffee experience — one of the most visited spots at the event.",
     branding: [
       "Barista Coffee Cart",
@@ -124,9 +124,9 @@ export const defaultPackages: Package[] = [
       "500 NFT Giveaway",
       "Social Media post + Opt-in Media List"
     ],
-    tickets: { vip: 2, ga: 10, staff: 6 },
+    tickets: { vip: 1, ga: 2, staff: 2 },
     billboard: "15 sec Billboard Ad",
-    speaking: "10 min Talk",
+    speaking: "5 min Talk",
     expoSpace: "10' x 10'",
     availability: "Limited"
   },
