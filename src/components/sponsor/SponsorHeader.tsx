@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
+const BB = "https://f005.backblazeb2.com/file/PB-HubSpot/";
+
 const quotes = [
-  { text: "The Super Bowl of NFTs", source: "Coinbase" },
-  { text: "The new CES for NFTs", source: "Ledger" },
-  { text: "Our best marketing of the year", source: "Boson Protocol" },
-  { text: "The largest and most respected NFT conference in the world", source: "Forbes" },
+  { text: "The Super Bowl of NFTs", source: "Coinbase", image: BB + "stage-branding-edison.png" },
+  { text: "The new CES for NFTs", source: "Ledger", image: BB + "ledger-activation.png" },
+  { text: "Our best marketing of the year", source: "Boson Protocol", image: BB + "times-square-boson-billboard.png" },
+  { text: "The largest and most respected NFT conference in the world", source: "Forbes", image: BB + "expo-floor-busy.png" },
 ];
 
 export default function Header() {
@@ -17,16 +19,32 @@ export default function Header() {
     return () => clearInterval(interval);
   }, []);
 
+  // Preload all hero images so transitions are seamless.
+  useEffect(() => {
+    quotes.forEach(q => {
+      const img = new Image();
+      img.src = q.image;
+    });
+  }, []);
+
   return (
     <header className="relative overflow-hidden bg-background">
-      <div className="absolute inset-0">
-        <img
-          src="https://f005.backblazeb2.com/file/PB-HubSpot/venue-exterior-hudson-yards.jpg"
-          alt="NFT.NYC venue"
-          className="w-full h-full object-cover opacity-15"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
-      </div>
+      {/* Rotating background image — crossfades with each quote */}
+      {quotes.map((q, i) => (
+        <div
+          key={q.source}
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          style={{ opacity: i === activeQuote ? 1 : 0 }}
+        >
+          <img
+            src={q.image}
+            alt={`${q.source} at NFT.NYC`}
+            className="w-full h-full object-cover"
+            style={{ opacity: 0.18 }}
+          />
+        </div>
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background" />
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-coral/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-brand-orange/5 rounded-full blur-3xl" />
 
