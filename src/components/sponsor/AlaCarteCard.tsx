@@ -14,15 +14,6 @@ export default function AlaCarteCard({ item, onEdit, onDelete }: AlaCarteCardPro
       </div>
       <p className="text-lg font-bold text-brand-orange mb-2">{item.price}</p>
       <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-      <div className="mt-3">
-        <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium border ${
-          item.availability === "Sold Out"
-            ? "bg-red-900/30 text-red-400 border-red-500/30"
-            : "bg-primary/10 text-primary border-primary/30"
-        }`}>
-          {item.availability}
-        </span>
-      </div>
     </div>
   );
 }

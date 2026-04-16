@@ -26,8 +26,8 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
   const isSoldOut = pkg.availability === "Sold Out";
 
   return (
-    <div className={`group relative bg-card border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/40 ${isSoldOut ? "border-red-500/20 opacity-75" : "border-border"}`}>
-      <div className="p-6">
+    <div className={`group relative bg-card border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/40 flex flex-col ${isSoldOut ? "border-red-500/20 opacity-75" : "border-border"}`}>
+      <div className="p-6 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3 gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -84,45 +84,47 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
           )}
         </div>
 
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="w-full text-sm text-primary hover:text-primary/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-primary/5 transition-colors"
-        >
-          {expanded ? "Hide" : "Show"} Package Details
-          <svg className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+        <div className="mt-auto">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="w-full text-sm text-primary hover:text-primary/80 font-medium flex items-center justify-center gap-1 py-2 rounded-lg hover:bg-primary/5 transition-colors"
+          >
+            {expanded ? "Hide" : "Show"} Package Details
+            <svg className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-        {expanded && (
-          <ul className="mt-3 space-y-1.5 border-t border-border pt-3">
-            {pkg.branding.map((item, i) => {
-              const isHeader = item.startsWith("**") && item.endsWith("**");
-              if (isHeader) {
+          {expanded && (
+            <ul className="mt-3 space-y-1.5 border-t border-border pt-3">
+              {pkg.branding.map((item, i) => {
+                const isHeader = item.startsWith("**") && item.endsWith("**");
+                if (isHeader) {
+                  return (
+                    <li key={i} className={`text-sm font-semibold text-foreground ${i > 0 ? "mt-3 pt-2 border-t border-border/50" : ""}`}>
+                      {item.replace(/\*\*/g, "")}
+                    </li>
+                  );
+                }
                 return (
-                  <li key={i} className={`text-sm font-semibold text-foreground ${i > 0 ? "mt-3 pt-2 border-t border-border/50" : ""}`}>
-                    {item.replace(/\*\*/g, "")}
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <span className="text-primary mt-1 shrink-0">&bull;</span>
+                    {item}
                   </li>
                 );
-              }
-              return (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <span className="text-primary mt-1 shrink-0">&bull;</span>
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+              })}
+            </ul>
+          )}
 
-        {onSelect && !isSoldOut && (
-          <button
-            onClick={() => onSelect(pkg)}
-            className="w-full mt-4 py-2.5 rounded-lg border border-brand-teal/40 text-brand-teal text-sm font-semibold hover:bg-brand-teal/10 transition-colors"
-          >
-            Select Add-Ons
-          </button>
-        )}
+          {onSelect && !isSoldOut && (
+            <button
+              onClick={() => onSelect(pkg)}
+              className="w-full mt-4 py-2.5 rounded-lg border border-brand-teal/40 text-brand-teal text-sm font-semibold hover:bg-brand-teal/10 transition-colors"
+            >
+              Select Add-Ons
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

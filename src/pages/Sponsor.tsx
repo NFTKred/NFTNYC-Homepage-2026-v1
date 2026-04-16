@@ -178,38 +178,10 @@ export default function Sponsor() {
               <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Partnership Packages</h2>
               <p style={{ color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>Premium sponsorship opportunities with maximum brand visibility</p>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex rounded-lg p-1 border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
-                {[
-                  { key: "all", label: "All" },
-                  { key: "premium", label: "Premium" },
-                  { key: "standard", label: "Standard" },
-                ].map((f) => (
-                  <button
-                    key={f.key}
-                    onClick={() => setFilter(f.key)}
-                    style={{
-                      padding: '0.375rem 1rem',
-                      borderRadius: '0.375rem',
-                      fontSize: '14px',
-                      fontFamily: 'var(--font-body)',
-                      fontWeight: 500,
-                      border: 'none',
-                      cursor: 'pointer',
-                      transition: 'all 180ms ease',
-                      background: filter === f.key ? '#14b8a6' : 'transparent',
-                      color: filter === f.key ? '#fff' : 'var(--color-text-muted)',
-                    }}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPackages.map((pkg) => (
+            {defaultPackages.map((pkg) => (
               <PackageCard
                 key={pkg.id}
                 pkg={pkg}

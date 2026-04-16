@@ -16,9 +16,9 @@ const typeConfig: Record<TrackPackage["type"], { label: string; icon: typeof Mic
 const typeSummary: Record<TrackPackage["type"], { billboard: string; speaking: string; expoSpace: string }> = {
   track:       { billboard: "—", speaking: "15 min Keynote", expoSpace: "—" },
   timessquare: { billboard: "—", speaking: "10 min Talk", expoSpace: "—" },
-  activation:  { billboard: "Logo in AV rotation", speaking: "5 min Talk", expoSpace: "20' x 20'" },
+  activation:  { billboard: "—", speaking: "5 min Talk", expoSpace: "20' x 20'" },
   billboard:   { billboard: "15 sec Times Square video", speaking: "—", expoSpace: "—" },
-  demo:        { billboard: "Logo in AV rotation", speaking: "—", expoSpace: "10' x 10'" },
+  demo:        { billboard: "—", speaking: "—", expoSpace: "10' x 10'" },
   marketing:   { billboard: "—", speaking: "—", expoSpace: "—" },
 };
 
