@@ -48,7 +48,7 @@ const HIGHLIGHTS = [
 const FAQ = [
   {
     q: "What is the Times Square Challenge?",
-    a: "A month-long community-wide online experience running before, during, and after NFT.NYC 2026. Participants complete missions — minting, collecting, curating, or interacting with sponsor activations — to earn T-XP, T-Kredits, and a spot on the leaderboard. The highest-engaged moments play out live on Times Square billboards.",
+    a: "A month-long community-wide online experience running before, during, and after NFT.NYC 2026. Participants complete missions — minting, collecting, curating, or interacting with sponsor activations — to earn T-XP and a spot on the leaderboard. The highest-engaged moments play out live on Times Square billboards.",
   },
   {
     q: "How does my sponsorship show up?",
