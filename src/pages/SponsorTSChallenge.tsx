@@ -371,7 +371,7 @@ export default function SponsorTSChallenge() {
           margin: '0 auto 2.5rem',
         }}>
           Our team will scope the integration with you — from a playable demo in the Challenge UI, to an on-chain mint or action, to a Times Square billboard moment tied to participant milestones.
-          Use the notes field in the registration form to describe what you have in mind; we follow up within one business day.
+          Use the notes field in the registration form to describe what you have in mind.
         </p>
 
         <div style={{
