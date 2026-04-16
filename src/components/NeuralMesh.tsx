@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ECOSYSTEMS, CONNECTIONS, Ecosystem } from '@/data/nftnyc';
 import { getEcoIconDataUri } from '@/components/EcoIcon';
 
@@ -142,6 +143,7 @@ function addSvgText(
 
 export default function NeuralMesh() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const navigate = useNavigate();
   const stateRef = useRef({
     featuredIdx: 0,
     transitionStart: null as number | null,
@@ -219,6 +221,19 @@ export default function NeuralMesh() {
 
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.style.cursor = 'pointer';
+      g.setAttribute('role', 'link');
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('aria-label', `${eco.name} — view vertical page`);
+      g.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigate(`/${eco.id}`);
+      });
+      g.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          navigate(`/${eco.id}`);
+        }
+      });
 
       const baseR = 34, featR = 45;
       const nodeR = baseR + (featR - baseR) * ff;
