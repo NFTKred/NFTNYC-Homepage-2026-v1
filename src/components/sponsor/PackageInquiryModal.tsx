@@ -132,7 +132,7 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
                   )}
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Tell us a bit about you and we'll follow up to scope the right partnership.</p>
+              <p className="text-sm text-muted-foreground">Tell us a bit about yourself and we'll follow up to schedule a call.</p>
             </div>
           </DialogDescription>
         </DialogHeader>
