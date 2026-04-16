@@ -11,7 +11,6 @@ const BB = "https://f005.backblazeb2.com/file/PB-HubSpot/";
 
 const TS_IMAGES = [
   { src: BB + "times-square-crowd-night.png", alt: "NFT.NYC community in Times Square at night with NFT art on billboards", caption: "NFT.NYC community taking over Times Square" },
-  { src: BB + "times-square-billboard-nftnyc.jpg", alt: "#NFTNYC projected on Times Square buildings at night", caption: "#NFTNYC lighting up Times Square" },
 ];
 
 const INCLUDES = [
