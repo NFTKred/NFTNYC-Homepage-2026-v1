@@ -6,14 +6,14 @@ const steps = [
   {
     num: 1,
     title: "Enroll for $1,500",
-    desc: "Register as a Community Partner and receive your unique affiliate ticket link. Your $1,500 enrollment includes a 5-minute speaking slot, your logo on the NFT.NYC website, and counts as your first $1,500 in sponsor credits.",
+    desc: "Register as a Community Partner and receive your unique affiliate ticket link. Your $1,500 enrollment includes a 5-minute speaking slot, your logo on the NFT.NYC website, and counts as your first $1,500 in sponsor discounts.",
   },
   {
     num: 2,
-    title: "Sell tickets and earn credits",
+    title: "Sell tickets and earn discounts",
     desc: (
       <>
-        Share your affiliate link with your community. For every ticket sold, you earn sponsor credits:
+        Share your affiliate link with your community. For every ticket sold, you earn sponsor discounts:
         <table className="mt-2 text-muted-foreground text-left">
           <tbody>
             <tr>
@@ -22,7 +22,7 @@ const steps = [
                 GA ticket sold
               </td>
               <td className="pr-3 py-0.5">=</td>
-              <td className="pr-3 py-0.5 text-foreground font-medium">$100 credit</td>
+              <td className="pr-3 py-0.5 text-foreground font-medium">$100 discount</td>
               <td className="py-0.5">(20% of ticket price)</td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@ const steps = [
                 VIP ticket sold
               </td>
               <td className="pr-3 py-0.5">=</td>
-              <td className="pr-3 py-0.5 text-foreground font-medium">$500 credit</td>
+              <td className="pr-3 py-0.5 text-foreground font-medium">$500 discount</td>
               <td className="py-0.5">(~33% of ticket price)</td>
             </tr>
           </tbody>
@@ -41,27 +41,27 @@ const steps = [
   },
   {
     num: 3,
-    title: "Redeem credits toward any package",
-    desc: "Apply your accumulated credits toward any sponsorship package or a la carte item. Credits can cover up to 50% of a package price.",
+    title: "Redeem discounts toward any package",
+    desc: "Apply your accumulated discounts toward any sponsorship package or a la carte item. Discounts can cover up to 50% of a package price.",
   },
 ];
 
 const milestones = [
-  { icon: Mic, label: "Enrollment", reward: "5 min speaking slot and logo on website", credits: "$1,500", pct: 7 },
-  { icon: Gift, label: "10 GA tickets sold", reward: "2 GA passes to the event", credits: "$2,500", pct: 12 },
-  { icon: Star, label: "25 GA tickets sold", reward: "Featured profile on Times Square Challenge site", credits: "$4,000", pct: 19 },
-  { icon: Target, label: "50 GA tickets sold", reward: "Demo Table (fully earned)", credits: "$6,500", pct: 30 },
-  { icon: Trophy, label: "100 GA tickets sold", reward: "Medium Expo Booth (fully earned)", credits: "$11,500", pct: 53 },
-  { icon: Rocket, label: "200+ GA tickets sold", reward: "Large Expo Booth + 5 min main stage speaking slot", credits: "$21,500+", pct: 100 },
+  { icon: Mic, label: "Enrollment", reward: "5 min speaking slot and logo on website", discount: "$1,500", pct: 7 },
+  { icon: Gift, label: "10 GA tickets sold", reward: "2 GA passes to the event", discount: "$2,500", pct: 12 },
+  { icon: Star, label: "25 GA tickets sold", reward: "Featured profile on Times Square Challenge site", discount: "$4,000", pct: 19 },
+  { icon: Target, label: "50 GA tickets sold", reward: "Demo Table (fully earned)", discount: "$6,500", pct: 30 },
+  { icon: Trophy, label: "100 GA tickets sold", reward: "Medium Expo Booth (fully earned)", discount: "$11,500", pct: 53 },
+  { icon: Rocket, label: "200+ GA tickets sold", reward: "Large Expo Booth + 5 min main stage speaking slot", discount: "$21,500+", pct: 100 },
 ];
 
 const fineprint = [
-  "Credits apply to sponsorship packages and a la carte items only — they cannot be redeemed for cash",
-  "Credits can cover up to 50% of any package price (the remainder is paid in cash)",
-  "Your $1,500 enrollment fee counts toward your credit balance",
-  "VIP ticket sales also earn credits ($500 each), so credit totals accelerate with mixed GA/VIP sales",
+  "Discounts apply to sponsorship packages and a la carte items only — they cannot be redeemed for cash",
+  "Discounts can cover up to 50% of any package price (the remainder is paid in cash)",
+  "Your $1,500 enrollment fee counts toward your discount balance",
+  "VIP ticket sales also earn discounts ($500 each), so discount totals accelerate with mixed GA/VIP sales",
   "Affiliate links must be registered to a company or project (individual registrations are not eligible)",
-  "Credits must be redeemed by August 1, 2026. Unredeemed credits after this date are forfeited. This ensures all sponsorship logistics can be finalized before the event. Credits do not carry over",
+  "Discounts must be redeemed by August 1, 2026. Unredeemed discounts after this date are forfeited. This ensures all sponsorship logistics can be finalized before the event. Discounts do not carry over",
   "If you do not reach any ticket sales milestone, your $1,500 enrollment still guarantees a 5-minute speaking slot and logo placement on the NFT.NYC website",
 ];
 
@@ -77,7 +77,7 @@ export default function CommunityPartner() {
         </p>
         <h2 className="text-3xl font-bold text-foreground mb-3">Community Partner Program</h2>
         <p className="text-muted-foreground max-w-3xl leading-relaxed">
-          Earn your way to a sponsorship. Enroll for $1,500, sell tickets through your affiliate link, and turn commissions into sponsor credits toward any NFT.NYC 2026 package.
+          Earn your way to a sponsorship. Enroll for $1,500, sell tickets through your affiliate link, and turn commissions into sponsor discounts toward any NFT.NYC 2026 package.
         </p>
       </div>
 
@@ -101,7 +101,7 @@ export default function CommunityPartner() {
 
       {/* Milestones */}
       <div className="mb-14">
-        <h3 className="text-xl font-bold text-foreground mb-2">Credit Milestones</h3>
+        <h3 className="text-xl font-bold text-foreground mb-2">Discount Milestones</h3>
         <p className="text-sm text-muted-foreground mb-8">
           Rewards are cumulative — reaching 100 tickets includes all previous milestone rewards.
         </p>
@@ -126,7 +126,7 @@ export default function CommunityPartner() {
                   <div className="relative z-10 flex items-center justify-center w-[4.5rem] h-[4.5rem] rounded-2xl bg-card border-2 border-primary/30 group-hover:border-primary transition-colors mb-3">
                     <Icon className="w-6 h-6 text-primary" />
                   </div>
-                  <span className="text-xs font-semibold text-primary mb-1">{m.credits}</span>
+                  <span className="text-xs font-semibold text-primary mb-1">{m.discount}</span>
                   <span className="text-xs font-medium text-foreground mb-1 leading-tight">{m.label}</span>
                   <span className="text-[11px] text-muted-foreground leading-snug">{m.reward}</span>
                 </div>
