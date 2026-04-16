@@ -511,6 +511,11 @@ function ResourceCard({ resource, color }: { resource: VerticalResource; color: 
             src={resource.image}
             alt=""
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            onError={(e) => {
+              // Hide the image container if the image fails to load
+              const link = (e.target as HTMLImageElement).closest('a');
+              if (link) link.style.display = 'none';
+            }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%)' }} />
           <div style={{
