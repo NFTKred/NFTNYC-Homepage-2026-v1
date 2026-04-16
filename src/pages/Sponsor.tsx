@@ -13,10 +13,27 @@ import { defaultPackages, defaultAlaCarte } from "@/data/sponsor/packages";
 import type { Package } from "@/data/sponsor/packages";
 import type { TrackPackage } from "@/data/sponsor/trackPackages";
 
+import { Users, Layers, Handshake } from "lucide-react";
+
 const PATHS = [
-  { id: 'community', label: 'Community-Focused Packages', description: 'Target the specific segment of the NFT.NYC community that aligns with your brand' },
-  { id: 'packages', label: 'Build Your Perfect Package', description: 'Premium sponsorship opportunities with maximum brand visibility' },
-  { id: 'partner-program', label: 'Community Partner Program', description: 'Earn your way in — sell tickets, earn discounts, unlock sponsorship benefits' },
+  {
+    id: 'community',
+    label: 'Community-Focused Packages',
+    icon: Users,
+    description: 'Sponsor a specific NFT.NYC track — AI, Gaming, DeFi, Culture, and more. Includes branded stage, speaking slot, activation space, Times Square billboard, and demo table options from $5K–$75K.',
+  },
+  {
+    id: 'packages',
+    label: 'Build Your Perfect Package',
+    icon: Layers,
+    description: 'Choose from premium venue sponsorships (Edison Ballroom, VIP Party, Cafe) and standard expo packages, plus mix-and-match a la carte add-ons like billboards, social posts, and community emails.',
+  },
+  {
+    id: 'partner-program',
+    label: 'Community Partner Program',
+    icon: Handshake,
+    description: 'Enroll for $1,500, sell tickets through your affiliate link, and earn sponsor discounts toward any package. The more you sell, the bigger the package you unlock — up to 50% off.',
+  },
 ];
 
 export default function Sponsor() {
@@ -93,50 +110,54 @@ export default function Sponsor() {
           maxWidth: '960px',
           margin: '0 auto',
         }}>
-          {PATHS.map(path => (
-            <button
-              key={path.id}
-              onClick={() => scrollTo(path.id)}
-              style={{
-                fontFamily: 'var(--font-body)',
-                padding: '1.5rem',
-                borderRadius: '1rem',
-                border: '1px solid var(--color-border)',
-                background: 'var(--color-surface)',
-                cursor: 'pointer',
-                transition: 'all 200ms ease',
-                textAlign: 'left',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = '#14b8a6';
-                (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(20,184,166,0.1), rgba(20,184,166,0.03))';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-border)';
-                (e.currentTarget as HTMLElement).style.background = 'var(--color-surface)';
-              }}
-            >
-              <span style={{
-                fontSize: '16px',
-                fontWeight: 700,
-                color: 'var(--color-text)',
-              }}>{path.label}</span>
-              <span style={{
-                fontSize: '13px',
-                color: 'var(--color-text-muted)',
-                lineHeight: 1.5,
-              }}>{path.description}</span>
-              <span style={{
-                fontSize: '13px',
-                fontWeight: 600,
-                color: '#14b8a6',
-                marginTop: '0.25rem',
-              }}>View packages ↓</span>
-            </button>
-          ))}
+          {PATHS.map(path => {
+            const Icon = path.icon;
+            return (
+              <button
+                key={path.id}
+                onClick={() => scrollTo(path.id)}
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  padding: '1.75rem',
+                  borderRadius: '1rem',
+                  border: '1px solid var(--color-border)',
+                  background: 'var(--color-surface)',
+                  cursor: 'pointer',
+                  transition: 'all 200ms ease',
+                  textAlign: 'left',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.75rem',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = '#14b8a6';
+                  (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(20,184,166,0.1), rgba(20,184,166,0.03))';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-border)';
+                  (e.currentTarget as HTMLElement).style.background = 'var(--color-surface)';
+                }}
+              >
+                <Icon size={28} style={{ color: '#14b8a6' }} />
+                <span style={{
+                  fontSize: '17px',
+                  fontWeight: 700,
+                  color: 'var(--color-text)',
+                  lineHeight: 1.25,
+                }}>{path.label}</span>
+                <span style={{
+                  fontSize: '13px',
+                  color: 'var(--color-text-muted)',
+                  lineHeight: 1.55,
+                }}>{path.description}</span>
+                <span style={{
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  color: '#14b8a6',
+                }}>View packages ↓</span>
+              </button>
+            );
+          })}
         </div>
       </section>
 
