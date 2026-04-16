@@ -119,17 +119,21 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
       <DialogContent className="bg-card border-brand-border sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-foreground text-xl">
-            Request a Call — {basePackage.name}
+            Learn more about this package
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            <span className="inline-flex items-center gap-2 text-brand-teal font-semibold text-sm mt-1">
-              {basePackage.price}
-              {basePackage.trackName && (
-                <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
-              )}
-            </span>
-            <br />
-            Tell us a bit about you and we'll follow up to scope the right partnership.
+          <DialogDescription asChild>
+            <div className="mt-3">
+              <div className="rounded-lg border border-brand-teal/30 bg-brand-teal/5 px-4 py-3 mb-3">
+                <div className="text-foreground font-semibold text-base leading-tight">{basePackage.name}</div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-brand-teal font-bold text-lg">{basePackage.price}</span>
+                  {basePackage.trackName && (
+                    <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
+                  )}
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Tell us a bit about you and we'll follow up to scope the right partnership.</p>
+            </div>
           </DialogDescription>
         </DialogHeader>
 
