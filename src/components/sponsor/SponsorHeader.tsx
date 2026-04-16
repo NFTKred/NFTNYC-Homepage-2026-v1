@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const BB = "https://f005.backblazeb2.com/file/PB-HubSpot/";
 
 const quotes = [
-  { text: "The Super Bowl of NFTs", source: "Coinbase", image: BB + "stage-branding-edison.png" },
+  { text: "The Super Bowl of NFTs", source: "Coinbase", image: BB + "coinbase-testimonial.jpg" },
   { text: "The new CES for NFTs", source: "Ledger", image: BB + "ledger-activation.png" },
   { text: "Our best marketing of the year", source: "Boson Protocol", image: BB + "times-square-boson-billboard.png" },
   { text: "The largest and most respected NFT conference in the world", source: "Forbes", image: BB + "expo-floor-busy.png" },
