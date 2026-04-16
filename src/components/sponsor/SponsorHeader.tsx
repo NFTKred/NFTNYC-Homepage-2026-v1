@@ -40,7 +40,7 @@ export default function Header() {
             src={q.image}
             alt={`${q.source} at NFT.NYC`}
             className="w-full h-full object-cover"
-            style={{ opacity: 0.18 }}
+            style={{ opacity: 0.7 }}
           />
         </div>
       ))}
