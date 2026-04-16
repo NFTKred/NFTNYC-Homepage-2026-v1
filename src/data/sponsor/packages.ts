@@ -116,7 +116,8 @@ export const defaultPackages: Package[] = [
     speaking: "10 min Talk",
     expoSpace: "20'x 10' expo activation",
     availability: "2 remaining",
-    image: BB + "coinbase-theater-entrance.png"
+    image: BB + "coinbase-theater-entrance.png",
+    imagePosition: "center top"
   },
   {
     id: 4,
