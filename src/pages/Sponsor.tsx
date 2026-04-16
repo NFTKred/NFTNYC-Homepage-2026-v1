@@ -26,7 +26,7 @@ const PATHS = [
     id: 'packages',
     label: 'Build Your Perfect Package',
     icon: Layers,
-    description: 'Choose from premium venue sponsorships (Edison Ballroom, VIP Party, Cafe) and standard expo packages, plus mix-and-match a la carte add-ons like billboards, social posts, and community emails.',
+    description: 'Choose from premium venue sponsorships (Edison Ballroom, VIP Party, Cafe) and standard expo packages. Then customize with add-ons — Times Square billboards, social media posts, community emails, and more.',
   },
   {
     id: 'partner-program',
