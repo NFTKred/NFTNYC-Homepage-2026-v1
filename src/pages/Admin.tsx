@@ -203,6 +203,7 @@ const headerCellStyle: React.CSSProperties = {
   textTransform: 'uppercase',
   letterSpacing: '1px',
   color: 'rgb(90, 90, 117)',
+  background: '#12121e',
 };
 
 const inputStyle: React.CSSProperties = {
@@ -608,9 +609,9 @@ export default function Admin() {
               Select a single vertical above to drag-and-drop resources into your preferred order.
             </p>
           )}
-          <div style={{ overflowX: 'auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
+          <div style={{ overflow: 'auto', maxHeight: '60vh', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
+              <thead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
                 <tr>
                   <th style={{ ...headerCellStyle, width: '28px' }}></th>
                   <th style={headerCellStyle}>Title</th>
@@ -708,9 +709,9 @@ export default function Admin() {
               <Plus size={14} /> Add Speaker
             </button>
           </div>
-          <div style={{ overflowX: 'auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
+          <div style={{ overflow: 'auto', maxHeight: '70vh', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
+              <thead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
                 <tr>
                   <th style={headerCellStyle}>Name</th>
                   <th style={headerCellStyle}>Role</th>
