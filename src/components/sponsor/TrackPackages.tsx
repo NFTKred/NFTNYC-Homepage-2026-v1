@@ -51,18 +51,16 @@ export default function TrackPackages({ trackName, onSelect }: TrackPackagesProp
               {/* Ticket boxes — shown when the package has structured ticket counts. */}
               {pkg.tickets && (
                 <div className="grid grid-cols-3 gap-3 mb-5">
-                  <div className="bg-secondary rounded-lg p-3 text-center">
-                    <div className="text-xs text-muted-foreground mb-1">VIP</div>
-                    <div className="text-lg font-bold text-foreground">{pkg.tickets.vip}</div>
-                  </div>
-                  <div className="bg-secondary rounded-lg p-3 text-center">
-                    <div className="text-xs text-muted-foreground mb-1">GA</div>
-                    <div className="text-lg font-bold text-foreground">{pkg.tickets.ga}</div>
-                  </div>
-                  <div className="bg-secondary rounded-lg p-3 text-center">
-                    <div className="text-xs text-muted-foreground mb-1">Staff</div>
-                    <div className="text-lg font-bold text-foreground">{pkg.tickets.staff ?? 0}</div>
-                  </div>
+                  {[
+                    { label: "VIP", count: pkg.tickets.vip },
+                    { label: "GA", count: pkg.tickets.ga },
+                    { label: "Staff", count: pkg.tickets.staff ?? 0 },
+                  ].map(t => (
+                    <div key={t.label} className="bg-secondary rounded-lg p-3 text-center">
+                      <div className={`text-xs mb-1 ${t.count ? 'text-muted-foreground' : 'text-muted-foreground/25'}`}>{t.label}</div>
+                      <div className={`text-lg font-bold ${t.count ? 'text-foreground' : 'text-foreground/20'}`}>{t.count}</div>
+                    </div>
+                  ))}
                 </div>
               )}
 
