@@ -241,8 +241,7 @@ export const defaultPackages: Package[] = [
     speaking: "5 min Talk",
     expoSpace: "10' x 10'",
     availability: "Limited",
-    image: BB + "expo-space-branded.png",
-    imagePosition: "top"
+    image: BB + "expo-space-branded-v2.png"
   },
   {
     id: 14,
