@@ -713,7 +713,7 @@ export default function Admin() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
                 <tr>
-                  <th style={headerCellStyle}>Name</th>
+                  <th style={{ ...headerCellStyle, position: 'sticky', left: 0, zIndex: 3, minWidth: '120px', borderRight: '2px solid rgba(255,255,255,0.1)' }}>Name</th>
                   <th style={headerCellStyle}>Role</th>
                   <th style={headerCellStyle}>Vertical</th>
                   <th style={headerCellStyle}>Email</th>
@@ -723,7 +723,7 @@ export default function Admin() {
                   <th style={headerCellStyle}>Channel</th>
                   <th style={headerCellStyle}>Status</th>
                   <th style={headerCellStyle}>Notes</th>
-                  <th style={{ ...headerCellStyle, width: '80px' }}>Actions</th>
+                  <th style={{ ...headerCellStyle, width: '130px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -734,7 +734,7 @@ export default function Admin() {
                   const verticalResources = resources.filter(r => r.vertical_id === s.vertical_id);
                   return (
                   <tr key={s.id}>
-                    <td style={{ ...cellStyle, fontWeight: 600 }}>{s.name}</td>
+                    <td style={{ ...cellStyle, fontWeight: 600, position: 'sticky', left: 0, zIndex: 1, background: '#12121e', minWidth: '120px', borderRight: '2px solid rgba(255,255,255,0.1)' }}>{s.name}</td>
                     <td style={cellStyle}>{s.role}</td>
                     <td style={cellStyle}>{s.vertical_id}</td>
                     <td style={cellStyle}>
