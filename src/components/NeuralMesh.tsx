@@ -219,16 +219,17 @@ export default function NeuralMesh() {
       const p = pos[i];
       const ff = featFactor[i];
 
+      // Native SVG <a> link — most reliable way to make SVG content clickable.
+      // Wrapping the node group lets the browser handle click + keyboard +
+      // context menu + right-click "Open in new tab" naturally.
+      const a = document.createElementNS('http://www.w3.org/2000/svg', 'a');
+      a.setAttribute('href', `/${eco.id}`);
+      a.setAttribute('aria-label', `${eco.name} — view vertical page`);
+      a.setAttribute('data-eco-id', eco.id);
+      a.style.cursor = 'pointer';
+
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      g.style.cursor = 'pointer';
-      g.setAttribute('role', 'link');
-      g.setAttribute('tabindex', '0');
-      g.setAttribute('aria-label', `${eco.name} — view vertical page`);
-      // Event delegation: the SVG-level listener reads this attr to navigate.
-      g.setAttribute('data-eco-id', eco.id);
-      // pointer-events: bounding-box makes the entire node area clickable,
-      // not just the painted shapes — more forgiving for rapid animations.
-      g.style.pointerEvents = 'bounding-box';
+      a.appendChild(g);
 
       const baseR = 34, featR = 45;
       const nodeR = baseR + (featR - baseR) * ff;
@@ -355,7 +356,7 @@ export default function NeuralMesh() {
         }
       }
 
-      dynNodesG.appendChild(g);
+      dynNodesG.appendChild(a);
     }
   }, []);
 
@@ -790,10 +791,15 @@ export default function NeuralMesh() {
     const svg = svgRef.current;
     if (!svg) return;
     const handleClick = (e: MouseEvent) => {
+      // Allow modifier-clicks (open in new tab) to use the browser default.
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       const target = (e.target as Element | null)?.closest('[data-eco-id]') as SVGElement | null;
       if (!target) return;
       const id = target.getAttribute('data-eco-id');
-      if (id) navigate(`/${id}`);
+      if (id) {
+        e.preventDefault();
+        navigate(`/${id}`);
+      }
     };
     const handleKey = (e: KeyboardEvent) => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
