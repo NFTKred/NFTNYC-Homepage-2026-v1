@@ -90,7 +90,8 @@ export const defaultPackages: Package[] = [
     speaking: "15 min Talk or 25 min Panel",
     expoSpace: "20'x 20' expo activation",
     availability: "1 remaining",
-    image: BB + "speaker-on-stage.png"
+    image: BB + "coinbase-theater-entrance.png",
+    imagePosition: "center top"
   },
   {
     id: 11,
@@ -116,8 +117,7 @@ export const defaultPackages: Package[] = [
     speaking: "10 min Talk",
     expoSpace: "20'x 10' expo activation",
     availability: "2 remaining",
-    image: BB + "coinbase-theater-entrance.png",
-    imagePosition: "center top"
+    image: BB + "speaker-on-stage.png"
   },
   {
     id: 4,
