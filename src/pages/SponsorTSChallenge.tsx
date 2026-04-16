@@ -158,7 +158,7 @@ export default function SponsorTSChallenge() {
             marginLeft: 'auto',
             marginRight: 'auto',
           }}>
-            <span style={{ display: 'block' }}>Be a part of the</span>
+            <span style={{ display: 'block' }}>Be part of the</span>
             {/* Times\u00A0Square never breaks (joined by non-breaking space).
                 Between "Square" and "Challenge" we allow a break on narrow screens. */}
             <span style={{ display: 'block' }}>Times&nbsp;Square Challenge</span>
