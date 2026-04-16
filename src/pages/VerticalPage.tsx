@@ -80,7 +80,6 @@ export default function VerticalPage() {
     (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') || 'dark'
   );
   const stage = useMemo(() => Number(localStorage.getItem('nftnyc-stage') ?? 0), []);
-  const [typeFilter, setTypeFilter] = useState<VerticalResource['type'] | 'all'>('all');
 
   const eco = ECOSYSTEMS.find(e => e.id === verticalId);
   const { data: allResources = [] } = useVerticalResources(verticalId ?? '');
@@ -89,7 +88,6 @@ export default function VerticalPage() {
 
   const topics = VERTICAL_TOPICS[eco.id] ?? [];
   const resources = allResources
-    .filter(r => typeFilter === 'all' || r.type === typeFilter)
     .sort((a, b) => {
       // Admin-defined order wins. Rows without a display_order fall back
       // to date desc, and sit after all manually-ordered rows.
@@ -279,31 +277,6 @@ export default function VerticalPage() {
           Latest on <span style={{ color: eco.color }}>{eco.name.toLowerCase()}</span>
         </h2>
 
-        {/* Filter pills */}
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '0.5rem',
-          justifyContent: 'center',
-          marginBottom: '2.5rem',
-        }}>
-          <FilterPill
-            label="All"
-            active={typeFilter === 'all'}
-            color={eco.color}
-            onClick={() => setTypeFilter('all')}
-          />
-          {ALL_TYPES.map(t => (
-            <FilterPill
-              key={t}
-              label={TYPE_META[t].label}
-              active={typeFilter === t}
-              color={eco.color}
-              onClick={() => setTypeFilter(t)}
-            />
-          ))}
-        </div>
-
         {/* Resource list */}
         {resources.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -319,9 +292,7 @@ export default function VerticalPage() {
             color: 'rgb(90, 90, 117)',
             padding: '3rem 0',
           }}>
-            {typeFilter === 'all'
-              ? 'Resources coming soon — check back as we build out this vertical.'
-              : `No ${TYPE_META[typeFilter as VerticalResource['type']].label.toLowerCase()} resources yet.`}
+            Resources coming soon — check back as we build out this vertical.
           </p>
         )}
       </section>
