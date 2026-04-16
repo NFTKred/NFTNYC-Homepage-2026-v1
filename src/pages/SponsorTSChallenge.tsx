@@ -224,14 +224,15 @@ export default function SponsorTSChallenge() {
       <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem' }}>
         <p style={sectionLabel}>Why sponsor</p>
         <h2 style={{
-          fontFamily: 'var(--font-display)',
+          fontFamily: "'Space Grotesk', var(--font-body)",
           fontSize: 'clamp(28px, 3.5vw, 40px)',
           fontWeight: 700,
           color: 'var(--color-text)',
+          textTransform: 'uppercase',
           marginBottom: '3rem',
           maxWidth: '700px',
         }}>
-          The only sponsorship that lives outside the event walls.
+          The partnership that extends outside the event walls.
         </h2>
 
         <div style={{
@@ -250,7 +251,7 @@ export default function SponsorTSChallenge() {
               }}>
                 <Icon size={28} style={{ color: '#f97316', marginBottom: '1rem' }} />
                 <h3 style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: "'Space Grotesk', var(--font-body)",
                   fontSize: '18px',
                   fontWeight: 700,
                   color: 'var(--color-text)',
@@ -278,7 +279,7 @@ export default function SponsorTSChallenge() {
         }}>
           <p style={sectionLabel}>What's included</p>
           <h2 style={{
-            fontFamily: 'var(--font-display)',
+            fontFamily: "'Space Grotesk', var(--font-body)",
             fontSize: 'clamp(24px, 3vw, 32px)',
             fontWeight: 700,
             color: 'var(--color-text)',
@@ -343,7 +344,7 @@ export default function SponsorTSChallenge() {
       <section style={{ maxWidth: '1100px', margin: '0 auto', padding: '4rem 1.5rem' }}>
         <p style={sectionLabel}>How integration works</p>
         <h2 style={{
-          fontFamily: 'var(--font-display)',
+          fontFamily: "'Space Grotesk', var(--font-body)",
           fontSize: 'clamp(24px, 3vw, 32px)',
           fontWeight: 700,
           color: 'var(--color-text)',
@@ -385,7 +386,7 @@ export default function SponsorTSChallenge() {
               }}>
                 <Icon size={22} style={{ color: '#f97316', marginBottom: '0.75rem' }} />
                 <h3 style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: "'Space Grotesk', var(--font-body)",
                   fontSize: '16px',
                   fontWeight: 700,
                   color: 'var(--color-text)',
@@ -434,7 +435,7 @@ export default function SponsorTSChallenge() {
       <section style={{ maxWidth: '880px', margin: '0 auto', padding: '4rem 1.5rem' }}>
         <p style={sectionLabel}>FAQ</p>
         <h2 style={{
-          fontFamily: 'var(--font-display)',
+          fontFamily: "'Space Grotesk', var(--font-body)",
           fontSize: 'clamp(24px, 3vw, 32px)',
           fontWeight: 700,
           color: 'var(--color-text)',
@@ -449,7 +450,7 @@ export default function SponsorTSChallenge() {
               padding: '1.5rem',
             }}>
               <h3 style={{
-                fontFamily: 'var(--font-display)',
+                fontFamily: "'Space Grotesk', var(--font-body)",
                 fontSize: '16px',
                 fontWeight: 700,
                 color: 'var(--color-text)',
