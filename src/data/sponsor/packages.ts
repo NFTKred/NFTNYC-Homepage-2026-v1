@@ -90,7 +90,7 @@ export const defaultPackages: Package[] = [
     speaking: "15 min Talk or 25 min Panel",
     expoSpace: "20'x 20' expo activation",
     availability: "1 remaining",
-    image: BB + "av-branding-xy-finance.png"
+    image: BB + "speaker-on-stage.png"
   },
   {
     id: 11,
