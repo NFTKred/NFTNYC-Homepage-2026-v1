@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw } from 'lucide-react';
 
 /* ─── Twenty CRM lookup ─── */
 const TWENTY_API_KEY = import.meta.env.VITE_TWENTY_API_KEY ?? '';
@@ -31,6 +31,34 @@ async function lookupCRMEmail(fullName: string): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+/* ─── OG image auto-fetch via Microlink (no API key required) ─── */
+
+/** Try to get the og:image for a URL. If the specific page has no image, fall back to the root domain. */
+async function fetchOgImage(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}`);
+    if (res.ok) {
+      const json = await res.json();
+      const img = json?.data?.image?.url ?? json?.data?.logo?.url ?? null;
+      if (img) return img;
+    }
+  } catch { /* ignore */ }
+
+  // Fallback: try the root domain
+  try {
+    const rootUrl = new URL(url).origin;
+    if (rootUrl !== url && rootUrl + '/' !== url) {
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rootUrl)}`);
+      if (res.ok) {
+        const json = await res.json();
+        return json?.data?.image?.url ?? json?.data?.logo?.url ?? null;
+      }
+    }
+  } catch { /* ignore */ }
+
+  return null;
 }
 
 /* ─── Types ─── */
@@ -915,6 +943,75 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
     image: initial?.image ?? '',
   });
   const [saving, setSaving] = useState(false);
+  const [fetchingImage, setFetchingImage] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const lastFetchedUrl = useState({ current: '' })[0]; // ref-like via stable object
+
+  /* Auto-fetch og:image when URL field changes (debounced) */
+  useEffect(() => {
+    // Only auto-fetch if there's no image already set (don't overwrite manual entries or existing images)
+    if (form.image || !form.url) return;
+    try { new URL(form.url); } catch { return; } // valid URL check
+    if (lastFetchedUrl.current === form.url) return;
+
+    const timer = setTimeout(async () => {
+      lastFetchedUrl.current = form.url;
+      setFetchingImage(true);
+      setImageError(false);
+      const img = await fetchOgImage(form.url);
+      setFetchingImage(false);
+      if (img) {
+        setForm(f => f.url === form.url && !f.image ? { ...f, image: img } : f);
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [form.url, form.image, lastFetchedUrl]);
+
+  /* Manual re-fetch (force) */
+  const handleRefetchImage = async () => {
+    if (!form.url) return;
+    setFetchingImage(true);
+    setImageError(false);
+    const img = await fetchOgImage(form.url);
+    setFetchingImage(false);
+    if (img) {
+      setForm(f => ({ ...f, image: img }));
+    } else {
+      alert('No image found for this URL or its root domain.');
+    }
+  };
+
+  /* Upload custom image to Supabase Storage */
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5 MB.');
+      return;
+    }
+    setUploading(true);
+    const ext = file.name.split('.').pop() ?? 'png';
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error } = await supabase.storage.from('resource-images').upload(path, file, {
+      cacheControl: '31536000',
+      upsert: false,
+    });
+    setUploading(false);
+    if (error) {
+      alert(`Upload failed: ${error.message}`);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from('resource-images').getPublicUrl(path);
+    if (urlData?.publicUrl) {
+      setForm(f => ({ ...f, image: urlData.publicUrl }));
+      setImageError(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -960,7 +1057,66 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
         <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Topic Tag<input value={form.topic_tag} onChange={e => set('topic_tag', e.target.value)} required style={{ ...inputStyle, marginTop: '4px' }} /></label>
       </div>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>NFT Angle (description)<textarea value={form.description} onChange={e => set('description', e.target.value)} rows={2} style={{ ...inputStyle, marginTop: '4px', resize: 'vertical' }} /></label>
-      <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Image URL (optional)<input value={form.image} onChange={e => set('image', e.target.value)} type="url" style={{ ...inputStyle, marginTop: '4px' }} /></label>
+
+      {/* ─── Featured Image ─── */}
+      <div style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <ImageIcon size={12} /> Featured Image
+            {fetchingImage && <Loader2 size={12} className="animate-spin" style={{ color: '#3B82F6' }} />}
+          </span>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button
+              type="button"
+              onClick={handleRefetchImage}
+              disabled={fetchingImage || !form.url}
+              title="Re-fetch image from URL"
+              style={{ background: 'rgba(59,130,246,0.12)', border: 'none', color: '#3B82F6', cursor: 'pointer', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', opacity: fetchingImage || !form.url ? 0.4 : 1 }}
+            >
+              <RefreshCw size={11} /> Fetch
+            </button>
+            <label
+              title="Upload a custom image"
+              style={{ background: 'rgba(139,92,246,0.12)', border: 'none', color: '#8B5CF6', cursor: 'pointer', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+            >
+              <Upload size={11} /> {uploading ? 'Uploading...' : 'Upload'}
+              <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} disabled={uploading} />
+            </label>
+          </div>
+        </div>
+        <input
+          value={form.image}
+          onChange={e => { set('image', e.target.value); setImageError(false); }}
+          type="url"
+          placeholder="Auto-fetched from link, or paste / upload a custom image"
+          style={{ ...inputStyle }}
+        />
+        {form.image && (
+          <div style={{ marginTop: '8px', position: 'relative', borderRadius: '6px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.3)' }}>
+            {!imageError ? (
+              <img
+                src={form.image}
+                alt="Preview"
+                onError={() => setImageError(true)}
+                style={{ width: '100%', maxHeight: '160px', objectFit: 'cover', display: 'block' }}
+              />
+            ) : (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#EF4444', fontSize: '11px' }}>
+                Image failed to load. Try re-fetching or uploading a replacement.
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => { set('image', ''); setImageError(false); }}
+              title="Remove image"
+              style={{ position: 'absolute', top: '6px', right: '6px', background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '50%', width: '22px', height: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <X size={12} />
+            </button>
+          </div>
+        )}
+      </div>
+
       <button type="submit" disabled={saving} style={{ ...btnStyle, background: '#3B82F6', color: '#fff', justifyContent: 'center', padding: '0.75rem' }}>
         {saving ? 'Saving...' : initial ? 'Update Resource' : 'Add Resource'}
       </button>
