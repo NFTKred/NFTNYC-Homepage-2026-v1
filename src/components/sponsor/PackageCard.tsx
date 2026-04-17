@@ -21,9 +21,12 @@ interface PackageCardProps {
   onSelect?: (pkg: Package) => void;
 }
 
+const REQUEST_ONLY_PRICES = new Set(["$500,000", "$200,000", "$120,000"]);
+
 export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
   const [expanded, setExpanded] = useState(false);
   const isSoldOut = pkg.availability === "Sold Out";
+  const isRequestOnly = REQUEST_ONLY_PRICES.has(pkg.price);
 
   return (
     <div className={`group relative bg-card border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/40 flex flex-col ${isSoldOut ? "border-red-500/20 opacity-75" : "border-border"}`}>
@@ -42,11 +45,6 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3 gap-3">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge variant={isSoldOut ? "soldOut" : "default"}>
-                {pkg.availability}
-              </Badge>
-            </div>
             <h3 className="text-xl font-bold text-foreground">{pkg.name}</h3>
           </div>
           {onSelect && !isSoldOut && (
@@ -54,12 +52,14 @@ export default function PackageCard({ pkg, onSelect }: PackageCardProps) {
               onClick={() => onSelect(pkg)}
               className="shrink-0 px-3 py-1.5 rounded-lg bg-brand-coral text-white text-xs font-semibold hover:bg-brand-coral/90 transition-colors whitespace-nowrap"
             >
-              Select
+              {isRequestOnly ? "Request" : "Select"}
             </button>
           )}
         </div>
 
-        <p className="text-2xl font-bold text-brand-coral mb-3">{pkg.price}</p>
+        {!isRequestOnly && (
+          <p className="text-2xl font-bold text-brand-coral mb-3">{pkg.price}</p>
+        )}
         <p className="text-muted-foreground text-sm mb-4">{pkg.description}</p>
 
         <div className="grid grid-cols-3 gap-3 mb-4">

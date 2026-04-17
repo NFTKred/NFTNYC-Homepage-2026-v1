@@ -16,6 +16,10 @@ import { defaultAlaCarte } from "@/data/sponsor/packages";
 // and emails team@nft.nyc with the full submission details.
 const INQUIRY_URL = "https://zgryfbuoarrlmocavodo.supabase.co/functions/v1/partnership-inquiry";
 
+// Packages whose price is hidden from the UI — these are shown as "Request"
+// opportunities that go through a custom conversation rather than fixed-price selection.
+const HIDDEN_PRICE_PACKAGES = new Set(["$500,000", "$200,000", "$120,000"]);
+
 export interface BasePackage {
   name: string;
   price: string;
@@ -125,12 +129,16 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
             <div className="mt-3">
               <div className="rounded-lg border border-brand-coral/30 bg-brand-coral/5 px-4 py-3 mb-3">
                 <div className="text-foreground font-semibold text-base leading-tight">{basePackage.name}</div>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-brand-coral font-bold text-lg">{basePackage.price}</span>
-                  {basePackage.trackName && (
-                    <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
-                  )}
-                </div>
+                {(!HIDDEN_PRICE_PACKAGES.has(basePackage.price) || basePackage.trackName) && (
+                  <div className="flex items-center gap-2 mt-1">
+                    {!HIDDEN_PRICE_PACKAGES.has(basePackage.price) && (
+                      <span className="text-brand-coral font-bold text-lg">{basePackage.price}</span>
+                    )}
+                    {basePackage.trackName && (
+                      <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
+                    )}
+                  </div>
+                )}
               </div>
               <p className="text-sm text-muted-foreground">Tell us a bit about yourself and we'll follow up to schedule a call.</p>
             </div>

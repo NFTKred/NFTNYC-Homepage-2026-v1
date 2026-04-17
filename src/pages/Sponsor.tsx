@@ -163,21 +163,9 @@ export default function Sponsor() {
       <div id="community">
         <TrackTiles selected={selectedTrack} onSelect={(t) => setSelectedTrack(t || null)} />
         {selectedTrack && <TrackPackages trackName={selectedTrack} onSelect={openTrackInquiry} />}
-      </div>
 
-      {/* ═══ Section 2: Build Your Perfect Package ═══ */}
-      <div id="packages">
-        {/* Partnership Packages */}
-        <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
-          <div className="absolute top-0 inset-x-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
-            <div>
-              <p className="text-xs font-medium tracking-[0.25em] uppercase text-brand-coral mb-3">Choose from flexible packages</p>
-              <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Partnership Packages</h2>
-              <p style={{ color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>Premium sponsorship opportunities with maximum brand visibility</p>
-            </div>
-          </div>
-
+        {/* Partnership Packages — displayed for all communities */}
+        <section id="packages" className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {defaultPackages.map((pkg) => (
               <PackageCard
