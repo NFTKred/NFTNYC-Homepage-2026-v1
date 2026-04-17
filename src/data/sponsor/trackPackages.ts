@@ -74,7 +74,7 @@ const billboardByTrack: Record<string, BillboardMeta> = {
     description: "Showcase your brand engagement or loyalty platform on some of Times Square's biggest screens — reach the NFT.NYC enterprise and brand community with your web3 loyalty program, digital collectibles, or consumer experience." + TIMES_SQUARE_REACH,
   },
   "Culture, Art & Music": {
-    name: "Showcase your art or music in Times Square",
+    name: "Showcase your creative in Times Square",
     description: "Showcase your digital art, music, or cultural project on some of Times Square's biggest screens — reach the NFT.NYC creative community with stunning artwork, music visuals, or a live creative experience." + TIMES_SQUARE_REACH,
   },
   "DNS ENS Domain Tokens": {
@@ -678,7 +678,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "timessquare",
-      name: "Showcase your art or music experiences before, during, and after the event",
+      name: "Showcase your creative experience before, during, and after the event",
       price: "$35,000",
       description: "Integrate your art or music platform into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the art & music track showcase and engage with creative works through your digital experience, reaching the collector and creative community.",
       includes: [
@@ -693,7 +693,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "activation",
-      name: "Feature your art or music in a premium activation",
+      name: "Feature your Creative in a premium activation",
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom art or music experience for the NFT.NYC creative community. Examples include curated digital galleries, live music performances, or interactive minting installations — the format is yours to design.",
       includes: [
@@ -717,7 +717,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "demo",
-      name: "Introduce your art or music with a demo table",
+      name: "Introduce your Creative with a demo table",
       price: "$5,000",
       description: "Meet the NFT.NYC creative community at a dedicated demo table — let artists, musicians, and collectors experience your digital art platform or music NFT tools up close.",
       includes: [...demoIncludes],
@@ -725,7 +725,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "marketing",
-      name: "Reach NFT.NYC's art & music community with marketing support",
+      name: "Reach NFT.NYC's Creative community with marketing support",
       price: "$7,500",
       description: "Reach the NFT.NYC art and music community with a dedicated email and social campaign — targeted to digital artists, musicians, collectors, and gallery curators.",
       includes: [...marketingIncludes],
