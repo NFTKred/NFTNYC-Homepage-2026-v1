@@ -372,7 +372,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "marketing",
       name: "Reach NFT.NYC's social community with marketing support",
       price: "$7,500",
-      description: "Reach the NFT.NYC social and PFP community with a dedicated email and social campaign — targeted to community builders, DAO operators, PFP collectors, and social platform founders.",
+      description: "Reach the NFT.NYC community with a dedicated email and social campaign — tailored to community builders, DAO operators, PFP collectors, and social platform founders.",
       includes: [...marketingIncludes],
     },
   ],
