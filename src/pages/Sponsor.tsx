@@ -166,6 +166,16 @@ export default function Sponsor() {
 
         {/* Partnership Packages — displayed for all communities */}
         <section id="packages" className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '12px',
+            fontWeight: 500,
+            letterSpacing: '0.25em',
+            textTransform: 'uppercase',
+            color: '#f06347',
+            textAlign: 'center',
+            marginBottom: '2rem',
+          }}>All Packages</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {defaultPackages.map((pkg) => (
               <PackageCard
