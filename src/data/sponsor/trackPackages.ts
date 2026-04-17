@@ -663,7 +663,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
   "Culture, Art & Music": [
     {
       type: "track",
-      name: "Position yourself as the leader of the Art & Music track",
+      name: "Position yourself as the leader of the Culture, Art & Music track",
       price: "$75,000",
       description: "Become the brand synonymous with the NFT.NYC creative community — the digital artists, musicians, collectors, and gallery curators celebrating the cultural renaissance of on-chain creativity. Your sponsorship connects you with the creative heart of web3.",
       includes: [
