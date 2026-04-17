@@ -55,7 +55,7 @@ const billboardByTrack: Record<string, BillboardMeta> = {
   },
   "Social NFTs": {
     name: "Showcase your social platform in Times Square",
-    description: "Showcase your social platform, PFP collection, or community tools on some of Times Square's biggest screens — connect with the NFT.NYC social and PFP audience through your social graph, collection reveals, token-gated experiences, or engagement features." + TIMES_SQUARE_REACH,
+    description: "Showcase your social platform, PFP collection, or community tools on some of Times Square's biggest screens." + TIMES_SQUARE_REACH,
   },
   "Creator Economy": {
     name: "Showcase your creator tools in Times Square",
@@ -364,7 +364,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "demo",
       name: "Introduce your social platform with a demo table",
       price: "$5,000",
-      description: "Meet the NFT.NYC social and PFP community at a dedicated demo table — perfect for live demos of social graphs, PFP collections, token-gated experiences, and community engagement features to qualified community builders and PFP holders.",
+      description: "Meet the NFT.NYC social and PFP community at a dedicated demo table — perfect for live demos of social graphs, PFP collections, token-gated experiences, and community engagement features.",
       includes: [...demoIncludes],
       tickets: { vip: 1, ga: 2 },
     },
