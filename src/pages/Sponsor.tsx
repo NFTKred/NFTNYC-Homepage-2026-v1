@@ -175,7 +175,7 @@ export default function Sponsor() {
             color: '#f06347',
             textAlign: 'center',
             marginBottom: '2rem',
-          }}>All Packages</p>
+          }}>More Options</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {defaultPackages.map((pkg) => (
               <PackageCard
