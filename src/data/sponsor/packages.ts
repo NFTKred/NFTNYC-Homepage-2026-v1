@@ -120,30 +120,10 @@ export const defaultPackages: Package[] = [
     image: BB + "speaker-on-stage.png"
   },
   {
-    id: 4,
-    tier: "standard",
-    name: "Branded Barista Coffee Cart (per day)",
-    price: "$20,000",
-    description: "Fuel the community with a branded barista coffee experience — one of the most visited spots at the event.",
-    branding: [
-      "Barista Coffee Cart",
-      "Branded Coffee Cups or Sleeves",
-      "AV Loop 15 sec clip",
-      "500 NFT Giveaway",
-      "Social Media post + Opt-in Media List"
-    ],
-    tickets: { vip: 1, ga: 2, staff: 2 },
-    billboard: "15 sec Billboard Ad",
-    speaking: "5 min Talk",
-    expoSpace: "10' x 10'",
-    availability: "2 remaining",
-    image: BB + "barista-coffee-cart.jpg"
-  },
-  {
     id: 8,
     tier: "standard",
     name: "VIP Opening Party",
-    price: "$62,500",
+    price: "$75,000",
     description: "Co-brand the exclusive VIP Opening Party — the kickoff networking event for top-tier attendees.",
     branding: [
       "AV Co-branded during VIP Party",
@@ -173,7 +153,7 @@ export const defaultPackages: Package[] = [
       "**Digital and content:**",
       "Standard AV logo 15 sec clip (QTY 1)",
       "Branding in digital program",
-      
+
       "Opt-in media list",
       "**Hospitality:**",
       "Direct networking access to VIP attendees and speakers in an intimate setting",
@@ -185,6 +165,26 @@ export const defaultPackages: Package[] = [
     expoSpace: "Chandelier Room lounge area",
     availability: "1 remaining",
     image: BB + "chandelier-room-activation.png"
+  },
+  {
+    id: 4,
+    tier: "standard",
+    name: "Branded Barista Coffee Cart (per day)",
+    price: "$20,000",
+    description: "Fuel the community with a branded barista coffee experience — one of the most visited spots at the event.",
+    branding: [
+      "Barista Coffee Cart",
+      "Branded Coffee Cups or Sleeves",
+      "AV Loop 15 sec clip",
+      "500 NFT Giveaway",
+      "Social Media post + Opt-in Media List"
+    ],
+    tickets: { vip: 1, ga: 2, staff: 2 },
+    billboard: "15 sec Billboard Ad",
+    speaking: "5 min Talk",
+    expoSpace: "10' x 10'",
+    availability: "2 remaining",
+    image: BB + "barista-coffee-cart.jpg"
   },
   {
     id: 10,
