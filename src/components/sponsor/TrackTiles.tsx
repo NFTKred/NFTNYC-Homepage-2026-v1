@@ -30,7 +30,7 @@ export default function TrackTiles({ selected, onSelect }: TrackTilesProps) {
           Industry Focused
         </p>
         <h2 className="text-3xl font-bold text-foreground mb-3">
-          Sponsorship by Community
+          Reach your target community
         </h2>
         <p className="text-muted-foreground mb-10 max-w-2xl">
           Target the specific segment of the NFT.NYC community that aligns with your brand and product
