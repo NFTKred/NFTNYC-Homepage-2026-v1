@@ -282,8 +282,8 @@ export const defaultAlaCarte: AlaCarteItem[] = [
   },
   {
     id: 103,
-    name: "NFT Giveaway (2k or 10k NFTs)",
-    price: "$2,000 or $10,000",
+    name: "NFT Giveaway (2k NFTs)",
+    price: "$2,000",
     description: "Create an NFT Giveaway for NFT.NYC Community members that share your unique branding and a call to action that benefits token holders.",
     availability: "Limited"
   },
