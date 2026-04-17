@@ -4,7 +4,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera } from 'lucide-react';
+import { generateCardScreenshot, generateCardScreenshotsBatch } from '@/lib/cardScreenshot';
 
 /* ─── Twenty CRM lookup ─── */
 const TWENTY_API_KEY = import.meta.env.VITE_TWENTY_API_KEY ?? '';
@@ -73,6 +74,7 @@ interface Resource {
   topic_tag: string;
   description: string | null;
   image: string | null;
+  card_screenshot: string | null;
   status: string;
   auto_found: boolean;
   created_at: string;
@@ -141,7 +143,9 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
   const name = firstName(speaker.name);
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
-  const imageUrl = resource?.image ?? null;
+  // Prefer the rendered-card screenshot (shows the "Latest on X" section as
+  // it appears on the vertical page). Fall back to the raw og:image.
+  const imageUrl = resource?.card_screenshot ?? resource?.image ?? null;
   const subject = `${speaker.name}: You're featured on NFT.NYC ${verticalLabel}`;
 
   const resourceLineText = resource
@@ -161,8 +165,15 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
     ? `We have featured &mdash; <a href="${escapeHtml(resource.url)}">${escapeHtml(resource.title)}</a> on our <a href="${escapeHtml(pageUrl)}">NFT.NYC/${escapeHtml(verticalLabel)} projects page</a>.`
     : `We have featured [resource] on our <a href="${escapeHtml(pageUrl)}">NFT.NYC/${escapeHtml(verticalLabel)} projects page</a>.`;
 
+  // When we have a card screenshot, link the image to the vertical page
+  // (that's what the screenshot is showing). Otherwise link to the
+  // resource itself (the raw article image makes sense as a link to it).
+  const isCardScreenshot = Boolean(resource?.card_screenshot);
+  const imageLinkHref = isCardScreenshot
+    ? pageUrl
+    : (resource?.url ?? pageUrl);
   const imageHtml = imageUrl
-    ? `<p><a href="${escapeHtml(resource?.url ?? pageUrl)}"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(resource?.title ?? 'Resource image')}" style="max-width:600px;width:100%;height:auto;border:1px solid #ddd;border-radius:6px;" /></a></p>`
+    ? `<p><a href="${escapeHtml(imageLinkHref)}"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(resource?.title ?? 'Resource image')}" style="max-width:600px;width:100%;height:auto;border:1px solid #ddd;border-radius:6px;" /></a></p>`
     : '';
 
   const html = [
@@ -248,6 +259,8 @@ export default function Admin() {
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
+  const [shootingId, setShootingId] = useState<string | null>(null);
+  const [batchShooting, setBatchShooting] = useState<{ done: number; total: number } | null>(null);
 
   /* ─── CRM email auto-lookup (persists results to Supabase) ─── */
   const lookupSpeakerEmails = useCallback(async (speakerList: Speaker[]) => {
@@ -410,6 +423,39 @@ export default function Admin() {
       setSeekResult(`Exception: ${err.message || String(err)}`);
     } finally {
       setSeeking(false);
+    }
+  };
+
+  /* ─── Card screenshot generation ─── */
+  const handleGenerateCardScreenshot = async (resourceId: string) => {
+    setShootingId(resourceId);
+    try {
+      await generateCardScreenshot(resourceId);
+      await queryClient.invalidateQueries({ queryKey: ['admin-resources'] });
+    } catch (err: any) {
+      alert(`Screenshot failed: ${err.message || String(err)}`);
+    } finally {
+      setShootingId(null);
+    }
+  };
+
+  const handleGenerateAllCardScreenshots = async (ids: string[]) => {
+    if (ids.length === 0) return;
+    if (!window.confirm(`Generate card screenshots for ${ids.length} resource(s)? This takes ~5–8 seconds each.`)) return;
+    setBatchShooting({ done: 0, total: ids.length });
+    try {
+      const result = await generateCardScreenshotsBatch(ids, (done, total) => {
+        setBatchShooting({ done, total });
+      });
+      await queryClient.invalidateQueries({ queryKey: ['admin-resources'] });
+      if (result.failed.length > 0) {
+        const summary = result.failed.slice(0, 5).map(f => `- ${f.id}: ${f.error}`).join('\n');
+        alert(`Generated ${result.ok.length}/${ids.length}.\nFailures:\n${summary}${result.failed.length > 5 ? `\n…and ${result.failed.length - 5} more` : ''}`);
+      } else {
+        alert(`Generated ${result.ok.length}/${ids.length} screenshots successfully.`);
+      }
+    } finally {
+      setBatchShooting(null);
     }
   };
 
@@ -583,6 +629,17 @@ export default function Admin() {
                   {seeking ? 'Searching...' : 'Auto-Seek Resources'}
                 </button>
               )}
+              <button
+                onClick={() => handleGenerateAllCardScreenshots(approvedResources.filter(r => !r.card_screenshot).map(r => r.id))}
+                disabled={batchShooting !== null}
+                title="Generate card-preview screenshots for resources that don't have one yet"
+                style={{ ...btnStyle, background: 'rgba(236,72,153,0.15)', color: '#EC4899' }}
+              >
+                {batchShooting ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
+                {batchShooting
+                  ? `Capturing ${batchShooting.done}/${batchShooting.total}…`
+                  : `Generate Missing Cards (${approvedResources.filter(r => !r.card_screenshot).length})`}
+              </button>
               <button onClick={() => { setEditingResource(null); setShowResourceForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
                 <Plus size={14} /> Add Resource
               </button>
@@ -683,6 +740,14 @@ export default function Admin() {
                     <td style={cellStyle}>{r.topic_tag}</td>
                     <td style={cellStyle}>
                       <div style={{ display: 'flex', gap: '0.25rem' }}>
+                        <button
+                          onClick={() => handleGenerateCardScreenshot(r.id)}
+                          disabled={shootingId === r.id}
+                          title={r.card_screenshot ? 'Regenerate card-preview screenshot' : 'Generate card-preview screenshot for outreach drafts'}
+                          style={{ background: 'none', border: 'none', color: r.card_screenshot ? '#10B981' : 'rgb(149, 149, 176)', cursor: 'pointer', padding: '4px' }}
+                        >
+                          {shootingId === r.id ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
+                        </button>
                         <button onClick={() => { setEditingResource(r); setShowResourceForm(true); }} style={{ background: 'none', border: 'none', color: 'rgb(149, 149, 176)', cursor: 'pointer', padding: '4px' }}>
                           <Pencil size={14} />
                         </button>

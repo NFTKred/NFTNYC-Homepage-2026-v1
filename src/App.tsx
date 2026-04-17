@@ -12,6 +12,7 @@ import BlogTsChallenge from "./pages/BlogTsChallenge";
 import Journey from "./pages/Journey";
 import NotFound from "./pages/NotFound";
 import VerticalPage from "./pages/VerticalPage";
+import CardPreview from "./pages/CardPreview";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import TSOptout from "./pages/TSOptout";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/sponsor/ts-challenge" element={<SponsorTSChallenge />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+          <Route path="/card/:resourceId" element={<CardPreview />} />
           <Route path="/:verticalId" element={<VerticalPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
