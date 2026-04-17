@@ -55,7 +55,7 @@ const billboardByTrack: Record<string, BillboardMeta> = {
   },
   "Social NFTs": {
     name: "Showcase your social platform in Times Square",
-    description: "Showcase your social platform or community tools on some of Times Square's biggest screens — connect with the NFT.NYC social and community-building audience through your social graph, token-gated experiences, or engagement features." + TIMES_SQUARE_REACH,
+    description: "Showcase your social platform, PFP collection, or community tools on some of Times Square's biggest screens — connect with the NFT.NYC social and PFP audience through your social graph, collection reveals, token-gated experiences, or engagement features." + TIMES_SQUARE_REACH,
   },
   "Creator Economy": {
     name: "Showcase your creator tools in Times Square",
@@ -310,7 +310,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "track",
       name: "Position yourself as the leader of the Social NFTs track",
       price: "$75,000",
-      description: "Connect your brand with the NFT.NYC social and community-building audience — the DAO operators, community builders, and social platform founders shaping community tokens, social graphs, and creator-fan engagement. Your sponsorship anchors every conversation about the social layer of web3.",
+      description: "Connect your brand with the NFT.NYC social and PFP community — the DAO operators, community builders, PFP collectors who wear their projects as their on-chain identity, and social platform founders shaping community tokens, social graphs, and creator-fan engagement. Your sponsorship anchors every conversation about the social layer of web3.",
       includes: [
         "Branded stage backdrop for all Social NFTs track sessions",
         "Logo on all track session intro slides and interstitials",
@@ -325,7 +325,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "timessquare",
       name: "Showcase your social experiences before, during, and after the event",
       price: "$35,000",
-      description: "Integrate your social platform into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the social track engage with your digital experience as part of the challenge, reaching the community-driven social NFT audience.",
+      description: "Integrate your social platform or PFP collection into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the social track engage with your digital experience as part of the challenge, reaching the community-driven social NFT and PFP audience that treats their avatar as their digital identity.",
       includes: [
         "Your platform integrated into the social NFTs challenge track",
         "Branded presence throughout the online challenge interface",
@@ -340,7 +340,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "activation",
       name: "Feature your social platform in a premium activation",
       price: "$25,000",
-      description: "Secure a premium activation space to build and install your own custom social experience for the NFT.NYC community builders. Examples include token-gated lounges, social minting stations, or DAO onboarding experiences — the format is yours to design.",
+      description: "Secure a premium activation space to build and install your own custom social experience for NFT.NYC community builders and PFP collectors. Examples include token-gated lounges, PFP holder meetups, social minting stations, or DAO onboarding experiences — the format is yours to design.",
       includes: [
         "20'x 20' premium activation space",
         "Full creative control over your custom installation",
@@ -364,7 +364,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "demo",
       name: "Introduce your social platform with a demo table",
       price: "$5,000",
-      description: "Meet the NFT.NYC social and community-building audience at a dedicated demo table — perfect for live demos of social graphs, token-gated experiences, and community engagement features to qualified community builders.",
+      description: "Meet the NFT.NYC social and PFP community at a dedicated demo table — perfect for live demos of social graphs, PFP collections, token-gated experiences, and community engagement features to qualified community builders and PFP holders.",
       includes: [...demoIncludes],
       tickets: { vip: 1, ga: 2 },
     },
@@ -372,7 +372,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "marketing",
       name: "Reach NFT.NYC's social community with marketing support",
       price: "$7,500",
-      description: "Reach the NFT.NYC social and community-focused audience with a dedicated email and social campaign — targeted to community builders, DAO operators, and social platform founders.",
+      description: "Reach the NFT.NYC social and PFP community with a dedicated email and social campaign — targeted to community builders, DAO operators, PFP collectors, and social platform founders.",
       includes: [...marketingIncludes],
     },
   ],
