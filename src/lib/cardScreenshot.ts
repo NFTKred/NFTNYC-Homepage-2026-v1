@@ -1,11 +1,10 @@
 import { supabase } from '@/lib/supabase';
 
 const BUCKET = 'resource-card-screenshots';
-// Viewport must be tall enough to render all three cards (speaker's + 2
-// neighbors) without lazy-loading interruptions. The screenshot itself is
-// trimmed to the [data-card-preview] element, not the full viewport.
+// thum.io captures the full page at this width. The preview route has no
+// header/footer/nav, so the page IS just the "Latest on X" header + the
+// speaker's card + 2 neighbor cards — exactly what we want in the image.
 const CARD_WIDTH = 960;
-const CARD_HEIGHT = 1600;
 
 /**
  * Build the public URL of the /card/:resourceId preview route on the
@@ -19,46 +18,24 @@ function cardPreviewUrl(resourceId: string): string {
 }
 
 /**
- * Ask Microlink to screenshot the card preview page, then return the
- * rendered image bytes (png).
- *
- * Microlink responds with JSON that includes a screenshot URL — we follow
- * that redirect and grab the bytes so we can re-host them permanently in
- * Supabase storage (Microlink URLs expire).
+ * Ask thum.io to screenshot the card preview page and return the raw
+ * png bytes. thum.io is free, has no hard rate limit, and handles our
+ * dark-themed preview route cleanly.
  */
-async function fetchMicrolinkScreenshot(resourceId: string): Promise<Blob> {
+async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
   const targetUrl = cardPreviewUrl(resourceId);
-  const apiUrl = new URL('https://api.microlink.io/');
-  apiUrl.searchParams.set('url', targetUrl);
-  apiUrl.searchParams.set('screenshot', 'true');
-  apiUrl.searchParams.set('meta', 'false');
-  apiUrl.searchParams.set('embed', 'screenshot.url');
-  apiUrl.searchParams.set('viewport.width', String(CARD_WIDTH));
-  apiUrl.searchParams.set('viewport.height', String(CARD_HEIGHT));
-  apiUrl.searchParams.set('viewport.deviceScaleFactor', '2');
-  apiUrl.searchParams.set('waitUntil', 'networkidle0');
-  apiUrl.searchParams.set('element', '[data-card-preview]');
-  apiUrl.searchParams.set('type', 'png');
-  apiUrl.searchParams.set('background', '%230a0a14');
+  const apiUrl = `https://image.thum.io/get/width/${CARD_WIDTH}/png/viewportWidth/${CARD_WIDTH}/noanimate/${targetUrl}`;
 
-  const res = await fetch(apiUrl.toString());
+  const res = await fetch(apiUrl);
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Microlink screenshot failed (${res.status}): ${text.slice(0, 200)}`);
+    throw new Error(`Screenshot failed (${res.status}): ${text.slice(0, 200)}`);
   }
-  const contentType = res.headers.get('content-type') ?? '';
-  if (contentType.startsWith('image/')) {
-    return await res.blob();
+  const blob = await res.blob();
+  if (blob.size < 20_000) {
+    throw new Error(`Screenshot too small (${blob.size} bytes) — probably a rendering failure`);
   }
-  // Some Microlink endpoints return JSON with a nested screenshot URL.
-  const payload = await res.json();
-  const imageUrl = payload?.data?.screenshot?.url ?? payload?.data?.url ?? null;
-  if (!imageUrl) {
-    throw new Error('Microlink response did not include a screenshot URL');
-  }
-  const imageRes = await fetch(imageUrl);
-  if (!imageRes.ok) throw new Error(`Failed to fetch screenshot image: HTTP ${imageRes.status}`);
-  return await imageRes.blob();
+  return blob;
 }
 
 /**
@@ -71,7 +48,7 @@ async function fetchMicrolinkScreenshot(resourceId: string): Promise<Blob> {
  * state of the page.
  */
 export async function generateCardScreenshot(resourceId: string): Promise<string> {
-  const blob = await fetchMicrolinkScreenshot(resourceId);
+  const blob = await fetchCardScreenshot(resourceId);
   const path = `${resourceId}.png`;
 
   const { error: uploadErr } = await supabase.storage
