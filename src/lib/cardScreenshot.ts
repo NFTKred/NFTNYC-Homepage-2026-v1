@@ -1,8 +1,11 @@
 import { supabase } from '@/lib/supabase';
 
 const BUCKET = 'resource-card-screenshots';
+// Viewport must be tall enough to render all three cards (speaker's + 2
+// neighbors) without lazy-loading interruptions. The screenshot itself is
+// trimmed to the [data-card-preview] element, not the full viewport.
 const CARD_WIDTH = 960;
-const CARD_HEIGHT = 720;
+const CARD_HEIGHT = 1600;
 
 /**
  * Build the public URL of the /card/:resourceId preview route on the

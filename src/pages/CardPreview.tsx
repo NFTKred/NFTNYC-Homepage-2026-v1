@@ -6,52 +6,65 @@ import { type VerticalResource } from '@/data/verticalResources';
 import ResourceCard from '@/components/ResourceCard';
 
 /**
- * Standalone, screenshot-friendly preview of a single resource card as it
- * appears on its vertical page. Used by the outreach-draft pipeline:
- * Microlink captures this URL and the resulting image is embedded in the
- * email we send to the speaker.
+ * Standalone, screenshot-friendly preview of a resource card as it appears
+ * on its vertical page — with neighboring cards so the speaker can see
+ * they're featured alongside other industry resources (not in isolation).
  *
  * Route: /card/:resourceId
  *
- * No site header, footer, or nav — just the "Resources / Latest on X"
- * section header followed by a single ResourceCard.
+ * Layout: "Resources / Latest on X" header, then the target resource's
+ * card pinned first (guaranteed to be visible in the Microlink viewport),
+ * followed by two other approved cards from the same vertical.
+ *
+ * No site header, footer, or nav — just the section block Microlink
+ * captures and embeds in outreach emails.
  */
 export default function CardPreview() {
   const { resourceId } = useParams<{ resourceId: string }>();
-  const [resource, setResource] = useState<(VerticalResource & { vertical_id: string }) | null>(null);
+  const [target, setTarget] = useState<(VerticalResource & { vertical_id: string }) | null>(null);
+  const [neighbors, setNeighbors] = useState<VerticalResource[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!resourceId) return;
     (async () => {
-      const { data, error } = await supabase
+      const { data: own, error: ownErr } = await supabase
         .from('resources')
         .select('*')
         .eq('id', resourceId)
         .maybeSingle();
-      if (error) {
-        setError(error.message);
-        setLoading(false);
-        return;
-      }
-      if (!data) {
-        setError('Resource not found');
-        setLoading(false);
-        return;
-      }
-      setResource({
-        title: data.title,
-        url: data.url,
-        type: data.type,
-        date: data.date,
-        source: data.source,
-        topicTag: data.topic_tag,
-        description: data.description ?? undefined,
-        image: data.image ?? undefined,
-        displayOrder: data.display_order ?? null,
-        vertical_id: data.vertical_id,
+      if (ownErr) { setError(ownErr.message); setLoading(false); return; }
+      if (!own) { setError('Resource not found'); setLoading(false); return; }
+
+      const toVR = (r: typeof own): VerticalResource => ({
+        title: r.title,
+        url: r.url,
+        type: r.type,
+        date: r.date,
+        source: r.source,
+        topicTag: r.topic_tag,
+        description: r.description ?? undefined,
+        image: r.image ?? undefined,
+        displayOrder: r.display_order ?? null,
       });
+
+      setTarget({ ...toVR(own), vertical_id: own.vertical_id });
+
+      // Fetch two other approved resources from the same vertical to show
+      // context. Prefer ones with images so the screenshot reads well.
+      const { data: others } = await supabase
+        .from('resources')
+        .select('*')
+        .eq('vertical_id', own.vertical_id)
+        .eq('status', 'approved')
+        .neq('id', own.id)
+        .not('image', 'is', null)
+        .order('display_order', { ascending: true, nullsFirst: false })
+        .order('date', { ascending: false })
+        .limit(2);
+
+      setNeighbors((others ?? []).map(toVR));
       setLoading(false);
     })();
   }, [resourceId]);
@@ -76,7 +89,7 @@ export default function CardPreview() {
     );
   }
 
-  if (error || !resource) {
+  if (error || !target) {
     return (
       <div style={{ minHeight: '100vh', background: '#0a0a14', color: 'rgb(149,149,176)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-body)' }}>
         {error ?? 'Resource not found'}
@@ -84,9 +97,9 @@ export default function CardPreview() {
     );
   }
 
-  const eco = ECOSYSTEMS.find(e => e.id === resource.vertical_id);
+  const eco = ECOSYSTEMS.find(e => e.id === target.vertical_id);
   const color = eco?.color ?? '#3B82F6';
-  const verticalName = eco?.name ?? resource.vertical_id;
+  const verticalName = eco?.name ?? target.vertical_id;
 
   return (
     <div
@@ -123,8 +136,13 @@ export default function CardPreview() {
           Latest on <span style={{ color }}>{verticalName.toLowerCase()}</span>
         </h2>
 
-        {/* ── Single card (non-interactive for deterministic screenshots) ── */}
-        <ResourceCard resource={resource} color={color} interactive={false} />
+        {/* ── Cards: speaker's resource first, then 2 neighbors for context ── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <ResourceCard resource={target} color={color} interactive={false} />
+          {neighbors.map((r, i) => (
+            <ResourceCard key={i} resource={r} color={color} interactive={false} />
+          ))}
+        </div>
       </div>
     </div>
   );
