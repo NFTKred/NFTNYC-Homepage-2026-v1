@@ -6,6 +6,11 @@
       "permanent": false
     },
     {
+      "source": "/partnerships",
+      "destination": "https://calendly.com/d/cxvt-7hw-y9b/nft-nyc-partnerships",
+      "permanent": false
+    },
+    {
       "source": "/meet",
       "destination": "https://meet.google.com/seq-gyst-sie",
       "permanent": true
