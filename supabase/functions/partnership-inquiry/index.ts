@@ -89,6 +89,11 @@ function tierFor(amount: number): "platinum" | "gold" | "silver" | "bronze" {
   return "bronze";
 }
 
+// Packages whose price is hidden from public UI — we still use the price
+// internally (email subject, alert banner, pipeline tier) but omit it from
+// the submitter's confirmation email since they never saw it on the site.
+const HIDDEN_PRICE_PACKAGES = new Set(["$500,000", "$200,000", "$120,000"]);
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -247,7 +252,7 @@ Deno.serve(async (req) => {
       <div style="background: #f5f5f7; border-radius: 8px; padding: 16px 20px; margin: 20px 0;">
         <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">${escape(tabLabel)}${basePackage.trackName ? " · " + escape(basePackage.trackName) : ""}</div>
         <div style="font-size: 17px; font-weight: 700; color: #111;">${escape(basePackage.name)}</div>
-        <div style="font-size: 15px; color: #14b8a6; margin-top: 4px;">${escape(basePackage.price)}</div>
+        ${HIDDEN_PRICE_PACKAGES.has(basePackage.price) ? "" : `<div style="font-size: 15px; color: #14b8a6; margin-top: 4px;">${escape(basePackage.price)}</div>`}
         ${addonList ? `
           <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #e5e5ea;">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">With these add-ons</div>
