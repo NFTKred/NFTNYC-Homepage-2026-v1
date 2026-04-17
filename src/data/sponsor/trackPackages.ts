@@ -693,7 +693,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "activation",
-      name: "Feature your Creative in a premium activation",
+      name: "Feature your creative in a premium activation",
       price: "$25,000",
       description: "Secure a premium activation space to build and install your own custom art or music experience for the NFT.NYC creative community. Examples include curated digital galleries, live music performances, or interactive minting installations — the format is yours to design.",
       includes: [
@@ -717,7 +717,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "demo",
-      name: "Introduce your Creative with a demo table",
+      name: "Introduce your creative with a demo table",
       price: "$5,000",
       description: "Meet the NFT.NYC creative community at a dedicated demo table — let artists, musicians, and collectors experience your digital art platform or music NFT tools up close.",
       includes: [...demoIncludes],
@@ -725,7 +725,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
     },
     {
       type: "marketing",
-      name: "Reach NFT.NYC's Creative community with marketing support",
+      name: "Reach NFT.NYC's creative community with marketing support",
       price: "$7,500",
       description: "Reach the NFT.NYC art and music community with a dedicated email and social campaign — targeted to digital artists, musicians, collectors, and gallery curators.",
       includes: [...marketingIncludes],
