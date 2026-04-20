@@ -154,11 +154,11 @@
   }
   .og.square .aura {
     position: absolute;
-    top: 160px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 760px;
-    height: 760px;
+    width: 680px;
+    height: 680px;
   }
   .og.square .aura::before {
     content: "";
@@ -170,14 +170,14 @@
   }
   .og.square .aura .icon-wrap {
     position: relative;
-    width: 560px;
-    height: 560px;
-    margin: 100px auto 0;
+    width: 480px;
+    height: 480px;
+    margin: 40px auto 0;
     opacity: 0.95;
   }
   .og.square .top {
     position: absolute;
-    top: 64px;
+    top: 56px;
     left: 80px;
     right: 80px;
     display: flex;
@@ -201,7 +201,7 @@
     position: absolute;
     left: 80px;
     right: 80px;
-    bottom: 96px;
+    bottom: 240px;
     text-align: center;
   }
   .og.square .eyebrow {
@@ -232,7 +232,7 @@
   .og.square .url {
     position: absolute;
     left: 50%;
-    bottom: 52px;
+    bottom: 90px;
     transform: translateX(-50%);
     font-family: var(--mono);
     font-size: 14px;
@@ -258,12 +258,12 @@
     infra:        { name: 'On-Chain Infrastructure',     subtitle: 'L1/L2, ZK Identity, Wallets',      color: '#06B6D4', shape: 'chain'   , h1: 'Onchain Infrastructure',           sub: 'Layer 1 + Layer 2 rollups, ZK identity, wallets, and NFT liquidity rails.' },
     social:       { name: 'Social NFTs',                 subtitle: 'Collaborative Art & Moots',        color: '#EC4899', shape: 'social'  , h1: 'Social NFTs',                      sub: 'Community-driven art, PFP culture, on-chain social graphs.' },
     creator:      { name: 'Creator Economy',             subtitle: 'Community-Owned IP',               color: '#F59E0B', shape: 'burst'   , h1: 'Creator Economy',                  sub: 'Community-owned IP, token-gated media, and NFT membership models.' },
-    defi:         { name: 'DeFi',                        subtitle: 'NFT Lending & Onchain Finance',    color: '#10B981', shape: 'bars'    , h1: 'NFT Lending &\u00A0Onchain\u00A0Finance', sub: 'Lending, yield, fractionalization, and liquidity for non-fungibles.' },
+    defi:         { name: 'DeFi',                        subtitle: 'NFT Lending & Onchain Finance',    color: '#10B981', shape: 'bars'    , h1: 'NFT Lending & Onchain Finance',    sub: 'Lending, yield, fractionalization, and liquidity for non-fungibles.' },
     rwa:          { name: 'RWA Tokenization',            subtitle: 'Real-World Assets Onchain',        color: '#EF4444', shape: 'pillars' , h1: 'RWA Tokenization',                 sub: 'Treasuries, real estate, commodities — trillions moving onchain.' },
-    brands:       { name: 'Brands & Engagement',         subtitle: 'Loyalty, Phygital, Ticketing',     color: '#F97316', shape: 'diamond' , h1: 'Brands &\u00A0Engagement',                sub: 'Loyalty programs, phygital auth, NFT ticketing, retail integrations.' },
-    culture:      { name: 'Culture, Art & Music',        subtitle: 'Communities, Attribution, Ownership', color: '#D946EF', shape: 'wave', h1: 'Culture, Art\u00A0&\u00A0Music', sub: 'PFP communities, generative art, music royalties, on-chain attribution.' },
+    brands:       { name: 'Brands & Engagement',         subtitle: 'Loyalty, Phygital, Ticketing',     color: '#F97316', shape: 'diamond' , h1: 'Brands & Engagement',              sub: 'Loyalty programs, phygital auth, NFT ticketing, retail integrations.' },
+    culture:      { name: 'Culture, Art & Music',        subtitle: 'Communities, Attribution, Ownership', color: '#D946EF', shape: 'wave', h1: 'Culture, Art & Music',              sub: 'PFP communities, generative art, music royalties, on-chain attribution.' },
     domains:      { name: 'DNS ENS Domain Tokens',       subtitle: 'Onchain Naming & Identity',        color: '#14B8A6', shape: 'orbit'   , h1: 'Domain Tokens',                    sub: 'ENS, DNS bridges, and human-readable identity for the onchain economy.' },
-    desci:        { name: 'DeSci · Longevity',           subtitle: 'Tokenized Science & Health',       color: '#84CC16', shape: 'helix'   , h1: 'DeSci &\u00A0Longevity',                  sub: 'Decentralized research funding, longevity IP, patient-owned health data.' },
+    desci:        { name: 'DeSci · Longevity',           subtitle: 'Tokenized Science & Health',       color: '#84CC16', shape: 'helix'   , h1: 'DeSci & Longevity',                sub: 'Decentralized research funding, longevity IP, patient-owned health data.' },
     marketplaces: { name: 'NFT Marketplaces',            subtitle: 'Royalty Infrastructure',           color: '#38BDF8', shape: 'rings'   , h1: 'NFT Marketplaces',                  sub: 'Royalty systems, creator coins, and new distribution mechanisms.' },
   };
 
@@ -352,7 +352,26 @@
         else img.addEventListener('load', r, { once: true });
       }),
     ]).then(() => {
-      document.documentElement.setAttribute('data-ready', '1');
+      // Auto-shrink h1 so long unbreakable words (e.g. INFRASTRUCTURE,
+      // MARKETPLACES) don't overflow the copy container.
+      const h1 = document.querySelector('h1');
+      const copy = document.querySelector('.copy');
+      if (h1 && copy) {
+        const maxWidth = copy.clientWidth;
+        let size = parseInt(getComputedStyle(h1).fontSize, 10);
+        const minSize = 36;
+        // scrollWidth reports content width ignoring container clipping,
+        // so if it exceeds the container width we need to shrink.
+        let guard = 0;
+        while (h1.scrollWidth > maxWidth && size > minSize && guard++ < 40) {
+          size -= 2;
+          h1.style.fontSize = size + 'px';
+        }
+      }
+      // Defer the ready flag by one frame so the layout settles.
+      requestAnimationFrame(() => {
+        document.documentElement.setAttribute('data-ready', '1');
+      });
     });
   }
 </script>
