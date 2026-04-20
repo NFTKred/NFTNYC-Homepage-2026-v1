@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send } from 'lucide-react';
 import { generateCardScreenshot, generateCardScreenshotsBatch } from '@/lib/cardScreenshot';
 
 /* ─── Twenty CRM lookup ─── */
@@ -256,6 +256,7 @@ export default function Admin() {
   const [seeking, setSeeking] = useState(false);
   const [seekResult, setSeekResult] = useState<string | null>(null);
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
+  const [sentEmailId, setSentEmailId] = useState<string | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
@@ -788,7 +789,7 @@ export default function Admin() {
                   <th style={headerCellStyle}>Channel</th>
                   <th style={headerCellStyle}>Status</th>
                   <th style={headerCellStyle}>Notes</th>
-                  <th style={{ ...headerCellStyle, width: '130px' }}>Actions</th>
+                  <th style={{ ...headerCellStyle, width: '240px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -900,6 +901,67 @@ export default function Admin() {
                         >
                           {copiedDraftId === s.id ? <Check size={12} /> : <Copy size={12} />}
                           {copiedDraftId === s.id ? 'Copied' : 'Copy Draft'}
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (!s.email) {
+                              alert('No email on file for this speaker. Add an email address first.');
+                              return;
+                            }
+                            const { subject, text, html } = buildOutreachDraft(s, relatedResource);
+                            const fullText = `Subject: ${subject}\n\n${text}`;
+                            const fullHtml = `<p style="font-weight:600;color:#555;font-size:13px;margin:0 0 12px;">Subject: ${escapeHtml(subject)}</p>${html}`;
+                            // Copy the rich HTML draft so the user can paste (⌘V) into Gmail.
+                            // Gmail's compose URL only supports plain-text body, so we can't
+                            // ship the card screenshot through the URL — the paste step
+                            // preserves the full HTML including the embedded preview image.
+                            try {
+                              if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
+                                await navigator.clipboard.write([
+                                  new ClipboardItem({
+                                    'text/plain': new Blob([fullText], { type: 'text/plain' }),
+                                    'text/html':  new Blob([fullHtml], { type: 'text/html'  }),
+                                  }),
+                                ]);
+                              } else {
+                                await navigator.clipboard.writeText(fullText);
+                              }
+                            } catch {
+                              // Clipboard can fail silently — still open Gmail, the user can
+                              // reconstruct the body manually from Copy Draft.
+                            }
+                            const gmailUrl = new URL('https://mail.google.com/mail/');
+                            if (user?.email) gmailUrl.searchParams.set('authuser', user.email);
+                            gmailUrl.searchParams.set('view', 'cm');
+                            gmailUrl.searchParams.set('fs', '1');
+                            gmailUrl.searchParams.set('to', s.email);
+                            gmailUrl.searchParams.set('su', subject);
+                            window.open(gmailUrl.toString(), '_blank', 'noopener,noreferrer');
+                            setSentEmailId(s.id);
+                            setTimeout(() => setSentEmailId(prev => prev === s.id ? null : prev), 1500);
+                          }}
+                          disabled={!s.email}
+                          title={
+                            !s.email
+                              ? 'No email on file — add one first'
+                              : 'Copy draft and open Gmail compose — paste (⌘V) after it opens'
+                          }
+                          style={{
+                            background: sentEmailId === s.id ? 'rgba(16,185,129,0.15)' : (s.email ? 'rgba(234,88,12,0.12)' : 'rgba(255,255,255,0.04)'),
+                            border: 'none',
+                            color: sentEmailId === s.id ? '#10B981' : (s.email ? '#EA580C' : 'rgb(60,60,80)'),
+                            cursor: s.email ? 'pointer' : 'not-allowed',
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          {sentEmailId === s.id ? <Check size={12} /> : <Send size={12} />}
+                          {sentEmailId === s.id ? 'Opened' : 'Send Email'}
                         </button>
                         <button onClick={() => { setEditingSpeaker(s); setShowSpeakerForm(true); }} style={{ background: 'none', border: 'none', color: 'rgb(149, 149, 176)', cursor: 'pointer', padding: '4px' }}>
                           <Pencil size={14} />
