@@ -257,6 +257,7 @@ export default function Admin() {
   const [seekResult, setSeekResult] = useState<string | null>(null);
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
   const [sentEmailId, setSentEmailId] = useState<string | null>(null);
+  const [downloadedId, setDownloadedId] = useState<string | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
@@ -789,7 +790,7 @@ export default function Admin() {
                   <th style={headerCellStyle}>Channel</th>
                   <th style={headerCellStyle}>Status</th>
                   <th style={headerCellStyle}>Notes</th>
-                  <th style={{ ...headerCellStyle, width: '240px' }}>Actions</th>
+                  <th style={{ ...headerCellStyle, width: '320px' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -965,6 +966,67 @@ export default function Admin() {
                         >
                           {sentEmailId === s.id ? <Check size={12} /> : <Send size={12} />}
                           {sentEmailId === s.id ? 'Opened' : 'Send Email'}
+                        </button>
+                        <button
+                          onClick={async () => {
+                            const screenshotUrl = relatedResource?.card_screenshot;
+                            if (!screenshotUrl) {
+                              alert('No card screenshot available for this speaker\'s resource. Generate one from the Resources section first.');
+                              return;
+                            }
+                            try {
+                              // Fetch the image as a blob so we can give it a meaningful
+                              // filename and trigger a proper download (not a new tab).
+                              const res = await fetch(screenshotUrl);
+                              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                              const blob = await res.blob();
+                              const objectUrl = URL.createObjectURL(blob);
+                              const safeName = s.name
+                                .replace(/[^\w\s-]/g, '')
+                                .trim()
+                                .replace(/\s+/g, '-')
+                                .toLowerCase();
+                              const a = document.createElement('a');
+                              a.href = objectUrl;
+                              a.download = `nftnyc-${s.vertical_id}-${safeName}.png`;
+                              document.body.appendChild(a);
+                              a.click();
+                              document.body.removeChild(a);
+                              URL.revokeObjectURL(objectUrl);
+                              setDownloadedId(s.id);
+                              setTimeout(() => setDownloadedId(prev => prev === s.id ? null : prev), 1500);
+                            } catch (e: any) {
+                              alert(`Failed to download image: ${e.message || e}`);
+                            }
+                          }}
+                          disabled={!relatedResource?.card_screenshot}
+                          title={
+                            !relatedResource
+                              ? 'No linked resource for this speaker'
+                              : !relatedResource.card_screenshot
+                              ? 'No card screenshot yet — generate one from the Resources section'
+                              : 'Download the card-preview image to drag into Gmail for an inline image'
+                          }
+                          style={{
+                            background: downloadedId === s.id
+                              ? 'rgba(16,185,129,0.15)'
+                              : (relatedResource?.card_screenshot ? 'rgba(139,92,246,0.12)' : 'rgba(255,255,255,0.04)'),
+                            border: 'none',
+                            color: downloadedId === s.id
+                              ? '#10B981'
+                              : (relatedResource?.card_screenshot ? '#8B5CF6' : 'rgb(60,60,80)'),
+                            cursor: relatedResource?.card_screenshot ? 'pointer' : 'not-allowed',
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          {downloadedId === s.id ? <Check size={12} /> : <Download size={12} />}
+                          {downloadedId === s.id ? 'Saved' : 'Image'}
                         </button>
                         <button onClick={() => { setEditingSpeaker(s); setShowSpeakerForm(true); }} style={{ background: 'none', border: 'none', color: 'rgb(149, 149, 176)', cursor: 'pointer', padding: '4px' }}>
                           <Pencil size={14} />
