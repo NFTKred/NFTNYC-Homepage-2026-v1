@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import { ECOSYSTEMS } from '@/data/nftnyc';
@@ -96,8 +97,35 @@ export default function VerticalPage() {
     </div>
   );
 
+  const pageTitle = `${eco.name} · NFT.NYC 2026`;
+  const pageDesc = eco.desc.length > 160 ? eco.desc.slice(0, 157).trimEnd() + '…' : eco.desc;
+  const pageUrl = `https://www.nft.nyc/${eco.id}`;
+  const ogImage = `https://www.nft.nyc/og/${eco.id}.png`;
+
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <link rel="canonical" href={pageUrl} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="NFT.NYC 2026" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${eco.name} — NFT.NYC 2026`} />
+
+        {/* Twitter / X */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+        <meta name="twitter:image" content={ogImage} />
+      </Helmet>
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       {/* ─── HERO ─── */}

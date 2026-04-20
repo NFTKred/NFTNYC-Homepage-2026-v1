@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OG Render</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: "Monument Extended";
+    src: url("/fonts/MonumentExtended-Regular.woff") format("woff");
+    font-weight: 400;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Monument Extended";
+    src: url("/fonts/MonumentExtended-Bold.woff") format("woff");
+    font-weight: 700;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Monument Extended";
+    src: url("/fonts/MonumentExtended-Heavy.woff") format("woff");
+    font-weight: 900;
+    font-display: block;
+  }
+  :root {
+    --bg: #0a0a0f;
+    --text: #f0f0f5;
+    --muted: #9595b0;
+    --coral: #f06347;
+    --mono: "SF Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    color: var(--text);
+  }
+  /* =====================================================================
+     LANDSCAPE — 1200×630 (OG, Twitter/X, LinkedIn, Facebook, Discord)
+     ===================================================================== */
+  .og.landscape {
+    width: 1200px;
+    height: 630px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding: 64px;
+  }
+  .og.landscape .aura {
+    position: absolute;
+    top: -140px;
+    left: -140px;
+    width: 780px;
+    height: 780px;
+  }
+  .og.landscape .aura::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 40% 40%, color-mix(in oklab, var(--eco) 70%, transparent), transparent 60%);
+    filter: blur(40px);
+    opacity: 0.6;
+  }
+  .og.landscape .aura .icon-wrap {
+    position: relative;
+    width: 560px;
+    height: 560px;
+    opacity: 0.95;
+  }
+  .og.landscape .top {
+    position: absolute;
+    top: 44px;
+    right: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .og.landscape .top img.logo {
+    height: 42px;
+    width: auto;
+    display: block;
+  }
+  .og.landscape .top .date {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .og.landscape .copy {
+    position: absolute;
+    right: 64px;
+    bottom: 64px;
+    text-align: right;
+    max-width: 640px;
+  }
+  .og.landscape .eyebrow {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.35em;
+    color: var(--eco);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .og.landscape h1 {
+    font-family: "Monument Extended", "Arial Black", sans-serif;
+    font-weight: 900;
+    font-size: 68px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin: 0 0 22px;
+    text-transform: uppercase;
+  }
+  .og.landscape p.sub {
+    font-size: 20px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+  .og.landscape .url {
+    position: absolute;
+    bottom: 40px;
+    left: 64px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .og.landscape .url em {
+    font-style: normal;
+    color: var(--coral);
+  }
+
+  /* =====================================================================
+     SQUARE — 1080×1080 (Instagram feed)
+     Stacked layout: logo+date top, giant icon center, name + descriptor bottom.
+     Keeps the same visual DNA (oversized glowing icon, coral accent).
+     ===================================================================== */
+  .og.square {
+    width: 1080px;
+    height: 1080px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding: 80px;
+  }
+  .og.square .aura {
+    position: absolute;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 760px;
+    height: 760px;
+  }
+  .og.square .aura::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--eco) 60%, transparent), transparent 65%);
+    filter: blur(60px);
+    opacity: 0.6;
+  }
+  .og.square .aura .icon-wrap {
+    position: relative;
+    width: 560px;
+    height: 560px;
+    margin: 100px auto 0;
+    opacity: 0.95;
+  }
+  .og.square .top {
+    position: absolute;
+    top: 64px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .og.square .top img.logo {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+  .og.square .top .date {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .og.square .copy {
+    position: absolute;
+    left: 80px;
+    right: 80px;
+    bottom: 96px;
+    text-align: center;
+  }
+  .og.square .eyebrow {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.35em;
+    color: var(--eco);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 18px;
+  }
+  .og.square h1 {
+    font-family: "Monument Extended", "Arial Black", sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin: 0 0 20px;
+    text-transform: uppercase;
+  }
+  .og.square p.sub {
+    font-size: 22px;
+    color: var(--muted);
+    line-height: 1.4;
+    margin: 0 auto;
+    max-width: 820px;
+  }
+  .og.square .url {
+    position: absolute;
+    left: 50%;
+    bottom: 52px;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .og.square .url em {
+    font-style: normal;
+    color: var(--coral);
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+
+<script>
+  // ========================================================================
+  // Vertical data (mirrors src/data/nftnyc.ts)
+  // ========================================================================
+  const VERTICALS = {
+    ai:           { name: 'AI Identity Tokenization',    subtitle: 'ERC-8004 Reputation',              color: '#3B82F6', shape: 'neural'  , h1: 'ERC-8004 Reputation',             sub: 'Agent identity, verifiable attestations, and onchain credential rails.' },
+    gaming:       { name: 'Game Tokenization',           subtitle: 'Player-Owned Assets',              color: '#8B5CF6', shape: 'hexgrid' , h1: 'Player-Owned Assets',              sub: 'Web3 gaming, on-chain items, interoperable assets, and player economies.' },
+    infra:        { name: 'On-Chain Infrastructure',     subtitle: 'L1/L2, ZK Identity, Wallets',      color: '#06B6D4', shape: 'chain'   , h1: 'Onchain Infrastructure',           sub: 'Layer 1 + Layer 2 rollups, ZK identity, wallets, and NFT liquidity rails.' },
+    social:       { name: 'Social NFTs',                 subtitle: 'Collaborative Art & Moots',        color: '#EC4899', shape: 'social'  , h1: 'Social NFTs',                      sub: 'Community-driven art, PFP culture, on-chain social graphs.' },
+    creator:      { name: 'Creator Economy',             subtitle: 'Community-Owned IP',               color: '#F59E0B', shape: 'burst'   , h1: 'Creator Economy',                  sub: 'Community-owned IP, token-gated media, and NFT membership models.' },
+    defi:         { name: 'DeFi',                        subtitle: 'NFT Lending & Onchain Finance',    color: '#10B981', shape: 'bars'    , h1: 'NFT Lending &\u00A0Onchain\u00A0Finance', sub: 'Lending, yield, fractionalization, and liquidity for non-fungibles.' },
+    rwa:          { name: 'RWA Tokenization',            subtitle: 'Real-World Assets Onchain',        color: '#EF4444', shape: 'pillars' , h1: 'RWA Tokenization',                 sub: 'Treasuries, real estate, commodities — trillions moving onchain.' },
+    brands:       { name: 'Brands & Engagement',         subtitle: 'Loyalty, Phygital, Ticketing',     color: '#F97316', shape: 'diamond' , h1: 'Brands &\u00A0Engagement',                sub: 'Loyalty programs, phygital auth, NFT ticketing, retail integrations.' },
+    culture:      { name: 'Culture, Art & Music',        subtitle: 'Communities, Attribution, Ownership', color: '#D946EF', shape: 'wave', h1: 'Culture, Art\u00A0&\u00A0Music', sub: 'PFP communities, generative art, music royalties, on-chain attribution.' },
+    domains:      { name: 'DNS ENS Domain Tokens',       subtitle: 'Onchain Naming & Identity',        color: '#14B8A6', shape: 'orbit'   , h1: 'Domain Tokens',                    sub: 'ENS, DNS bridges, and human-readable identity for the onchain economy.' },
+    desci:        { name: 'DeSci · Longevity',           subtitle: 'Tokenized Science & Health',       color: '#84CC16', shape: 'helix'   , h1: 'DeSci &\u00A0Longevity',                  sub: 'Decentralized research funding, longevity IP, patient-owned health data.' },
+    marketplaces: { name: 'NFT Marketplaces',            subtitle: 'Royalty Infrastructure',           color: '#38BDF8', shape: 'rings'   , h1: 'NFT Marketplaces',                  sub: 'Royalty systems, creator coins, and new distribution mechanisms.' },
+  };
+
+  // ========================================================================
+  // Shape SVG content — ported from src/components/EcoIcon.tsx getShapeSvgString
+  // ========================================================================
+  function shapeSvg(shape, c) {
+    switch (shape) {
+      case 'neural':
+        return `<circle cx="160" cy="80" r="14" fill="${c}" opacity="0.7"/><circle cx="80" cy="160" r="14" fill="${c}" opacity="0.7"/><circle cx="240" cy="160" r="14" fill="${c}" opacity="0.7"/><circle cx="120" cy="240" r="14" fill="${c}" opacity="0.7"/><circle cx="200" cy="240" r="14" fill="${c}" opacity="0.7"/><circle cx="160" cy="160" r="14" fill="${c}" opacity="0.7"/><line x1="160" y1="80" x2="160" y2="160" stroke="${c}" stroke-width="1.5" opacity="0.3"/><line x1="80" y1="160" x2="160" y2="160" stroke="${c}" stroke-width="1.5" opacity="0.3"/><line x1="240" y1="160" x2="160" y2="160" stroke="${c}" stroke-width="1.5" opacity="0.3"/><line x1="120" y1="240" x2="160" y2="160" stroke="${c}" stroke-width="1.5" opacity="0.3"/><line x1="200" y1="240" x2="160" y2="160" stroke="${c}" stroke-width="1.5" opacity="0.3"/>`;
+      case 'hexgrid':
+        return `<rect x="140" y="140" width="40" height="40" rx="6" fill="${c}" opacity="0.8"/>${Array.from({length:7},(_,i)=>{const a=(i/7)*Math.PI*2;const r=90;return `<rect x="${160+Math.cos(a)*r-20}" y="${160+Math.sin(a)*r-20}" width="40" height="40" rx="6" fill="${c}" opacity="${0.15+i*0.08}"/>`}).join('')}`;
+      case 'chain':
+        return Array.from({length:5},(_,i)=>`<rect x="110" y="${60+i*50}" width="100" height="30" rx="15" fill="none" stroke="${c}" stroke-width="2.5" opacity="${0.5+i*0.1}"/>${i<4?`<line x1="160" y1="${60+i*50+30}" x2="160" y2="${60+(i+1)*50}" stroke="${c}" stroke-width="1.5" opacity="0.3"/>`:''}`).join('');
+      case 'social':
+        return `<circle cx="160" cy="160" r="14" fill="${c}" opacity="0.9"/>${Array.from({length:8},(_,i)=>{const a=(i/8)*Math.PI*2;const cx=160+Math.cos(a)*90;const cy=160+Math.sin(a)*90;return `<circle cx="${cx}" cy="${cy}" r="8" fill="${c}" opacity="0.6"/><line x1="${cx}" y1="${cy}" x2="160" y2="160" stroke="${c}" stroke-width="1" opacity="0.2"/>`}).join('')}`;
+      case 'rings':
+        return `${[100,75,50,25].map((r,i)=>`<circle cx="160" cy="160" r="${r}" fill="none" stroke="${c}" stroke-width="2" opacity="${0.2+i*0.2}" stroke-dasharray="${10+i*5} ${5+i*3}"/>`).join('')}<circle cx="160" cy="160" r="10" fill="${c}" opacity="0.9"/>`;
+      case 'burst':
+        return `${Array.from({length:12},(_,i)=>{const a=(i/12)*Math.PI*2;return `<line x1="${160+Math.cos(a)*30}" y1="${160+Math.sin(a)*30}" x2="${160+Math.cos(a)*90}" y2="${160+Math.sin(a)*90}" stroke="${c}" stroke-width="3" opacity="${0.4+(i%3)*0.2}" stroke-linecap="round"/>`}).join('')}<circle cx="160" cy="160" r="20" fill="${c}" opacity="0.8"/>`;
+      case 'bars':
+        return Array.from({length:7},(_,i)=>`<rect x="${65+i*30}" y="${280-(40+i*18)}" width="22" height="${40+i*18}" rx="4" fill="${c}" opacity="${0.3+i*0.08}"/>`).join('');
+      case 'diamond':
+        return `${[0,1,2].map(i=>{const s=40+i*30;return `<rect x="${160-s}" y="${160-s}" width="${s*2}" height="${s*2}" rx="8" fill="none" stroke="${c}" stroke-width="2" opacity="${0.7-i*0.2}" transform="rotate(${45+i*5} 160 160)"/>`}).join('')}<rect x="145" y="145" width="30" height="30" rx="4" fill="${c}" opacity="0.8" transform="rotate(45 160 160)"/>`;
+      case 'wave':
+        return Array.from({length:5},(_,row)=>{const pts=Array.from({length:20},(_,i)=>`${40+i*13},${100+row*35+Math.sin(i*0.5+row)*(15+row*3)}`).join(' ');return `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="2.5" opacity="${0.2+row*0.15}" stroke-linecap="round" stroke-linejoin="round"/>`}).join('');
+      case 'pillars':
+        return `<polygon points="60,100 260,100 240,75 80,75" fill="${c}" opacity="0.7"/><rect x="70" y="100" width="180" height="8" fill="${c}" opacity="0.5"/>${[0,1,2,3].map(i=>{const x=80+i*50;return `<rect x="${x}" y="108" width="20" height="120" fill="${c}" opacity="${0.4+i*0.1}"/><rect x="${x-4}" y="108" width="28" height="6" fill="${c}" opacity="0.6"/><rect x="${x-4}" y="222" width="28" height="6" fill="${c}" opacity="0.6"/>`}).join('')}<rect x="60" y="228" width="200" height="14" fill="${c}" opacity="0.6"/><rect x="50" y="242" width="220" height="8" fill="${c}" opacity="0.5"/>`;
+      case 'orbit':
+        return `<ellipse cx="160" cy="160" rx="110" ry="42" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.25"/><ellipse cx="160" cy="160" rx="42" ry="110" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/><ellipse cx="160" cy="160" rx="95" ry="50" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.3" transform="rotate(45 160 160)"/><circle cx="270" cy="160" r="10" fill="${c}" opacity="0.8"/><circle cx="160" cy="50" r="8" fill="${c}" opacity="0.7"/><circle cx="95" cy="225" r="9" fill="${c}" opacity="0.75"/><circle cx="160" cy="160" r="22" fill="${c}" opacity="0.9"/><circle cx="160" cy="160" r="28" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>`;
+      case 'helix':
+        return `${Array.from({length:2},(_,strand)=>{const phase=strand*Math.PI;const pts=Array.from({length:40},(_,i)=>{const t=i/39;const y=50+t*220;const x=160+Math.sin(t*Math.PI*3+phase)*60;return `${x.toFixed(1)},${y.toFixed(1)}`}).join(' ');return `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="3" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>`}).join('')}${Array.from({length:8},(_,i)=>{const t=(i+0.5)/8;const y=50+t*220;const x1=160+Math.sin(t*Math.PI*3)*60;const x2=160+Math.sin(t*Math.PI*3+Math.PI)*60;return `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5" opacity="0.35"/>`}).join('')}`;
+      default: return '';
+    }
+  }
+
+  // ========================================================================
+  // Render a single card based on query params
+  // ========================================================================
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('slug') || 'ai';
+  const format = params.get('format') || 'landscape'; // "landscape" | "square"
+  const v = VERTICALS[slug];
+  if (!v) {
+    document.body.innerHTML = `<p style="color:#fff;padding:40px;">Unknown slug: ${slug}</p>`;
+  } else {
+    const iconSvg = `<svg viewBox="0 0 320 320" width="100%" height="100%">${shapeSvg(v.shape, v.color)}</svg>`;
+    const card = format === 'square' ? `
+      <div class="og square" style="--eco:${v.color};">
+        <div class="top">
+          <img class="logo" src="/og-previews/nftnyc-logo.svg" alt="NFT.NYC">
+          <span class="date">1–3 September 2026</span>
+        </div>
+        <div class="aura"><div class="icon-wrap">${iconSvg}</div></div>
+        <div class="copy">
+          <p class="eyebrow">${v.name}</p>
+          <h1>${v.h1}</h1>
+          <p class="sub">${v.sub}</p>
+        </div>
+        <div class="url">nft.nyc<em>/${slug}</em></div>
+      </div>
+    ` : `
+      <div class="og landscape" style="--eco:${v.color};">
+        <div class="aura"><div class="icon-wrap">${iconSvg}</div></div>
+        <div class="top">
+          <img class="logo" src="/og-previews/nftnyc-logo.svg" alt="NFT.NYC">
+          <span class="date">1–3 September 2026</span>
+        </div>
+        <div class="copy">
+          <p class="eyebrow">${v.name}</p>
+          <h1>${v.h1}</h1>
+          <p class="sub">${v.sub}</p>
+        </div>
+        <div class="url">nft.nyc<em>/${slug}</em></div>
+      </div>
+    `;
+    document.getElementById('stage').innerHTML = card;
+    document.title = `OG · ${v.name} · ${format}`;
+
+    // Flag when fonts + images are loaded so the screenshot script knows to proceed
+    Promise.all([
+      document.fonts.ready,
+      new Promise(r => {
+        const img = document.querySelector('img.logo');
+        if (!img || img.complete) r();
+        else img.addEventListener('load', r, { once: true });
+      }),
+    ]).then(() => {
+      document.documentElement.setAttribute('data-ready', '1');
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NFT.NYC 2026 — Vertical Social Graphics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --text: #f0f0f5;
+    --muted: #9595b0;
+    --border: rgba(255,255,255,0.08);
+    --coral: #f06347;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: "Space Grotesk", system-ui, sans-serif; }
+  a { color: var(--coral); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header {
+    padding: 80px 32px 48px;
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  header .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+  header h1 {
+    font-family: "Arial Black", "Space Grotesk", sans-serif;
+    font-weight: 900;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.1;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .toolbar {
+    max-width: 1080px;
+    margin: 0 auto 32px;
+    padding: 0 32px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .toolbar a {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(240,99,71,0.12);
+    color: var(--coral);
+    border: 1px solid rgba(240,99,71,0.35);
+    text-decoration: none;
+  }
+  .toolbar a:hover {
+    background: rgba(240,99,71,0.22);
+    text-decoration: none;
+  }
+
+  main {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 32px 120px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .vertical {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+  }
+  .vertical header.v-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    gap: 16px;
+    text-align: left;
+    max-width: none;
+  }
+  .vertical h2 {
+    font-family: "Arial Black", sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .vertical .slug {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 0 24px currentColor;
+  }
+
+  .formats {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 680px) {
+    .formats { grid-template-columns: 1fr; }
+  }
+  .asset {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .asset .preview {
+    display: block;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #000;
+  }
+  .asset .preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .asset .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .asset .meta .size {
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .asset .meta a {
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+  .asset .meta a:hover {
+    background: rgba(240,99,71,0.14);
+    border-color: rgba(240,99,71,0.35);
+    color: var(--coral);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Social Assets · NFT.NYC 2026</p>
+  <h1>Industry Vertical Graphics</h1>
+  <p>
+    Download-ready social preview graphics for every NFT.NYC 2026 industry vertical. Landscape
+    (1200×630) for Twitter/X, LinkedIn, Facebook, and Discord unfurls. Square (1080×1080) for
+    Instagram feed posts. All 24 images served directly from this site — the landscape version
+    of each is also the og:image for its vertical page.
+  </p>
+</header>
+
+<main id="grid"></main>
+
+<script>
+  const VERTICALS = [
+    { id: 'ai',           name: 'AI Identity Tokenization',       color: '#3B82F6' },
+    { id: 'gaming',       name: 'Game Tokenization',              color: '#8B5CF6' },
+    { id: 'infra',        name: 'On-Chain Infrastructure',        color: '#06B6D4' },
+    { id: 'social',       name: 'Social NFTs',                    color: '#EC4899' },
+    { id: 'creator',      name: 'Creator Economy',                color: '#F59E0B' },
+    { id: 'defi',         name: 'DeFi',                           color: '#10B981' },
+    { id: 'rwa',          name: 'RWA Tokenization',               color: '#EF4444' },
+    { id: 'brands',       name: 'Brands & Engagement',            color: '#F97316' },
+    { id: 'culture',      name: 'Culture, Art & Music',           color: '#D946EF' },
+    { id: 'domains',      name: 'DNS ENS Domain Tokens',          color: '#14B8A6' },
+    { id: 'desci',        name: 'DeSci · Longevity',              color: '#84CC16' },
+    { id: 'marketplaces', name: 'NFT Marketplaces',               color: '#38BDF8' },
+  ];
+
+  const grid = document.getElementById('grid');
+  for (const v of VERTICALS) {
+    const el = document.createElement('section');
+    el.className = 'vertical';
+    el.innerHTML = `
+      <header class="v-header">
+        <div>
+          <h2>${v.name}</h2>
+          <div class="slug">nft.nyc/${v.id}</div>
+        </div>
+        <div class="swatch" style="background:${v.color}; color:${v.color};"></div>
+      </header>
+      <div class="formats">
+        <div class="asset">
+          <a class="preview" href="/og/${v.id}.png" target="_blank" rel="noopener">
+            <img src="/og/${v.id}.png" alt="${v.name} landscape preview" loading="lazy">
+          </a>
+          <div class="meta">
+            <span class="size">Landscape · 1200×630 · PNG</span>
+            <a href="/og/${v.id}.png" download="nftnyc-${v.id}-landscape.png">Download</a>
+          </div>
+        </div>
+        <div class="asset">
+          <a class="preview" href="/og/${v.id}-square.png" target="_blank" rel="noopener">
+            <img src="/og/${v.id}-square.png" alt="${v.name} square preview" loading="lazy">
+          </a>
+          <div class="meta">
+            <span class="size">Square · 1080×1080 · PNG</span>
+            <a href="/og/${v.id}-square.png" download="nftnyc-${v.id}-square.png">Download</a>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(el);
+  }
+</script>
+
+</body>
+</html>
