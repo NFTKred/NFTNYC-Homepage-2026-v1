@@ -5,15 +5,23 @@ const BUCKET = 'resource-card-screenshots';
 // header/footer/nav, so the page IS just the "Latest on X" header + the
 // speaker's card + 2 neighbor cards — exactly what we want in the image.
 const CARD_WIDTH = 960;
+// thum.io fires the capture after `wait` seconds. Large hero images (e.g.
+// PRNewswire's 2694×1414 Monaco logo, Algorand's OG banner) sometimes take
+// 8–12s to load. 15s is conservative but reliable; the alternative is
+// producing screenshots missing the hero image, which defeats the purpose.
+const THUMIO_WAIT_SECONDS = 15;
+// If thum.io returns a blob smaller than this, the capture is almost
+// certainly a rendering failure (blank/partial page). Retry at this point.
+const MIN_BLOB_BYTES = 20_000;
+const MAX_RETRIES = 2;
 
 /**
  * Build the public URL of the /card/:resourceId preview route on the
- * current origin. Production URL is baked in so Microlink can hit it even
- * when the admin is running locally or on a preview deployment.
+ * production origin. Baking in prod means thum.io can reach the page
+ * even when the admin is running locally or on a Lovable preview URL
+ * (which would require a cookie).
  */
 function cardPreviewUrl(resourceId: string): string {
-  // Always point at production so Microlink can render the authenticated
-  // preview without hitting a Lovable preview URL that requires a cookie.
   return `https://www.nft.nyc/card/${resourceId}`;
 }
 
@@ -21,21 +29,40 @@ function cardPreviewUrl(resourceId: string): string {
  * Ask thum.io to screenshot the card preview page and return the raw
  * png bytes. thum.io is free, has no hard rate limit, and handles our
  * dark-themed preview route cleanly.
+ *
+ * Retries with a cache-buster when thum.io returns a suspiciously small
+ * blob (its occasional failure mode is an empty/near-empty PNG when the
+ * headless browser gives up before the page fully renders).
  */
 async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
   const targetUrl = cardPreviewUrl(resourceId);
-  const apiUrl = `https://image.thum.io/get/width/${CARD_WIDTH}/png/viewportWidth/${CARD_WIDTH}/noanimate/${targetUrl}`;
+  let lastError: Error | null = null;
 
-  const res = await fetch(apiUrl);
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Screenshot failed (${res.status}): ${text.slice(0, 200)}`);
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    // `noCache` + a changing query param forces a fresh render each retry.
+    const cacheBust = attempt === 0 ? '' : `?retry=${Date.now()}`;
+    const apiUrl =
+      `https://image.thum.io/get/width/${CARD_WIDTH}/png/viewportWidth/${CARD_WIDTH}` +
+      `/noanimate/wait/${THUMIO_WAIT_SECONDS}/noCache/${targetUrl}${cacheBust}`;
+
+    try {
+      const res = await fetch(apiUrl);
+      if (!res.ok) {
+        lastError = new Error(`Screenshot failed (${res.status}): ${(await res.text()).slice(0, 200)}`);
+        continue;
+      }
+      const blob = await res.blob();
+      if (blob.size < MIN_BLOB_BYTES) {
+        lastError = new Error(`Screenshot too small (${blob.size} bytes) — likely a rendering failure`);
+        continue;
+      }
+      return blob;
+    } catch (e) {
+      lastError = e as Error;
+    }
   }
-  const blob = await res.blob();
-  if (blob.size < 20_000) {
-    throw new Error(`Screenshot too small (${blob.size} bytes) — probably a rendering failure`);
-  }
-  return blob;
+
+  throw lastError ?? new Error('Screenshot failed for unknown reasons');
 }
 
 /**
@@ -71,8 +98,8 @@ export async function generateCardScreenshot(resourceId: string): Promise<string
 }
 
 /**
- * Generate card screenshots for many resources, sequentially to respect
- * Microlink rate limits. Yields progress via the optional callback.
+ * Generate card screenshots for many resources, sequentially so thum.io
+ * isn't hit with a burst. Yields progress via the optional callback.
  */
 export async function generateCardScreenshotsBatch(
   resourceIds: string[],
