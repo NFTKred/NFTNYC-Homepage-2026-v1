@@ -911,10 +911,9 @@ export default function Admin() {
                             const { subject, text, html } = buildOutreachDraft(s, relatedResource);
                             const fullText = `Subject: ${subject}\n\n${text}`;
                             const fullHtml = `<p style="font-weight:600;color:#555;font-size:13px;margin:0 0 12px;">Subject: ${escapeHtml(subject)}</p>${html}`;
-                            // Copy the rich HTML draft so the user can paste (⌘V) into Gmail.
-                            // Gmail's compose URL only supports plain-text body, so we can't
-                            // ship the card screenshot through the URL — the paste step
-                            // preserves the full HTML including the embedded preview image.
+                            // Also copy the rich HTML draft to the clipboard so the user
+                            // can optionally paste (⌘V) in Gmail to swap the plain-text
+                            // URL body for the HTML version with the embedded card image.
                             try {
                               if (typeof ClipboardItem !== 'undefined' && navigator.clipboard.write) {
                                 await navigator.clipboard.write([
@@ -927,8 +926,8 @@ export default function Admin() {
                                 await navigator.clipboard.writeText(fullText);
                               }
                             } catch {
-                              // Clipboard can fail silently — still open Gmail, the user can
-                              // reconstruct the body manually from Copy Draft.
+                              // Clipboard can fail silently — Gmail still opens with the
+                              // plain-text body via URL param, so the user isn't blocked.
                             }
                             const gmailUrl = new URL('https://mail.google.com/mail/');
                             if (user?.email) gmailUrl.searchParams.set('authuser', user.email);
@@ -936,6 +935,10 @@ export default function Admin() {
                             gmailUrl.searchParams.set('fs', '1');
                             gmailUrl.searchParams.set('to', s.email);
                             gmailUrl.searchParams.set('su', subject);
+                            // Gmail compose URL only accepts plain-text bodies. Pre-fill with
+                            // the draft text so the user isn't staring at an empty compose
+                            // window — they can paste (⌘V) over it to get the rich HTML.
+                            gmailUrl.searchParams.set('body', text);
                             window.open(gmailUrl.toString(), '_blank', 'noopener,noreferrer');
                             setSentEmailId(s.id);
                             setTimeout(() => setSentEmailId(prev => prev === s.id ? null : prev), 1500);
