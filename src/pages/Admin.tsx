@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { generateCardScreenshot, generateCardScreenshotsBatch, scheduleCardScreenshot } from '@/lib/cardScreenshot';
 
 /* ─── Twenty CRM lookup ─── */
@@ -259,6 +259,15 @@ export default function Admin() {
   const [sentEmailId, setSentEmailId] = useState<string | null>(null);
   const [downloadedId, setDownloadedId] = useState<string | null>(null);
   const [speakerSearch, setSpeakerSearch] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+  const [filterChannel, setFilterChannel] = useState('');
+  const [filterRelationship, setFilterRelationship] = useState('');
+  const [filterHasEmail, setFilterHasEmail] = useState<'any' | 'yes' | 'no'>('any');
+  const [filterHasResource, setFilterHasResource] = useState<'any' | 'yes' | 'no'>('any');
+  // null key = no sort (use default order from query); asc/desc cycle on click
+  type SpeakerSortKey = 'name' | 'role' | 'vertical_id' | 'email' | 'handle' | 'resource_title' | 'resource_relationship' | 'outreach_channel' | 'outreach_status' | 'outreach_notes';
+  const [sortKey, setSortKey] = useState<SpeakerSortKey | null>(null);
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
@@ -474,26 +483,99 @@ export default function Admin() {
   const approvedResources = resources.filter(r => r.status === 'approved');
   const pendingResources = resources.filter(r => r.status === 'pending');
 
-  // Filter speakers by the free-text search. Matches against any field a
-  // user might search on — name, role, email, handle, notes, or the linked
-  // resource title (so "perps" finds the speaker tied to a perps podcast).
-  const filteredSpeakers = speakerSearch.trim()
-    ? (() => {
-        const q = speakerSearch.trim().toLowerCase();
-        return speakers.filter(s => {
-          const related = resources.find(r => r.id === s.related_resource_id);
-          const hay = [
-            s.name,
-            s.role,
-            s.email,
-            s.handle,
-            s.outreach_notes,
-            related?.title,
-          ].filter(Boolean).join(' ').toLowerCase();
-          return hay.includes(q);
-        });
-      })()
-    : speakers;
+  // Search → structured filters → sort pipeline. Pre-compute the related
+  // resource lookup as a Map so we don't do an O(n×m) scan when sorting.
+  const resourceById = new Map(resources.map(r => [r.id, r]));
+
+  const filteredSpeakers = (() => {
+    let list = speakers;
+
+    // Free-text search across name/role/email/handle/notes/resource title
+    const q = speakerSearch.trim().toLowerCase();
+    if (q) {
+      list = list.filter(s => {
+        const related = s.related_resource_id ? resourceById.get(s.related_resource_id) : null;
+        const hay = [s.name, s.role, s.email, s.handle, s.outreach_notes, related?.title]
+          .filter(Boolean).join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    // Enum filters
+    if (filterStatus) list = list.filter(s => s.outreach_status === filterStatus);
+    if (filterChannel) list = list.filter(s => s.outreach_channel === filterChannel);
+    if (filterRelationship) list = list.filter(s => s.resource_relationship === filterRelationship);
+
+    // Boolean presence filters
+    if (filterHasEmail === 'yes') list = list.filter(s => !!s.email);
+    if (filterHasEmail === 'no')  list = list.filter(s => !s.email);
+    if (filterHasResource === 'yes') list = list.filter(s => !!s.related_resource_id);
+    if (filterHasResource === 'no')  list = list.filter(s => !s.related_resource_id);
+
+    // Sort (stable: copy before mutating)
+    if (sortKey) {
+      const STATUS_ORDER: Record<string, number> = {
+        not_started: 0, drafted: 1, contacted: 2, responded: 3, confirmed: 4, declined: 5,
+      };
+      const getSortValue = (s: Speaker): string | number => {
+        switch (sortKey) {
+          case 'name':                 return s.name.toLowerCase();
+          case 'role':                 return (s.role ?? '').toLowerCase();
+          case 'vertical_id':          return s.vertical_id;
+          case 'email':                return (s.email ?? '').toLowerCase();
+          case 'handle':               return (s.handle ?? '').toLowerCase();
+          case 'resource_title':       return (resourceById.get(s.related_resource_id ?? '')?.title ?? '').toLowerCase();
+          case 'resource_relationship':return s.resource_relationship ?? '';
+          case 'outreach_channel':     return s.outreach_channel ?? '';
+          case 'outreach_status':      return STATUS_ORDER[s.outreach_status] ?? 99;
+          case 'outreach_notes':       return (s.outreach_notes ?? '').toLowerCase();
+        }
+      };
+      list = [...list].sort((a, b) => {
+        const av = getSortValue(a);
+        const bv = getSortValue(b);
+        // Push empty strings to the end regardless of direction (they're
+        // usually noise at the top of alpha sorts).
+        const aEmpty = av === '' || av === 99;
+        const bEmpty = bv === '' || bv === 99;
+        if (aEmpty && !bEmpty) return 1;
+        if (!aEmpty && bEmpty) return -1;
+        const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+        return sortDir === 'asc' ? cmp : -cmp;
+      });
+    }
+
+    return list;
+  })();
+
+  const anyFilterActive = Boolean(
+    speakerSearch.trim() || filterStatus || filterChannel || filterRelationship ||
+    filterHasEmail !== 'any' || filterHasResource !== 'any'
+  );
+
+  const resetSpeakerFilters = () => {
+    setSpeakerSearch('');
+    setFilterStatus('');
+    setFilterChannel('');
+    setFilterRelationship('');
+    setFilterHasEmail('any');
+    setFilterHasResource('any');
+    setSortKey(null);
+    setSortDir('asc');
+  };
+
+  const toggleSort = (key: SpeakerSortKey) => {
+    if (sortKey !== key) {
+      setSortKey(key);
+      setSortDir('asc');
+    } else if (sortDir === 'asc') {
+      setSortDir('desc');
+    } else {
+      // Third click — clear sort
+      setSortKey(null);
+      setSortDir('asc');
+    }
+  };
 
   // Auto-lookup CRM emails when speakers load
   useEffect(() => {
@@ -834,21 +916,87 @@ export default function Admin() {
               </button>
             </div>
           </div>
+
+          {/* ─── Filter row ─── */}
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+            {(() => {
+              const filterSelectStyle: React.CSSProperties = {
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '6px',
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '12px',
+                padding: '6px 10px',
+                cursor: 'pointer',
+                outline: 'none',
+              };
+              return <>
+                <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ ...filterSelectStyle, color: filterStatus ? STATUS_COLORS[filterStatus] ?? '#fff' : 'rgba(255,255,255,0.6)' }}>
+                  <option value="" style={{ background: '#1a1a2e', color: '#fff' }}>Status: All</option>
+                  {OUTREACH_STATUSES.map(s => <option key={s} value={s} style={{ background: '#1a1a2e', color: STATUS_COLORS[s] }}>{s.replace('_', ' ')}</option>)}
+                </select>
+                <select value={filterChannel} onChange={e => setFilterChannel(e.target.value)} style={filterSelectStyle}>
+                  <option value="" style={{ background: '#1a1a2e' }}>Channel: All</option>
+                  {OUTREACH_CHANNELS.map(c => <option key={c} value={c} style={{ background: '#1a1a2e' }}>{c.replace('_', ' ')}</option>)}
+                </select>
+                <select value={filterRelationship} onChange={e => setFilterRelationship(e.target.value)} style={filterSelectStyle}>
+                  <option value="" style={{ background: '#1a1a2e' }}>Relationship: All</option>
+                  {RESOURCE_RELATIONSHIPS.map(r => <option key={r} value={r} style={{ background: '#1a1a2e' }}>{r.replace('_', ' ')}</option>)}
+                </select>
+                <select value={filterHasEmail} onChange={e => setFilterHasEmail(e.target.value as 'any' | 'yes' | 'no')} style={filterSelectStyle}>
+                  <option value="any" style={{ background: '#1a1a2e' }}>Email: Any</option>
+                  <option value="yes" style={{ background: '#1a1a2e' }}>Email: Has email</option>
+                  <option value="no"  style={{ background: '#1a1a2e' }}>Email: No email</option>
+                </select>
+                <select value={filterHasResource} onChange={e => setFilterHasResource(e.target.value as 'any' | 'yes' | 'no')} style={filterSelectStyle}>
+                  <option value="any" style={{ background: '#1a1a2e' }}>Resource: Any</option>
+                  <option value="yes" style={{ background: '#1a1a2e' }}>Resource: Linked</option>
+                  <option value="no"  style={{ background: '#1a1a2e' }}>Resource: Not linked</option>
+                </select>
+                {anyFilterActive && (
+                  <button onClick={resetSpeakerFilters} title="Clear all filters, search, and sort" style={{ ...filterSelectStyle, color: '#EF4444', border: '1px solid rgba(239,68,68,0.3)' }}>
+                    <X size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} /> Reset
+                  </button>
+                )}
+              </>;
+            })()}
+          </div>
+
           <div style={{ overflow: 'auto', maxHeight: '70vh', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
                 <tr>
-                  <th style={{ ...headerCellStyle, position: 'sticky', left: 0, zIndex: 3, minWidth: '120px', borderRight: '2px solid rgba(255,255,255,0.1)' }}>Name</th>
-                  <th style={headerCellStyle}>Role</th>
-                  <th style={headerCellStyle}>Vertical</th>
-                  <th style={headerCellStyle}>Email</th>
-                  <th style={headerCellStyle}>Handle</th>
-                  <th style={headerCellStyle}>Related Resource</th>
-                  <th style={headerCellStyle}>Relationship</th>
-                  <th style={headerCellStyle}>Channel</th>
-                  <th style={headerCellStyle}>Status</th>
-                  <th style={headerCellStyle}>Notes</th>
-                  <th style={{ ...headerCellStyle, width: '320px' }}>Actions</th>
+                  {(() => {
+                    const SortHeader = ({ label, sortKey: key, style }: { label: string; sortKey: SpeakerSortKey; style?: React.CSSProperties }) => {
+                      const active = sortKey === key;
+                      const Icon = active ? (sortDir === 'asc' ? ArrowUp : ArrowDown) : ArrowUpDown;
+                      return (
+                        <th
+                          style={{ ...headerCellStyle, cursor: 'pointer', userSelect: 'none', ...style }}
+                          onClick={() => toggleSort(key)}
+                          title={active ? `Click to ${sortDir === 'asc' ? 'sort descending' : 'clear sort'}` : 'Click to sort'}
+                        >
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: active ? '#fff' : undefined }}>
+                            {label}
+                            <Icon size={11} style={{ opacity: active ? 1 : 0.35 }} />
+                          </span>
+                        </th>
+                      );
+                    };
+                    return <>
+                      <SortHeader label="Name" sortKey="name" style={{ position: 'sticky', left: 0, zIndex: 3, minWidth: '120px', borderRight: '2px solid rgba(255,255,255,0.1)' }} />
+                      <SortHeader label="Role" sortKey="role" />
+                      <SortHeader label="Vertical" sortKey="vertical_id" />
+                      <SortHeader label="Email" sortKey="email" />
+                      <SortHeader label="Handle" sortKey="handle" />
+                      <SortHeader label="Related Resource" sortKey="resource_title" />
+                      <SortHeader label="Relationship" sortKey="resource_relationship" />
+                      <SortHeader label="Channel" sortKey="outreach_channel" />
+                      <SortHeader label="Status" sortKey="outreach_status" />
+                      <SortHeader label="Notes" sortKey="outreach_notes" />
+                      <th style={{ ...headerCellStyle, width: '320px' }}>Actions</th>
+                    </>;
+                  })()}
                 </tr>
               </thead>
               <tbody>
