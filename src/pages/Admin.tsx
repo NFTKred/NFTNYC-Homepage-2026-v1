@@ -258,6 +258,7 @@ export default function Admin() {
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
   const [sentEmailId, setSentEmailId] = useState<string | null>(null);
   const [downloadedId, setDownloadedId] = useState<string | null>(null);
+  const [speakerSearch, setSpeakerSearch] = useState('');
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
@@ -472,6 +473,27 @@ export default function Admin() {
   const speakers = speakersQuery.data ?? [];
   const approvedResources = resources.filter(r => r.status === 'approved');
   const pendingResources = resources.filter(r => r.status === 'pending');
+
+  // Filter speakers by the free-text search. Matches against any field a
+  // user might search on — name, role, email, handle, notes, or the linked
+  // resource title (so "perps" finds the speaker tied to a perps podcast).
+  const filteredSpeakers = speakerSearch.trim()
+    ? (() => {
+        const q = speakerSearch.trim().toLowerCase();
+        return speakers.filter(s => {
+          const related = resources.find(r => r.id === s.related_resource_id);
+          const hay = [
+            s.name,
+            s.role,
+            s.email,
+            s.handle,
+            s.outreach_notes,
+            related?.title,
+          ].filter(Boolean).join(' ').toLowerCase();
+          return hay.includes(q);
+        });
+      })()
+    : speakers;
 
   // Auto-lookup CRM emails when speakers load
   useEffect(() => {
@@ -775,13 +797,42 @@ export default function Admin() {
 
         {/* ─── SPEAKERS ─── */}
         <section>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', gap: '1rem', flexWrap: 'wrap' }}>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>
-              Speakers & Outreach ({speakers.length})
+              Speakers & Outreach ({speakerSearch.trim() ? `${filteredSpeakers.length} of ${speakers.length}` : speakers.length})
             </h2>
-            <button onClick={() => { setEditingSpeaker(null); setShowSpeakerForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
-              <Plus size={14} /> Add Speaker
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'flex-end' }}>
+              <div style={{ position: 'relative', minWidth: '260px' }}>
+                <Search
+                  size={14}
+                  style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'rgb(90, 90, 117)', pointerEvents: 'none' }}
+                />
+                <input
+                  type="search"
+                  placeholder="Search speakers (name, role, email, handle, notes, resource…)"
+                  value={speakerSearch}
+                  onChange={e => setSpeakerSearch(e.target.value)}
+                  style={{
+                    ...inputStyle,
+                    paddingLeft: '32px',
+                    paddingRight: speakerSearch ? '30px' : '0.75rem',
+                    fontSize: '13px',
+                  }}
+                />
+                {speakerSearch && (
+                  <button
+                    onClick={() => setSpeakerSearch('')}
+                    title="Clear search"
+                    style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgb(149, 149, 176)', cursor: 'pointer', padding: '2px', display: 'inline-flex' }}
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+              <button onClick={() => { setEditingSpeaker(null); setShowSpeakerForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
+                <Plus size={14} /> Add Speaker
+              </button>
+            </div>
           </div>
           <div style={{ overflow: 'auto', maxHeight: '70vh', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -801,9 +852,13 @@ export default function Admin() {
                 </tr>
               </thead>
               <tbody>
-                {speakers.length === 0 ? (
-                  <tr><td colSpan={11} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No speakers yet</td></tr>
-                ) : speakers.map(s => {
+                {filteredSpeakers.length === 0 ? (
+                  <tr><td colSpan={11} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>
+                    {speakers.length === 0
+                      ? 'No speakers yet'
+                      : `No speakers match "${speakerSearch}"`}
+                  </td></tr>
+                ) : filteredSpeakers.map(s => {
                   const relatedResource = resources.find(r => r.id === s.related_resource_id);
                   const verticalResources = resources.filter(r => r.vertical_id === s.vertical_id);
                   return (
