@@ -972,13 +972,13 @@ export default function Admin() {
                       const Icon = active ? (sortDir === 'asc' ? ArrowUp : ArrowDown) : ArrowUpDown;
                       return (
                         <th
-                          style={{ ...headerCellStyle, cursor: 'pointer', userSelect: 'none', ...style }}
+                          style={{ ...headerCellStyle, color: '#fff', cursor: 'pointer', userSelect: 'none', ...style }}
                           onClick={() => toggleSort(key)}
                           title={active ? `Click to ${sortDir === 'asc' ? 'sort descending' : 'clear sort'}` : 'Click to sort'}
                         >
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: active ? '#fff' : undefined }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#fff' }}>
                             {label}
-                            <Icon size={11} style={{ opacity: active ? 1 : 0.35 }} />
+                            <Icon size={11} style={{ opacity: active ? 1 : 0.6 }} />
                           </span>
                         </th>
                       );
@@ -994,7 +994,7 @@ export default function Admin() {
                       <SortHeader label="Channel" sortKey="outreach_channel" />
                       <SortHeader label="Status" sortKey="outreach_status" />
                       <SortHeader label="Notes" sortKey="outreach_notes" />
-                      <th style={{ ...headerCellStyle, width: '320px' }}>Actions</th>
+                      <th style={{ ...headerCellStyle, color: '#fff', width: '320px' }}>Actions</th>
                     </>;
                   })()}
                 </tr>
