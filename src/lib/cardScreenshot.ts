@@ -1,18 +1,23 @@
 import { supabase } from '@/lib/supabase';
 
 const BUCKET = 'resource-card-screenshots';
-// thum.io captures the full page at this width. The preview route has no
-// header/footer/nav, so the page IS just the "Latest on X" header + the
-// speaker's card + 2 neighbor cards — exactly what we want in the image.
+// Capture width. The preview route has no header/footer/nav, so the page
+// IS just the "Latest on X" header + the speaker's card + 2 neighbor
+// cards — exactly what we want in the image.
 const CARD_WIDTH = 960;
 // thum.io fires the capture after `wait` seconds. Large hero images (e.g.
 // PRNewswire's 2694×1414 Monaco logo, Algorand's OG banner) sometimes take
 // 8–12s to load. 15s is conservative but reliable; the alternative is
 // producing screenshots missing the hero image, which defeats the purpose.
 const THUMIO_WAIT_SECONDS = 15;
-// If thum.io returns a blob smaller than this, the capture is almost
-// certainly a rendering failure (blank/partial page). Retry at this point.
-const MIN_BLOB_BYTES = 20_000;
+// Minimum expected bytes for a valid capture. thum.io's known failure modes:
+//  (a) empty/near-empty PNG when the headless browser gives up before the
+//      page renders (tiny file, ~few KB);
+//  (b) a ~22KB "Image not authorized. Please sign-up for a paid account"
+//      placeholder when it decides to throttle the caller.
+// 40 KB rejects both without cutting off legitimate captures (smallest real
+// captures we've seen are ~450 KB).
+const MIN_BLOB_BYTES = 40_000;
 const MAX_RETRIES = 2;
 
 /**
@@ -25,16 +30,8 @@ function cardPreviewUrl(resourceId: string): string {
   return `https://www.nft.nyc/card/${resourceId}`;
 }
 
-/**
- * Ask thum.io to screenshot the card preview page and return the raw
- * png bytes. thum.io is free, has no hard rate limit, and handles our
- * dark-themed preview route cleanly.
- *
- * Retries with a cache-buster when thum.io returns a suspiciously small
- * blob (its occasional failure mode is an empty/near-empty PNG when the
- * headless browser gives up before the page fully renders).
- */
-async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
+/** Primary screenshot provider — thum.io, free and usually reliable. */
+async function fetchFromThumio(resourceId: string): Promise<Blob> {
   const targetUrl = cardPreviewUrl(resourceId);
   let lastError: Error | null = null;
 
@@ -48,12 +45,12 @@ async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
     try {
       const res = await fetch(apiUrl);
       if (!res.ok) {
-        lastError = new Error(`Screenshot failed (${res.status}): ${(await res.text()).slice(0, 200)}`);
+        lastError = new Error(`thum.io HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
         continue;
       }
       const blob = await res.blob();
       if (blob.size < MIN_BLOB_BYTES) {
-        lastError = new Error(`Screenshot too small (${blob.size} bytes) — likely a rendering failure`);
+        lastError = new Error(`thum.io returned ${blob.size}-byte blob (likely throttle/render failure)`);
         continue;
       }
       return blob;
@@ -62,7 +59,53 @@ async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
     }
   }
 
-  throw lastError ?? new Error('Screenshot failed for unknown reasons');
+  throw lastError ?? new Error('thum.io failed for unknown reasons');
+}
+
+/** Fallback provider — Microlink. Slower but different infra, so when thum.io
+ *  hits its quota or can't render our page, Microlink usually works. */
+async function fetchFromMicrolink(resourceId: string): Promise<Blob> {
+  const targetUrl = cardPreviewUrl(resourceId);
+  const apiUrl =
+    'https://api.microlink.io/?' +
+    new URLSearchParams({
+      url: targetUrl,
+      screenshot: 'true',
+      meta: 'false',
+      embed: 'screenshot.url',
+      'viewport.width': String(CARD_WIDTH),
+      'viewport.height': '1600',
+      'viewport.deviceScaleFactor': '2',
+      waitUntil: 'networkidle0',
+      element: '[data-card-preview]',
+      type: 'png',
+    }).toString();
+
+  const res = await fetch(apiUrl);
+  if (!res.ok) throw new Error(`Microlink HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const blob = await res.blob();
+  if (blob.size < MIN_BLOB_BYTES) throw new Error(`Microlink returned ${blob.size}-byte blob`);
+  return blob;
+}
+
+/**
+ * Screenshot the card preview page and return the raw PNG bytes. Tries
+ * thum.io first; falls back to Microlink if thum.io is throttling (returns
+ * its "Image not authorized" placeholder) or otherwise fails.
+ */
+async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
+  try {
+    return await fetchFromThumio(resourceId);
+  } catch (thumioErr) {
+    try {
+      return await fetchFromMicrolink(resourceId);
+    } catch (microlinkErr) {
+      throw new Error(
+        `Both providers failed. thum.io: ${(thumioErr as Error).message}. ` +
+        `microlink: ${(microlinkErr as Error).message}`
+      );
+    }
+  }
 }
 
 /**
@@ -95,6 +138,43 @@ export async function generateCardScreenshot(resourceId: string): Promise<string
   if (updateErr) throw new Error(`Failed to save card_screenshot URL: ${updateErr.message}`);
 
   return publicUrl;
+}
+
+/**
+ * Fire-and-forget wrapper around `generateCardScreenshot`. Used after
+ * resource mutations so saving a resource automatically refreshes its
+ * embedded card preview — the user doesn't have to remember to click the
+ * camera button. Errors are logged to the console but don't bubble up:
+ * a stale card screenshot is annoying but shouldn't block the save flow.
+ *
+ * Debounces per-resource: multiple rapid calls for the same id coalesce
+ * into a single regeneration (the last one wins), so back-to-back edits
+ * don't stack up into a queue of redundant captures.
+ */
+const pendingRegens = new Map<string, Promise<string>>();
+
+export function scheduleCardScreenshot(resourceId: string): void {
+  // Coalesce: if a regen is already in flight for this id, let it finish;
+  // when it does, kick off a fresh one so the latest resource state is
+  // captured (the in-flight one might have pulled pre-edit data).
+  const existing = pendingRegens.get(resourceId);
+  const run = (): Promise<string> => {
+    const p = generateCardScreenshot(resourceId).finally(() => {
+      // Only clear if nothing else queued on top
+      if (pendingRegens.get(resourceId) === p) pendingRegens.delete(resourceId);
+    });
+    pendingRegens.set(resourceId, p);
+    return p;
+  };
+
+  if (existing) {
+    existing
+      .catch(() => {})
+      .then(() => run())
+      .catch((e: unknown) => console.warn(`[scheduleCardScreenshot] ${resourceId}:`, e));
+  } else {
+    run().catch((e: unknown) => console.warn(`[scheduleCardScreenshot] ${resourceId}:`, e));
+  }
 }
 
 /**

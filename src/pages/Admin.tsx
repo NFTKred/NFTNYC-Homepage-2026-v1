@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
 import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send } from 'lucide-react';
-import { generateCardScreenshot, generateCardScreenshotsBatch } from '@/lib/cardScreenshot';
+import { generateCardScreenshot, generateCardScreenshotsBatch, scheduleCardScreenshot } from '@/lib/cardScreenshot';
 
 /* ─── Twenty CRM lookup ─── */
 const TWENTY_API_KEY = import.meta.env.VITE_TWENTY_API_KEY ?? '';
@@ -368,8 +368,15 @@ export default function Admin() {
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
       const { error } = await supabase.from('resources').update({ status }).eq('id', id);
       if (error) throw error;
+      return { id, status };
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-resources'] }),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ['admin-resources'] });
+      // When a pending resource is approved it starts showing up on its
+      // vertical page — generate its card-preview screenshot now so drafts
+      // are ready to send immediately after approval.
+      if (result?.status === 'approved') scheduleCardScreenshot(result.id);
+    },
   });
 
   const updateSpeakerField = useMutation({
@@ -1216,16 +1223,25 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
     setSaving(true);
     const payload = { ...form, status: 'approved', auto_found: false };
     let error: { message: string } | null = null;
+    let savedId: string | null = null;
     if (initial) {
       ({ error } = await supabase.from('resources').update(payload).eq('id', initial.id));
+      savedId = initial.id;
     } else {
-      ({ error } = await supabase.from('resources').insert(payload));
+      const res = await supabase.from('resources').insert(payload).select('id').single();
+      error = res.error;
+      savedId = res.data?.id ?? null;
     }
     setSaving(false);
     if (error) {
       alert(`Save failed: ${error.message}`);
       return;
     }
+    // Auto-regenerate the card-preview screenshot so the Copy Draft / Image
+    // buttons reflect the new title / image / description without requiring
+    // the user to click the camera button manually. Fire-and-forget — the
+    // save flow completes immediately; the screenshot lands ~15–30s later.
+    if (savedId) scheduleCardScreenshot(savedId);
     onSave();
   };
 
