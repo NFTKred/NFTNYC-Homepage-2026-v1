@@ -255,7 +255,7 @@ Deno.serve(async (req) => {
       <p style="font-size: 16px; margin: 0 0 16px;">Hi ${escape(firstNameOnly)},</p>
 
       <p style="font-size: 15px; margin: 0 0 16px;">
-        Thanks for your interest in partnering with NFT.NYC 2026 — we've received your expression of interest and the partnerships team will be in touch shortly to work through the details.
+        Thanks for submitting to partner with NFT.NYC 2026 — we've received your expression of interest in the following package:
       </p>
 
       <div style="background: #f5f5f7; border-radius: 8px; padding: 16px 20px; margin: 20px 0;">
@@ -271,7 +271,7 @@ Deno.serve(async (req) => {
       </div>
 
       <p style="font-size: 15px; margin: 0 0 16px;">
-        Grab a slot directly on the NFT.NYC partnerships team calendar:
+        The next step is to meet with our partnerships team to work through the details and discuss your ideal experience. <strong>Please click below to schedule a meeting:</strong>
       </p>
 
       <p style="margin: 20px 0;">
