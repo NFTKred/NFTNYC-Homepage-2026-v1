@@ -244,7 +244,7 @@ Deno.serve(async (req) => {
   // set to team@nft.nyc so a reply lands with the partnerships team, not
   // the sending mailbox.
   const firstNameOnly = name.trim().split(/\s+/)[0] || name;
-  const confirmSubject = `We received your NFT.NYC 2026 partnership inquiry`;
+  const confirmSubject = `Action required: Schedule your NFT.NYC 2026 partnerships meeting`;
   const confirmHtml = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #111; line-height: 1.55;">
       <img
