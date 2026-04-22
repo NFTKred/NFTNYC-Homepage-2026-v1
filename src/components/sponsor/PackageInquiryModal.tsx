@@ -131,12 +131,11 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
             <div className="py-6 text-center">
               <p className="text-foreground font-bold mb-3 text-2xl">Thank you!</p>
               <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-                The NFT.NYC partnerships team will reach out to{" "}
-                <span className="text-foreground">{email}</span> shortly to discuss your selected package.
+                We've sent a confirmation email to{" "}
+                <span className="text-foreground">{email}</span>
               </p>
-              <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-6 leading-relaxed">
-                The next step is to meet with our partnerships team to work through the details and discuss your ideal experience.{" "}
-                <span className="text-foreground font-semibold">Please click below to schedule a meeting:</span>
+              <p className="text-foreground font-semibold max-w-lg mx-auto mb-6 leading-relaxed">
+                NEXT STEP: Please schedule a meeting with our partnerships team to work through the details and discuss your ideal experience.
               </p>
               <a
                 href="https://www.nft.nyc/book"
