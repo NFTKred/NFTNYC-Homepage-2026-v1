@@ -105,6 +105,15 @@ Deno.serve(async (req) => {
   const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
   const TEAM_ALERT_EMAIL = Deno.env.get("TEAM_ALERT_EMAIL") ?? "team@nft.nyc";
   const ALERT_FROM_EMAIL = Deno.env.get("ALERT_FROM_EMAIL") ?? "partnerships@nft.nyc";
+  // Internal distribution for sponsor-opportunity alerts. TEAM_ALERT_EMAIL is
+  // the primary shared inbox; the other addresses are individuals on the
+  // partnerships team who also want direct notifications. Deduped in case of
+  // overlap with TEAM_ALERT_EMAIL.
+  const ALERT_RECIPIENTS = Array.from(new Set([
+    TEAM_ALERT_EMAIL,
+    "cameronbale@nft.nyc",
+    "ljjohnson@nft.kred",
+  ]));
   const ADD_CONTACT_URL = Deno.env.get("ADD_CONTACT_URL");
   const ADD_CONTACT_SECRET = Deno.env.get("ADD_CONTACT_SECRET");
   const PARTNERSHIP_LIST_ID = Deno.env.get("PARTNERSHIP_LIST_ID");
@@ -206,7 +215,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: `NFT.NYC Partnerships <${ALERT_FROM_EMAIL}>`,
-        to: [TEAM_ALERT_EMAIL],
+        to: ALERT_RECIPIENTS,
         reply_to: email,
         subject: emailSubject,
         html: emailHtml,
