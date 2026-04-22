@@ -129,7 +129,7 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
               <DialogTitle className="sr-only">Inquiry received</DialogTitle>
             </DialogHeader>
             <div className="py-6 text-center">
-              <p className="text-foreground font-bold mb-3 text-2xl">Thank you!</p>
+              <p className="text-foreground font-bold mb-3 text-2xl">We're excited to work with you!</p>
               <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
                 We've sent a confirmation email to{" "}
                 <span className="text-foreground">{email}</span>
