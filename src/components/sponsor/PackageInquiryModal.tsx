@@ -121,39 +121,58 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-card border-brand-border sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-foreground text-xl">
-            Learn more about this package
-          </DialogTitle>
-          <DialogDescription asChild>
-            <div className="mt-3">
-              <div className="rounded-lg border border-brand-coral/30 bg-brand-coral/5 px-4 py-3 mb-3">
-                <div className="text-foreground font-semibold text-base leading-tight">{basePackage.name}</div>
-                {(!HIDDEN_PRICE_PACKAGES.has(basePackage.price) || basePackage.trackName) && (
-                  <div className="flex items-center gap-2 mt-1">
-                    {!HIDDEN_PRICE_PACKAGES.has(basePackage.price) && (
-                      <span className="text-brand-coral font-bold text-lg">{basePackage.price}</span>
-                    )}
-                    {basePackage.trackName && (
-                      <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
+        {submitted ? (
+          <>
+            {/* Radix requires a DialogTitle for accessibility even when
+                we don't render a visible heading. */}
+            <DialogHeader>
+              <DialogTitle className="sr-only">Inquiry received</DialogTitle>
+            </DialogHeader>
+            <div className="py-6 text-center">
+              <p className="text-foreground font-bold mb-3 text-2xl">Thank you!</p>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
+                The NFT.NYC partnerships team will reach out to{" "}
+                <span className="text-foreground">{email}</span> shortly to discuss your selected package.
+              </p>
+              <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-6 leading-relaxed">
+                The next step is to meet with our partnerships team to work through the details and discuss your ideal experience.{" "}
+                <span className="text-foreground font-semibold">Please click below to schedule a meeting:</span>
+              </p>
+              <a
+                href="https://www.nft.nyc/book"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-semibold text-sm transition-colors shadow-lg shadow-brand-coral/20"
+              >
+                Schedule a meeting →
+              </a>
+            </div>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle className="text-foreground text-xl">
+                Learn more about this package
+              </DialogTitle>
+              <DialogDescription asChild>
+                <div className="mt-3">
+                  <div className="rounded-lg border border-brand-coral/30 bg-brand-coral/5 px-4 py-3 mb-3">
+                    <div className="text-foreground font-semibold text-base leading-tight">{basePackage.name}</div>
+                    {(!HIDDEN_PRICE_PACKAGES.has(basePackage.price) || basePackage.trackName) && (
+                      <div className="flex items-center gap-2 mt-1">
+                        {!HIDDEN_PRICE_PACKAGES.has(basePackage.price) && (
+                          <span className="text-brand-coral font-bold text-lg">{basePackage.price}</span>
+                        )}
+                        {basePackage.trackName && (
+                          <span className="text-xs font-medium text-muted-foreground">· {basePackage.trackName}</span>
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground">Tell us a bit about yourself and we'll follow up to schedule a call.</p>
-            </div>
-          </DialogDescription>
-        </DialogHeader>
-
-        {submitted ? (
-          <div className="py-8 text-center">
-            <p className="text-foreground font-semibold mb-2 text-lg">Thank you!</p>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              The NFT.NYC partnerships team will reach out to{" "}
-              <span className="text-foreground">{email}</span> shortly to discuss your selected package.
-            </p>
-          </div>
-        ) : (
+                  <p className="text-sm text-muted-foreground">Tell us a bit about yourself and we'll follow up to schedule a call.</p>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4 pt-2">
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -274,6 +293,7 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
               <a href="mailto:team@nft.nyc" className="underline underline-offset-2">team@nft.nyc</a>.
             </p>
           </form>
+          </>
         )}
       </DialogContent>
     </Dialog>
