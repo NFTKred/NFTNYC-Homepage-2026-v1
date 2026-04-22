@@ -36,28 +36,57 @@ async function lookupCRMEmail(fullName: string): Promise<string | null> {
 
 /* ─── OG image auto-fetch via Microlink (no API key required) ─── */
 
-/** Try to get the og:image for a URL. If the specific page has no image, fall back to the root domain. */
+/**
+ * Try to get the og:image for a URL.
+ *
+ * Strategy:
+ *   1. Our own fetch-og-image Supabase Edge Function. It fetches the page
+ *      server-side with a real browser User-Agent, so antibot-protected
+ *      publishers (TheBlock, CoinDesk, etc.) work fine. No free-tier quota.
+ *   2. If that yields nothing, fall back to Microlink. Microlink's metadata
+ *      API fails with EPROXYNEEDED on antibot sites (requires PRO plan) but
+ *      works well for long-tail publishers without that protection — and
+ *      sometimes extracts a `logo` field when the page has no og:image.
+ *   3. If both fail on the page URL, retry against the root domain.
+ */
 async function fetchOgImage(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}`);
-    if (res.ok) {
-      const json = await res.json();
-      const img = json?.data?.image?.url ?? json?.data?.logo?.url ?? null;
-      if (img) return img;
-    }
-  } catch { /* ignore */ }
+  // Primary: our edge function
+  const tryEdge = async (u: string): Promise<string | null> => {
+    try {
+      const { data, error } = await supabase.functions.invoke('fetch-og-image', { body: { url: u } });
+      if (!error && data?.image) return data.image;
+    } catch { /* ignore */ }
+    return null;
+  };
 
-  // Fallback: try the root domain
-  try {
-    const rootUrl = new URL(url).origin;
-    if (rootUrl !== url && rootUrl + '/' !== url) {
-      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(rootUrl)}`);
+  // Secondary: Microlink (catches some cases where our HTML scrape misses a JS-rendered image)
+  const tryMicrolink = async (u: string): Promise<string | null> => {
+    try {
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(u)}`);
       if (res.ok) {
         const json = await res.json();
         return json?.data?.image?.url ?? json?.data?.logo?.url ?? null;
       }
+    } catch { /* ignore */ }
+    return null;
+  };
+
+  const edge = await tryEdge(url);
+  if (edge) return edge;
+
+  const microlink = await tryMicrolink(url);
+  if (microlink) return microlink;
+
+  // Root-domain fallback
+  try {
+    const rootUrl = new URL(url).origin;
+    if (rootUrl !== url && rootUrl + '/' !== url) {
+      const rootEdge = await tryEdge(rootUrl);
+      if (rootEdge) return rootEdge;
+      const rootMicrolink = await tryMicrolink(rootUrl);
+      if (rootMicrolink) return rootMicrolink;
     }
-  } catch { /* ignore */ }
+  } catch { /* invalid URL */ }
 
   return null;
 }
