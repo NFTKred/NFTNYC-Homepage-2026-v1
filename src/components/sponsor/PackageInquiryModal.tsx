@@ -134,8 +134,9 @@ export default function PackageInquiryModal({ open, onOpenChange, basePackage, n
                 We've sent a confirmation email to{" "}
                 <span className="text-foreground">{email}</span>
               </p>
-              <p className="text-foreground font-semibold max-w-lg mx-auto mb-6 leading-relaxed">
-                NEXT STEP: Please schedule a meeting with our partnerships team to work through the details and discuss your ideal experience.
+              <p className="text-muted-foreground max-w-lg mx-auto mb-6 leading-relaxed">
+                <span className="text-foreground font-semibold">NEXT STEP: Please schedule a meeting with our partnerships team</span>{" "}
+                to work through the details and discuss your ideal experience.
               </p>
               <a
                 href="https://www.nft.nyc/book"
