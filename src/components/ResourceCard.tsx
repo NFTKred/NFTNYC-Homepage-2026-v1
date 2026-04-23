@@ -77,7 +77,7 @@ export default function ResourceCard({
     >
       {/* YouTube embed or thumbnail */}
       {ytId ? (
-        <div style={{ position: 'relative', width: '100%', paddingBottom: '52.36%', background: '#000' }}>
+        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000' }}>
           {interactive ? (
             <iframe
               src={`https://www.youtube.com/embed/${ytId}`}
