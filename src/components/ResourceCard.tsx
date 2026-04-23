@@ -77,7 +77,7 @@ export default function ResourceCard({
     >
       {/* YouTube embed or thumbnail */}
       {ytId ? (
-        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000' }}>
+        <div style={{ position: 'relative', width: '100%', paddingBottom: '52.36%', background: '#000' }}>
           {interactive ? (
             <iframe
               src={`https://www.youtube.com/embed/${ytId}`}
@@ -101,12 +101,10 @@ export default function ResourceCard({
           target={interactive ? '_blank' : undefined}
           rel={interactive ? 'noopener noreferrer' : undefined}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: 'block',
             position: 'relative',
             width: '100%',
-            height: '200px',
+            aspectRatio: '1.91 / 1',
             overflow: 'hidden',
             background: `linear-gradient(135deg, ${hexToRgba(color, 0.08)}, ${hexToRgba(color, 0.02)})`,
             cursor: interactive ? 'pointer' : 'default',
@@ -115,7 +113,7 @@ export default function ResourceCard({
           <img
             src={resource.image}
             alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             onError={(e) => {
               // Hide the image container if the image fails to load
               const link = (e.target as HTMLImageElement).closest('a');
