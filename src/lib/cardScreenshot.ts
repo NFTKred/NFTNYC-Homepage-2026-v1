@@ -30,7 +30,113 @@ function cardPreviewUrl(resourceId: string): string {
   return `https://www.nft.nyc/card/${resourceId}`;
 }
 
-/** Primary screenshot provider — thum.io, free and usually reliable. */
+/**
+ * Primary provider — capture the card preview in an invisible iframe inside
+ * the caller's browser tab, then convert the DOM to a PNG via html2canvas.
+ *
+ * Upside: no external service, no rate limits, pixel-perfect since it's
+ * literally our own rendered page.
+ *
+ * Downside: needs the admin tab to be open (but resource saves happen from
+ * admin so this is always true), and third-party hero images must be CORS-
+ * enabled for html2canvas to include them in the canvas. Most modern CDNs
+ * (Sanity, Fortune, Wikimedia, tbstat, cdn.prod.website-files.com, etc.)
+ * serve Access-Control-Allow-Origin: * so this works for the common case.
+ *
+ * When it fails (rare: CORS-hostile CDN, iframe blocked, DOM error), we
+ * gracefully fall through to thum.io and then Microlink.
+ */
+async function fetchFromHtml2Canvas(resourceId: string): Promise<Blob> {
+  // Dynamic import keeps the ~48KB html2canvas bundle out of the initial
+  // page load — only the admin tab pays the cost, and only when it captures.
+  const { default: html2canvas } = await import('html2canvas');
+
+  return new Promise((resolve, reject) => {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('aria-hidden', 'true');
+    iframe.style.cssText =
+      'position:fixed;left:-9999px;top:0;width:1000px;height:1800px;border:none;pointer-events:none;';
+    // Same-origin path — card route lives on the same host as /admin, so
+    // we can reach into the iframe's document after load.
+    iframe.src = `/card/${resourceId}?capture=${Date.now()}`;
+
+    let settled = false;
+    const timeout = window.setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      iframe.remove();
+      reject(new Error('html2canvas iframe load timeout (30s)'));
+    }, 30_000);
+
+    const cleanup = () => {
+      window.clearTimeout(timeout);
+      iframe.remove();
+    };
+
+    iframe.onload = async () => {
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc) throw new Error('no contentDocument (sandbox issue?)');
+
+        // Wait for every <img> inside to finish loading. An img.complete===true
+        // only means the browser has settled the request one way or the other;
+        // combined with a resolve-on-error fallback below, this lets us still
+        // capture even if one hero fails to load.
+        const imgs = Array.from(doc.querySelectorAll('img'));
+        await Promise.all(
+          imgs.map((img) =>
+            img.complete
+              ? Promise.resolve()
+              : new Promise<void>((res) => {
+                  img.onload = () => res();
+                  img.onerror = () => res();
+                })
+          )
+        );
+
+        // Small extra delay for web fonts + any CSS transitions on the card.
+        await new Promise((r) => setTimeout(r, 400));
+
+        const target = doc.querySelector<HTMLElement>('[data-card-preview]');
+        if (!target) throw new Error('[data-card-preview] element not found in iframe');
+
+        const canvas = await html2canvas(target, {
+          useCORS: true,       // fetch cross-origin images with CORS
+          allowTaint: false,   // reject tainted canvases (we'd rather fall back)
+          backgroundColor: '#0a0a14',
+          scale: 2,            // retina-quality output
+          width: 960,
+          height: target.scrollHeight,
+          // The iframe is not part of the parent DOM tree; tell html2canvas
+          // to use the iframe's own window/document so layout measurements
+          // are correct.
+          windowWidth: 960,
+          windowHeight: target.scrollHeight,
+        });
+
+        canvas.toBlob((blob) => {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          if (!blob) return reject(new Error('canvas.toBlob returned null'));
+          if (blob.size < MIN_BLOB_BYTES) {
+            return reject(new Error(`html2canvas blob too small (${blob.size} bytes)`));
+          }
+          resolve(blob);
+        }, 'image/png');
+      } catch (e) {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        reject(e as Error);
+      }
+    };
+
+    document.body.appendChild(iframe);
+  });
+}
+
+/** Secondary provider — thum.io, free but quota-limited on the free tier. */
 async function fetchFromThumio(resourceId: string): Promise<Blob> {
   const targetUrl = cardPreviewUrl(resourceId);
   let lastError: Error | null = null;
@@ -89,22 +195,46 @@ async function fetchFromMicrolink(resourceId: string): Promise<Blob> {
 }
 
 /**
- * Screenshot the card preview page and return the raw PNG bytes. Tries
- * thum.io first; falls back to Microlink if thum.io is throttling (returns
- * its "Image not authorized" placeholder) or otherwise fails.
+ * Three-tier capture pipeline:
+ *
+ *   1. html2canvas (client-side, no rate limits, no external service) — the
+ *      reliable primary. Requires the admin tab to be open (always true
+ *      when we're regen'ing after a resource save from admin).
+ *   2. thum.io — secondary. Free tier has a daily quota; when exceeded it
+ *      returns a ~22KB "Image not authorized" placeholder.
+ *   3. Microlink — tertiary. Free tier allows ~50 req/day; 429 after that.
+ *
+ * Any provider that throws drops through to the next. The combined message
+ * preserves all three errors so you can tell from the console which layer
+ * failed.
  */
 async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
+  let h2cErr: Error | null = null;
+  let thumioErr: Error | null = null;
+
+  try {
+    return await fetchFromHtml2Canvas(resourceId);
+  } catch (e) {
+    h2cErr = e as Error;
+    console.warn(`[cardScreenshot] html2canvas failed for ${resourceId}, falling back to thum.io:`, h2cErr.message);
+  }
+
   try {
     return await fetchFromThumio(resourceId);
-  } catch (thumioErr) {
-    try {
-      return await fetchFromMicrolink(resourceId);
-    } catch (microlinkErr) {
-      throw new Error(
-        `Both providers failed. thum.io: ${(thumioErr as Error).message}. ` +
-        `microlink: ${(microlinkErr as Error).message}`
-      );
-    }
+  } catch (e) {
+    thumioErr = e as Error;
+    console.warn(`[cardScreenshot] thum.io failed for ${resourceId}, falling back to Microlink:`, thumioErr.message);
+  }
+
+  try {
+    return await fetchFromMicrolink(resourceId);
+  } catch (mlErr) {
+    throw new Error(
+      `All three providers failed. ` +
+      `html2canvas: ${h2cErr?.message}. ` +
+      `thum.io: ${thumioErr?.message}. ` +
+      `microlink: ${(mlErr as Error).message}`
+    );
   }
 }
 
