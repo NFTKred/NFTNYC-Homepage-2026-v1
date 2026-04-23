@@ -302,6 +302,8 @@ export default function Admin() {
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
   const [shootingId, setShootingId] = useState<string | null>(null);
   const [batchShooting, setBatchShooting] = useState<{ done: number; total: number } | null>(null);
+  const [findingForSpeakerId, setFindingForSpeakerId] = useState<string | null>(null);
+  const [findResult, setFindResult] = useState<{ speakerId: string; message: string; tone: 'ok' | 'warn' | 'err' } | null>(null);
 
   /* ─── CRM email auto-lookup (persists results to Supabase) ─── */
   const lookupSpeakerEmails = useCallback(async (speakerList: Speaker[]) => {
@@ -471,6 +473,39 @@ export default function Admin() {
       setSeekResult(`Exception: ${err.message || String(err)}`);
     } finally {
       setSeeking(false);
+    }
+  };
+
+  /* ─── Per-speaker resource finder (Perplexity web search) ─── */
+  const handleFindResourceForSpeaker = async (speakerId: string) => {
+    setFindingForSpeakerId(speakerId);
+    setFindResult(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('find-resource-for-speaker', {
+        body: { speakerId },
+      });
+      if (error) {
+        setFindResult({ speakerId, message: `Error: ${error.message || JSON.stringify(error)}`, tone: 'err' });
+      } else if (data?.status === 'linked' || data?.status === 'linked_resource_only') {
+        setFindResult({ speakerId, message: 'Found — review in Pending Review', tone: 'ok' });
+      } else if (data?.status === 'already_linked') {
+        setFindResult({ speakerId, message: 'Already linked', tone: 'warn' });
+      } else if (data?.status === 'not_found') {
+        setFindResult({ speakerId, message: 'No resource found', tone: 'warn' });
+      } else if (data?.error) {
+        setFindResult({ speakerId, message: `Error: ${data.error}`, tone: 'err' });
+      } else {
+        setFindResult({ speakerId, message: 'Unexpected response', tone: 'err' });
+      }
+      queryClient.invalidateQueries({ queryKey: ['admin-resources'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-speakers'] });
+    } catch (err: any) {
+      setFindResult({ speakerId, message: `Exception: ${err.message || String(err)}`, tone: 'err' });
+    } finally {
+      setFindingForSpeakerId(null);
+      setTimeout(() => {
+        setFindResult(prev => (prev && prev.speakerId === speakerId ? null : prev));
+      }, 5000);
     }
   };
 
@@ -1064,6 +1099,38 @@ export default function Admin() {
                         <option value="" style={{ background: '#1a1a2e' }}>—</option>
                         {verticalResources.map(r => <option key={r.id} value={r.id} style={{ background: '#1a1a2e' }}>{r.title}</option>)}
                       </select>
+                      {!s.related_resource_id && (
+                        <div style={{ marginTop: '4px' }}>
+                          <button
+                            onClick={() => handleFindResourceForSpeaker(s.id)}
+                            disabled={findingForSpeakerId === s.id}
+                            title="Search the web for a resource by or featuring this speaker"
+                            style={{
+                              background: 'rgba(139,92,246,0.12)',
+                              border: 'none',
+                              color: '#8B5CF6',
+                              cursor: findingForSpeakerId === s.id ? 'wait' : 'pointer',
+                              padding: '3px 6px',
+                              borderRadius: '4px',
+                              fontSize: '10px',
+                              fontWeight: 600,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}
+                          >
+                            {findingForSpeakerId === s.id ? <Loader2 size={10} className="animate-spin" /> : <Search size={10} />}
+                            {findingForSpeakerId === s.id ? 'Searching…' : 'Find Resource'}
+                          </button>
+                          {findResult?.speakerId === s.id && (
+                            <div style={{
+                              marginTop: '3px',
+                              fontSize: '10px',
+                              color: findResult.tone === 'ok' ? '#10B981' : findResult.tone === 'warn' ? '#F59E0B' : '#EF4444',
+                            }}>{findResult.message}</div>
+                          )}
+                        </div>
+                      )}
                     </td>
                     <td style={cellStyle}>
                       {s.resource_relationship ? (
