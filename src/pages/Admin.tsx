@@ -485,7 +485,18 @@ export default function Admin() {
         body: { speakerId },
       });
       if (error) {
-        setFindResult({ speakerId, message: `Error: ${error.message || JSON.stringify(error)}`, tone: 'err' });
+        // Supabase wraps non-2xx responses in a FunctionsHttpError whose `context`
+        // is the underlying Response — read its body so the user sees why.
+        let detail = error.message || 'Unknown error';
+        try {
+          const ctx: any = (error as any).context;
+          if (ctx && typeof ctx.text === 'function') {
+            const body = await ctx.text();
+            if (body) detail = body.length > 300 ? body.slice(0, 300) + '…' : body;
+          }
+        } catch { /* ignore */ }
+        console.error('find-resource-for-speaker error:', error, 'body:', detail);
+        setFindResult({ speakerId, message: `Error: ${detail}`, tone: 'err' });
       } else if (data?.status === 'linked' || data?.status === 'linked_resource_only') {
         setFindResult({ speakerId, message: 'Found — review in Pending Review', tone: 'ok' });
       } else if (data?.status === 'already_linked') {
