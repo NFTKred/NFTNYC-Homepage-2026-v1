@@ -72,7 +72,15 @@ serve(async (req) => {
 
     const handleHint = speaker.handle ? `, X/Twitter handle @${speaker.handle}` : '';
     const systemPrompt = `You are a research assistant finding a single high-quality resource about NFTs, digital ownership, tokenization, or Web3 that prominently features a specific person. Return ONLY a valid JSON object, or the literal word null. No markdown, no prose.`;
-    const userPrompt = `Find the single best, credible, recent (ideally within the last 18 months) resource about NFTs, digital ownership, tokenization, or Web3 that is AUTHORED BY, INTERVIEWING, QUOTING, or PROMINENTLY FEATURING ${speaker.name} (${speaker.role})${handleHint}.
+    const today = new Date();
+    const maxAgeDays = 365;
+    const oldestAllowed = new Date(today.getTime() - maxAgeDays * 24 * 60 * 60 * 1000);
+    const oldestAllowedISO = oldestAllowed.toISOString().slice(0, 10);
+    const todayISO = today.toISOString().slice(0, 10);
+
+    const userPrompt = `Find the single best, credible resource about NFTs, digital ownership, tokenization, or Web3 that is AUTHORED BY, INTERVIEWING, QUOTING, or PROMINENTLY FEATURING ${speaker.name} (${speaker.role})${handleHint}.
+
+HARD DATE REQUIREMENT: The resource's publication date MUST be between ${oldestAllowedISO} and ${todayISO} (within the last 12 months). Prefer resources from the last 6 months when available. Do NOT return anything older than ${oldestAllowedISO} — if no qualifying recent resource exists, return null instead.
 
 The person must appear clearly in the content — the resource should be about them or by them, not just a passing mention.
 
@@ -82,14 +90,14 @@ Return exactly ONE JSON object with this shape:
   "title": "string — article/video/podcast title",
   "url": "string — full URL",
   "type": "blog" | "youtube" | "podcast" | "tweet" | "paper" | "news",
-  "date": "YYYY-MM-DD publication date",
+  "date": "YYYY-MM-DD publication date (MUST be ${oldestAllowedISO} or later)",
   "source": "string — publisher name (e.g. CoinDesk, Forbes)",
   "topic_tag": "string — short tag describing the NFT/Web3 topic",
   "description": "string — 1-2 sentences on how this relates to NFTs/Web3 and the speaker's role in it",
   "resource_relationship": "authored" | "mentioned" | "interviewed" | "quoted" | "topic_expert"
 }
 
-If you cannot find a credible, specific resource that clearly features this person in an NFT/Web3 context, return exactly: null
+If you cannot find a credible, specific resource published on or after ${oldestAllowedISO} that clearly features this person in an NFT/Web3 context, return exactly: null
 
 Return ONLY the JSON object or the word null. No other text, no markdown.`;
 
@@ -132,6 +140,19 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
 
     if (!parsed.url || !parsed.title) {
       return jsonResponse({ status: 'not_found', reason: 'incomplete_result', raw: parsed });
+    }
+
+    // Hard date guard: reject anything older than maxAgeDays. Perplexity sometimes
+    // ignores date constraints in the prompt and returns stale content.
+    const parsedDate = parsed.date ? new Date(parsed.date) : null;
+    if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate < oldestAllowed) {
+      return jsonResponse({
+        status: 'not_found',
+        reason: 'result_too_old',
+        oldestAllowed: oldestAllowedISO,
+        resultDate: parsed.date ?? null,
+        raw: parsed,
+      });
     }
 
     const serviceClient = createClient(
