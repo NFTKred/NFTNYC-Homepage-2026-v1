@@ -56,8 +56,11 @@ serve(async (req) => {
       return jsonResponse({ error: 'Missing speakerId' }, 400);
     }
 
+    const geminiKey = Deno.env.get('GEMINI_API_KEY');
     const perplexityKey = Deno.env.get('PERPLEXITY_API_KEY');
-    if (!perplexityKey) return jsonResponse({ error: 'PERPLEXITY_API_KEY not configured' }, 500);
+    if (!geminiKey && !perplexityKey) {
+      return jsonResponse({ error: 'No search API key configured (need GEMINI_API_KEY or PERPLEXITY_API_KEY)' }, 500);
+    }
 
     const { data: speaker, error: spkErr } = await supabase
       .from('speakers')
@@ -101,36 +104,75 @@ If you cannot find a credible, specific resource published on or after ${oldestA
 
 Return ONLY the JSON object or the word null. No other text, no markdown.`;
 
-    const perplexityRes = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${perplexityKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'sonar',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        max_tokens: 1500,
-        temperature: 0.1,
-      }),
-    });
-
-    if (!perplexityRes.ok) {
-      const errText = await perplexityRes.text();
-      console.error('Perplexity API error:', perplexityRes.status, errText);
-      return jsonResponse({ error: 'Perplexity API error', status: perplexityRes.status, details: errText }, 502);
+    async function callGemini(): Promise<{ ok: true; text: string } | { ok: false; status: number; error: string }> {
+      if (!geminiKey) return { ok: false, status: 0, error: 'GEMINI_API_KEY not configured' };
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(geminiKey)}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          tools: [{ google_search: {} }],
+          generationConfig: { temperature: 0.1, maxOutputTokens: 1500 },
+        }),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        return { ok: false, status: res.status, error: errText };
+      }
+      const data = await res.json();
+      const parts = data?.candidates?.[0]?.content?.parts ?? [];
+      const text = parts.map((p: any) => p?.text ?? '').join('').trim();
+      if (!text) return { ok: false, status: 200, error: 'empty_response' };
+      return { ok: true, text };
     }
 
-    const perplexityData = await perplexityRes.json();
-    const responseText = (perplexityData?.choices?.[0]?.message?.content ?? '').trim();
-
-    if (!responseText) {
-      console.error('Perplexity returned no content:', JSON.stringify(perplexityData).slice(0, 500));
-      return jsonResponse({ status: 'not_found', reason: 'empty_model_response' });
+    async function callPerplexity(): Promise<{ ok: true; text: string } | { ok: false; status: number; error: string }> {
+      if (!perplexityKey) return { ok: false, status: 0, error: 'PERPLEXITY_API_KEY not configured' };
+      const res = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${perplexityKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'sonar',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+          max_tokens: 1500,
+          temperature: 0.1,
+        }),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        return { ok: false, status: res.status, error: errText };
+      }
+      const data = await res.json();
+      const text = (data?.choices?.[0]?.message?.content ?? '').trim();
+      if (!text) return { ok: false, status: 200, error: 'empty_response' };
+      return { ok: true, text };
     }
+
+    // Try Gemini first (free tier), fall back to Perplexity on any failure.
+    let providerUsed = 'gemini';
+    let result = await callGemini();
+    if (!result.ok) {
+      console.warn('Gemini failed, falling back to Perplexity:', result.status, result.error?.slice?.(0, 200));
+      providerUsed = 'perplexity';
+      result = await callPerplexity();
+    }
+
+    if (!result.ok) {
+      console.error('Both providers failed. Perplexity:', result.status, result.error);
+      return jsonResponse({
+        error: 'Search provider error',
+        provider: providerUsed,
+        status: result.status,
+        details: result.error,
+      }, 502);
+    }
+
+    const responseText = result.text;
 
     const parsed = extractJsonObject(responseText);
 
