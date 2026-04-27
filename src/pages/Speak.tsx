@@ -340,7 +340,7 @@ export default function Speak() {
       <section style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
         <p style={sectionLabel}>Submissions are in rounds</p>
         <h2 style={sectionHeading}>
-          Round 1 is <span style={rainbowText}>open now</span>
+          Round 1 closes <span style={rainbowText}>April 30</span>
         </h2>
         <p style={sectionSub}>
           Early applicants get seen first. Each round closes before the next opens — don't wait.
@@ -348,174 +348,73 @@ export default function Speak() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: '1fr',
           gap: '1rem',
-          maxWidth: '900px',
+          maxWidth: '720px',
           margin: '0 auto',
         }} className="speak-rounds-grid">
-          {/* Round 1 */}
+          {/* Round 1 — only round currently shown. Round 2 and Round 3
+              cards intentionally hidden until those windows open. */}
           <div style={{
             ...cardStyle,
             borderColor: '#10B981',
             position: 'relative',
             overflow: 'hidden',
+            padding: '40px 36px',
           }}>
             <div style={{
               position: 'absolute',
               top: 0,
               left: 0,
               right: 0,
-              height: '3px',
+              height: '4px',
               background: '#10B981',
             }} />
             <div style={{
               display: 'inline-block',
-              fontSize: '10px',
+              fontSize: '11px',
               fontWeight: 700,
-              letterSpacing: '2px',
+              letterSpacing: '2.5px',
               textTransform: 'uppercase',
               color: '#fff',
               background: '#10B981',
-              padding: '4px 10px',
+              padding: '6px 14px',
               borderRadius: '4px',
-              marginBottom: '1rem',
+              marginBottom: '1.5rem',
             }}>Open now</div>
             <h3 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '22px',
+              fontSize: '32px',
               fontWeight: 700,
               color: '#fff',
               textTransform: 'uppercase',
               letterSpacing: '-0.5px',
-              marginBottom: '0.5rem',
+              marginBottom: '0.75rem',
             }}>Round 1</h3>
             <p style={{
               fontFamily: 'var(--font-body)',
-              fontSize: '32px',
+              fontSize: '52px',
               fontWeight: 700,
               color: '#10B981',
-              lineHeight: 1.1,
-              marginBottom: '0.5rem',
+              lineHeight: 1.05,
+              marginBottom: '1rem',
             }}>April 8 – 30</p>
             <p style={{
               fontFamily: 'var(--font-body)',
-              fontSize: '13px',
+              fontSize: '15px',
               color: 'rgb(149, 149, 176)',
-              lineHeight: 1.5,
-              marginBottom: '1rem',
+              lineHeight: 1.6,
+              marginBottom: '1.75rem',
+              maxWidth: '560px',
             }}>Submit now to be in the first group reviewed. Round 1 voting opens May 1.</p>
             <button
               onClick={() => setShowModal(true)}
-              style={{ ...ctaGradientStyle, padding: '10px 24px', fontSize: '14px', width: '100%', justifyContent: 'center' }}
+              style={{ ...ctaGradientStyle, padding: '14px 32px', fontSize: '15px' }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               Apply now
             </button>
-          </div>
-
-          {/* Round 2 */}
-          <div style={{
-            ...cardStyle,
-            position: 'relative',
-            overflow: 'hidden',
-            opacity: 0.6,
-          }}>
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '3px',
-              background: '#06B6D4',
-            }} />
-            <div style={{
-              display: 'inline-block',
-              fontSize: '10px',
-              fontWeight: 700,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: 'rgb(90, 90, 117)',
-              background: 'rgba(255,255,255,0.06)',
-              padding: '4px 10px',
-              borderRadius: '4px',
-              marginBottom: '1rem',
-            }}>Coming soon</div>
-            <h3 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '22px',
-              fontWeight: 700,
-              color: '#fff',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.5px',
-              marginBottom: '0.5rem',
-            }}>Round 2</h3>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '32px',
-              fontWeight: 700,
-              color: '#06B6D4',
-              lineHeight: 1.1,
-              marginBottom: '0.5rem',
-            }}>May</p>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '13px',
-              color: 'rgb(149, 149, 176)',
-              lineHeight: 1.5,
-            }}>Second submission window. Round 1 applicants have the advantage — don't wait.</p>
-          </div>
-
-          {/* Round 3 */}
-          <div style={{
-            ...cardStyle,
-            position: 'relative',
-            overflow: 'hidden',
-            opacity: 0.4,
-          }}>
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '3px',
-              background: '#8B5CF6',
-            }} />
-            <div style={{
-              display: 'inline-block',
-              fontSize: '10px',
-              fontWeight: 700,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: 'rgb(90, 90, 117)',
-              background: 'rgba(255,255,255,0.06)',
-              padding: '4px 10px',
-              borderRadius: '4px',
-              marginBottom: '1rem',
-            }}>Coming later</div>
-            <h3 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '22px',
-              fontWeight: 700,
-              color: '#fff',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.5px',
-              marginBottom: '0.5rem',
-            }}>Round 3</h3>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '32px',
-              fontWeight: 700,
-              color: '#8B5CF6',
-              lineHeight: 1.1,
-              marginBottom: '0.5rem',
-            }}>June</p>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '13px',
-              color: 'rgb(149, 149, 176)',
-              lineHeight: 1.5,
-            }}>Final submission window. Remaining slots only. Early rounds have higher selection rates.</p>
           </div>
         </div>
 
