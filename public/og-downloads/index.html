@@ -192,29 +192,53 @@
 
 <script>
   const VERTICALS = [
-    { id: 'ai',           name: 'AI Identity Tokenization',       color: '#3B82F6' },
-    { id: 'gaming',       name: 'Game Tokenization',              color: '#8B5CF6' },
-    { id: 'infra',        name: 'On-Chain Infrastructure',        color: '#06B6D4' },
-    { id: 'social',       name: 'Social NFTs',                    color: '#EC4899' },
-    { id: 'creator',      name: 'Creator Economy',                color: '#F59E0B' },
-    { id: 'defi',         name: 'DeFi',                           color: '#10B981' },
-    { id: 'rwa',          name: 'RWA Tokenization',               color: '#EF4444' },
-    { id: 'brands',       name: 'Brands & Engagement',            color: '#F97316' },
-    { id: 'culture',      name: 'Culture, Art & Music',           color: '#D946EF' },
-    { id: 'domains',      name: 'DNS ENS Domain Tokens',          color: '#14B8A6' },
-    { id: 'desci',        name: 'DeSci · Longevity',              color: '#84CC16' },
-    { id: 'marketplaces', name: 'NFT Marketplaces',               color: '#38BDF8' },
+    { id: 'ai',           slug: 'ai',           name: 'AI Identity Tokenization',       path: '/ai',           color: '#3B82F6' },
+    { id: 'gaming',       slug: 'gaming',       name: 'Game Tokenization',              path: '/gaming',       color: '#8B5CF6' },
+    { id: 'infra',        slug: 'infra',        name: 'On-Chain Infrastructure',        path: '/infra',        color: '#06B6D4' },
+    { id: 'social',       slug: 'social',       name: 'Social NFTs',                    path: '/social',       color: '#EC4899' },
+    { id: 'creator',      slug: 'creator',      name: 'Creator Economy',                path: '/creator',      color: '#F59E0B' },
+    { id: 'defi',         slug: 'defi',         name: 'DeFi',                           path: '/defi',         color: '#10B981' },
+    { id: 'rwa',          slug: 'rwa',          name: 'RWA Tokenization',               path: '/rwa',          color: '#EF4444' },
+    { id: 'brands',       slug: 'brands',       name: 'Brands & Engagement',            path: '/brands',       color: '#F97316' },
+    { id: 'culture',      slug: 'culture',      name: 'Culture, Art & Music',           path: '/culture',      color: '#D946EF' },
+    { id: 'domains',      slug: 'domains',      name: 'DNS ENS Domain Tokens',          path: '/domains',      color: '#14B8A6' },
+    { id: 'desci',        slug: 'desci',        name: 'DeSci · Longevity',              path: '/desci',        color: '#84CC16' },
+    { id: 'marketplaces', slug: 'marketplaces', name: 'NFT Marketplaces',               path: '/marketplaces', color: '#38BDF8' },
+  ];
+
+  const PAGES = [
+    { id: 'speak',                slug: 'speak',                name: 'Speak at NFT.NYC',                       path: '/speak',                color: '#10B981' },
+    { id: 'sponsor',              slug: 'sponsor',              name: 'Partner with NFT.NYC',                   path: '/sponsor',              color: '#f06347' },
+    { id: 'sponsor-ts-challenge', slug: 'sponsor-ts-challenge', name: 'TS Challenge — Sponsors',                path: '/sponsor/ts-challenge', color: '#f06347' },
+    { id: 'ts-challenge',         slug: 'ts-challenge',         name: 'Times Square Challenge',                 path: '/ts-challenge',         color: '#f06347' },
+    { id: 'blog',                 slug: 'blog',                 name: 'NFT.NYC Blog',                           path: '/blog',                 color: '#f06347' },
+    { id: 'blog-xp-kredits',      slug: 'blog-xp-kredits',      name: 'Blog · What are XP & Kredits?',          path: '/blog/xp-and-kredits',  color: '#f06347' },
+    { id: 'blog-ts-challenge',    slug: 'blog-ts-challenge',    name: 'Blog · TS Challenge explained',          path: '/blog/ts-challenge',    color: '#f06347' },
+    { id: 'journey',              slug: 'journey',              name: 'Our Story',                              path: '/journey',              color: '#f06347' },
+    { id: 'ts-optout',            slug: 'ts-optout',            name: 'TS Challenge Art Opt-Out',               path: '/ts-optout',            color: '#EF4444' },
+  ];
+
+  const ALL = [
+    { groupName: 'Industry Verticals', items: VERTICALS },
+    { groupName: 'Site Pages',         items: PAGES },
   ];
 
   const grid = document.getElementById('grid');
-  for (const v of VERTICALS) {
+  function renderGroup(group) {
+    const heading = document.createElement('h2');
+    heading.textContent = group.groupName;
+    heading.style.cssText = 'font-family:"Arial Black",sans-serif;font-weight:900;font-size:18px;letter-spacing:0.04em;text-transform:uppercase;color:var(--coral);margin:8px 0 4px;padding:0 4px;';
+    grid.appendChild(heading);
+    for (const v of group.items) renderCard(v);
+  }
+  function renderCard(v) {
     const el = document.createElement('section');
     el.className = 'vertical';
     el.innerHTML = `
       <header class="v-header">
         <div>
           <h2>${v.name}</h2>
-          <div class="slug">nft.nyc/${v.id}</div>
+          <div class="slug">nft.nyc${v.path}</div>
         </div>
         <div class="swatch" style="background:${v.color}; color:${v.color};"></div>
       </header>
@@ -241,6 +265,7 @@
     `;
     grid.appendChild(el);
   }
+  for (const g of ALL) renderGroup(g);
 </script>
 
 </body>

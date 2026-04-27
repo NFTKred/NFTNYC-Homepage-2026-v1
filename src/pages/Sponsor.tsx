@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import PageMeta from "@/components/PageMeta";
 import SponsorHeader from "@/components/sponsor/SponsorHeader";
 import PackageCard from "@/components/sponsor/PackageCard";
 import AlaCarteCard from "@/components/sponsor/AlaCarteCard";
@@ -77,6 +78,7 @@ export default function Sponsor() {
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <PageMeta page="sponsor" />
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <SponsorHeader />

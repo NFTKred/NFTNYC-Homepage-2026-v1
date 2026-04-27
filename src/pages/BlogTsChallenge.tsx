@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import PageMeta from '@/components/PageMeta';
 
 const heading: React.CSSProperties = {
   fontFamily: 'var(--font-display)',
@@ -78,6 +79,7 @@ export default function BlogTsChallenge() {
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <PageMeta page="blog-ts-challenge" />
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <article style={{ padding: 'calc(4rem + 56px) 1.5rem 4rem' }}>

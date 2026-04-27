@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import PageMeta from '@/components/PageMeta';
 import {
   Megaphone,
   Award,
@@ -262,6 +263,7 @@ export default function Speak() {
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <PageMeta page="speak" />
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       {/* ─── HERO ─── */}

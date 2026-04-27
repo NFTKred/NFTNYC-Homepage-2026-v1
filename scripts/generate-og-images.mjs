@@ -26,9 +26,20 @@ const OUT_DIR = join(PUBLIC_DIR, "og");
 
 if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
 
-const SLUGS = [
+// Industry verticals — already wired up via /og/<slug>.png on each
+// /<vertical> route's meta tags.
+const VERTICAL_SLUGS = [
   "ai", "gaming", "infra", "social", "creator", "defi",
   "rwa", "brands", "culture", "domains", "desci", "marketplaces",
+];
+
+// Non-vertical site pages (/speak, /sponsor, /journey, etc.). Same image
+// pipeline; rendered with type=page so the template uses the per-page
+// eyebrow + url path instead of the vertical lookup.
+const PAGE_SLUGS = [
+  "speak", "sponsor", "sponsor-ts-challenge", "ts-challenge",
+  "blog", "blog-xp-kredits", "blog-ts-challenge",
+  "journey", "ts-optout",
 ];
 
 const MIME = {
@@ -67,14 +78,15 @@ function startServer(port = 4901) {
   });
 }
 
-async function screenshotOne(browser, baseUrl, slug, format) {
+async function screenshotOne(browser, baseUrl, slug, format, type) {
   const { width, height } = format === "square"
     ? { width: 1080, height: 1080 }
     : { width: 1200, height: 630 };
 
   const page = await browser.newPage();
   await page.setViewport({ width, height, deviceScaleFactor: 1 });
-  const target = `${baseUrl}/og-render/?slug=${slug}&format=${format}`;
+  const typeParam = type ? `&type=${type}` : "";
+  const target = `${baseUrl}/og-render/?slug=${slug}&format=${format}${typeParam}`;
   await page.goto(target, { waitUntil: "networkidle0" });
   // The render page flips data-ready="1" when fonts + logo have loaded.
   await page.waitForSelector("html[data-ready='1']", { timeout: 10_000 });
@@ -101,14 +113,17 @@ async function main() {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
+  const tasks = [
+    ...VERTICAL_SLUGS.flatMap(s => ["landscape", "square"].map(f => ({ slug: s, format: f, type: "vertical" }))),
+    ...PAGE_SLUGS.flatMap(s => ["landscape", "square"].map(f => ({ slug: s, format: f, type: "page" }))),
+  ];
+
   try {
     let count = 0;
-    for (const slug of SLUGS) {
-      for (const format of ["landscape", "square"]) {
-        process.stdout.write(`  [${++count}/${SLUGS.length * 2}] ${slug} (${format}) ... `);
-        const out = await screenshotOne(browser, baseUrl, slug, format);
-        console.log("✓ " + out.replace(ROOT + "/", ""));
-      }
+    for (const t of tasks) {
+      process.stdout.write(`  [${++count}/${tasks.length}] ${t.type.padEnd(8)} ${t.slug} (${t.format}) ... `);
+      const out = await screenshotOne(browser, baseUrl, t.slug, t.format, t.type);
+      console.log("✓ " + out.replace(ROOT + "/", ""));
     }
   } finally {
     await browser.close();

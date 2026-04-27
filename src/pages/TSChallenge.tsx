@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import useScrollReveal from '@/hooks/useScrollReveal';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import PageMeta from '@/components/PageMeta';
 import NewsletterCapture from '@/components/NewsletterCapture';
 
 /* ============================================================
@@ -281,6 +282,7 @@ export default function TSChallenge() {
 
   return (
     <div data-theme={theme} style={{ background: 'var(--color-bg)', minHeight: '100dvh' }}>
+      <PageMeta page="ts-challenge" />
       <SiteHeader theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <main id="main">

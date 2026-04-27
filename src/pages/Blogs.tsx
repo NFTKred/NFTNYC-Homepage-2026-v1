@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import PageMeta from '@/components/PageMeta';
 import { FileText } from 'lucide-react';
 
 interface BlogPost {
@@ -66,6 +67,7 @@ export default function Blogs() {
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <PageMeta page="blog" />
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <section style={{ padding: '160px 32px 80px', maxWidth: '900px', margin: '0 auto' }}>

@@ -1,22 +1,25 @@
 #!/usr/bin/env node
 /**
- * Post-build prerender for industry vertical pages.
+ * Post-build prerender for industry verticals AND non-vertical site pages.
  *
  * React-helmet-async only injects meta tags client-side, but most social
  * crawlers (Twitter/X, Facebook, LinkedIn, Slack, Discord) don't execute JS.
  * They need the og:* / twitter:* tags to be present in the initial HTML
  * response — or the shared URL will unfurl to a generic homepage preview.
  *
- * This script runs after `vite build`. For each vertical it:
+ * This script runs after `vite build`. For each entry it:
  *   1. Reads the built dist/index.html
- *   2. Injects a per-vertical <title>, <meta name="description">, and full set
- *      of Open Graph + Twitter Card tags into <head>
- *   3. Writes dist/<slug>/index.html
+ *   2. Injects per-page <title>, <meta name="description">, canonical, and
+ *      full Open Graph + Twitter Card tags into <head>
+ *   3. Writes dist/<route>/index.html
  *
- * Vercel will serve the prerendered file for `/ai`, `/defi`, etc. (nested
- * index.html takes priority over the SPA catch-all rewrite). The React app
- * hydrates on top and continues to work normally; Helmet keeps tags in sync
- * during client-side navigation.
+ * Vercel will serve the prerendered file directly for `/ai`, `/speak`,
+ * `/sponsor/ts-challenge`, etc. (nested index.html takes priority over the
+ * SPA catch-all rewrite). The React app hydrates on top and continues to
+ * work normally; Helmet keeps tags in sync during client-side navigation.
+ *
+ * Adding a route: add an entry to VERTICALS or PAGES below. The PAGES list
+ * mirrors src/data/pageMeta.ts — keep them in sync.
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
@@ -48,6 +51,21 @@ const VERTICALS = [
   { id: "marketplaces", name: "NFT Marketplaces",               desc: "Marketplace infrastructure, royalty systems, creator coin models, and new distribution mechanisms." },
 ];
 
+// Non-vertical site pages. Mirrors src/data/pageMeta.ts — keep in sync.
+// `route` is the URL path (used for canonical + dist directory layout);
+// `slug` is the OG image filename stem (/og/<slug>.png).
+const PAGES = [
+  { route: "/speak",                slug: "speak",                title: "Speak at NFT.NYC 2026 — Share your voice",                       desc: "Submit your talk for keynotes, panels, and fireside chats across 12 industry tracks. Round 1 of speaker submissions closes 30 April." },
+  { route: "/sponsor",              slug: "sponsor",              title: "Partner with NFT.NYC 2026",                                       desc: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track." },
+  { route: "/sponsor/ts-challenge", slug: "sponsor-ts-challenge", title: "Times Square Challenge — NFT.NYC 2026 Partnerships",              desc: "Showcase your brand on Times Square's biggest screens during NFT.NYC 2026. 1.5M daily impressions, integrated into the on-chain art exhibition." },
+  { route: "/ts-challenge",         slug: "ts-challenge",         title: "Times Square Challenge — NFT.NYC 2026",                           desc: "An on-chain art exhibition broadcasting from Times Square's iconic screens. Collect limited-edition art, earn T-XP, climb the leaderboard." },
+  { route: "/blog",                 slug: "blog",                 title: "Blog — NFT.NYC 2026",                                              desc: "Industry analysis, event updates, and stories from the on-chain frontier." },
+  { route: "/blog/xp-and-kredits",  slug: "blog-xp-kredits",      title: "What are XP & Kredits? — NFT.NYC Blog",                            desc: "How hub-branded points and Kredits power the NFT.NYC community and reward builders, brands, and creators." },
+  { route: "/blog/ts-challenge",    slug: "blog-ts-challenge",    title: "What is the Times Square Challenge? — NFT.NYC Blog",               desc: "How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square's biggest screens." },
+  { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community." },
+  { route: "/ts-optout",            slug: "ts-optout",            title: "Times Square Challenge Art Opt-Out — NFT.NYC",                     desc: "Request removal of your NFT collection from the Times Square Challenge exhibition." },
+];
+
 const ORIGIN = "https://www.nft.nyc";
 
 function clamp(s, n = 160) {
@@ -63,33 +81,29 @@ function escapeHtml(s) {
     .replace(/'/g, "&#39;");
 }
 
-function buildHead(v) {
-  const title = `${v.name} · NFT.NYC 2026`;
-  const desc = clamp(v.desc);
-  const url = `${ORIGIN}/${v.id}`;
-  const ogImage = `${ORIGIN}/og/${v.id}.png`;
+function buildHead({ title, desc, url, ogImage, alt }) {
+  const cleanDesc = clamp(desc);
   return [
     `<title>${escapeHtml(title)}</title>`,
-    `<meta name="description" content="${escapeHtml(desc)}">`,
+    `<meta name="description" content="${escapeHtml(cleanDesc)}">`,
     `<link rel="canonical" href="${url}">`,
     `<meta property="og:type" content="website">`,
     `<meta property="og:site_name" content="NFT.NYC 2026">`,
     `<meta property="og:title" content="${escapeHtml(title)}">`,
-    `<meta property="og:description" content="${escapeHtml(desc)}">`,
+    `<meta property="og:description" content="${escapeHtml(cleanDesc)}">`,
     `<meta property="og:url" content="${url}">`,
     `<meta property="og:image" content="${ogImage}">`,
     `<meta property="og:image:width" content="1200">`,
     `<meta property="og:image:height" content="630">`,
-    `<meta property="og:image:alt" content="${escapeHtml(v.name + " — NFT.NYC 2026")}">`,
+    `<meta property="og:image:alt" content="${escapeHtml(alt)}">`,
     `<meta name="twitter:card" content="summary_large_image">`,
     `<meta name="twitter:title" content="${escapeHtml(title)}">`,
-    `<meta name="twitter:description" content="${escapeHtml(desc)}">`,
+    `<meta name="twitter:description" content="${escapeHtml(cleanDesc)}">`,
     `<meta name="twitter:image" content="${ogImage}">`,
   ].join("\n    ");
 }
 
-function injectMeta(html, v) {
-  const head = buildHead(v);
+function injectMeta(html, headBlock) {
   // Strip the global homepage <title> and og: meta tags so ours replace them,
   // then inject our block immediately before </head>.
   let out = html;
@@ -98,7 +112,7 @@ function injectMeta(html, v) {
   out = out.replace(/<title>[\s\S]*?<\/title>/i, "");
 
   // Remove existing generic meta (description, og:*, twitter:*) so the
-  // vertical-specific ones in our injected block don't collide with the
+  // page-specific ones in our injected block don't collide with the
   // homepage defaults from index.html.
   out = out.replace(
     /<meta\s+(?:name|property)=["'](?:description|og:[^"']+|twitter:[^"']+)["'][^>]*>\s*/gi,
@@ -108,7 +122,7 @@ function injectMeta(html, v) {
   out = out.replace(/<link\s+rel=["']canonical["'][^>]*>\s*/gi, "");
 
   // Inject before </head>
-  out = out.replace(/<\/head>/i, `    ${head}\n  </head>`);
+  out = out.replace(/<\/head>/i, `    ${headBlock}\n  </head>`);
 
   return out;
 }
@@ -120,14 +134,38 @@ function main() {
   }
   const base = readFileSync(INDEX, "utf8");
   let written = 0;
+
+  // ── Industry verticals ───────────────────────────────────────────
   for (const v of VERTICALS) {
+    const head = buildHead({
+      title:   `${v.name} · NFT.NYC 2026`,
+      desc:    v.desc,
+      url:     `${ORIGIN}/${v.id}`,
+      ogImage: `${ORIGIN}/og/${v.id}.png`,
+      alt:     `${v.name} — NFT.NYC 2026`,
+    });
     const outDir = join(DIST, v.id);
     mkdirSync(outDir, { recursive: true });
-    const outHtml = injectMeta(base, v);
-    writeFileSync(join(outDir, "index.html"), outHtml);
+    writeFileSync(join(outDir, "index.html"), injectMeta(base, head));
     written++;
   }
-  console.log(`✔ prerendered ${written} vertical pages into dist/<slug>/index.html`);
+
+  // ── Non-vertical pages (/speak, /sponsor, /journey, etc.) ────────
+  for (const p of PAGES) {
+    const head = buildHead({
+      title:   p.title,
+      desc:    p.desc,
+      url:     `${ORIGIN}${p.route}`,
+      ogImage: `${ORIGIN}/og/${p.slug}.png`,
+      alt:     p.title,
+    });
+    // route "/sponsor/ts-challenge" → dist/sponsor/ts-challenge/index.html
+    const outDir = join(DIST, p.route.replace(/^\//, ""));
+    mkdirSync(outDir, { recursive: true });
+    writeFileSync(join(outDir, "index.html"), injectMeta(base, head));
+    written++;
+  }
+  console.log(`✔ prerendered ${written} pages (${VERTICALS.length} verticals + ${PAGES.length} site pages)`);
 }
 
 main();

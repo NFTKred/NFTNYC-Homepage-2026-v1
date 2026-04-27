@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import PageMeta from "@/components/PageMeta";
 import PackageInquiryModal, { type BasePackage as InquiryBasePackage } from "@/components/sponsor/PackageInquiryModal";
 import { MapPin, Mic, Users, Palette, Megaphone, Sparkles, Gift, Check } from "lucide-react";
 
@@ -119,6 +120,7 @@ export default function SponsorTSChallenge() {
 
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <PageMeta page="sponsor-ts-challenge" />
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       {/* ─── HERO ─── */}

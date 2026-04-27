@@ -268,6 +268,22 @@
   };
 
   // ========================================================================
+  // Non-vertical pages — /speak, /sponsor, /journey, /blog, etc.
+  // Same Design-C visual language as verticals; copy + icon per page.
+  // ========================================================================
+  const PAGES = {
+    'speak':                 { eyebrow: 'Speak at NFT.NYC 2026',   color: '#10B981', shape: 'mic',         h1: 'Share your voice',                       sub: 'Submit your talk for keynotes, panels, and fireside chats across 12 industry tracks.', urlPath: '/speak' },
+    'sponsor':               { eyebrow: 'Partnerships',            color: '#f06347', shape: 'partnership', h1: 'Partner with NFT.NYC',                   sub: 'Branded stages, speaking slots, activations, and Times Square billboards across every track.', urlPath: '/sponsor' },
+    'sponsor-ts-challenge':  { eyebrow: 'TS Challenge · Sponsors', color: '#f06347', shape: 'billboard',   h1: 'Be part of the TS Challenge',            sub: "Showcase your brand on Times Square's biggest screens — 1.5M daily impressions.", urlPath: '/sponsor/ts-challenge' },
+    'ts-challenge':          { eyebrow: 'On-chain art exhibition', color: '#f06347', shape: 'billboard',   h1: 'Times Square Challenge',                 sub: 'Collect limited-edition art from the NFT.NYC Community Artist Showcase. Earn T-XP, climb the leaderboard.', urlPath: '/ts-challenge' },
+    'blog':                  { eyebrow: 'Insights',                color: '#f06347', shape: 'article',     h1: 'The NFT.NYC Blog',                       sub: 'Industry analysis, event updates, and stories from the on-chain frontier.', urlPath: '/blog' },
+    'blog-xp-kredits':       { eyebrow: 'NFT.NYC Blog',            color: '#f06347', shape: 'article',     h1: 'What are XP & Kredits?',                 sub: 'How hub-branded points and Kredits power the NFT.NYC community.', urlPath: '/blog/xp-and-kredits' },
+    'blog-ts-challenge':     { eyebrow: 'NFT.NYC Blog',            color: '#f06347', shape: 'billboard',   h1: 'What is the Times Square Challenge?',    sub: 'How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art.', urlPath: '/blog/ts-challenge' },
+    'journey':               { eyebrow: 'Our story',               color: '#f06347', shape: 'timeline',    h1: 'The NFT.NYC Journey',                    sub: 'Eight years and 200,000+ alumni building the world\u2019s leading NFT and Web3 community.', urlPath: '/journey' },
+    'ts-optout':             { eyebrow: 'Times Square Challenge',  color: '#EF4444', shape: 'shield',      h1: 'Art Opt-Out',                            sub: 'Request removal of your NFT collection from the Times Square Challenge exhibition.', urlPath: '/ts-optout' },
+  };
+
+  // ========================================================================
   // Shape SVG content — ported from src/components/EcoIcon.tsx getShapeSvgString
   // ========================================================================
   function shapeSvg(shape, c) {
@@ -296,20 +312,98 @@
         return `<ellipse cx="160" cy="160" rx="110" ry="42" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.25"/><ellipse cx="160" cy="160" rx="42" ry="110" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.35"/><ellipse cx="160" cy="160" rx="95" ry="50" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.3" transform="rotate(45 160 160)"/><circle cx="270" cy="160" r="10" fill="${c}" opacity="0.8"/><circle cx="160" cy="50" r="8" fill="${c}" opacity="0.7"/><circle cx="95" cy="225" r="9" fill="${c}" opacity="0.75"/><circle cx="160" cy="160" r="22" fill="${c}" opacity="0.9"/><circle cx="160" cy="160" r="28" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.4"/>`;
       case 'helix':
         return `${Array.from({length:2},(_,strand)=>{const phase=strand*Math.PI;const pts=Array.from({length:40},(_,i)=>{const t=i/39;const y=50+t*220;const x=160+Math.sin(t*Math.PI*3+phase)*60;return `${x.toFixed(1)},${y.toFixed(1)}`}).join(' ');return `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="3" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>`}).join('')}${Array.from({length:8},(_,i)=>{const t=(i+0.5)/8;const y=50+t*220;const x1=160+Math.sin(t*Math.PI*3)*60;const x2=160+Math.sin(t*Math.PI*3+Math.PI)*60;return `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="1.5" opacity="0.35"/>`}).join('')}`;
+
+      // ── Page-specific shapes ──────────────────────────────────────────
+      case 'mic':
+        // Microphone: capsule head, bracket, stand, base, sound-wave arcs
+        return `
+          <path d="M 100 110 Q 80 110 80 140 Q 80 170 100 170" fill="none" stroke="${c}" stroke-width="3" opacity="0.4"/>
+          <path d="M 220 110 Q 240 110 240 140 Q 240 170 220 170" fill="none" stroke="${c}" stroke-width="3" opacity="0.4"/>
+          <rect x="135" y="50" width="50" height="120" rx="25" fill="${c}" opacity="0.85"/>
+          <rect x="135" y="80" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
+          <rect x="135" y="100" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
+          <rect x="135" y="120" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
+          <rect x="135" y="140" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
+          <path d="M 100 175 Q 100 200 160 200 Q 220 200 220 175" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>
+          <rect x="155" y="200" width="10" height="50" fill="${c}" opacity="0.6"/>
+          <rect x="120" y="248" width="80" height="14" rx="7" fill="${c}" opacity="0.7"/>
+        `;
+      case 'partnership':
+        // Two interlocking chain links — represents brand + event partnership
+        return `
+          <rect x="60"  y="120" width="120" height="80" rx="40" fill="none" stroke="${c}" stroke-width="6" opacity="0.55"/>
+          <rect x="140" y="120" width="120" height="80" rx="40" fill="none" stroke="${c}" stroke-width="6" opacity="0.85"/>
+          <circle cx="160" cy="160" r="14" fill="${c}" opacity="0.9"/>
+        `;
+      case 'billboard':
+        // Times Square billboard: screen with content lines + base
+        return `
+          <rect x="50"  y="50"  width="220" height="150" rx="6" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>
+          <rect x="70"  y="70"  width="180" height="22" rx="4" fill="${c}" opacity="0.85"/>
+          <rect x="70"  y="102" width="140" height="14" rx="3" fill="${c}" opacity="0.55"/>
+          <rect x="70"  y="124" width="160" height="14" rx="3" fill="${c}" opacity="0.45"/>
+          <rect x="70"  y="146" width="100" height="14" rx="3" fill="${c}" opacity="0.4"/>
+          <rect x="70"  y="170" width="180" height="14" rx="3" fill="${c}" opacity="0.5"/>
+          <rect x="155" y="200" width="10"  height="50" fill="${c}" opacity="0.5"/>
+          <rect x="100" y="248" width="120" height="14" rx="7" fill="${c}" opacity="0.6"/>
+        `;
+      case 'article':
+        // Stacked text lines — like a clipped article preview
+        return `
+          <rect x="60"  y="60"  width="200" height="20" rx="4" fill="${c}" opacity="0.9"/>
+          <rect x="60"  y="100" width="200" height="8"  rx="2" fill="${c}" opacity="0.4"/>
+          <rect x="60"  y="116" width="180" height="8"  rx="2" fill="${c}" opacity="0.4"/>
+          <rect x="60"  y="132" width="200" height="8"  rx="2" fill="${c}" opacity="0.4"/>
+          <rect x="60"  y="156" width="200" height="8"  rx="2" fill="${c}" opacity="0.4"/>
+          <rect x="60"  y="172" width="160" height="8"  rx="2" fill="${c}" opacity="0.4"/>
+          <rect x="60"  y="188" width="180" height="8"  rx="2" fill="${c}" opacity="0.4"/>
+          <rect x="60"  y="220" width="120" height="20" rx="4" fill="${c}" opacity="0.7"/>
+        `;
+      case 'timeline':
+        // Horizontal path with 4 milestone dots + arrowhead — represents journey
+        return `
+          <line x1="40" y1="160" x2="280" y2="160" stroke="${c}" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+          <circle cx="60"  cy="160" r="14" fill="${c}" opacity="0.45"/>
+          <circle cx="120" cy="160" r="16" fill="${c}" opacity="0.6"/>
+          <circle cx="180" cy="160" r="18" fill="${c}" opacity="0.78"/>
+          <circle cx="240" cy="160" r="22" fill="${c}" opacity="0.95"/>
+          <polygon points="280,160 258,146 258,174" fill="${c}" opacity="0.85"/>
+        `;
+      case 'shield':
+        // Shield with X — opt-out emblem
+        return `
+          <path d="M 160 50 L 240 80 L 240 175 Q 240 235 160 275 Q 80 235 80 175 L 80 80 Z" fill="none" stroke="${c}" stroke-width="3" opacity="0.65"/>
+          <line x1="125" y1="135" x2="195" y2="205" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+          <line x1="195" y1="135" x2="125" y2="205" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+        `;
+
       default: return '';
     }
   }
 
   // ========================================================================
   // Render a single card based on query params
+  //   ?slug=<id>                       — vertical id (ai, defi, …) OR page slug
+  //   ?type=vertical|page              — optional disambiguator (defaults to
+  //                                       vertical-first lookup, then page)
+  //   ?format=landscape|square         — defaults to landscape
   // ========================================================================
   const params = new URLSearchParams(location.search);
   const slug = params.get('slug') || 'ai';
-  const format = params.get('format') || 'landscape'; // "landscape" | "square"
-  const v = VERTICALS[slug];
+  const format = params.get('format') || 'landscape';
+  const type = params.get('type'); // optional: 'vertical' | 'page'
+
+  // Lookup precedence: explicit type wins; otherwise verticals first, then pages.
+  const v = (type === 'page')
+    ? PAGES[slug]
+    : (type === 'vertical' ? VERTICALS[slug] : (VERTICALS[slug] || PAGES[slug]));
+  const isPage = (type === 'page') || (!type && !VERTICALS[slug] && PAGES[slug]);
+
   if (!v) {
     document.body.innerHTML = `<p style="color:#fff;padding:40px;">Unknown slug: ${slug}</p>`;
   } else {
+    const eyebrow = isPage ? v.eyebrow : v.name;
+    const urlPath = isPage ? v.urlPath : ('/' + slug);
     const iconSvg = `<svg viewBox="0 0 320 320" width="100%" height="100%">${shapeSvg(v.shape, v.color)}</svg>`;
     const card = format === 'square' ? `
       <div class="og square" style="--eco:${v.color};">
@@ -319,11 +413,11 @@
         </div>
         <div class="aura"><div class="icon-wrap">${iconSvg}</div></div>
         <div class="copy">
-          <p class="eyebrow">${v.name}</p>
+          <p class="eyebrow">${eyebrow}</p>
           <h1>${v.h1}</h1>
           <p class="sub">${v.sub}</p>
         </div>
-        <div class="url">nft.nyc<em>/${slug}</em></div>
+        <div class="url">nft.nyc<em>${urlPath}</em></div>
       </div>
     ` : `
       <div class="og landscape" style="--eco:${v.color};">
@@ -333,15 +427,15 @@
           <span class="date">1–3 September 2026</span>
         </div>
         <div class="copy">
-          <p class="eyebrow">${v.name}</p>
+          <p class="eyebrow">${eyebrow}</p>
           <h1>${v.h1}</h1>
           <p class="sub">${v.sub}</p>
         </div>
-        <div class="url">nft.nyc<em>/${slug}</em></div>
+        <div class="url">nft.nyc<em>${urlPath}</em></div>
       </div>
     `;
     document.getElementById('stage').innerHTML = card;
-    document.title = `OG · ${v.name} · ${format}`;
+    document.title = `OG · ${eyebrow} · ${format}`;
 
     // Flag when fonts + images are loaded so the screenshot script knows to proceed
     Promise.all([
