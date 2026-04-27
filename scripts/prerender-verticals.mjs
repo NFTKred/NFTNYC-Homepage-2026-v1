@@ -63,7 +63,6 @@ const PAGES = [
   { route: "/blog/xp-and-kredits",  slug: "blog-xp-kredits",      title: "What are XP & Kredits? — NFT.NYC Blog",                            desc: "How hub-branded points and Kredits power the NFT.NYC community and reward builders, brands, and creators." },
   { route: "/blog/ts-challenge",    slug: "blog-ts-challenge",    title: "What is the Times Square Challenge? — NFT.NYC Blog",               desc: "How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square's biggest screens." },
   { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community." },
-  { route: "/ts-optout",            slug: "ts-optout",            title: "Times Square Challenge Art Opt-Out — NFT.NYC",                     desc: "Request removal of your NFT collection from the Times Square Challenge exhibition." },
 ];
 
 const ORIGIN = "https://www.nft.nyc";

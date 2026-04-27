@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import PageMeta from '@/components/PageMeta';
 
 const ADD_CONTACT_URL = 'https://nrzjmocvppijinjszlyg.supabase.co/functions/v1/add-contact';
 const WEBHOOK_SECRET = 'j45tkjbkj4t5jbh45tjhb4jfdfgh';
@@ -82,8 +81,6 @@ export default function TSOptout() {
   };
 
   return (
-    <>
-    <PageMeta page="ts-optout" />
     <div style={{
       minHeight: '100vh',
       background: 'rgb(10, 10, 15)',
@@ -217,6 +214,5 @@ export default function TSOptout() {
         )}
       </div>
     </div>
-    </>
   );
 }

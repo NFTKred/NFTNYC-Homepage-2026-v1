@@ -75,12 +75,6 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/journey",
     ogImage: "/og/journey.png",
   },
-  "ts-optout": {
-    title: "Times Square Challenge Art Opt-Out — NFT.NYC",
-    description: "Request removal of your NFT collection from the Times Square Challenge exhibition.",
-    path: "/ts-optout",
-    ogImage: "/og/ts-optout.png",
-  },
 };
 
 export type PageMetaKey = keyof typeof PAGE_META;

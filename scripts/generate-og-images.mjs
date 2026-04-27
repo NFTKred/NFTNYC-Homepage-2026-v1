@@ -39,7 +39,7 @@ const VERTICAL_SLUGS = [
 const PAGE_SLUGS = [
   "speak", "sponsor", "sponsor-ts-challenge", "ts-challenge",
   "blog", "blog-xp-kredits", "blog-ts-challenge",
-  "journey", "ts-optout",
+  "journey",
 ];
 
 const MIME = {

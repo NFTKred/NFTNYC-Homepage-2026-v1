@@ -280,7 +280,6 @@
     'blog-xp-kredits':       { eyebrow: 'NFT.NYC Blog',            color: '#f06347', shape: 'article',     h1: 'What are XP & Kredits?',                 sub: 'How hub-branded points and Kredits power the NFT.NYC community.', urlPath: '/blog/xp-and-kredits' },
     'blog-ts-challenge':     { eyebrow: 'NFT.NYC Blog',            color: '#f06347', shape: 'billboard',   h1: 'What is the Times Square Challenge?',    sub: 'How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art.', urlPath: '/blog/ts-challenge' },
     'journey':               { eyebrow: 'Our story',               color: '#f06347', shape: 'timeline',    h1: 'The NFT.NYC Journey',                    sub: 'Eight years and 200,000+ alumni building the world\u2019s leading NFT and Web3 community.', urlPath: '/journey' },
-    'ts-optout':             { eyebrow: 'Times Square Challenge',  color: '#EF4444', shape: 'shield',      h1: 'Art Opt-Out',                            sub: 'Request removal of your NFT collection from the Times Square Challenge exhibition.', urlPath: '/ts-optout' },
   };
 
   // ========================================================================
@@ -315,18 +314,26 @@
 
       // ── Page-specific shapes ──────────────────────────────────────────
       case 'mic':
-        // Microphone: capsule head, bracket, stand, base, sound-wave arcs
+        // Classic podium / standing microphone — capsule head with vertical
+        // grille slits, U-shaped support bracket, stand, and base. Reads
+        // unambiguously as a microphone at thumbnail size.
         return `
-          <path d="M 100 110 Q 80 110 80 140 Q 80 170 100 170" fill="none" stroke="${c}" stroke-width="3" opacity="0.4"/>
-          <path d="M 220 110 Q 240 110 240 140 Q 240 170 220 170" fill="none" stroke="${c}" stroke-width="3" opacity="0.4"/>
-          <rect x="135" y="50" width="50" height="120" rx="25" fill="${c}" opacity="0.85"/>
-          <rect x="135" y="80" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
-          <rect x="135" y="100" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
-          <rect x="135" y="120" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
-          <rect x="135" y="140" width="50" height="2" fill="#0a0a0f" opacity="0.45"/>
-          <path d="M 100 175 Q 100 200 160 200 Q 220 200 220 175" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>
-          <rect x="155" y="200" width="10" height="50" fill="${c}" opacity="0.6"/>
-          <rect x="120" y="248" width="80" height="14" rx="7" fill="${c}" opacity="0.7"/>
+          <!-- Capsule head -->
+          <rect x="125" y="50" width="70" height="120" rx="35" fill="${c}" opacity="0.88"/>
+          <!-- Grille slits -->
+          <g stroke="#0a0a0f" stroke-width="2.5" stroke-linecap="round" opacity="0.42">
+            <line x1="142" y1="78" x2="142" y2="142"/>
+            <line x1="160" y1="74" x2="160" y2="146"/>
+            <line x1="178" y1="78" x2="178" y2="142"/>
+          </g>
+          <!-- Subtle highlight on the top-left curve -->
+          <path d="M 137 64 Q 132 72 132 86" fill="none" stroke="#fff" stroke-width="3" opacity="0.32" stroke-linecap="round"/>
+          <!-- U-shaped support bracket -->
+          <path d="M 90 130 V 150 A 70 70 0 0 0 230 150 V 130" fill="none" stroke="${c}" stroke-width="6" opacity="0.6" stroke-linecap="round"/>
+          <!-- Connector between bracket and stand -->
+          <line x1="160" y1="220" x2="160" y2="252" stroke="${c}" stroke-width="8" opacity="0.6" stroke-linecap="round"/>
+          <!-- Base -->
+          <rect x="110" y="252" width="100" height="16" rx="8" fill="${c}" opacity="0.72"/>
         `;
       case 'partnership':
         // Two interlocking chain links — represents brand + event partnership
