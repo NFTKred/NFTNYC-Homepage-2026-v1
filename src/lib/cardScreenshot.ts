@@ -39,13 +39,56 @@ function cardPreviewUrl(resourceId: string): string {
  *
  * Downside: needs the admin tab to be open (but resource saves happen from
  * admin so this is always true), and third-party hero images must be CORS-
- * enabled for html2canvas to include them in the canvas. Most modern CDNs
- * (Sanity, Fortune, Wikimedia, tbstat, cdn.prod.website-files.com, etc.)
- * serve Access-Control-Allow-Origin: * so this works for the common case.
+ * enabled for html2canvas to include them in the canvas.
  *
- * When it fails (rare: CORS-hostile CDN, iframe blocked, DOM error), we
- * gracefully fall through to thum.io and then Microlink.
+ * Many publisher CDNs (CoinDesk's Sanity CDN, Rolling Stone, etc.) do NOT
+ * send Access-Control-Allow-Origin, which would cause html2canvas to silently
+ * drop those images and produce a card with only the title visible. To work
+ * around this, we route every cross-origin <img> through a free public CORS-
+ * adding proxy (images.weserv.nl) before capture. Same-origin images and
+ * data URLs are left alone.
+ *
+ * After capture, if a majority of <img> elements failed to load (naturalWidth
+ * === 0), we throw so the fallback chain (thum.io, Microlink) takes over
+ * instead of saving an image-less card.
  */
+const WESERV_PROXY = 'https://images.weserv.nl';
+
+/**
+ * Rewrite cross-origin <img> srcs in the iframe document to go through a
+ * CORS-friendly proxy. Returns the list of imgs that were rewritten so the
+ * caller can re-await their loads.
+ */
+function proxyCrossOriginImages(doc: Document, ourOrigin: string): HTMLImageElement[] {
+  const imgs = Array.from(doc.querySelectorAll('img'));
+  const rewritten: HTMLImageElement[] = [];
+  for (const img of imgs) {
+    const src = img.src;
+    if (!src) continue;
+    if (src.startsWith('data:')) continue;
+    if (src.startsWith(ourOrigin)) continue;
+    if (src.startsWith(WESERV_PROXY)) continue;
+    // weserv.nl expects the upstream URL without a scheme.
+    const stripped = src.replace(/^https?:\/\//, '');
+    img.crossOrigin = 'anonymous';
+    img.src = `${WESERV_PROXY}/?url=${encodeURIComponent(stripped)}`;
+    rewritten.push(img);
+  }
+  return rewritten;
+}
+
+function awaitImageLoads(imgs: HTMLImageElement[]): Promise<void[]> {
+  return Promise.all(
+    imgs.map((img) =>
+      img.complete && img.naturalWidth > 0
+        ? Promise.resolve()
+        : new Promise<void>((res) => {
+            img.onload = () => res();
+            img.onerror = () => res();
+          })
+    )
+  );
+}
 async function fetchFromHtml2Canvas(resourceId: string): Promise<Blob> {
   // Dynamic import keeps the ~48KB html2canvas bundle out of the initial
   // page load — only the admin tab pays the cost, and only when it captures.
@@ -78,21 +121,33 @@ async function fetchFromHtml2Canvas(resourceId: string): Promise<Blob> {
         const doc = iframe.contentDocument;
         if (!doc) throw new Error('no contentDocument (sandbox issue?)');
 
-        // Wait for every <img> inside to finish loading. An img.complete===true
-        // only means the browser has settled the request one way or the other;
-        // combined with a resolve-on-error fallback below, this lets us still
-        // capture even if one hero fails to load.
-        const imgs = Array.from(doc.querySelectorAll('img'));
-        await Promise.all(
-          imgs.map((img) =>
-            img.complete
-              ? Promise.resolve()
-              : new Promise<void>((res) => {
-                  img.onload = () => res();
-                  img.onerror = () => res();
-                })
-          )
-        );
+        // First wait — let the page finish its initial load so React Query
+        // has populated the cards and the original <img src> values are set.
+        const initialImgs = Array.from(doc.querySelectorAll('img'));
+        await awaitImageLoads(initialImgs);
+
+        // Reroute cross-origin images through a CORS-adding proxy. Without
+        // this, publisher CDNs that don't send CORS headers (Sanity, Rolling
+        // Stone, etc.) cause html2canvas to silently drop them, producing a
+        // card with only the title visible.
+        const ourOrigin = iframe.contentWindow?.location.origin ?? window.location.origin;
+        const rewritten = proxyCrossOriginImages(doc, ourOrigin);
+        if (rewritten.length > 0) {
+          await awaitImageLoads(rewritten);
+        }
+
+        // Validate: if a majority of imgs failed to load (naturalWidth === 0),
+        // bail so the fallback providers can have a turn. This catches both
+        // CORS proxy failures and broken image URLs.
+        const allImgs = Array.from(doc.querySelectorAll('img'));
+        if (allImgs.length > 0) {
+          const failed = allImgs.filter((img) => img.naturalWidth === 0).length;
+          if (failed / allImgs.length > 0.5) {
+            throw new Error(
+              `${failed}/${allImgs.length} images failed to load — falling back to server-side capture`,
+            );
+          }
+        }
 
         // Small extra delay for web fonts + any CSS transitions on the card.
         await new Promise((r) => setTimeout(r, 400));
