@@ -18,7 +18,18 @@ const THUMIO_WAIT_SECONDS = 15;
 // 40 KB rejects both without cutting off legitimate captures (smallest real
 // captures we've seen are ~450 KB).
 const MIN_BLOB_BYTES = 40_000;
+// Supabase storage bucket limit is 5 MiB. Stay comfortably under that — at
+// scale=2 a retina PNG can easily be 6–10 MB, so we output JPEG instead.
+// JPEG at 0.85 typically yields ~200–800 KB for these cards with no
+// perceptible quality loss in email clients.
+const MAX_BLOB_BYTES = 4_500_000;
+const JPEG_QUALITY_HIGH = 0.85;
+const JPEG_QUALITY_FALLBACK = 0.65;
 const MAX_RETRIES = 2;
+
+function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob | null> {
+  return new Promise((resolve) => canvas.toBlob((b) => resolve(b), type, quality));
+}
 
 /**
  * Build the public URL of the /card/:resourceId preview route on the
@@ -169,16 +180,32 @@ async function fetchFromHtml2Canvas(resourceId: string): Promise<Blob> {
           windowHeight: target.scrollHeight,
         });
 
-        canvas.toBlob((blob) => {
-          if (settled) return;
-          settled = true;
-          cleanup();
-          if (!blob) return reject(new Error('canvas.toBlob returned null'));
-          if (blob.size < MIN_BLOB_BYTES) {
-            return reject(new Error(`html2canvas blob too small (${blob.size} bytes)`));
-          }
-          resolve(blob);
-        }, 'image/png');
+        // Output JPEG (not PNG) so the file fits under the 5 MiB Supabase
+        // bucket cap. Quality 0.85 is visually indistinguishable from PNG
+        // for these cards but ~5–10x smaller. If 0.85 is still over budget
+        // (e.g. very tall card with lots of detail), retry at 0.65.
+        let blob = await canvasToBlob(canvas, 'image/jpeg', JPEG_QUALITY_HIGH);
+        if (blob && blob.size > MAX_BLOB_BYTES) {
+          console.warn(
+            `[cardScreenshot] ${blob.size} bytes at q=${JPEG_QUALITY_HIGH} exceeds cap, retrying at q=${JPEG_QUALITY_FALLBACK}`,
+          );
+          blob = await canvasToBlob(canvas, 'image/jpeg', JPEG_QUALITY_FALLBACK);
+        }
+        if (settled) return;
+        settled = true;
+        cleanup();
+        if (!blob) return reject(new Error('canvas.toBlob returned null'));
+        if (blob.size < MIN_BLOB_BYTES) {
+          return reject(new Error(`html2canvas blob too small (${blob.size} bytes)`));
+        }
+        if (blob.size > MAX_BLOB_BYTES) {
+          return reject(
+            new Error(
+              `html2canvas blob too large (${blob.size} bytes) even at q=${JPEG_QUALITY_FALLBACK}`,
+            ),
+          );
+        }
+        resolve(blob);
       } catch (e) {
         if (settled) return;
         settled = true;
@@ -304,11 +331,17 @@ async function fetchCardScreenshot(resourceId: string): Promise<Blob> {
  */
 export async function generateCardScreenshot(resourceId: string): Promise<string> {
   const blob = await fetchCardScreenshot(resourceId);
-  const path = `${resourceId}.png`;
+  // Match the file extension to the actual blob type. html2canvas now produces
+  // JPEG (smaller, fits the 5 MiB bucket cap); thum.io and Microlink produce
+  // PNG. Naming the file after the real type keeps the storage URL truthful
+  // and avoids any browser mime-sniffing edge cases.
+  const ext = blob.type === 'image/jpeg' ? 'jpg' : 'png';
+  const contentType = blob.type === 'image/jpeg' ? 'image/jpeg' : 'image/png';
+  const path = `${resourceId}.${ext}`;
 
   const { error: uploadErr } = await supabase.storage
     .from(BUCKET)
-    .upload(path, blob, { contentType: 'image/png', upsert: true });
+    .upload(path, blob, { contentType, upsert: true });
   if (uploadErr) throw new Error(`Storage upload failed: ${uploadErr.message}`);
 
   const { data: publicData } = supabase.storage.from(BUCKET).getPublicUrl(path);
