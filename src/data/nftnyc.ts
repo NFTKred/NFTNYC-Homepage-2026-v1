@@ -294,7 +294,7 @@ export const PAST_EVENTS: PastEvent[] = [
       'Times Square Takeover across 14 major Billboards',
       '125 Sponsors and 67 Satellite Events',
     ],
-    image: 'https://510411.fs1.hubspotusercontent-na1.net/hubfs/510411/pastevents-2021.jpeg',
+    image: 'https://f005.backblazeb2.com/file/PB-HubSpot/pastevents-2021-3.jpg',
   },
   {
     name: 'NFT.NYC 2020',
