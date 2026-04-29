@@ -277,7 +277,7 @@ const SWOTM_CSS = `
   position: relative;
   display: flex;
   justify-content: center;
-  margin: 220px auto 70px;   /* top reserves space for the popup tile */
+  margin: 240px auto 50px;   /* top reserves space for the popup tile */
 }
 .swotm-feature {
   position: relative;
