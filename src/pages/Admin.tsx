@@ -117,6 +117,7 @@ interface Speaker {
   role: string;
   email: string | null;
   handle: string | null;
+  unable_to_dm: boolean;
   related_resource_id: string | null;
   resource_relationship: string | null;
   outreach_channel: string | null;
@@ -294,7 +295,7 @@ export default function Admin() {
   const [filterHasEmail, setFilterHasEmail] = useState<'any' | 'yes' | 'no'>('any');
   const [filterHasResource, setFilterHasResource] = useState<'any' | 'yes' | 'no'>('any');
   // null key = no sort (use default order from query); asc/desc cycle on click
-  type SpeakerSortKey = 'name' | 'role' | 'vertical_id' | 'email' | 'handle' | 'resource_title' | 'resource_relationship' | 'outreach_channel' | 'outreach_status' | 'outreach_notes';
+  type SpeakerSortKey = 'name' | 'role' | 'vertical_id' | 'email' | 'handle' | 'unable_to_dm' | 'resource_title' | 'resource_relationship' | 'outreach_channel' | 'outreach_status' | 'outreach_notes';
   const [sortKey, setSortKey] = useState<SpeakerSortKey | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [draggingId, setDraggingId] = useState<string | null>(null);
@@ -421,7 +422,7 @@ export default function Admin() {
   });
 
   const updateSpeakerField = useMutation({
-    mutationFn: async ({ id, field, value }: { id: string; field: string; value: string | null }) => {
+    mutationFn: async ({ id, field, value }: { id: string; field: string; value: string | boolean | null }) => {
       const { error } = await supabase.from('speakers').update({ [field]: value }).eq('id', id);
       if (error) throw error;
     },
@@ -599,6 +600,7 @@ export default function Admin() {
           case 'vertical_id':          return s.vertical_id;
           case 'email':                return (s.email ?? '').toLowerCase();
           case 'handle':               return (s.handle ?? '').toLowerCase();
+          case 'unable_to_dm':         return s.unable_to_dm ? 1 : 0;
           case 'resource_title':       return (resourceById.get(s.related_resource_id ?? '')?.title ?? '').toLowerCase();
           case 'resource_relationship':return s.resource_relationship ?? '';
           case 'outreach_channel':     return s.outreach_channel ?? '';
@@ -1064,6 +1066,7 @@ export default function Admin() {
                       <SortHeader label="Vertical" sortKey="vertical_id" />
                       <SortHeader label="Email" sortKey="email" />
                       <SortHeader label="Handle" sortKey="handle" />
+                      <SortHeader label="Unable to DM" sortKey="unable_to_dm" />
                       <SortHeader label="Related Resource" sortKey="resource_title" />
                       <SortHeader label="Relationship" sortKey="resource_relationship" />
                       <SortHeader label="Channel" sortKey="outreach_channel" />
@@ -1076,7 +1079,7 @@ export default function Admin() {
               </thead>
               <tbody>
                 {filteredSpeakers.length === 0 ? (
-                  <tr><td colSpan={11} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>
+                  <tr><td colSpan={12} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>
                     {speakers.length === 0
                       ? 'No speakers yet'
                       : `No speakers match "${speakerSearch}"`}
@@ -1101,6 +1104,15 @@ export default function Admin() {
                       )}
                     </td>
                     <td style={cellStyle}>{s.handle && <a href={`https://x.com/${s.handle}`} target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'none' }}>@{s.handle}</a>}</td>
+                    <td style={{ ...cellStyle, textAlign: 'center' }}>
+                      <input
+                        type="checkbox"
+                        checked={s.unable_to_dm}
+                        onChange={e => updateSpeakerField.mutate({ id: s.id, field: 'unable_to_dm', value: e.target.checked })}
+                        title={s.unable_to_dm ? 'This speaker cannot be DMd on X — using another channel' : 'Mark this speaker as unable to be DMd on X'}
+                        style={{ cursor: 'pointer', accentColor: '#EF4444' }}
+                      />
+                    </td>
                     <td style={{ ...cellStyle, maxWidth: '220px' }}>
                       <select
                         value={s.related_resource_id ?? ''}
@@ -1655,6 +1667,7 @@ function SpeakerForm({ initial, defaultVertical, resources, onSave }: { initial:
     role: initial?.role ?? '',
     email: initial?.email ?? '',
     handle: initial?.handle ?? '',
+    unable_to_dm: initial?.unable_to_dm ?? false,
     related_resource_id: initial?.related_resource_id ?? '',
     resource_relationship: initial?.resource_relationship ?? '',
     outreach_channel: initial?.outreach_channel ?? '',
@@ -1706,6 +1719,15 @@ function SpeakerForm({ initial, defaultVertical, resources, onSave }: { initial:
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Role / Company<input value={form.role} onChange={e => set('role', e.target.value)} required style={{ ...inputStyle, marginTop: '4px' }} /></label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Email<input value={form.email} onChange={e => set('email', e.target.value)} type="email" style={{ ...inputStyle, marginTop: '4px' }} /></label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>Handle (Twitter/X)<input value={form.handle} onChange={e => set('handle', e.target.value)} style={{ ...inputStyle, marginTop: '4px' }} /></label>
+      <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)', display: 'flex', alignItems: 'center', gap: '8px', marginTop: '0.25rem' }}>
+        <input
+          type="checkbox"
+          checked={form.unable_to_dm}
+          onChange={e => setForm(f => ({ ...f, unable_to_dm: e.target.checked }))}
+          style={{ cursor: 'pointer', accentColor: '#EF4444' }}
+        />
+        Unable to DM (X profile doesn't accept DMs / closed inbox)
+      </label>
       <label style={{ fontSize: '12px', color: 'rgb(149, 149, 176)' }}>
         Related Resource
         <select value={form.related_resource_id} onChange={e => set('related_resource_id', e.target.value)} style={{ ...inputStyle, marginTop: '4px' }}>
