@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { MapPin } from 'lucide-react';
 
 /**
- * "See what's on the map" — recreates the OneHub.NFT.NYC #rewards section
- * inside the marketing site. Animated map background with pulsing pins,
- * a featured marker that cycles through TS Challenge missions every 6s,
- * and a CTA pointing at https://onehub.nft.nyc/map.
+ * "Join the Times Square Challenge" — animated map section recreated from
+ * the OneHub.NFT.NYC #rewards block. Pulsing decorative pins, a featured
+ * marker tile that cycles through TS Challenge missions every 6s, and a
+ * coral CTA pointing visitors at the first mission (Times Square Billboard
+ * Art) on onehub.nft.nyc.
  *
  * All CSS is scoped via .swotm-* class prefixes so it can't collide with
  * other components on the page. Brand colors match the project palette
@@ -151,7 +151,7 @@ export default function SeeWhatsOnTheMap() {
       {/* Foreground content */}
       <div className="swotm-content">
         <h2 className="swotm-title" id="swotm-heading">
-          See what's on <span className="accent">the map</span>
+          Join the <span className="accent">Times Square Challenge</span>
         </h2>
         <p className="swotm-subtitle">
           New missions will be added to the TS Challenge map in the lead up to NFT.NYC 2026.
@@ -161,12 +161,11 @@ export default function SeeWhatsOnTheMap() {
 
         <a
           className="swotm-cta"
-          href="https://onehub.nft.nyc/map"
+          href="https://onehub.nft.nyc/category/Times-Square-Billboard-Art"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <MapPin size={20} />
-          View the Map
+          Complete your first mission
         </a>
       </div>
     </section>
