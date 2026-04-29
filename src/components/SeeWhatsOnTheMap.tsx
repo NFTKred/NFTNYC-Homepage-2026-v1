@@ -319,12 +319,12 @@ const SWOTM_CSS = `
 }
 .swotm-title {
   font-family: var(--font-display, "Monument Extended", "Bebas Neue", Impact, sans-serif);
-  font-weight: 900;
-  font-size: clamp(1.75rem, 4vw, 3rem);
-  letter-spacing: 0.02em;
-  margin: 0 0 1rem;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 2.2vw, 1.625rem);
+  letter-spacing: 0.04em;
+  margin: 0 0 0.75rem;
   text-transform: uppercase;
-  line-height: 1.05;
+  line-height: 1.1;
 }
 .swotm-title .accent { color: rgb(var(--swotm-primary-rgb)); }
 .swotm-subtitle {

@@ -342,8 +342,8 @@ export default function Index() {
 
         {stage >= 1 && <SpeakersSection />}
         <WhyNYC stage={stage} />
-        <EcosystemSection />
         <SeeWhatsOnTheMap />
+        <EcosystemSection />
         <BrandQuotes />
         <WhyNFTs />
         <AttendeeTestimonials />
