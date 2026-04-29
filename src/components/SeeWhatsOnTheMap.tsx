@@ -131,8 +131,21 @@ export default function SeeWhatsOnTheMap() {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Featured marker + popup tile */}
+      {/* Foreground content */}
+      <div className="swotm-content">
+        <h2 className="swotm-title" id="swotm-heading">
+          Join the <span className="accent">Times Square Challenge</span>
+        </h2>
+        <p className="swotm-subtitle">
+          Complete missions to see how tokenization is impacting AI Identity, Ticketing, Gaming, Art and more. Each mission you complete earns you more T-XP that you can use to collect collectible TS Art as featured on billboards during NFT.NYC.
+        </p>
+
+        {/* Featured map marker — in document flow between the subtitle and
+            the CTA row so its position stays consistent regardless of
+            section height / viewport. The tile pops up above the pin via
+            the .swotm-tile bottom: 100% rule. */}
         <div className="swotm-feature-wrap">
           <div className="swotm-feature">
             <div className="swotm-tile" ref={tileRef}>
@@ -146,18 +159,6 @@ export default function SeeWhatsOnTheMap() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Foreground content */}
-      <div className="swotm-content">
-        <h2 className="swotm-title" id="swotm-heading">
-          Join the <span className="accent">Times Square Challenge</span>
-        </h2>
-        <p className="swotm-subtitle">
-          Complete missions to see how tokenization is impacting AI Identity, Ticketing, Gaming, Art and more. Each mission you complete earns you more T-XP that you can use to collect collectible TS Art as featured on billboards during NFT.NYC.
-        </p>
-
-        <div className="swotm-spacer" aria-hidden="true"></div>
 
         <div className="swotm-cta-row">
           <a className="swotm-cta swotm-cta-secondary" href="/ts-challenge">
@@ -267,16 +268,16 @@ const SWOTM_CSS = `
   opacity: 0.7;
 }
 
-/* Featured marker container — bottom-centered, leaves room for the CTA
-   row + Meet Relay card stacked below it. padding-bottom controls how
-   far above the section bottom the pin sits; bigger value = marker
-   rises higher (must clear CTA row + Relay card). */
+/* Featured marker container — sits in document flow between the subtitle
+   and the CTA row. The tile (the popup card with the rotating image +
+   label) absolute-positions itself above the pin via .swotm-tile's
+   bottom: 100% rule, so we reserve enough top margin here to give the
+   tile room to render without being clipped by the subtitle above. */
 .swotm-feature-wrap {
-  position: absolute; left: 0; right: 0;
-  bottom: 20px;
-  display: flex; justify-content: center;
-  padding-bottom: clamp(320px, 40vh, 420px);
-  pointer-events: none;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 220px auto 70px;   /* top reserves space for the popup tile */
 }
 .swotm-feature {
   position: relative;
@@ -376,11 +377,7 @@ const SWOTM_CSS = `
   margin: 0;
   line-height: 1.55;
 }
-/* Spacer matches React layout so the popup tile never collides with title */
-.swotm-spacer { width: 100%; height: min(28vw, 220px); }
-
 .swotm-cta-row {
-  margin-top: 80px;
   display: inline-flex;
   align-items: center;
   gap: 12px;
