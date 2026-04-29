@@ -154,7 +154,7 @@ export default function SeeWhatsOnTheMap() {
           Join the <span className="accent">Times Square Challenge</span>
         </h2>
         <p className="swotm-subtitle">
-          New missions will be added to the TS Challenge map in the lead up to NFT.NYC 2026.
+          Complete missions to see how tokenization is impacting AI Identity, Ticketing, Gaming, Art and more. Each mission you complete earns you more T-XP that you can use to collect collectible TS Art as featured on billboards during NFT.NYC.
         </p>
 
         <div className="swotm-spacer" aria-hidden="true"></div>
@@ -172,6 +172,32 @@ export default function SeeWhatsOnTheMap() {
             Complete your first mission
           </a>
         </div>
+
+        {/* Meet Relay card — moved here from WhyNYC so it sits below the
+            primary CTAs in this section. */}
+        <div className="swotm-relay">
+          <img
+            src="/relay-rat.png"
+            alt="Relay the Rat"
+            className="swotm-relay-img"
+          />
+          <div className="swotm-relay-body">
+            <p className="swotm-relay-title">Meet your guide, Relay</p>
+            <p className="swotm-relay-desc">
+              Born and raised in Times Square, Relay is your local guide to NFT.NYC. Ask Relay anything about past events, what to expect in 2026, or how to get involved.
+            </p>
+            <button
+              type="button"
+              className="swotm-relay-btn"
+              onClick={() => {
+                const btn = document.getElementById('relay-chat-btn') as HTMLElement | null;
+                if (btn) btn.click();
+              }}
+            >
+              Ask Relay
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -183,15 +209,23 @@ const SWOTM_CSS = `
   --swotm-bg: var(--color-bg, #0a0a0f);
   position: relative;
   overflow: hidden;
-  padding: 4rem 1rem;
+  /* Pulled up so the top of the section overlaps the previous section
+     (WhyNYC's Times Square hero photo). Padding-top is increased to
+     compensate so visible content stays in roughly the same place. */
+  margin-top: -160px;
+  padding: 11rem 1rem 4rem;
   background:
     radial-gradient(1200px 600px at 50% -10%, rgba(var(--swotm-primary-rgb)/0.10), transparent 60%),
     var(--swotm-bg);
   color: var(--color-text, #fff);
   font-family: var(--font-body, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif);
+  /* Fade the top edge to transparency so the Times Square photo behind
+     bleeds into the map background instead of showing a hard seam. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%);
 }
 @media (min-width: 768px) {
-  .swotm-section { padding: 6rem 1.5rem; }
+  .swotm-section { padding: 13rem 1.5rem 6rem; margin-top: -180px; }
 }
 
 /* Animated map background */
@@ -233,13 +267,15 @@ const SWOTM_CSS = `
   opacity: 0.7;
 }
 
-/* Featured marker container — bottom-centered, leaves room for the button.
-   padding-bottom shrunk by ~50px to nudge the pin + tile lower. */
+/* Featured marker container — bottom-centered, leaves room for the CTA
+   row + Meet Relay card stacked below it. padding-bottom controls how
+   far above the section bottom the pin sits; bigger value = marker
+   rises higher (must clear CTA row + Relay card). */
 .swotm-feature-wrap {
   position: absolute; left: 0; right: 0;
   bottom: 20px;
   display: flex; justify-content: center;
-  padding-bottom: clamp(90px, 12vh, 130px);
+  padding-bottom: clamp(320px, 40vh, 420px);
   pointer-events: none;
 }
 .swotm-feature {
@@ -384,6 +420,65 @@ const SWOTM_CSS = `
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.4);
   box-shadow: none;
+}
+
+/* Meet Relay card — moved here from WhyNYC. Sits below the CTA row. */
+.swotm-relay {
+  position: relative;
+  z-index: 10;
+  margin: 2rem auto 0;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  max-width: 480px;
+  text-align: left;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.swotm-relay-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+.swotm-relay-body { flex: 1; }
+.swotm-relay-title {
+  font-family: var(--font-display, "Monument Extended", sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.35rem;
+}
+.swotm-relay-desc {
+  font-family: var(--font-body, sans-serif);
+  font-size: var(--text-xs, 0.75rem);
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+.swotm-relay-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.45rem 1.25rem;
+  border-radius: 9999px;
+  font-family: var(--font-body, sans-serif);
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  border: none;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.swotm-relay-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255,255,255,0.2);
 }
 
 @keyframes swotm-pulse {

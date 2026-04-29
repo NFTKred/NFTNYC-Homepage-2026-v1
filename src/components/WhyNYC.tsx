@@ -57,17 +57,9 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
           New York City sits at the intersection of art, finance, technology, and entertainment - the four pillars of the NFT economy. And Times Square - the biggest art gallery in the world - is our main stage.
         </p>
 
-        <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 'var(--text-sm)',
-          color: 'rgba(255,255,255,0.65)',
-          lineHeight: 1.7,
-          maxWidth: '640px',
-          marginInline: 'auto',
-          marginBottom: '2rem',
-        }}>
-          The <strong style={{ color: '#fff' }}>TS Billboard Challenge</strong> turns that visibility into opportunity - artists showcase on Times Square billboards, collectors purchase derivatives, and creators receive XP and USDC rewards.
-        </p>
+        {/* The "TS Billboard Challenge turns that visibility…" paragraph
+            previously lived here; it has been moved (and rewritten) into
+            the SeeWhatsOnTheMap section directly below this one. */}
 
         {/* CTAs */}
         <div style={{
@@ -114,83 +106,8 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
           {/* "Learn How the TS Challenge Works" button moved next to the
               "Complete your first mission" CTA inside SeeWhatsOnTheMap. */}
 
-          {/* Meet Relay Card */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1.25rem',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              borderRadius: '1rem',
-              padding: '1.25rem 1.5rem',
-              maxWidth: '480px',
-              textAlign: 'left',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-            }}
-          >
-            <img
-              src="/relay-rat.png"
-              alt="Relay the Rat"
-              style={{
-                width: '100px',
-                height: '100px',
-                objectFit: 'contain',
-                flexShrink: 0,
-                filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))',
-              }}
-            />
-            <div style={{ flex: 1 }}>
-              <p style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'var(--text-sm)',
-                fontWeight: 700,
-                color: '#fff',
-                textTransform: 'uppercase',
-                letterSpacing: '-0.01em',
-                marginBottom: '0.35rem',
-              }}>Meet your guide, Relay</p>
-              <p style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: 'var(--text-xs)',
-                color: 'rgba(255,255,255,0.7)',
-                lineHeight: 1.5,
-                marginBottom: '0.75rem',
-              }}>Born and raised in Times Square, Relay is your local guide to NFT.NYC. Ask Relay anything about past events, what to expect in 2026, or how to get involved.</p>
-              <button
-                onClick={() => {
-                  const btn = document.getElementById('relay-chat-btn') as HTMLElement;
-                  if (btn) { btn.click(); return; }
-                }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0.45rem 1.25rem',
-                  borderRadius: '9999px',
-                  fontFamily: 'var(--font-body)',
-                  fontWeight: 600,
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  background: '#fff',
-                  color: '#000',
-                  border: 'none',
-                  transition: 'all 180ms cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(255,255,255,0.2)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                }}
-              >
-                Ask Relay
-              </button>
-            </div>
-          </div>
+          {/* "Meet your guide, Relay" card moved into the SeeWhatsOnTheMap
+              section directly below this one. */}
         </div>
       </div>
     </section>
