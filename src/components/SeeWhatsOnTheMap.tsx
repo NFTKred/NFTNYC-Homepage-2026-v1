@@ -159,14 +159,19 @@ export default function SeeWhatsOnTheMap() {
 
         <div className="swotm-spacer" aria-hidden="true"></div>
 
-        <a
-          className="swotm-cta"
-          href="https://onehub.nft.nyc/category/Times-Square-Billboard-Art"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Complete your first mission
-        </a>
+        <div className="swotm-cta-row">
+          <a className="swotm-cta swotm-cta-secondary" href="/ts-challenge">
+            Learn More
+          </a>
+          <a
+            className="swotm-cta"
+            href="https://onehub.nft.nyc/category/Times-Square-Billboard-Art"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Complete your first mission
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -228,12 +233,13 @@ const SWOTM_CSS = `
   opacity: 0.7;
 }
 
-/* Featured marker container — bottom-centered, leaves room for the button */
+/* Featured marker container — bottom-centered, leaves room for the button.
+   padding-bottom shrunk by ~50px to nudge the pin + tile lower. */
 .swotm-feature-wrap {
   position: absolute; left: 0; right: 0;
   bottom: 20px;
   display: flex; justify-content: center;
-  padding-bottom: clamp(140px, 18vh, 180px);
+  padding-bottom: clamp(90px, 12vh, 130px);
   pointer-events: none;
 }
 .swotm-feature {
@@ -337,8 +343,16 @@ const SWOTM_CSS = `
 /* Spacer matches React layout so the popup tile never collides with title */
 .swotm-spacer { width: 100%; height: min(28vw, 220px); }
 
+.swotm-cta-row {
+  margin-top: 80px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative; z-index: 10;
+}
 .swotm-cta {
-  margin-top: 30px;
   display: inline-flex; align-items: center; gap: 8px;
   height: 56px;
   padding: 0 2.5rem;
@@ -350,12 +364,26 @@ const SWOTM_CSS = `
   letter-spacing: 0.03em;
   text-decoration: none;
   box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(var(--swotm-primary-rgb)/0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative; z-index: 10;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  white-space: nowrap;
 }
 .swotm-cta:hover {
   transform: scale(1.05);
   box-shadow: 0 24px 48px rgba(var(--swotm-primary-rgb)/0.30), 0 0 0 1px rgba(var(--swotm-primary-rgb)/0.5);
+}
+/* Secondary outlined CTA — pairs to the left of the primary CTA. */
+.swotm-cta.swotm-cta-secondary {
+  background: transparent;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: none;
+}
+.swotm-cta.swotm-cta-secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: none;
 }
 
 @keyframes swotm-pulse {

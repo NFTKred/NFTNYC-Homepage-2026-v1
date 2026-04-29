@@ -111,37 +111,8 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
             </a>
           )}
 
-          <a
-            href="/ts-challenge"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '0.65rem 1.75rem',
-              borderRadius: '9999px',
-              fontFamily: 'var(--font-body)',
-              fontWeight: 600,
-              fontSize: '14px',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              border: '1px solid rgba(255,255,255,0.25)',
-              background: 'transparent',
-              color: 'rgba(255,255,255,0.85)',
-              transition: 'all 180ms cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-              (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.4)';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-              (e.currentTarget as HTMLElement).style.background = 'transparent';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.25)';
-            }}
-          >
-            Learn How the TS Challenge Works →
-          </a>
+          {/* "Learn How the TS Challenge Works" button moved next to the
+              "Complete your first mission" CTA inside SeeWhatsOnTheMap. */}
 
           {/* Meet Relay Card */}
           <div
