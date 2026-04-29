@@ -1,0 +1,12 @@
+-- Add date_verified column to resources. Tracks whether the publication
+-- date stored on the row has been confirmed against the page's actual
+-- og:article:published_time / JSON-LD datePublished / URL-path date.
+--
+-- Resources auto-discovered by the find-resource-for-speaker or
+-- auto-seek-resources edge functions default to false (AI-extracted dates
+-- are unreliable). Manually saving a resource via the admin form flips it
+-- to true (the human is explicitly confirming the date).
+--
+-- Surfaced in the admin Resources table as a yellow ⚠ icon next to the
+-- date column when false.
+ALTER TABLE resources ADD COLUMN IF NOT EXISTS date_verified BOOLEAN NOT NULL DEFAULT false;

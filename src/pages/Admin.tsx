@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send, ArrowUpDown, ArrowUp, ArrowDown, AlertTriangle } from 'lucide-react';
 import { generateCardScreenshot, generateCardScreenshotsBatch, scheduleCardScreenshot } from '@/lib/cardScreenshot';
 
 /* ─── Twenty CRM lookup ─── */
@@ -99,6 +99,7 @@ interface Resource {
   url: string;
   type: string;
   date: string;
+  date_verified: boolean;
   source: string;
   topic_tag: string;
   description: string | null;
@@ -926,7 +927,19 @@ export default function Admin() {
                     <td style={cellStyle}>{r.vertical_id}</td>
                     <td style={cellStyle}><span style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '11px' }}>{r.type}</span></td>
                     <td style={cellStyle}>{r.source}</td>
-                    <td style={cellStyle}>{r.date}</td>
+                    <td style={cellStyle}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                        {r.date}
+                        {!r.date_verified && (
+                          <span
+                            title="Publication date not verified — page metadata couldn't be read during the last audit. Edit the resource to verify."
+                            style={{ display: 'inline-flex', alignItems: 'center', color: '#F59E0B' }}
+                          >
+                            <AlertTriangle size={13} />
+                          </span>
+                        )}
+                      </span>
+                    </td>
                     <td style={cellStyle}>{r.topic_tag}</td>
                     <td style={cellStyle}>
                       <div style={{ display: 'flex', gap: '0.25rem' }}>
@@ -1543,7 +1556,9 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const payload = { ...form, status: 'approved', auto_found: false };
+    // Editing the form is treated as date verification — the user has just
+    // looked at and confirmed/typed the publication date.
+    const payload = { ...form, status: 'approved', auto_found: false, date_verified: true };
     let error: { message: string } | null = null;
     let savedId: string | null = null;
     if (initial) {
