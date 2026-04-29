@@ -69,6 +69,11 @@ const WESERV_PROXY = 'https://images.weserv.nl';
  * Rewrite cross-origin <img> srcs in the iframe document to go through a
  * CORS-friendly proxy. Returns the list of imgs that were rewritten so the
  * caller can re-await their loads.
+ *
+ * Also pre-crops the proxied image to match the rendered container's
+ * dimensions, so html2canvas — which has known shortcomings around
+ * `object-fit: cover` — doesn't end up stretching small portraits
+ * (e.g. 403×454 headshots) to fill the 1.91:1 wide hero area.
  */
 function proxyCrossOriginImages(doc: Document, ourOrigin: string): HTMLImageElement[] {
   const imgs = Array.from(doc.querySelectorAll('img'));
@@ -81,8 +86,23 @@ function proxyCrossOriginImages(doc: Document, ourOrigin: string): HTMLImageElem
     if (src.startsWith(WESERV_PROXY)) continue;
     // weserv.nl expects the upstream URL without a scheme.
     const stripped = src.replace(/^https?:\/\//, '');
+    // Measure the on-page rendered size of this img (in CSS px) so weserv
+    // returns an already-cropped, already-sized image. Request 2x for retina.
+    // Falls back to a sane default if measurements aren't available yet.
+    const rect = img.getBoundingClientRect();
+    const cssW = Math.round(rect.width) || 960;
+    const cssH = Math.round(rect.height) || 502;
+    const targetW = cssW * 2;
+    const targetH = cssH * 2;
+    const params = new URLSearchParams({
+      url: stripped,
+      w: String(targetW),
+      h: String(targetH),
+      fit: 'cover',
+      a: 'attention', // smart-crop: focus on the salient region (faces, etc.)
+    });
     img.crossOrigin = 'anonymous';
-    img.src = `${WESERV_PROXY}/?url=${encodeURIComponent(stripped)}`;
+    img.src = `${WESERV_PROXY}/?${params.toString()}`;
     rewritten.push(img);
   }
   return rewritten;
