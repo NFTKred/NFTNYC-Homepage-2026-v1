@@ -6,6 +6,7 @@ import StatsBar from '@/components/StatsBar';
 import NotableSpeakers from '@/components/NotableSpeakers';
 import SpeakersSection from '@/components/SpeakersSection';
 import EcosystemSection from '@/components/EcosystemSection';
+import SeeWhatsOnTheMap from '@/components/SeeWhatsOnTheMap';
 import BrandQuotes from '@/components/BrandQuotes';
 import WhyNFTs from '@/components/WhyNFTs';
 import AttendeeTestimonials from '@/components/AttendeeTestimonials';
@@ -342,6 +343,7 @@ export default function Index() {
         {stage >= 1 && <SpeakersSection />}
         <WhyNYC stage={stage} />
         <EcosystemSection />
+        <SeeWhatsOnTheMap />
         <BrandQuotes />
         <WhyNFTs />
         <AttendeeTestimonials />
