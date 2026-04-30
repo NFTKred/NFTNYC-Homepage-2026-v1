@@ -252,7 +252,10 @@
   .countdown {
     font-family: "Monument Extended", "Arial Black", sans-serif;
     font-weight: 900;
-    color: var(--eco, #10B981);
+    /* White figures with a green glow halo — keeps the timer high-
+       contrast against the dark background while still tying it to
+       the speak page's brand color via the bloom. */
+    color: #ffffff;
     line-height: 1;
     letter-spacing: -0.02em;
     margin: 0 0 22px;
@@ -260,7 +263,10 @@
     /* Tabular figures keep digit width steady so the timer doesn't jiggle
        as numerals tick. */
     font-variant-numeric: tabular-nums;
-    text-shadow: 0 0 50px rgba(16, 185, 129, 0.45);
+    text-shadow:
+      0 0 24px rgba(16, 185, 129, 0.85),
+      0 0 60px rgba(16, 185, 129, 0.55),
+      0 0 96px rgba(16, 185, 129, 0.35);
   }
   .og.landscape .countdown { font-size: 100px; }
   .og.square    .countdown { font-size: 132px; }
