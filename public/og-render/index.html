@@ -260,13 +260,26 @@
     letter-spacing: -0.02em;
     margin: 0 0 22px;
     text-transform: uppercase;
-    /* Tabular figures keep digit width steady so the timer doesn't jiggle
-       as numerals tick. */
-    font-variant-numeric: tabular-nums;
     text-shadow:
       0 0 24px rgba(16, 185, 129, 0.85),
       0 0 60px rgba(16, 185, 129, 0.55),
       0 0 96px rgba(16, 185, 129, 0.35);
+  }
+  /* Each digit + colon is locked into a fixed-width slot. Monument
+     Extended doesn't ship tabular-figures (font-variant-numeric:
+     tabular-nums is a no-op), so individual digit widths vary
+     significantly ("1" is narrow, "0" is wide). Without this the
+     whole timer jiggles left/right every second as the digit count
+     changes. Slots are tuned to the widest digit in the face. */
+  .countdown .cd-d {
+    display: inline-block;
+    width: 0.66em;
+    text-align: center;
+  }
+  .countdown .cd-c {
+    display: inline-block;
+    width: 0.32em;
+    text-align: center;
   }
   .og.landscape .countdown { font-size: 100px; }
   .og.square    .countdown { font-size: 132px; }
@@ -485,6 +498,10 @@
     // Expose a deterministic setter for the countdown so the recording
     // script can pin the timer to an exact second per frame. Avoids race
     // conditions between recording start and ticker start.
+    //
+    // Each character is wrapped in its own fixed-width span so the timer
+    // doesn't jiggle as digit widths change tick-to-tick (see CSS for
+    // .cd-d / .cd-c slot rules).
     window.setCountdown = (remainingSeconds) => {
       const el = document.getElementById('countdown');
       if (!el) return;
@@ -493,7 +510,12 @@
       const m = Math.floor((s % 3600) / 60);
       const sec = s % 60;
       const pad = (n) => String(n).padStart(2, '0');
-      el.textContent = `${pad(h)}:${pad(m)}:${pad(sec)}`;
+      const text = `${pad(h)}:${pad(m)}:${pad(sec)}`;
+      el.innerHTML = text.split('').map((ch) =>
+        ch === ':'
+          ? `<span class="cd-c">:</span>`
+          : `<span class="cd-d">${ch}</span>`
+      ).join('');
     };
 
     // Flag when fonts + images are loaded so the screenshot script knows to proceed
