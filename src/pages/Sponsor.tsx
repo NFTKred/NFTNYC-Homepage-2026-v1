@@ -10,6 +10,8 @@ import CommunityPartner from "@/components/sponsor/CommunityPartner";
 import TrackTiles from "@/components/sponsor/TrackTiles";
 import TrackPackages from "@/components/sponsor/TrackPackages";
 import PackageInquiryModal, { type BasePackage as InquiryBasePackage } from "@/components/sponsor/PackageInquiryModal";
+import PartnershipInquiryModal from "@/components/sponsor/PartnershipInquiryModal";
+import PartnershipCTA from "@/components/sponsor/PartnershipCTA";
 import { defaultPackages, defaultAlaCarte } from "@/data/sponsor/packages";
 import type { Package } from "@/data/sponsor/packages";
 import type { TrackPackage } from "@/data/sponsor/trackPackages";
@@ -45,6 +47,8 @@ export default function Sponsor() {
   const [filter, setFilter] = useState("all");
   const [selectedTrack, setSelectedTrack] = useState<string | null>('AI Identity Tokenization');
   const [inquiry, setInquiry] = useState<InquiryBasePackage | null>(null);
+  const [generalInquiryOpen, setGeneralInquiryOpen] = useState(false);
+  const openGeneralInquiry = () => setGeneralInquiryOpen(true);
 
   const openPackageInquiry = (pkg: Package) => {
     setInquiry({ name: pkg.name, price: pkg.price, tier: pkg.tier, context: 'packages' });
@@ -82,6 +86,15 @@ export default function Sponsor() {
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <SponsorHeader />
+
+      {/* CTA #1 — Hero secondary: catches early-deciders who already know
+          they want a custom partnership before scrolling through packages */}
+      <PartnershipCTA
+        variant="inline"
+        onClick={openGeneralInquiry}
+        body="Have something custom in mind? Talk to our partnerships team about a tailored activation."
+        ctaLabel="Talk to us →"
+      />
 
       {/* ─── Choose Your Path ─── */}
       <section className="max-w-7xl mx-auto" style={{ padding: '3.5rem 1.5rem 3rem' }}>
@@ -166,6 +179,15 @@ export default function Sponsor() {
         <TrackTiles selected={selectedTrack} onSelect={(t) => setSelectedTrack(t || null)} />
         {selectedTrack && <TrackPackages trackName={selectedTrack} onSelect={openTrackInquiry} />}
 
+        {/* CTA #2 — Between community-focused tracks and the main packages
+            grid: catches sponsors whose industry isn't represented in the
+            12 tracks, or who want multi-vertical activations. */}
+        <PartnershipCTA
+          variant="inline"
+          onClick={openGeneralInquiry}
+          body="Don't see your industry? We'll build a custom track activation around your goals."
+        />
+
         {/* Partnership Packages — displayed for all communities */}
         <section id="packages" className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
           <p style={{
@@ -188,6 +210,17 @@ export default function Sponsor() {
             ))}
           </div>
         </section>
+
+        {/* CTA #3 — Below the main packages grid: the classic "didn't find
+            what you need" placement. Most conversion-friendly slot since
+            it catches sponsors who've evaluated everything available. */}
+        <PartnershipCTA
+          variant="card"
+          onClick={openGeneralInquiry}
+          eyebrow="Custom Partnerships"
+          title="Couldn't find what you were looking for?"
+          body="Tell us about your goals and budget. Our partnerships team will design a custom activation tailored to your brand."
+        />
 
         {/* A La Carte Options */}
         <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
@@ -221,10 +254,28 @@ export default function Sponsor() {
         <CommunityPartner />
       </div>
 
+      {/* CTA #4 — Final closer before the footer / partner logo wall.
+          Last chance to convert a scroll-through visitor; pairs the
+          "Talk to partnerships" inquiry with a direct Calendly link. */}
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      </div>
+      <PartnershipCTA
+        variant="hero"
+        onClick={openGeneralInquiry}
+        eyebrow="Let's talk"
+        title="Ready to partner with NFT.NYC 2026?"
+        body="Tell us about your goals and we'll design a custom activation. Or skip ahead and book time with the partnerships team directly."
+      />
+
       <PackageInquiryModal
         open={!!inquiry}
         onOpenChange={(o) => { if (!o) setInquiry(null); }}
         basePackage={inquiry}
+      />
+      <PartnershipInquiryModal
+        open={generalInquiryOpen}
+        onOpenChange={setGeneralInquiryOpen}
       />
 
       <SponsorPartners />

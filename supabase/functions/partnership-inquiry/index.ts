@@ -43,8 +43,13 @@ interface Payload {
   company?: string;
   phone?: string;
   notes?: string;
+  // Either basePackage (a specific package was selected) OR projectedBudget
+  // (a generic "talk to us" inquiry). When neither is present we still
+  // accept the lead and treat it as a general partnership inquiry.
   basePackage?: BasePackage;
   addons?: Addon[];
+  projectedBudget?: string; // e.g. "$25,000 – $50,000", "Under $25,000", "Not sure yet"
+  inquiryType?: "package" | "general"; // optional explicit hint; inferred from basePackage when omitted
 }
 
 function escape(s: string): string {
@@ -136,57 +141,78 @@ Deno.serve(async (req) => {
     );
   }
 
-  const { name, email, company, phone, notes, basePackage, addons } = body;
+  const { name, email, company, phone, notes, basePackage, addons, projectedBudget } = body;
 
-  if (!name || !email || !company || !basePackage) {
+  if (!name || !email || !company) {
     return new Response(
-      JSON.stringify({ error: "Missing required fields (name, email, company, package)." }),
+      JSON.stringify({ error: "Missing required fields (name, email, company)." }),
       { status: 422, headers: { ...corsHeaders, "content-type": "application/json" } }
     );
   }
+
+  // Treat the inquiry as "general" when no specific package was selected.
+  // General inquiries come from the "Talk to partnerships" CTAs sprinkled
+  // throughout /sponsor; package inquiries come from clicking Select on a
+  // package card.
+  const isGeneral = !basePackage;
 
   const addonList = (addons ?? [])
     .map(a => `<li><strong>${escape(a.name)}</strong> — ${escape(a.price)}</li>`)
     .join("");
 
-  const tabLabel =
-    basePackage.context === "community" ? "Community-Focused Packages" : "Build Your Perfect Package";
+  const tabLabel = !basePackage
+    ? "Custom Partnership Inquiry"
+    : (basePackage.context === "community" ? "Community-Focused Packages" : "Build Your Perfect Package");
 
-  // Total opportunity value = base package + all selected add-ons (lower
-  // bound when a price is a range like "$5,000 or $25,000").
-  const baseValue = parsePrice(basePackage.price);
+  // Total opportunity value:
+  //   - Package inquiry: base package + add-ons (lower bound on ranges)
+  //   - General inquiry: lower bound parsed from projectedBudget
+  const baseValue = parsePrice(basePackage?.price);
   const addonsValue = (addons ?? []).reduce((sum, a) => sum + parsePrice(a.price), 0);
-  const totalValue = baseValue + addonsValue;
-  const totalFormatted = formatUSD(totalValue);
+  const budgetValue = parsePrice(projectedBudget);
+  const totalValue = isGeneral ? budgetValue : (baseValue + addonsValue);
+  const totalFormatted = isGeneral && totalValue === 0
+    ? (projectedBudget || "Budget TBD")
+    : formatUSD(totalValue);
 
-  // Subject: ALERT: $X,XXX Sponsor Opportunity - <Name> from <Company>
-  const emailSubject = `ALERT: ${totalFormatted} Sponsor Opportunity - ${name} from ${company}`;
+  // Subject differs slightly so the team can spot custom inquiries at a glance.
+  const emailSubject = isGeneral
+    ? `ALERT: ${totalFormatted} Custom Sponsor Inquiry - ${name} from ${company}`
+    : `ALERT: ${totalFormatted} Sponsor Opportunity - ${name} from ${company}`;
 
   const emailHtml = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
       <div style="background: linear-gradient(135deg, #f97316, #ef4444); color: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px;">
         <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.25em; opacity: 0.9; margin-bottom: 6px;">ALERT</div>
-        <div style="font-size: 20px; font-weight: 700; line-height: 1.3;">${escape(totalFormatted)} Sponsor Opportunity</div>
+        <div style="font-size: 20px; font-weight: 700; line-height: 1.3;">${escape(totalFormatted)} ${isGeneral ? "Custom Sponsor Inquiry" : "Sponsor Opportunity"}</div>
         <div style="font-size: 14px; margin-top: 4px; opacity: 0.95;">${escape(name)} from ${escape(company)}</div>
       </div>
 
+      ${isGeneral ? `
       <div style="background: #f5f5f7; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 4px;">${escape(tabLabel)}${basePackage.trackName ? " · " + escape(basePackage.trackName) : ""}</div>
-        <div style="font-size: 18px; font-weight: 700;">${escape(basePackage.name)}</div>
-        <div style="font-size: 16px; color: #14b8a6; margin-top: 4px;">${escape(basePackage.price)}${basePackage.tier ? ` · ${escape(basePackage.tier)}` : ""}</div>
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 4px;">${escape(tabLabel)}</div>
+        <div style="font-size: 18px; font-weight: 700;">No specific package selected</div>
+        <div style="font-size: 16px; color: #14b8a6; margin-top: 4px;">Projected budget: ${escape(projectedBudget || "Not provided")}</div>
       </div>
+      ` : `
+      <div style="background: #f5f5f7; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 4px;">${escape(tabLabel)}${basePackage!.trackName ? " · " + escape(basePackage!.trackName) : ""}</div>
+        <div style="font-size: 18px; font-weight: 700;">${escape(basePackage!.name)}</div>
+        <div style="font-size: 16px; color: #14b8a6; margin-top: 4px;">${escape(basePackage!.price)}${basePackage!.tier ? ` · ${escape(basePackage!.tier)}` : ""}</div>
+      </div>
+      `}
 
       <table style="width: 100%; border-collapse: collapse;">
         <tr><td style="padding: 6px 0; color: #666; width: 110px;">Name</td><td style="padding: 6px 0; font-weight: 600;">${escape(name)}</td></tr>
         <tr><td style="padding: 6px 0; color: #666;">Company</td><td style="padding: 6px 0; font-weight: 600;">${escape(company)}</td></tr>
         <tr><td style="padding: 6px 0; color: #666;">Email</td><td style="padding: 6px 0;"><a href="mailto:${escape(email)}">${escape(email)}</a></td></tr>
         ${phone ? `<tr><td style="padding: 6px 0; color: #666;">Phone</td><td style="padding: 6px 0;">${escape(phone)}</td></tr>` : ""}
-        <tr><td style="padding: 6px 0; color: #666;">Total Opportunity</td><td style="padding: 6px 0; font-weight: 700; color: #0f766e;">${escape(totalFormatted)}</td></tr>
+        <tr><td style="padding: 6px 0; color: #666;">${isGeneral ? "Projected Budget" : "Total Opportunity"}</td><td style="padding: 6px 0; font-weight: 700; color: #0f766e;">${escape(totalFormatted)}</td></tr>
       </table>
 
       ${notes ? `
         <div style="margin-top: 16px;">
-          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 4px;">Notes</div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 4px;">${isGeneral ? "Their goals / ideas" : "Notes"}</div>
           <div style="background: #fafafa; border-left: 3px solid #14b8a6; padding: 10px 14px; font-size: 14px; white-space: pre-wrap;">${escape(notes)}</div>
         </div>
       ` : ""}
@@ -255,20 +281,31 @@ Deno.serve(async (req) => {
       <p style="font-size: 16px; margin: 0 0 16px;">Hi ${escape(firstNameOnly)},</p>
 
       <p style="font-size: 15px; margin: 0 0 16px;">
-        Thanks for submitting to partner with NFT.NYC 2026 — we've received your expression of interest in the following package:
+        ${isGeneral
+          ? `Thanks for reaching out about partnering with NFT.NYC 2026 — we've received your inquiry and our partnerships team will be in touch.`
+          : `Thanks for submitting to partner with NFT.NYC 2026 — we've received your expression of interest in the following package:`}
       </p>
 
-      <div style="background: #f5f5f7; border-radius: 8px; padding: 16px 20px; margin: 20px 0;">
-        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">${escape(tabLabel)}${basePackage.trackName ? " · " + escape(basePackage.trackName) : ""}</div>
-        <div style="font-size: 17px; font-weight: 700; color: #111;">${escape(basePackage.name)}</div>
-        ${HIDDEN_PRICE_PACKAGES.has(basePackage.price) ? "" : `<div style="font-size: 15px; color: #14b8a6; margin-top: 4px;">${escape(basePackage.price)}</div>`}
-        ${addonList ? `
-          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #e5e5ea;">
-            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">With these add-ons</div>
-            <ul style="margin: 0; padding-left: 20px; font-size: 14px;">${addonList}</ul>
+      ${isGeneral ? `
+        ${projectedBudget ? `
+          <div style="background: #f5f5f7; border-radius: 8px; padding: 16px 20px; margin: 20px 0;">
+            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">Custom Partnership Inquiry</div>
+            <div style="font-size: 15px; color: #14b8a6; margin-top: 4px;">Projected budget: ${escape(projectedBudget)}</div>
           </div>
         ` : ""}
-      </div>
+      ` : `
+        <div style="background: #f5f5f7; border-radius: 8px; padding: 16px 20px; margin: 20px 0;">
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">${escape(tabLabel)}${basePackage!.trackName ? " · " + escape(basePackage!.trackName) : ""}</div>
+          <div style="font-size: 17px; font-weight: 700; color: #111;">${escape(basePackage!.name)}</div>
+          ${HIDDEN_PRICE_PACKAGES.has(basePackage!.price) ? "" : `<div style="font-size: 15px; color: #14b8a6; margin-top: 4px;">${escape(basePackage!.price)}</div>`}
+          ${addonList ? `
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #e5e5ea;">
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 6px;">With these add-ons</div>
+              <ul style="margin: 0; padding-left: 20px; font-size: 14px;">${addonList}</ul>
+            </div>
+          ` : ""}
+        </div>
+      `}
 
       <p style="font-size: 15px; margin: 0 0 16px;">
         The next step is to meet with our partnerships team to work through the details and discuss your ideal experience. <strong>Please click below to schedule a meeting:</strong>
@@ -355,18 +392,22 @@ Deno.serve(async (req) => {
           email,
           company_name: company,
           package_id: tierFor(totalValue),
-          package_name: basePackage.name,
+          package_name: isGeneral ? "Custom inquiry" : basePackage!.name,
           amount: totalValue,
           addons: addonsPretty,
           notes: [
             notes,
             phone ? `Phone: ${phone}` : "",
-            basePackage.trackName ? `Track: ${basePackage.trackName}` : "",
+            isGeneral
+              ? `Custom inquiry — projected budget: ${projectedBudget || "not provided"}`
+              : (basePackage!.trackName ? `Track: ${basePackage!.trackName}` : ""),
             `Tab: ${tabLabel}`,
-            `Base package: ${basePackage.name} (${basePackage.price})`,
+            isGeneral
+              ? ""
+              : `Base package: ${basePackage!.name} (${basePackage!.price})`,
             addonsPretty ? `Add-ons: ${addonsPretty}` : "",
           ].filter(Boolean).join("\n"),
-          source: "nft.nyc/sponsor",
+          source: isGeneral ? "nft.nyc/sponsor (custom inquiry)" : "nft.nyc/sponsor",
         }),
       }).then(async res => {
         if (!res.ok) {
