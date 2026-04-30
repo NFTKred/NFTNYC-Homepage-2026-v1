@@ -157,7 +157,7 @@ const PAST_SPEAKERS = [
 
 const DETAILED_TIMELINE = [
   { date: 'April 8 \u2013 30', title: 'Round 1 open', desc: 'Submit your application now. First group reviewed, highest selection rates. Videos published on a rolling basis.', color: '#10B981' },
-  { date: '1 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Public, GA, and VIP ticket holders can vote.', color: '#10B981' },
+  { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Public, GA, and VIP ticket holders can vote.', color: '#10B981' },
   { date: 'May', title: 'Round 2 open', desc: 'Second submission window opens. Round 1 applicants already under review and accumulating votes.', color: '#06B6D4' },
   { date: 'June', title: 'Round 3 open', desc: 'Final submission window. Remaining slots only. Team evaluates vote strength, video quality, and topic balance.', color: '#8B5CF6' },
   { date: 'July 2026', title: 'Selections announced', desc: 'Speakers selected and notified. Each speaker may appear in one accepted session (solo talk, panel, or product pitch).', color: '#EC4899' },
@@ -406,7 +406,7 @@ export default function Speak() {
               lineHeight: 1.6,
               marginBottom: '1.75rem',
               maxWidth: '560px',
-            }}>Submit now to be in the first group reviewed. Round 1 voting opens May 1.</p>
+            }}>Submit now to be in the first group reviewed. Round 1 voting opens May 7.</p>
             <button
               onClick={() => setShowModal(true)}
               style={{ ...ctaGradientStyle, padding: '14px 32px', fontSize: '15px' }}
