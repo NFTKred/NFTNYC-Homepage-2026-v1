@@ -613,7 +613,7 @@ export default function Speak() {
             color: 'rgba(255,255,255,0.5)',
             letterSpacing: '2px',
             textTransform: 'uppercase',
-          }}>Voting opens 1 May</p>
+          }}>Voting opens 7 May</p>
         </div>
       </section>
 
