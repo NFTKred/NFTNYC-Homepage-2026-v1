@@ -297,6 +297,9 @@ export default function Admin() {
   type SpeakerSortKey = 'name' | 'role' | 'vertical_id' | 'email' | 'handle' | 'unable_to_dm' | 'resource_title' | 'resource_relationship' | 'outreach_channel' | 'outreach_status' | 'outreach_notes';
   const [sortKey, setSortKey] = useState<SpeakerSortKey | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  type ResourceSortKey = 'title' | 'vertical_id' | 'type' | 'source' | 'date' | 'topic_tag';
+  const [resourceSortKey, setResourceSortKey] = useState<ResourceSortKey | null>(null);
+  const [resourceSortDir, setResourceSortDir] = useState<'asc' | 'desc'>('asc');
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [crmChecked, setCrmChecked] = useState<Set<string>>(new Set());
@@ -517,7 +520,32 @@ export default function Admin() {
   /* ─── Card screenshot generation ─── */
   const resources = resourcesQuery.data ?? [];
   const speakers = speakersQuery.data ?? [];
-  const approvedResources = resources.filter(r => r.status === 'approved');
+  const approvedResourcesUnsorted = resources.filter(r => r.status === 'approved');
+  const approvedResources = (() => {
+    if (!resourceSortKey) return approvedResourcesUnsorted;
+    const list = [...approvedResourcesUnsorted];
+    const get = (r: Resource): string => {
+      switch (resourceSortKey) {
+        case 'title':       return (r.title ?? '').toLowerCase();
+        case 'vertical_id': return r.vertical_id ?? '';
+        case 'type':        return r.type ?? '';
+        case 'source':      return (r.source ?? '').toLowerCase();
+        case 'date':        return r.date ?? '';
+        case 'topic_tag':   return (r.topic_tag ?? '').toLowerCase();
+      }
+    };
+    list.sort((a, b) => {
+      const av = get(a);
+      const bv = get(b);
+      const aEmpty = av === '';
+      const bEmpty = bv === '';
+      if (aEmpty && !bEmpty) return 1;
+      if (!aEmpty && bEmpty) return -1;
+      const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+      return resourceSortDir === 'asc' ? cmp : -cmp;
+    });
+    return list;
+  })();
   const pendingResources = resources.filter(r => r.status === 'pending');
 
   // Search → structured filters → sort pipeline. Pre-compute the related
@@ -612,6 +640,18 @@ export default function Admin() {
       // Third click — clear sort
       setSortKey(null);
       setSortDir('asc');
+    }
+  };
+
+  const toggleResourceSort = (key: ResourceSortKey) => {
+    if (resourceSortKey !== key) {
+      setResourceSortKey(key);
+      setResourceSortDir('asc');
+    } else if (resourceSortDir === 'asc') {
+      setResourceSortDir('desc');
+    } else {
+      setResourceSortKey(null);
+      setResourceSortDir('asc');
     }
   };
 
@@ -810,21 +850,41 @@ export default function Admin() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead style={{ position: 'sticky', top: 0, zIndex: 2 }}>
                 <tr>
-                  <th style={{ ...headerCellStyle, width: '28px' }}></th>
-                  <th style={headerCellStyle}>Title</th>
-                  <th style={headerCellStyle}>Vertical</th>
-                  <th style={headerCellStyle}>Type</th>
-                  <th style={headerCellStyle}>Source</th>
-                  <th style={headerCellStyle}>Date</th>
-                  <th style={headerCellStyle}>Topic</th>
-                  <th style={{ ...headerCellStyle, width: '80px' }}>Actions</th>
+                  {(() => {
+                    const ResourceSortHeader = ({ label, sortKey: key, style }: { label: string; sortKey: ResourceSortKey; style?: React.CSSProperties }) => {
+                      const active = resourceSortKey === key;
+                      const Icon = active ? (resourceSortDir === 'asc' ? ArrowUp : ArrowDown) : ArrowUpDown;
+                      return (
+                        <th
+                          style={{ ...headerCellStyle, color: '#fff', cursor: 'pointer', userSelect: 'none', ...style }}
+                          onClick={() => toggleResourceSort(key)}
+                          title={active ? `Click to ${resourceSortDir === 'asc' ? 'sort descending' : 'clear sort'}` : 'Click to sort'}
+                        >
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#fff' }}>
+                            {label}
+                            <Icon size={11} style={{ opacity: active ? 1 : 0.6 }} />
+                          </span>
+                        </th>
+                      );
+                    };
+                    return <>
+                      <th style={{ ...headerCellStyle, width: '28px' }}></th>
+                      <ResourceSortHeader label="Title" sortKey="title" />
+                      <ResourceSortHeader label="Vertical" sortKey="vertical_id" />
+                      <ResourceSortHeader label="Type" sortKey="type" />
+                      <ResourceSortHeader label="Source" sortKey="source" />
+                      <ResourceSortHeader label="Date" sortKey="date" />
+                      <ResourceSortHeader label="Topic" sortKey="topic_tag" />
+                      <th style={{ ...headerCellStyle, width: '80px' }}>Actions</th>
+                    </>;
+                  })()}
                 </tr>
               </thead>
               <tbody>
                 {approvedResources.length === 0 ? (
                   <tr><td colSpan={8} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>No resources yet</td></tr>
                 ) : approvedResources.map(r => {
-                  const dragEnabled = activeVertical !== 'all';
+                  const dragEnabled = activeVertical !== 'all' && !resourceSortKey;
                   const isDragging = draggingId === r.id;
                   const isDragOver = dragOverId === r.id && draggingId !== r.id;
                   return (
