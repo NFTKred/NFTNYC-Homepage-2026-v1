@@ -25,7 +25,9 @@ import { Textarea } from "@/components/ui/textarea";
 const INQUIRY_URL = "https://zgryfbuoarrlmocavodo.supabase.co/functions/v1/partnership-inquiry";
 
 const BUDGET_OPTIONS = [
-  "Under $25,000",
+  "$5,000",
+  "$10,000",
+  "$15,000 – $25,000",
   "$25,000 – $50,000",
   "$50,000 – $100,000",
   "$100,000 – $250,000",
