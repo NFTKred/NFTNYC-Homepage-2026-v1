@@ -74,47 +74,77 @@ serve(async (req) => {
     }
 
     const handleHint = speaker.handle ? `, X/Twitter handle @${speaker.handle}` : '';
-    const systemPrompt = `You are a research assistant finding a single high-quality resource about NFTs, digital ownership, tokenization, or Web3 that prominently features a specific person. Return ONLY a valid JSON object, or the literal word null. No markdown, no prose.`;
+    // Extract company name from role. Role looks like "Co-Founder & CEO, BluWhale AI"
+    // — everything after the first comma is usually the company. Used as an
+    // additional search vector since many recent stories about a speaker are
+    // company-driven announcements where they're the spokesperson.
+    const company = (() => {
+      if (!speaker.role) return null;
+      const idx = speaker.role.indexOf(',');
+      if (idx < 0) return null;
+      return speaker.role.slice(idx + 1).trim().replace(/\s*\(.*$/, '').trim() || null;
+    })();
+    const companyHint = company ? `\nCOMPANY: "${company}" — search this name too. Recent announcements, press releases, podcast episodes, or news from this company often prominently feature ${speaker.name} as the spokesperson and qualify as good results.` : '';
+
+    const systemPrompt = `You are a research assistant finding the single best resource featuring a specific person. Return ONLY a valid JSON object, or the literal word null. No markdown, no prose.`;
     const today = new Date();
     const maxAgeDays = 365;
     const oldestAllowed = new Date(today.getTime() - maxAgeDays * 24 * 60 * 60 * 1000);
     const oldestAllowedISO = oldestAllowed.toISOString().slice(0, 10);
     const todayISO = today.toISOString().slice(0, 10);
 
-    const userPrompt = `Find the single best, credible resource about NFTs, digital ownership, tokenization, or Web3 that is AUTHORED BY, INTERVIEWING, QUOTING, or PROMINENTLY FEATURING ${speaker.name} (${speaker.role})${handleHint}.
+    function buildPrompt(scope: 'strict' | 'broad'): string {
+      const topics = scope === 'strict'
+        ? 'NFTs, digital ownership, tokenization, or Web3'
+        : 'crypto, blockchain, NFTs, Web3, digital ownership, tokenization, DeFi, decentralized infrastructure, on-chain identity, AI×crypto, or decentralized AI';
+      const scopeNote = scope === 'broad'
+        ? '\n\nThis is a BROADER scope retry — strict NFT/Web3 found nothing, so adjacent crypto/blockchain/DeFi/AI×crypto coverage is now acceptable as long as the topic is genuinely related to digital ownership, on-chain systems, or decentralized tech.'
+        : '';
+      return `Find the single best, credible resource about ${topics} that is AUTHORED BY, INTERVIEWING, QUOTING, or PROMINENTLY FEATURING ${speaker.name} (${speaker.role})${handleHint}.${companyHint}
 
-HARD DATE REQUIREMENT: The resource's publication date MUST be between ${oldestAllowedISO} and ${todayISO} (within the last 12 months). Prefer resources from the last 6 months when available. Do NOT return anything older than ${oldestAllowedISO} — if no qualifying recent resource exists, return null instead.
+SEARCH STRATEGY: try AT LEAST 3 different query phrasings before giving up. Examples:
+  • "${speaker.name}" + topic
+  • "${speaker.name}" + "${company ?? 'their company'}"
+  • "${company ?? 'their company'}" + recent news / announcement / podcast
+  • the X handle (if provided) + recent
+Look beyond the first page of results. Click into podcast pages, YouTube channels, company blogs, and conference recap posts.
 
-The person must appear clearly in the content — the resource should be about them or by them, not just a passing mention.
+HARD DATE REQUIREMENT: Publication date MUST be between ${oldestAllowedISO} and ${todayISO} (within the last 12 months). Prefer the last 6 months. Do NOT return anything older than ${oldestAllowedISO}.
 
-Return exactly ONE JSON object with this shape:
+The person must appear clearly in the content — author, interviewee, prominent quote, or main subject. Passing-mention-only results don't count. Company announcements where this person is the named spokesperson DO count.${scopeNote}
+
+Return exactly ONE JSON object:
 
 {
-  "title": "string — article/video/podcast title",
+  "title": "string",
   "url": "string — full URL",
   "type": "blog" | "youtube" | "podcast" | "tweet" | "paper" | "news",
-  "date": "YYYY-MM-DD publication date (MUST be ${oldestAllowedISO} or later)",
-  "source": "string — publisher name (e.g. CoinDesk, Forbes)",
-  "topic_tag": "string — short tag describing the NFT/Web3 topic",
-  "description": "string — 1-2 sentences on how this relates to NFTs/Web3 and the speaker's role in it",
+  "date": "YYYY-MM-DD (MUST be ${oldestAllowedISO} or later)",
+  "source": "string — publisher",
+  "topic_tag": "string — short tag",
+  "description": "string — 1-2 sentences on the angle and the speaker's role in it",
   "resource_relationship": "authored" | "mentioned" | "interviewed" | "quoted" | "topic_expert"
 }
 
-If you cannot find a credible, specific resource published on or after ${oldestAllowedISO} that clearly features this person in an NFT/Web3 context, return exactly: null
+If nothing credible exists in this scope and date window, return exactly: null
 
 Return ONLY the JSON object or the word null. No other text, no markdown.`;
+    }
 
-    async function callGemini(): Promise<{ ok: true; text: string } | { ok: false; status: number; error: string }> {
+    async function callGemini(prompt: string): Promise<{ ok: true; text: string } | { ok: false; status: number; error: string }> {
       if (!geminiKey) return { ok: false, status: 0, error: 'GEMINI_API_KEY not configured' };
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(geminiKey)}`;
+      // Gemini 2.5 Flash has stronger tool-use / web-search reasoning than 2.0.
+      // If the project's free tier doesn't include 2.5 yet, callers fall back to
+      // Perplexity automatically.
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(geminiKey)}`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
           tools: [{ google_search: {} }],
-          generationConfig: { temperature: 0.1, maxOutputTokens: 1500 },
+          generationConfig: { temperature: 0.2, maxOutputTokens: 2000 },
         }),
       });
       if (!res.ok) {
@@ -128,7 +158,7 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
       return { ok: true, text };
     }
 
-    async function callPerplexity(): Promise<{ ok: true; text: string } | { ok: false; status: number; error: string }> {
+    async function callPerplexity(prompt: string): Promise<{ ok: true; text: string } | { ok: false; status: number; error: string }> {
       if (!perplexityKey) return { ok: false, status: 0, error: 'PERPLEXITY_API_KEY not configured' };
       const res = await fetch('https://api.perplexity.ai/chat/completions', {
         method: 'POST',
@@ -137,10 +167,10 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
           model: 'sonar',
           messages: [
             { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt },
+            { role: 'user', content: prompt },
           ],
-          max_tokens: 1500,
-          temperature: 0.1,
+          max_tokens: 2000,
+          temperature: 0.2,
         }),
       });
       if (!res.ok) {
@@ -153,31 +183,58 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
       return { ok: true, text };
     }
 
-    // Try Gemini first (free tier), fall back to Perplexity on any failure.
-    let providerUsed = 'gemini';
-    let result = await callGemini();
-    if (!result.ok) {
-      console.warn('Gemini failed, falling back to Perplexity:', result.status, result.error?.slice?.(0, 200));
-      providerUsed = 'perplexity';
-      result = await callPerplexity();
+    // Two-pass strategy:
+    //   Pass 1: strict NFT/Web3 scope. Most current taxonomy.
+    //   Pass 2: broader crypto/blockchain/DeFi/AI×crypto if pass 1 found nothing.
+    // Each pass tries Gemini first, falls back to Perplexity. Stop at the
+    // first successful, non-null parse.
+    async function searchOnce(prompt: string): Promise<{ provider: string; text: string } | { error: string; status: number }> {
+      let r = await callGemini(prompt);
+      if (r.ok) return { provider: 'gemini-2.5-flash', text: r.text };
+      console.warn('Gemini failed, fallback Perplexity:', r.status, String(r.error).slice(0, 200));
+      const p = await callPerplexity(prompt);
+      if (p.ok) return { provider: 'perplexity-sonar', text: p.text };
+      return { error: String(p.error), status: p.status };
     }
 
-    if (!result.ok) {
-      console.error('Both providers failed. Perplexity:', result.status, result.error);
-      return jsonResponse({
-        error: 'Search provider error',
-        provider: providerUsed,
-        status: result.status,
-        details: result.error,
-      }, 502);
+    let parsed: any = null;
+    let providerUsed = '';
+    let scopeUsed: 'strict' | 'broad' = 'strict';
+
+    // Pass 1 — strict
+    {
+      const r1 = await searchOnce(buildPrompt('strict'));
+      if ('error' in r1) {
+        return jsonResponse({ error: 'Search provider error', status: r1.status, details: r1.error }, 502);
+      }
+      const p1 = extractJsonObject(r1.text);
+      if (p1 && p1.url && p1.title) {
+        parsed = p1;
+        providerUsed = r1.provider;
+        scopeUsed = 'strict';
+      }
     }
 
-    const responseText = result.text;
-
-    const parsed = extractJsonObject(responseText);
+    // Pass 2 — broader scope, only if pass 1 didn't return a usable result
+    if (!parsed) {
+      const r2 = await searchOnce(buildPrompt('broad'));
+      if ('error' in r2) {
+        return jsonResponse({ error: 'Search provider error', status: r2.status, details: r2.error }, 502);
+      }
+      const p2 = extractJsonObject(r2.text);
+      if (p2 && p2.url && p2.title) {
+        parsed = p2;
+        providerUsed = r2.provider;
+        scopeUsed = 'broad';
+      }
+    }
 
     if (!parsed) {
-      return jsonResponse({ status: 'not_found', reason: 'no_credible_match' });
+      return jsonResponse({
+        status: 'not_found',
+        reason: 'no_credible_match',
+        note: 'Tried strict NFT/Web3 scope and broader crypto/blockchain/DeFi/AI×crypto scope. Nothing in the last 12 months prominently features this person at this company.',
+      });
     }
 
     if (!parsed.url || !parsed.title) {
@@ -257,6 +314,8 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
       resource: resData,
       speaker: updatedSpeaker,
       speakerId: speaker.id,
+      provider: providerUsed,
+      scope: scopeUsed,
     });
 
   } catch (err) {
