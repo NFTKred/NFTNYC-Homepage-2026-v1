@@ -255,20 +255,6 @@ export default function Sponsor() {
         <CommunityPartner />
       </div>
 
-      {/* CTA #4 — Final closer before the footer / partner logo wall.
-          Last chance to convert a scroll-through visitor; pairs the
-          "Talk to partnerships" inquiry with a direct Calendly link. */}
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      </div>
-      <PartnershipCTA
-        variant="hero"
-        onClick={openGeneralInquiry}
-        eyebrow="Let's talk"
-        title="Ready to partner with NFT.NYC 2026?"
-        body="Tell us about your goals and we'll design a custom activation tailored to your brand."
-      />
-
       <PackageInquiryModal
         open={!!inquiry}
         onOpenChange={(o) => { if (!o) setInquiry(null); }}
@@ -280,6 +266,19 @@ export default function Sponsor() {
       />
 
       <SponsorPartners />
+
+      {/* CTA #4 — Final closer immediately after the "Trusted by Industry
+          Leaders" partner wall. The "Ready to join them?" headline ties
+          the CTA directly to the logos / quotes the visitor just scanned,
+          turning social proof into momentum. */}
+      <PartnershipCTA
+        variant="hero"
+        onClick={openGeneralInquiry}
+        eyebrow="Let's talk"
+        title="Ready to join them?"
+        body="Tell us about your goals and we'll design a custom activation tailored to your brand."
+      />
+
       <SiteFooter stage={stage} hideIndustryFeed />
     </div>
   );
