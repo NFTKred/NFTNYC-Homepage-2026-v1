@@ -266,7 +266,7 @@ export default function Sponsor() {
         onClick={openGeneralInquiry}
         eyebrow="Let's talk"
         title="Ready to partner with NFT.NYC 2026?"
-        body="Tell us about your goals and we'll design a custom activation. Or skip ahead and book time with the partnerships team directly."
+        body="Tell us about your goals and we'll design a custom activation tailored to your brand."
       />
 
       <PackageInquiryModal

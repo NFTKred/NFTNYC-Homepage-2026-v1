@@ -7,14 +7,13 @@
  *   - card:    bordered box with eyebrow, headline, body, and CTA button.
  *              The mid-page workhorse; reads as a deliberate stop without
  *              breaking flow.
- *   - hero:    full-bleed emphasized section with two CTAs (Talk + Book).
+ *   - hero:    full-bleed emphasized section with a single primary CTA.
  *              Final closer before the footer.
  *
- * onClick fires the parent's "open generic inquiry modal" handler. The
- * second hero CTA links directly to /book (Calendly).
+ * Every variant routes to the parent's "open generic inquiry modal"
+ * handler — we deliberately don't link directly to the Calendly /book
+ * URL anywhere on this page so leads always go through the form first.
  */
-
-import { CalendarDays } from "lucide-react";
 
 export type PartnershipCTAVariant = "inline" | "card" | "hero";
 
@@ -94,23 +93,12 @@ export default function PartnershipCTA({
         <p className="text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed text-base sm:text-lg">
           {body ?? "Let's talk about how we can amplify your brand on the world's biggest stage."}
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button
-            onClick={onClick}
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-brand-coral text-white font-semibold text-sm hover:bg-brand-coral/90 transition-colors shadow-lg shadow-brand-coral/20"
-          >
-            {ctaLabel}
-          </button>
-          <a
-            href="https://www.nft.nyc/book"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-full border border-foreground/25 text-foreground/90 font-semibold text-sm hover:bg-foreground/5 hover:border-foreground/40 transition-colors"
-          >
-            <CalendarDays size={16} />
-            Schedule a meeting
-          </a>
-        </div>
+        <button
+          onClick={onClick}
+          className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-brand-coral text-white font-semibold text-sm hover:bg-brand-coral/90 transition-colors shadow-lg shadow-brand-coral/20"
+        >
+          {ctaLabel}
+        </button>
       </div>
     </section>
   );
