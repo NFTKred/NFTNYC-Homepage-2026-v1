@@ -87,15 +87,6 @@ export default function Sponsor() {
 
       <SponsorHeader />
 
-      {/* CTA #1 — Hero secondary: catches early-deciders who already know
-          they want a custom partnership before scrolling through packages */}
-      <PartnershipCTA
-        variant="inline"
-        onClick={openGeneralInquiry}
-        body="Have something custom in mind? Talk to our partnerships team about a tailored activation."
-        ctaLabel="Talk to us →"
-      />
-
       {/* ─── Choose Your Path ─── */}
       <section className="max-w-7xl mx-auto" style={{ padding: '3.5rem 1.5rem 3rem' }}>
         <p style={{
@@ -173,6 +164,16 @@ export default function Sponsor() {
           })}
         </div>
       </section>
+
+      {/* CTA #1 — Sits directly below the 'Choose Your Path' tiles so a
+          visitor who's surveyed the three top-level paths and doesn't
+          see one that fits has an immediate alternative. */}
+      <PartnershipCTA
+        variant="inline"
+        onClick={openGeneralInquiry}
+        body="Have something custom in mind? Talk to our partnerships team about a tailored activation."
+        ctaLabel="Talk to us →"
+      />
 
       {/* ═══ Section 1: Community-Focused Packages ═══ */}
       <div id="community">
