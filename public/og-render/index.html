@@ -257,7 +257,9 @@
        the speak page's brand color via the bloom. */
     color: #ffffff;
     line-height: 1;
-    letter-spacing: -0.02em;
+    /* Override any inherited negative letter-spacing — we control
+       digit-to-digit spacing via the per-char slot widths below. */
+    letter-spacing: 0;
     margin: 0 0 22px;
     text-transform: uppercase;
     text-shadow:
@@ -268,17 +270,18 @@
   /* Each digit + colon is locked into a fixed-width slot. Monument
      Extended doesn't ship tabular-figures (font-variant-numeric:
      tabular-nums is a no-op), so individual digit widths vary
-     significantly ("1" is narrow, "0" is wide). Without this the
-     whole timer jiggles left/right every second as the digit count
-     changes. Slots are tuned to the widest digit in the face. */
+     significantly ("1" narrow, "0"/"8"/"5" wide). Slot widths are
+     tuned generously enough to keep adjacent digits visually
+     separated — the widest digit in the face renders at ~0.75em,
+     so 0.86em gives a small but consistent breathing gap. */
   .countdown .cd-d {
     display: inline-block;
-    width: 0.66em;
+    width: 0.86em;
     text-align: center;
   }
   .countdown .cd-c {
     display: inline-block;
-    width: 0.32em;
+    width: 0.40em;
     text-align: center;
   }
   .og.landscape .countdown { font-size: 100px; }
