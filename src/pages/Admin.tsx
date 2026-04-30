@@ -6,6 +6,7 @@ import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
 import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Camera, Send, ArrowUpDown, ArrowUp, ArrowDown, AlertTriangle } from 'lucide-react';
 import { generateCardScreenshot, generateCardScreenshotsBatch, scheduleCardScreenshot } from '@/lib/cardScreenshot';
+import { getYouTubeId } from '@/components/ResourceCard';
 
 /* ─── Twenty CRM lookup ─── */
 const TWENTY_API_KEY = import.meta.env.VITE_TWENTY_API_KEY ?? '';
@@ -175,8 +176,13 @@ function buildOutreachDraft(speaker: Speaker, resource: Resource | undefined): O
   const verticalLabel = VERTICAL_LABEL[speaker.vertical_id] ?? speaker.vertical_id;
   const pageUrl = `${window.location.origin}/${speaker.vertical_id}`;
   // Prefer the rendered-card screenshot (shows the "Latest on X" section as
-  // it appears on the vertical page). Fall back to the raw og:image.
-  const imageUrl = resource?.card_screenshot ?? resource?.image ?? null;
+  // it appears on the vertical page). Fall back to the raw og:image — but for
+  // YouTube resources, derive the proper thumbnail from the video ID first,
+  // since the og:image auto-fetch sometimes returns YouTube's generic site
+  // logo instead of the video's actual frame.
+  const ytId = resource?.type === 'youtube' && resource?.url ? getYouTubeId(resource.url) : null;
+  const ytThumb = ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null;
+  const imageUrl = resource?.card_screenshot ?? ytThumb ?? resource?.image ?? null;
   const subject = `${speaker.name}: You're featured on NFT.NYC ${verticalLabel}`;
 
   const resourceLineText = resource
@@ -1497,6 +1503,14 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
 
     const timer = setTimeout(async () => {
       lastFetchedUrl.current = form.url;
+      // Special-case YouTube: skip og:image scrape (which returns YT's generic
+      // site logo) and use the video's actual thumbnail directly.
+      const ytId = getYouTubeId(form.url);
+      if (ytId) {
+        const ytThumb = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+        setForm(f => f.url === form.url && !f.image ? { ...f, image: ytThumb } : f);
+        return;
+      }
       setFetchingImage(true);
       setImageError(false);
       const img = await fetchOgImage(form.url);
@@ -1511,6 +1525,12 @@ function ResourceForm({ initial, defaultVertical, onSave }: { initial: Resource 
   /* Manual re-fetch (force) */
   const handleRefetchImage = async () => {
     if (!form.url) return;
+    // YouTube shortcut — derive from videoId, skip the og:image scrape.
+    const ytId = getYouTubeId(form.url);
+    if (ytId) {
+      setForm(f => ({ ...f, image: `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` }));
+      return;
+    }
     setFetchingImage(true);
     setImageError(false);
     const img = await fetchOgImage(form.url);
