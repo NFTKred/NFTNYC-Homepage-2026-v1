@@ -87,7 +87,7 @@ export default function PartnershipCTA({
             {eyebrow}
           </p>
         )}
-        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 uppercase tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 tracking-tight">
           {title ?? "Ready to partner with NFT.NYC 2026?"}
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed text-base sm:text-lg">

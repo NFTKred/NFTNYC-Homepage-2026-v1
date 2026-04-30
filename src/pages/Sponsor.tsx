@@ -212,17 +212,6 @@ export default function Sponsor() {
           </div>
         </section>
 
-        {/* CTA #3 — Below the main packages grid: the classic "didn't find
-            what you need" placement. Most conversion-friendly slot since
-            it catches sponsors who've evaluated everything available. */}
-        <PartnershipCTA
-          variant="card"
-          onClick={openGeneralInquiry}
-          eyebrow="Custom Partnerships"
-          title="Couldn't find what you were looking for?"
-          body="Tell us about your goals and budget. Our partnerships team will design a custom activation tailored to your brand."
-        />
-
         {/* A La Carte Options */}
         <section className="relative max-w-7xl mx-auto px-6 pt-10 pb-20">
           <div className="absolute top-0 inset-x-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -245,6 +234,18 @@ export default function Sponsor() {
             ))}
           </div>
         </section>
+
+        {/* CTA #3 — Below the A La Carte options: the classic "didn't find
+            what you need" placement. Sits at the end of all available
+            packages + add-ons, catching sponsors who've surveyed
+            everything and still want something custom. */}
+        <PartnershipCTA
+          variant="card"
+          onClick={openGeneralInquiry}
+          eyebrow="Custom Partnerships"
+          title="Couldn't find what you were looking for?"
+          body="Tell us about your goals and budget. Our partnerships team will design a custom activation tailored to your brand."
+        />
       </div>
 
       {/* ═══ Section 3: Community Partner Program ═══ */}
@@ -265,19 +266,10 @@ export default function Sponsor() {
         onOpenChange={setGeneralInquiryOpen}
       />
 
-      <SponsorPartners />
-
-      {/* CTA #4 — Final closer immediately after the "Trusted by Industry
-          Leaders" partner wall. The "Ready to join them?" headline ties
-          the CTA directly to the logos / quotes the visitor just scanned,
-          turning social proof into momentum. */}
-      <PartnershipCTA
-        variant="hero"
-        onClick={openGeneralInquiry}
-        eyebrow="Let's talk"
-        title="Ready to join them?"
-        body="Tell us about your goals and we'll design a custom activation tailored to your brand."
-      />
+      {/* SponsorPartners renders an embedded "Ready to join them?" prompt
+          + Talk to partnerships button between the description sentence
+          and the partner logo grid (CTA #4). */}
+      <SponsorPartners onTalkToPartnerships={openGeneralInquiry} />
 
       <SiteFooter stage={stage} hideIndustryFeed />
     </div>

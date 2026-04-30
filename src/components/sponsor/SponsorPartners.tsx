@@ -56,7 +56,15 @@ function PartnerLogo({ name, logo }: { name: string; logo: string }) {
   );
 }
 
-export default function Partners() {
+interface PartnersProps {
+  /** Optional "Talk to partnerships" handler. When provided, an inline
+   *  "Ready to join them?" prompt + button is rendered between the
+   *  description sentence and the logo grid — turning the partner wall
+   *  into a direct call-to-action. */
+  onTalkToPartnerships?: () => void;
+}
+
+export default function Partners({ onTalkToPartnerships }: PartnersProps = {}) {
   return (
     <section className="relative bg-background py-20">
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -67,9 +75,24 @@ export default function Partners() {
         <h2 className="text-3xl font-bold text-foreground text-center mb-3">
           Trusted by Industry Leaders
         </h2>
-        <p className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-muted-foreground text-center max-w-2xl mx-auto">
           Since 2019, NFT.NYC has partnered with the leading Enterprise brands across blockchains, Fortune 500 companies, and the NFT ecosystem.
         </p>
+
+        {onTalkToPartnerships && (
+          <div className="text-center mt-10 mb-12">
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-5">
+              Ready to join them?
+            </h3>
+            <button
+              onClick={onTalkToPartnerships}
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-brand-coral text-white font-semibold text-sm hover:bg-brand-coral/90 transition-colors shadow-lg shadow-brand-coral/20"
+            >
+              Talk to partnerships
+            </button>
+          </div>
+        )}
+        {!onTalkToPartnerships && <div className="mb-12" />}
 
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
           {partners.map((p) => (
