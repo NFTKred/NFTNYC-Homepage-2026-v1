@@ -45,7 +45,7 @@ const FAQ_DATA: FAQCategory[] = [
     items: [
       {
         q: 'How can I apply to be a speaker at NFT.NYC?',
-        a: <>Speaker applications for NFT.NYC 2026 open soon. Please follow <a href="https://twitter.com/NFT_NYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC on X</a> for updates.</>,
+        a: <>Round 1 of speaker submissions for NFT.NYC 2026 closed on 30 April. Round 2 opens soon — follow <a href="https://twitter.com/NFT_NYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC on X</a> to be the first to know when submissions reopen, then visit <a href="/speak" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/speak</a> for the full application details.</>,
       },
       {
         q: 'Do we each need to submit a separate application for collaborations?',
