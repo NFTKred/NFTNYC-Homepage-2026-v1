@@ -81,10 +81,10 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
           className="fixed top-0 left-0 right-0 z-[101]"
           style={{
             height: '36px',
-            background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,182,212,0.12))',
+            background: 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(139,92,246,0.12))',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
-            borderBottom: '1px solid rgba(16,185,129,0.15)',
+            borderBottom: '1px solid rgba(6,182,212,0.18)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -104,14 +104,14 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
               gap: '0.5rem',
             }}
           >
-            <span style={{ color: '#10B981', fontWeight: 700 }}>Round 1</span>
-            Speaker Submissions Close 30 April.
+            <span style={{ color: '#06B6D4', fontWeight: 700 }}>Round 2</span>
+            Speaker Submissions Open Soon.
             <span style={{
               fontWeight: 700,
-              color: '#10B981',
+              color: '#06B6D4',
               textDecoration: 'underline',
               textUnderlineOffset: '2px',
-            }}>Apply Now →</span>
+            }}>Get Notified →</span>
           </a>
           <button
             onClick={e => { e.stopPropagation(); setBannerDismissed(true); }}

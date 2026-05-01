@@ -326,10 +326,10 @@ export default function VerticalPage() {
           margin: '0 auto 2rem',
           lineHeight: 1.6,
         }}>
-          Share your expertise at NFT.NYC 2026. Submit a talk proposal for the {eco.name} track.
+          Share your expertise at NFT.NYC 2026 in the {eco.name} track. Round 1 closed April 30 — follow @NFT_NYC on X for the moment Round 2 opens.
         </p>
         <a
-          href="https://sessionize.com/nft-nyc-2026/"
+          href="https://twitter.com/NFT_NYC"
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -351,7 +351,7 @@ export default function VerticalPage() {
           onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 8px 30px ${hexToRgba(eco.color, 0.35)}`; }}
           onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
         >
-          Submit to speak
+          Follow @NFT_NYC for Round 2 →
         </a>
       </section>
 

@@ -55,7 +55,7 @@ const VERTICALS = [
 // `route` is the URL path (used for canonical + dist directory layout);
 // `slug` is the OG image filename stem (/og/<slug>.png).
 const PAGES = [
-  { route: "/speak",                slug: "speak",                title: "Speak at NFT.NYC 2026 — Share your voice",                       desc: "Submit your talk for keynotes, panels, and fireside chats across 12 industry tracks. Round 1 of speaker submissions closes 30 April." },
+  { route: "/speak",                slug: "speak",                title: "Speak at NFT.NYC 2026 — Share your voice",                       desc: "Round 1 closed 30 April. Round 2 opens soon — follow @NFT_NYC on X to be the first to know. Keynotes, panels, and fireside chats across 12 industry tracks." },
   { route: "/sponsor",              slug: "sponsor",              title: "Partner with NFT.NYC 2026",                                       desc: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track." },
   { route: "/sponsor/ts-challenge", slug: "sponsor-ts-challenge", title: "Times Square Challenge — NFT.NYC 2026 Partnerships",              desc: "Showcase your brand on Times Square's biggest screens during NFT.NYC 2026. 1.5M daily impressions, integrated into the on-chain art exhibition." },
   { route: "/ts-challenge",         slug: "ts-challenge",         title: "Times Square Challenge — NFT.NYC 2026",                           desc: "An on-chain art exhibition broadcasting from Times Square's iconic screens. Collect limited-edition art, earn T-XP, climb the leaderboard." },

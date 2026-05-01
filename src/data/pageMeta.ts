@@ -29,7 +29,7 @@ export interface PageMetaEntry {
 export const PAGE_META: Record<string, PageMetaEntry> = {
   speak: {
     title: "Speak at NFT.NYC 2026 — Share your voice",
-    description: "Submit your talk for keynotes, panels, and fireside chats across 12 industry tracks. Round 1 of speaker submissions closes 30 April.",
+    description: "Round 1 closed 30 April. Round 2 opens soon — follow @NFT_NYC on X to be the first to know. Keynotes, panels, and fireside chats across 12 industry tracks.",
     path: "/speak",
     ogImage: "/og/speak.png",
   },
