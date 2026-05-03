@@ -16,9 +16,7 @@ export const config = {
 const SUPABASE_URL = 'https://zgryfbuoarrlmocavodo.supabase.co';
 // Public anon key — already shipped in the client bundle, safe to embed.
 const SUPABASE_ANON =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpncnlm' +
-  'YnVvYXJybG1vY2F2b2RvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4NDgyMjQsImV4cCI6MjA1' +
-  'ODQyNDIyNH0.SBMTIM_Nbnk_RnTYbmK8TT6fy_tGLvO60YzcEgIPx3M';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncnlmYnVvYXJybG1vY2F2b2RvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNjA4MzEsImV4cCI6MjA5MDczNjgzMX0.xDGlhaIKm_6sArOQnU8mUIDdpeVbX3Iwh5rVDRkvD_g';
 
 const VERTICAL_META: Record<string, { name: string; color: string }> = {
   ai:           { name: 'AI Identity Tokenization',     color: '#3B82F6' },
