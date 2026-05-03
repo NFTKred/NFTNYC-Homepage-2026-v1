@@ -19,7 +19,10 @@ async function fetchFromThumio(resourceId: string): Promise<{ ok: true; bytes: U
   const target = `${TARGET_BASE}/${resourceId}`;
   // wait=15 gives the React page time to fetch its data and render the
   // hero image plus 2 neighbor cards before thum.io snaps the shot.
-  const apiUrl = `https://image.thum.io/get/width/1080/png/viewportWidth/1080/noanimate/wait/15/noCache/${encodeURI(target)}`;
+  // crop/2600 captures the full 3-card stack (~2400px tall) — without
+  // it thum.io only captures the 1200px default viewport and clips
+  // the lower cards. width/1080 sets the rendered viewport width.
+  const apiUrl = `https://image.thum.io/get/width/1080/crop/2600/png/viewportWidth/1080/noanimate/wait/15/noCache/${encodeURI(target)}`;
   try {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 25_000);
