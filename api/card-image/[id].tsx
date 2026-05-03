@@ -70,10 +70,10 @@ async function fetchResource(id: string): Promise<Resource | null> {
   return rows?.[0] ?? null;
 }
 
-async function fetchNeighbors(verticalId: string, excludeId: string): Promise<Resource[]> {
+async function fetchNeighbors(verticalId: string, excludeId: string, limit = 2): Promise<Resource[]> {
   // Only neighbors with images so the section preview reads well visually.
   const rows = (await supaFetch(
-    `resources?vertical_id=eq.${verticalId}&status=eq.approved&id=neq.${excludeId}&image=not.is.null&order=display_order.asc.nullslast,date.desc&limit=2&select=${RESOURCE_FIELDS}`
+    `resources?vertical_id=eq.${verticalId}&status=eq.approved&id=neq.${excludeId}&image=not.is.null&order=display_order.asc.nullslast,date.desc&limit=${limit}&select=${RESOURCE_FIELDS}`
   )) as Resource[] | null;
   return rows ?? [];
 }
@@ -106,7 +106,7 @@ function bytesToBase64(bytes: Uint8Array): string {
 // null on any failure (timeout, non-2xx, transport error). Routes through
 // images.weserv.nl with resize so the payload stays small (a 4MB JPEG
 // becomes ~150KB resized to 1080×565).
-async function fetchHeroAsDataUri(url: string, timeoutMs = 4000): Promise<string | null> {
+async function fetchHeroAsDataUri(url: string, timeoutMs = 3000): Promise<string | null> {
   if (!url) return null;
   const stripped = url.replace(/^https?:\/\//, '');
   const proxied = `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${CARD_WIDTH}&h=${HERO_HEIGHT}&fit=cover&a=attention&output=jpg&q=82`;
@@ -283,18 +283,24 @@ export default async function handler(req: Request) {
     const target = await fetchResource(id);
     if (!target) return new Response('Resource not found', { status: 404 });
 
+    // ?cards=N (1, 2, or 3) — defaults to 3. Override with ?cards=1 to skip
+    // the neighbor fetches/renders if the function is timing out.
+    const cardsParam = parseInt(url.searchParams.get('cards') ?? '3', 10);
+    const cardCount = Math.max(1, Math.min(3, isNaN(cardsParam) ? 3 : cardsParam));
+    const neighborLimit = Math.max(0, cardCount - 1);
+
     const meta = VERTICAL_META[target.vertical_id] ?? { name: target.vertical_id, color: '#FFFFFF' };
-    const neighbors = await fetchNeighbors(target.vertical_id, target.id);
+    const neighbors = neighborLimit > 0 ? await fetchNeighbors(target.vertical_id, target.id, neighborLimit) : [];
 
     // Pre-fetch every hero image in parallel so satori receives them as data
     // URIs and never has to make external requests during render. Each fetch
-    // has a 4s timeout — if the upstream is slow or 404s, the card just
+    // has a 3s timeout — if the upstream is slow or 404s, the card just
     // renders with a gradient placeholder instead of hanging the function.
     const allCards = [target, ...neighbors];
     const heros = await Promise.all(
       allCards.map((r) => {
         const u = deriveHero(r);
-        return u ? fetchHeroAsDataUri(u) : Promise.resolve(null);
+        return u ? fetchHeroAsDataUri(u, 3000) : Promise.resolve(null);
       })
     );
 
