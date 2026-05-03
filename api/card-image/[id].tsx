@@ -1,11 +1,12 @@
-// Vercel Edge function — renders the "Latest on <Vertical>" card image used
-// in outreach email drafts. No external screenshot services, no storage:
-// the image is generated from live Supabase data on every request.
+// Vercel Edge function — renders the "Latest on <Vertical>" section preview
+// used in outreach email drafts. Layout matches the original card_screenshot
+// pipeline: small "RESOURCES" eyebrow, big "LATEST ON <vertical>" heading,
+// then the speaker's resource as the top card followed by two other
+// approved resources from the same vertical. No external screenshot
+// services, no storage — image renders from live Supabase data on every
+// request.
 //
 // Route: /api/card-image/<resourceId>
-//
-// Public-anon Supabase access is fine here — the resources table is already
-// readable by anonymous users (it powers the public ecosystem pages).
 
 import { ImageResponse } from '@vercel/og';
 
@@ -38,11 +39,6 @@ const TYPE_LABEL: Record<string, string> = {
   tweet: 'TWEET', paper: 'PAPER', news: 'NEWS',
 };
 
-function getYouTubeId(url: string): string | null {
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
-  return m ? m[1] : null;
-}
-
 interface Resource {
   id: string;
   vertical_id: string;
@@ -56,29 +52,43 @@ interface Resource {
   image: string | null;
 }
 
-async function fetchResource(id: string): Promise<Resource | null> {
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/resources?id=eq.${id}&select=id,vertical_id,title,url,type,date,source,topic_tag,description,image`,
-    {
-      headers: {
-        apikey: SUPABASE_ANON,
-        Authorization: `Bearer ${SUPABASE_ANON}`,
-      },
-    }
-  );
+const RESOURCE_FIELDS = 'id,vertical_id,title,url,type,date,source,topic_tag,description,image';
+
+async function supaFetch(path: string): Promise<unknown> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      apikey: SUPABASE_ANON,
+      Authorization: `Bearer ${SUPABASE_ANON}`,
+    },
+  });
   if (!res.ok) return null;
-  const rows = (await res.json()) as Resource[];
-  return rows[0] ?? null;
+  return res.json();
 }
 
-function deriveHeroImage(resource: Resource): string | null {
-  // YouTube: always use the proper video thumbnail; ignore any saved image.
-  if (resource.type === 'youtube') {
-    const ytId = getYouTubeId(resource.url);
+async function fetchResource(id: string): Promise<Resource | null> {
+  const rows = (await supaFetch(`resources?id=eq.${id}&select=${RESOURCE_FIELDS}`)) as Resource[] | null;
+  return rows?.[0] ?? null;
+}
+
+async function fetchNeighbors(verticalId: string, excludeId: string): Promise<Resource[]> {
+  // Only neighbors with images so the section preview reads well visually.
+  const rows = (await supaFetch(
+    `resources?vertical_id=eq.${verticalId}&status=eq.approved&id=neq.${excludeId}&image=not.is.null&order=display_order.asc.nullslast,date.desc&limit=2&select=${RESOURCE_FIELDS}`
+  )) as Resource[] | null;
+  return rows ?? [];
+}
+
+function getYouTubeId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+  return m ? m[1] : null;
+}
+
+function deriveHero(r: Resource): string | null {
+  if (r.type === 'youtube') {
+    const ytId = getYouTubeId(r.url);
     if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
   }
-  if (resource.image && resource.image.trim()) return resource.image;
-  return null;
+  return r.image && r.image.trim() ? r.image : null;
 }
 
 function formatDate(iso: string): string {
@@ -90,6 +100,144 @@ function formatDate(iso: string): string {
   }
 }
 
+function truncate(s: string, n: number): string {
+  return s.length > n ? s.slice(0, n) + '…' : s;
+}
+
+const CARD_WIDTH = 1080;
+const HERO_HEIGHT = Math.round(CARD_WIDTH / 1.91); // 565
+
+function ResourceCardJSX({
+  resource,
+  meta,
+}: {
+  resource: Resource;
+  meta: { name: string; color: string };
+}) {
+  const hero = deriveHero(resource);
+  const typeLabel = TYPE_LABEL[resource.type] ?? resource.type.toUpperCase();
+  const dateLabel = formatDate(resource.date);
+
+  return (
+    <div
+      style={{
+        width: `${CARD_WIDTH}px`,
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        marginBottom: '24px',
+      }}
+    >
+      {/* Hero */}
+      <div
+        style={{
+          width: '100%',
+          height: `${HERO_HEIGHT}px`,
+          display: 'flex',
+          position: 'relative',
+          background: hero ? '#000' : `linear-gradient(135deg, ${meta.color}33, ${meta.color}11)`,
+        }}
+      >
+        {hero && (
+          <img
+            src={hero}
+            width={CARD_WIDTH}
+            height={HERO_HEIGHT}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        )}
+        <div
+          style={{
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            display: 'flex',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '2px',
+            color: '#FFFFFF',
+            background: 'rgba(0,0,0,0.6)',
+            padding: '6px 14px',
+            borderRadius: '6px',
+          }}
+        >
+          {typeLabel}
+        </div>
+      </div>
+
+      {/* Body */}
+      <div
+        style={{
+          padding: '24px 28px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '28px',
+            fontWeight: 700,
+            color: '#FFFFFF',
+            lineHeight: 1.2,
+            marginBottom: '12px',
+          }}
+        >
+          {resource.title}
+        </div>
+        {resource.description && (
+          <div
+            style={{
+              fontSize: '16px',
+              color: 'rgba(255,255,255,0.7)',
+              lineHeight: 1.4,
+              marginBottom: '16px',
+            }}
+          >
+            <span style={{ color: meta.color, fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '1px' }}>
+              The NFT angle:&nbsp;
+            </span>
+            {truncate(resource.description, 220)}
+          </div>
+        )}
+        <div
+          style={{
+            display: 'flex',
+            gap: '14px',
+            alignItems: 'center',
+            fontSize: '14px',
+            color: 'rgba(255,255,255,0.55)',
+          }}
+        >
+          <div style={{ display: 'flex' }}>{resource.source}</div>
+          <div style={{ display: 'flex' }}>·</div>
+          <div style={{ display: 'flex' }}>{dateLabel}</div>
+          {resource.topic_tag && (
+            <>
+              <div style={{ display: 'flex' }}>·</div>
+              <div
+                style={{
+                  display: 'flex',
+                  background: `${meta.color}33`,
+                  color: meta.color,
+                  padding: '3px 10px',
+                  borderRadius: '4px',
+                  fontWeight: 600,
+                  fontSize: '12px',
+                }}
+              >
+                {resource.topic_tag}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default async function handler(req: Request) {
   try {
     const url = new URL(req.url);
@@ -97,28 +245,30 @@ export default async function handler(req: Request) {
     const id = parts[parts.length - 1];
     if (!id) return new Response('Missing resource id', { status: 400 });
 
-    const resource = await fetchResource(id);
-    if (!resource) return new Response('Resource not found', { status: 404 });
+    const target = await fetchResource(id);
+    if (!target) return new Response('Resource not found', { status: 404 });
 
-    const meta = VERTICAL_META[resource.vertical_id] ?? { name: resource.vertical_id, color: '#FFFFFF' };
-    const heroImage = deriveHeroImage(resource);
-    const typeLabel = TYPE_LABEL[resource.type] ?? resource.type.toUpperCase();
-    const dateLabel = formatDate(resource.date);
+    const meta = VERTICAL_META[target.vertical_id] ?? { name: target.vertical_id, color: '#FFFFFF' };
+    const neighbors = await fetchNeighbors(target.vertical_id, target.id);
+
+    // Total height: header (~160) + 3 cards × ~880 each + bottom padding
+    const totalHeight = 160 + (HERO_HEIGHT + 200) * 3 + 80;
 
     return new ImageResponse(
       (
         <div
           style={{
             width: '1200px',
-            height: '900px',
+            height: `${totalHeight}px`,
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
             background: '#0A0A0F',
-            padding: '48px 56px',
+            padding: '40px 60px',
             fontFamily: 'sans-serif',
           }}
         >
-          {/* Top label */}
+          {/* Eyebrow */}
           <div
             style={{
               display: 'flex',
@@ -127,7 +277,7 @@ export default async function handler(req: Request) {
               letterSpacing: '4px',
               color: 'rgba(255,255,255,0.5)',
               textTransform: 'uppercase',
-              marginBottom: '8px',
+              marginBottom: '12px',
               justifyContent: 'center',
             }}
           >
@@ -137,165 +287,35 @@ export default async function handler(req: Request) {
           <div
             style={{
               display: 'flex',
-              fontSize: '52px',
+              fontSize: '54px',
               fontWeight: 900,
-              color: '#FFFFFF',
               textTransform: 'uppercase',
               letterSpacing: '-1px',
               lineHeight: 1.05,
-              marginBottom: '32px',
+              marginBottom: '36px',
               justifyContent: 'center',
               textAlign: 'center',
+              flexWrap: 'wrap',
             }}
           >
-            <span>Latest on&nbsp;</span>
+            <span style={{ color: '#FFFFFF' }}>Latest on&nbsp;</span>
             <span style={{ color: meta.color }}>{meta.name}</span>
           </div>
 
-          {/* Hero card */}
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              background: 'rgba(255,255,255,0.04)',
-              border: `1px solid ${meta.color}33`,
-              borderRadius: '20px',
-              overflow: 'hidden',
-              position: 'relative',
-            }}
-          >
-            {/* Hero image area */}
-            <div
-              style={{
-                width: '100%',
-                height: heroImage ? '460px' : '120px',
-                display: 'flex',
-                position: 'relative',
-                background: heroImage ? '#000' : `linear-gradient(135deg, ${meta.color}33, ${meta.color}11)`,
-              }}
-            >
-              {heroImage && (
-                <img
-                  src={heroImage}
-                  width={1200 - 56 * 2}
-                  height={460}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              )}
-              {/* Type chip */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '20px',
-                  left: '20px',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '2px',
-                  color: '#FFFFFF',
-                  background: 'rgba(0,0,0,0.6)',
-                  padding: '6px 14px',
-                  borderRadius: '6px',
-                }}
-              >
-                {typeLabel}
-              </div>
-            </div>
-
-            {/* Card body */}
-            <div
-              style={{
-                padding: '28px 32px',
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 1,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: '32px',
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  lineHeight: 1.2,
-                  marginBottom: '16px',
-                }}
-              >
-                {resource.title}
-              </div>
-              {resource.description && (
-                <div
-                  style={{
-                    fontSize: '18px',
-                    color: 'rgba(255,255,255,0.7)',
-                    lineHeight: 1.4,
-                    marginBottom: 'auto',
-                  }}
-                >
-                  {resource.description.length > 200
-                    ? resource.description.slice(0, 200) + '…'
-                    : resource.description}
-                </div>
-              )}
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '16px',
-                  alignItems: 'center',
-                  fontSize: '15px',
-                  color: 'rgba(255,255,255,0.55)',
-                  marginTop: '20px',
-                }}
-              >
-                <div style={{ display: 'flex' }}>{resource.source}</div>
-                <div style={{ display: 'flex' }}>·</div>
-                <div style={{ display: 'flex' }}>{dateLabel}</div>
-                {resource.topic_tag && (
-                  <>
-                    <div style={{ display: 'flex' }}>·</div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        background: `${meta.color}33`,
-                        color: meta.color,
-                        padding: '4px 12px',
-                        borderRadius: '4px',
-                        fontWeight: 600,
-                        fontSize: '13px',
-                      }}
-                    >
-                      {resource.topic_tag}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: '24px',
-              fontSize: '14px',
-              color: 'rgba(255,255,255,0.4)',
-            }}
-          >
-            <div style={{ display: 'flex', fontWeight: 700, letterSpacing: '2px', color: '#FFFFFF' }}>NFT.NYC 2026</div>
-            <div style={{ display: 'flex' }}>Sept 1–3 · The Edison · Times Square</div>
-          </div>
+          {/* Cards */}
+          <ResourceCardJSX resource={target} meta={meta} />
+          {neighbors.map((n) => (
+            <ResourceCardJSX key={n.id} resource={n} meta={meta} />
+          ))}
         </div>
       ),
       {
         width: 1200,
-        height: 900,
-        // Short cache: each Copy Draft click in the admin appends ?v=<timestamp>
-        // so the URL is unique anyway, but this keeps Vercel's edge cache from
-        // holding a stale render in the rare case the same URL is hit twice.
-        // 60s edge / 60s browser is enough to deduplicate concurrent fetches
-        // by an email client opening the same image multiple times.
+        height: totalHeight,
         headers: {
+          // Short cache; the admin appends ?v=<timestamp> per Copy Draft so
+          // each request is a unique URL anyway. 60s here just dedupes
+          // concurrent fetches from a single email render.
           'Cache-Control': 'public, max-age=60, s-maxage=60',
         },
       }
