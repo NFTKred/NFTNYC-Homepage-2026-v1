@@ -264,6 +264,40 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
       ? parsed.resource_relationship
       : 'mentioned';
 
+    // Best-effort og:image fetch so the inserted row has a hero image from
+    // the start. YouTube URLs short-circuit to the video thumbnail. For
+    // everything else we fetch the page with a browser User-Agent and grep
+    // out og:image / twitter:image / Microlink as a fallback. If all fail
+    // we leave image null — better than blocking the insert on it.
+    async function fetchOgImage(targetUrl: string): Promise<string | null> {
+      const ytMatch = targetUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+      if (ytMatch) return `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg`;
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 10_000);
+        const res = await fetch(targetUrl, {
+          signal: ctrl.signal,
+          headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' },
+        });
+        clearTimeout(t);
+        if (res.ok) {
+          const html = await res.text();
+          const m = html.match(/(?:property|name)=["'](?:og:image|twitter:image)["'][^>]*content=["']([^"']+)["']/i);
+          if (m && m[1]) return m[1].replace(/&amp;/g, '&');
+        }
+      } catch { /* fall through to Microlink */ }
+      try {
+        const ml = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(targetUrl)}`);
+        if (ml.ok) {
+          const j = await ml.json();
+          const img = j?.data?.image?.url || j?.data?.logo?.url || null;
+          if (img) return img;
+        }
+      } catch { /* ignore */ }
+      return null;
+    }
+    const ogImage = await fetchOgImage(String(parsed.url));
+
     const resourceRow = {
       vertical_id: speaker.vertical_id,
       title: String(parsed.title).slice(0, 500),
@@ -273,6 +307,7 @@ Return ONLY the JSON object or the word null. No other text, no markdown.`;
       source: String(parsed.source || 'Unknown').slice(0, 200),
       topic_tag: String(parsed.topic_tag || '').slice(0, 200),
       description: String(parsed.description || '').slice(0, 1000),
+      image: ogImage,
       status: 'pending',
       auto_found: true,
       created_by: user.id,
