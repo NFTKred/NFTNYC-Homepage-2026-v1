@@ -91,6 +91,40 @@ function deriveHero(r: Resource): string | null {
   return r.image && r.image.trim() ? r.image : null;
 }
 
+// Convert bytes to base64 in chunks to avoid stack overflow on large arrays.
+function bytesToBase64(bytes: Uint8Array): string {
+  let binary = '';
+  const CHUNK = 32_768;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + CHUNK)));
+  }
+  return btoa(binary);
+}
+
+// Pre-fetch a hero image with a hard timeout so satori never has to make
+// external requests during rendering. Returns a data: URI on success or
+// null on any failure (timeout, non-2xx, transport error). Routes through
+// images.weserv.nl with resize so the payload stays small (a 4MB JPEG
+// becomes ~150KB resized to 1080×565).
+async function fetchHeroAsDataUri(url: string, timeoutMs = 4000): Promise<string | null> {
+  if (!url) return null;
+  const stripped = url.replace(/^https?:\/\//, '');
+  const proxied = `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${CARD_WIDTH}&h=${HERO_HEIGHT}&fit=cover&a=attention&output=jpg&q=82`;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
+    const res = await fetch(proxied, { signal: ctrl.signal });
+    clearTimeout(t);
+    if (!res.ok) return null;
+    const buf = await res.arrayBuffer();
+    const bytes = new Uint8Array(buf);
+    if (bytes.length < 100) return null;
+    return `data:image/jpeg;base64,${bytesToBase64(bytes)}`;
+  } catch {
+    return null;
+  }
+}
+
 function formatDate(iso: string): string {
   try {
     const d = new Date(iso);
@@ -110,11 +144,12 @@ const HERO_HEIGHT = Math.round(CARD_WIDTH / 1.91); // 565
 function ResourceCardJSX({
   resource,
   meta,
+  hero,
 }: {
   resource: Resource;
   meta: { name: string; color: string };
+  hero: string | null;
 }) {
-  const hero = deriveHero(resource);
   const typeLabel = TYPE_LABEL[resource.type] ?? resource.type.toUpperCase();
   const dateLabel = formatDate(resource.date);
 
@@ -251,8 +286,20 @@ export default async function handler(req: Request) {
     const meta = VERTICAL_META[target.vertical_id] ?? { name: target.vertical_id, color: '#FFFFFF' };
     const neighbors = await fetchNeighbors(target.vertical_id, target.id);
 
-    // Total height: header (~160) + 3 cards × ~880 each + bottom padding
-    const totalHeight = 160 + (HERO_HEIGHT + 200) * 3 + 80;
+    // Pre-fetch every hero image in parallel so satori receives them as data
+    // URIs and never has to make external requests during render. Each fetch
+    // has a 4s timeout — if the upstream is slow or 404s, the card just
+    // renders with a gradient placeholder instead of hanging the function.
+    const allCards = [target, ...neighbors];
+    const heros = await Promise.all(
+      allCards.map((r) => {
+        const u = deriveHero(r);
+        return u ? fetchHeroAsDataUri(u) : Promise.resolve(null);
+      })
+    );
+
+    // Total height: header (~160) + N cards × ~880 each + bottom padding
+    const totalHeight = 160 + (HERO_HEIGHT + 200) * allCards.length + 80;
 
     return new ImageResponse(
       (
@@ -303,9 +350,8 @@ export default async function handler(req: Request) {
           </div>
 
           {/* Cards */}
-          <ResourceCardJSX resource={target} meta={meta} />
-          {neighbors.map((n) => (
-            <ResourceCardJSX key={n.id} resource={n} meta={meta} />
+          {allCards.map((r, i) => (
+            <ResourceCardJSX key={r.id} resource={r} meta={meta} hero={heros[i]} />
           ))}
         </div>
       ),
