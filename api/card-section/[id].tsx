@@ -2,10 +2,12 @@
 // /card/<id> React page (which renders the "Latest on <Vertical>"
 // section with the resource as the top card + 2 neighbors).
 //
-// We use thum.io as the primary screenshot service, with Microlink as
-// a fallback. The result is cached at Vercel's edge for 30 minutes so
-// repeat opens of the same email don't burn through provider quotas —
-// only the first viewer triggers an upstream render.
+// Microlink is the primary because its `fullPage: true` mode reliably
+// captures the entire 3-card column at full height (~2400px). thum.io
+// is the fallback — its crop param is unreliable when rate-limited
+// (returns a 1080×1200 truncation showing only the top 1.5 cards).
+// Result is cached at the Vercel edge for 30 minutes so repeat opens
+// of the same email don't burn through provider quotas.
 //
 // Route: /api/card-section/<resourceId>
 
@@ -14,29 +16,21 @@ export const config = {
 };
 
 const TARGET_BASE = 'https://www.nft.nyc/card';
+// Minimum acceptable PNG height — anything shorter means we got a
+// truncated render and should fall back. The /card React page renders
+// at roughly 2200–2600px tall depending on neighbor card content; 1500
+// is a generous floor that catches truncations like thum.io's 1200px
+// default viewport-cap.
+const MIN_HEIGHT_PX = 1500;
 
-async function fetchFromThumio(resourceId: string): Promise<{ ok: true; bytes: Uint8Array } | { ok: false; reason: string }> {
-  const target = `${TARGET_BASE}/${resourceId}`;
-  // wait=15 gives the React page time to fetch its data and render the
-  // hero image plus 2 neighbor cards before thum.io snaps the shot.
-  // crop/2600 captures the full 3-card stack (~2400px tall) — without
-  // it thum.io only captures the 1200px default viewport and clips
-  // the lower cards. width/1080 sets the rendered viewport width.
-  const apiUrl = `https://image.thum.io/get/width/1080/crop/2600/png/viewportWidth/1080/noanimate/wait/15/noCache/${encodeURI(target)}`;
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 25_000);
-    const res = await fetch(apiUrl, { signal: ctrl.signal });
-    clearTimeout(t);
-    if (!res.ok) return { ok: false, reason: `thumio ${res.status}` };
-    const buf = new Uint8Array(await res.arrayBuffer());
-    // thum.io occasionally returns a tiny placeholder when it's throttling;
-    // require ≥40 KB so those don't get cached as the result.
-    if (buf.length < 40_000) return { ok: false, reason: `thumio tiny (${buf.length}b)` };
-    return { ok: true, bytes: buf };
-  } catch (e) {
-    return { ok: false, reason: `thumio err ${(e as Error).message}` };
-  }
+// Read the height from a PNG file's IHDR chunk. PNG signature is 8 bytes,
+// then a 4-byte length, 4-byte type ("IHDR"), then 4 bytes width, 4 bytes
+// height. We check height at offset 20.
+function pngHeight(bytes: Uint8Array): number {
+  if (bytes.length < 24) return 0;
+  // Verify PNG signature
+  if (bytes[0] !== 0x89 || bytes[1] !== 0x50 || bytes[2] !== 0x4E || bytes[3] !== 0x47) return 0;
+  return (bytes[20] << 24) | (bytes[21] << 16) | (bytes[22] << 8) | bytes[23];
 }
 
 async function fetchFromMicrolink(resourceId: string): Promise<{ ok: true; bytes: Uint8Array } | { ok: false; reason: string }> {
@@ -55,7 +49,7 @@ async function fetchFromMicrolink(resourceId: string): Promise<{ ok: true; bytes
   });
   try {
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 25_000);
+    const t = setTimeout(() => ctrl.abort(), 22_000);
     const meta = await fetch(`https://api.microlink.io/?${params.toString()}`, { signal: ctrl.signal });
     clearTimeout(t);
     if (!meta.ok) return { ok: false, reason: `microlink meta ${meta.status}` };
@@ -63,15 +57,39 @@ async function fetchFromMicrolink(resourceId: string): Promise<{ ok: true; bytes
     const shotUrl: string | undefined = json?.data?.screenshot?.url;
     if (!shotUrl) return { ok: false, reason: 'microlink no screenshot url' };
     const ctrl2 = new AbortController();
-    const t2 = setTimeout(() => ctrl2.abort(), 15_000);
+    const t2 = setTimeout(() => ctrl2.abort(), 8_000);
     const img = await fetch(shotUrl, { signal: ctrl2.signal });
     clearTimeout(t2);
     if (!img.ok) return { ok: false, reason: `microlink img ${img.status}` };
     const buf = new Uint8Array(await img.arrayBuffer());
     if (buf.length < 40_000) return { ok: false, reason: `microlink tiny (${buf.length}b)` };
+    const h = pngHeight(buf);
+    if (h && h < MIN_HEIGHT_PX) return { ok: false, reason: `microlink truncated (${h}px tall)` };
     return { ok: true, bytes: buf };
   } catch (e) {
     return { ok: false, reason: `microlink err ${(e as Error).message}` };
+  }
+}
+
+async function fetchFromThumio(resourceId: string): Promise<{ ok: true; bytes: Uint8Array } | { ok: false; reason: string }> {
+  const target = `${TARGET_BASE}/${resourceId}`;
+  // Pass the URL directly without encodeURI — thum.io's path parser doesn't
+  // handle percent-encoded URLs well. crop/2600 attempts a 2600px-tall
+  // capture (often respected, sometimes silently truncated when throttled).
+  const apiUrl = `https://image.thum.io/get/width/1080/crop/2600/png/viewportWidth/1080/noanimate/wait/12/noCache/${target}`;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 18_000);
+    const res = await fetch(apiUrl, { signal: ctrl.signal });
+    clearTimeout(t);
+    if (!res.ok) return { ok: false, reason: `thumio ${res.status}` };
+    const buf = new Uint8Array(await res.arrayBuffer());
+    if (buf.length < 40_000) return { ok: false, reason: `thumio tiny (${buf.length}b)` };
+    const h = pngHeight(buf);
+    if (h && h < MIN_HEIGHT_PX) return { ok: false, reason: `thumio truncated (${h}px tall)` };
+    return { ok: true, bytes: buf };
+  } catch (e) {
+    return { ok: false, reason: `thumio err ${(e as Error).message}` };
   }
 }
 
@@ -84,30 +102,25 @@ export default async function handler(req: Request) {
       return new Response('Invalid resource id', { status: 400 });
     }
 
-    // Try thum.io first (faster), fall back to Microlink on any failure.
-    let result = await fetchFromThumio(id);
-    let provider = 'thumio';
+    // Microlink first because fullPage is reliable. thum.io fallback if
+    // microlink quota is hit or it errors.
+    let result = await fetchFromMicrolink(id);
+    let provider = 'microlink';
     if (!result.ok) {
-      console.warn(`thum.io failed for ${id}: ${result.reason}; trying microlink`);
-      const second = await fetchFromMicrolink(id);
+      console.warn(`microlink failed for ${id}: ${result.reason}; trying thum.io`);
+      const second = await fetchFromThumio(id);
       if (!second.ok) {
         console.error(`both providers failed for ${id}: ${result.reason} | ${second.reason}`);
         return new Response(`Failed to render: ${result.reason} | ${second.reason}`, { status: 502 });
       }
       result = second;
-      provider = 'microlink';
+      provider = 'thumio';
     }
 
     return new Response(result.bytes as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': 'image/png',
-        // Cache at Vercel's edge for 30 minutes. Repeat opens of the same
-        // email by the recipient hit the edge cache and never re-hit the
-        // upstream screenshot provider — keeps thum.io / Microlink quotas
-        // safe even for popular emails. The admin's ?v=<timestamp> URL
-        // suffix invalidates this cache automatically when a new draft is
-        // copied so freshly-edited resources show up right away.
         'Cache-Control': 'public, max-age=1800, s-maxage=1800',
         'X-Provider': provider,
       },
