@@ -292,10 +292,13 @@ export default async function handler(req: Request) {
       {
         width: 1200,
         height: 900,
-        // Cache 10 min in CDN edge, 1 hr in browser. Resource updates re-render
-        // on next request after the edge cache TTL.
+        // Short cache: each Copy Draft click in the admin appends ?v=<timestamp>
+        // so the URL is unique anyway, but this keeps Vercel's edge cache from
+        // holding a stale render in the rare case the same URL is hit twice.
+        // 60s edge / 60s browser is enough to deduplicate concurrent fetches
+        // by an email client opening the same image multiple times.
         headers: {
-          'Cache-Control': 'public, max-age=3600, s-maxage=600, stale-while-revalidate=86400',
+          'Cache-Control': 'public, max-age=60, s-maxage=60',
         },
       }
     );
