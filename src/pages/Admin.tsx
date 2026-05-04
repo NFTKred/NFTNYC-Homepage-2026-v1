@@ -307,10 +307,7 @@ export default function Admin() {
   const [sortKey, setSortKey] = useState<SpeakerSortKey | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   type ResourceSortKey = 'title' | 'vertical_id' | 'type' | 'source' | 'date' | 'topic_tag';
-  // Default sort: alphabetical by Title. New resources slot into the right
-  // alphabetical position automatically. User can click any other header to
-  // override and clicking Title a third time clears the sort.
-  const [resourceSortKey, setResourceSortKey] = useState<ResourceSortKey | null>('title');
+  const [resourceSortKey, setResourceSortKey] = useState<ResourceSortKey | null>(null);
   const [resourceSortDir, setResourceSortDir] = useState<'asc' | 'desc'>('asc');
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
