@@ -1,15 +1,16 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- Migration: Auto-Seek Tweets feature
---   1. Ensure CHECK constraint on vertical_id includes rwa/domains/desci
---      (idempotent — drop and re-add with the full 12-value list).
---   2. Add `qrt_eligible` boolean to speakers (default TRUE).
---   3. Auto-set `qrt_eligible = FALSE` for speakers in regulatory / government
---      roles (heuristic: outreach_channel = 'other' AND role matches
---      SEC/commissioner/regulator/congress/senator/representative).
---   4. Create `speaker_tweets` table for QRT-candidate tweet storage.
---   5. Indexes for the common lookups.
---   6. RLS: public can read approved tweets; admins have full access. Mirrors
---      the resources table policies.
+-- Migration: Auto-Seek Tweets feature (additive-only)
+--
+-- Every statement here is purely additive: new column, new table, new
+-- indexes, new trigger, new RLS policies. No DROPs, no UPDATEs, no schema
+-- mutations on existing data. Safe to paste into the Supabase SQL editor.
+--
+-- Two follow-up scripts are available for OPTIONAL non-additive work:
+--   • supabase-migration-verticals.sql    — re-applies the 12-vertical CHECK
+--                                            constraint (rwa/domains/desci).
+--   • supabase-disable-qrt-for-regulatory.sql (separate file, not required)
+--                                            — heuristic UPDATE to disable
+--                                              qrt_eligible for regulators.
 --
 -- Safe to re-run.
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -17,49 +18,14 @@
 BEGIN;
 
 -- ───────────────────────────────────────────────────────────────────────────
--- 1. Verticals — idempotently set the 12-value CHECK constraint.
---    (Top-level supabase-migration-verticals.sql may not have been applied
---    in every environment; this guarantees it.)
--- ───────────────────────────────────────────────────────────────────────────
-ALTER TABLE resources DROP CONSTRAINT IF EXISTS resources_vertical_id_check;
-ALTER TABLE speakers  DROP CONSTRAINT IF EXISTS speakers_vertical_id_check;
-
-UPDATE resources SET vertical_id = 'culture' WHERE vertical_id = 'communities';
-UPDATE speakers  SET vertical_id = 'culture' WHERE vertical_id = 'communities';
-
-ALTER TABLE resources
-  ADD CONSTRAINT resources_vertical_id_check
-  CHECK (vertical_id IN (
-    'ai','gaming','infra','social','creator','defi',
-    'rwa','brands','culture','domains','desci','marketplaces'
-  ));
-
-ALTER TABLE speakers
-  ADD CONSTRAINT speakers_vertical_id_check
-  CHECK (vertical_id IN (
-    'ai','gaming','infra','social','creator','defi',
-    'rwa','brands','culture','domains','desci','marketplaces'
-  ));
-
--- ───────────────────────────────────────────────────────────────────────────
--- 2. qrt_eligible column on speakers.
+-- 1. qrt_eligible column on speakers (default TRUE).
+--    Additive: existing rows simply get the default value.
 -- ───────────────────────────────────────────────────────────────────────────
 ALTER TABLE speakers
   ADD COLUMN IF NOT EXISTS qrt_eligible BOOLEAN NOT NULL DEFAULT TRUE;
 
 -- ───────────────────────────────────────────────────────────────────────────
--- 3. Default-disable QRT for regulatory / government roles. Heuristic:
---    outreach_channel = 'other' (signal that it's a non-standard contact)
---    AND role contains an obvious public-office keyword.
---    Speakers can still be re-enabled in admin. Idempotent.
--- ───────────────────────────────────────────────────────────────────────────
-UPDATE speakers
-SET    qrt_eligible = FALSE
-WHERE  outreach_channel = 'other'
-  AND  role ~* '(SEC|commissioner|regulator|congress|senator|representative|governor|minister|attorney general)';
-
--- ───────────────────────────────────────────────────────────────────────────
--- 4. speaker_tweets — candidate tweet storage for QRT outreach.
+-- 2. speaker_tweets — candidate tweet storage for QRT outreach.
 -- ───────────────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS speaker_tweets (
   id            UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -90,14 +56,21 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS speaker_tweets_updated_at ON speaker_tweets;
-CREATE TRIGGER speaker_tweets_updated_at
-  BEFORE UPDATE ON speaker_tweets
-  FOR EACH ROW EXECUTE FUNCTION speaker_tweets_set_updated_at();
+-- CREATE TRIGGER lacks an "IF NOT EXISTS" form, so we guard with a DO block
+-- to keep this idempotent without flagging as destructive.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_trigger WHERE tgname = 'speaker_tweets_updated_at'
+  ) THEN
+    CREATE TRIGGER speaker_tweets_updated_at
+      BEFORE UPDATE ON speaker_tweets
+      FOR EACH ROW EXECUTE FUNCTION speaker_tweets_set_updated_at();
+  END IF;
+END $$;
 
 -- ───────────────────────────────────────────────────────────────────────────
--- 5. Indexes — the two hot lookups are
---    "all candidates for a speaker" and "newest first per speaker".
+-- 3. Indexes.
 -- ───────────────────────────────────────────────────────────────────────────
 CREATE INDEX IF NOT EXISTS speaker_tweets_speaker_status_idx
   ON speaker_tweets (speaker_id, qrt_status);
@@ -106,39 +79,38 @@ CREATE INDEX IF NOT EXISTS speaker_tweets_speaker_posted_idx
   ON speaker_tweets (speaker_id, posted_at DESC);
 
 -- ───────────────────────────────────────────────────────────────────────────
--- 6. RLS — public read approved candidates only, admins full access.
---    Mirrors the resources policy pattern in supabase-schema.sql.
+-- 4. RLS — public read approved candidates only, admins full access.
+--    Mirrors the resources policy pattern. CREATE POLICY also lacks an
+--    "IF NOT EXISTS" form, so we guard each with a DO block.
 -- ───────────────────────────────────────────────────────────────────────────
 ALTER TABLE speaker_tweets ENABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS speaker_tweets_public_select_approved ON speaker_tweets;
-CREATE POLICY speaker_tweets_public_select_approved ON speaker_tweets
-  FOR SELECT
-  USING (qrt_status = 'approved');
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'speaker_tweets_public_select_approved' AND tablename = 'speaker_tweets') THEN
+    CREATE POLICY speaker_tweets_public_select_approved ON speaker_tweets
+      FOR SELECT USING (qrt_status = 'approved');
+  END IF;
 
-DROP POLICY IF EXISTS speaker_tweets_admin_select ON speaker_tweets;
-CREATE POLICY speaker_tweets_admin_select ON speaker_tweets
-  FOR SELECT
-  TO authenticated
-  USING (is_admin());
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'speaker_tweets_admin_select' AND tablename = 'speaker_tweets') THEN
+    CREATE POLICY speaker_tweets_admin_select ON speaker_tweets
+      FOR SELECT TO authenticated USING (is_admin());
+  END IF;
 
-DROP POLICY IF EXISTS speaker_tweets_admin_insert ON speaker_tweets;
-CREATE POLICY speaker_tweets_admin_insert ON speaker_tweets
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (is_admin());
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'speaker_tweets_admin_insert' AND tablename = 'speaker_tweets') THEN
+    CREATE POLICY speaker_tweets_admin_insert ON speaker_tweets
+      FOR INSERT TO authenticated WITH CHECK (is_admin());
+  END IF;
 
-DROP POLICY IF EXISTS speaker_tweets_admin_update ON speaker_tweets;
-CREATE POLICY speaker_tweets_admin_update ON speaker_tweets
-  FOR UPDATE
-  TO authenticated
-  USING (is_admin())
-  WITH CHECK (is_admin());
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'speaker_tweets_admin_update' AND tablename = 'speaker_tweets') THEN
+    CREATE POLICY speaker_tweets_admin_update ON speaker_tweets
+      FOR UPDATE TO authenticated USING (is_admin()) WITH CHECK (is_admin());
+  END IF;
 
-DROP POLICY IF EXISTS speaker_tweets_admin_delete ON speaker_tweets;
-CREATE POLICY speaker_tweets_admin_delete ON speaker_tweets
-  FOR DELETE
-  TO authenticated
-  USING (is_admin());
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'speaker_tweets_admin_delete' AND tablename = 'speaker_tweets') THEN
+    CREATE POLICY speaker_tweets_admin_delete ON speaker_tweets
+      FOR DELETE TO authenticated USING (is_admin());
+  END IF;
+END $$;
 
 COMMIT;
