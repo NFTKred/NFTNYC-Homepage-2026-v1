@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { ECOSYSTEMS } from '@/data/nftnyc';
 import { VERTICAL_TOPICS } from '@/data/verticalTopics';
-import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Send, ArrowUpDown, ArrowUp, ArrowDown, AlertTriangle, MessageCircle } from 'lucide-react';
+import { Plus, Search, LogOut, Trash2, Pencil, Check, X, Loader2, Copy, GripVertical, Download, Mail, Upload, ImageIcon, RefreshCw, Send, ArrowUpDown, ArrowUp, ArrowDown, AlertTriangle } from 'lucide-react';
 import { getYouTubeId } from '@/components/ResourceCard';
 
 /* ─── Twenty CRM lookup ─── */
@@ -118,31 +118,12 @@ interface Speaker {
   email: string | null;
   handle: string | null;
   unable_to_dm: boolean;
-  qrt_eligible: boolean;
   related_resource_id: string | null;
   resource_relationship: string | null;
   outreach_channel: string | null;
   outreach_status: string;
   outreach_notes: string | null;
   created_at: string;
-}
-
-interface SpeakerTweet {
-  id: string;
-  speaker_id: string;
-  tweet_url: string;
-  tweet_id: string | null;
-  posted_at: string | null;
-  text: string;
-  media_type: string | null;
-  is_thread: boolean;
-  engagement: { likes?: number; reposts?: number; replies?: number; views?: number; verified?: boolean } | null;
-  qrt_score: number;
-  qrt_reason: string | null;
-  topic_match: string | null;
-  qrt_status: string;            // 'candidate' | 'approved' | 'used' | 'rejected'
-  created_at: string;
-  updated_at: string;
 }
 
 const RESOURCE_TYPES = ['blog', 'youtube', 'podcast', 'tweet', 'paper', 'news'] as const;
@@ -312,8 +293,6 @@ export default function Admin() {
   const [editingSpeaker, setEditingSpeaker] = useState<Speaker | null>(null);
   const [seeking, setSeeking] = useState(false);
   const [seekResult, setSeekResult] = useState<string | null>(null);
-  const [seekingTweets, setSeekingTweets] = useState(false);
-  const [seekTweetsResult, setSeekTweetsResult] = useState<string | null>(null);
   const [copiedDraftId, setCopiedDraftId] = useState<string | null>(null);
   const [sentEmailId, setSentEmailId] = useState<string | null>(null);
   const [downloadedId, setDownloadedId] = useState<string | null>(null);
@@ -388,24 +367,6 @@ export default function Admin() {
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as Speaker[];
-    },
-  });
-
-  // Tweets keyed by speaker_id, top score first per speaker. Filtered to the
-  // active vertical via a join through speakers. Only candidate/approved/used
-  // — rejected tweets stay hidden.
-  const tweetsQuery = useQuery({
-    queryKey: ['admin-speaker-tweets', activeVertical],
-    queryFn: async () => {
-      let q = supabase
-        .from('speaker_tweets')
-        .select('*, speakers!inner(vertical_id)')
-        .neq('qrt_status', 'rejected')
-        .order('qrt_score', { ascending: false });
-      if (activeVertical !== 'all') q = q.eq('speakers.vertical_id', activeVertical);
-      const { data, error } = await q;
-      if (error) throw error;
-      return (data ?? []) as (SpeakerTweet & { speakers: { vertical_id: string } })[];
     },
   });
 
@@ -521,37 +482,6 @@ export default function Admin() {
     }
   };
 
-  /* ─── Auto-seek tweets (per-vertical batch) ─── */
-  const handleAutoSeekTweets = async () => {
-    if (activeVertical === 'all') return;
-    setSeekingTweets(true);
-    setSeekTweetsResult(null);
-    try {
-      const { data, error } = await supabase.functions.invoke('auto-seek-tweets', {
-        body: { verticalId: activeVertical },
-      });
-      if (error) {
-        console.error('Auto-seek tweets error:', error);
-        setSeekTweetsResult(`Error: ${error.message || JSON.stringify(error)}`);
-      } else if (data?.error) {
-        setSeekTweetsResult(`No results: ${data.error}`);
-      } else {
-        const errCount = Array.isArray(data?.errors) ? data.errors.length : 0;
-        setSeekTweetsResult(
-          `Found ${data?.tweetCount ?? 0} candidate tweets across ${data?.speakerCount ?? 0} speakers` +
-          (errCount > 0 ? ` (${errCount} per-speaker errors — see console)` : '')
-        );
-        if (errCount > 0) console.warn('auto-seek-tweets per-speaker errors:', data.errors);
-      }
-      queryClient.invalidateQueries({ queryKey: ['admin-speaker-tweets'] });
-    } catch (err: any) {
-      console.error('Auto-seek tweets exception:', err);
-      setSeekTweetsResult(`Exception: ${err.message || String(err)}`);
-    } finally {
-      setSeekingTweets(false);
-    }
-  };
-
   /* ─── Per-speaker resource finder (Perplexity web search) ─── */
   const handleFindResourceForSpeaker = async (speakerId: string) => {
     setFindingForSpeakerId(speakerId);
@@ -599,18 +529,6 @@ export default function Admin() {
   /* ─── Card screenshot generation ─── */
   const resources = resourcesQuery.data ?? [];
   const speakers = speakersQuery.data ?? [];
-  // Group tweets by speaker_id, highest qrt_score first per speaker (already
-  // ordered by the query, but defensive in case of caching).
-  const tweetsBySpeakerId = (() => {
-    const m = new Map<string, SpeakerTweet[]>();
-    for (const t of tweetsQuery.data ?? []) {
-      const list = m.get(t.speaker_id) ?? [];
-      list.push(t);
-      m.set(t.speaker_id, list);
-    }
-    for (const list of m.values()) list.sort((a, b) => Number(b.qrt_score) - Number(a.qrt_score));
-    return m;
-  })();
   const approvedResourcesUnsorted = resources.filter(r => r.status === 'approved');
   const approvedResources = (() => {
     if (!resourceSortKey) return approvedResourcesUnsorted;
@@ -911,12 +829,6 @@ export default function Admin() {
                   {seeking ? 'Searching...' : 'Auto-Seek Resources'}
                 </button>
               )}
-              {activeVertical !== 'all' && (
-                <button onClick={handleAutoSeekTweets} disabled={seekingTweets} style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#3B82F6' }} title="Find QRT-worthy recent tweets for every QRT-eligible speaker in this vertical">
-                  {seekingTweets ? <Loader2 size={14} className="animate-spin" /> : <MessageCircle size={14} />}
-                  {seekingTweets ? 'Searching...' : 'Auto-Seek Tweets'}
-                </button>
-              )}
               <button onClick={() => { setEditingResource(null); setShowResourceForm(true); }} style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}>
                 <Plus size={14} /> Add Resource
               </button>
@@ -937,17 +849,6 @@ export default function Admin() {
               background: 'rgba(255,255,255,0.03)',
               borderRadius: '6px',
             }}>{seekResult}</p>
-          )}
-          {seekTweetsResult && (
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '13px',
-              color: seekTweetsResult.startsWith('Error') || seekTweetsResult.startsWith('Exception') ? '#EF4444' : seekTweetsResult.startsWith('No') ? '#F59E0B' : '#10B981',
-              marginBottom: '1rem',
-              padding: '0.5rem 1rem',
-              background: 'rgba(255,255,255,0.03)',
-              borderRadius: '6px',
-            }}>{seekTweetsResult}</p>
           )}
           {activeVertical === 'all' && approvedResources.length > 0 && (
             <p style={{ fontSize: '12px', color: 'rgb(149,149,176)', marginBottom: '0.75rem' }}>
@@ -1190,7 +1091,6 @@ export default function Admin() {
                       <SortHeader label="Handle" sortKey="handle" />
                       <SortHeader label="Unable to DM" sortKey="unable_to_dm" />
                       <SortHeader label="Related Resource" sortKey="resource_title" />
-                      <th style={{ ...headerCellStyle, color: '#fff', minWidth: '220px' }}>Recent Tweet</th>
                       <SortHeader label="Relationship" sortKey="resource_relationship" />
                       <SortHeader label="Channel" sortKey="outreach_channel" />
                       <SortHeader label="Status" sortKey="outreach_status" />
@@ -1202,7 +1102,7 @@ export default function Admin() {
               </thead>
               <tbody>
                 {filteredSpeakers.length === 0 ? (
-                  <tr><td colSpan={13} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>
+                  <tr><td colSpan={12} style={{ ...cellStyle, textAlign: 'center', color: 'rgb(90, 90, 117)' }}>
                     {speakers.length === 0
                       ? 'No speakers yet'
                       : `No speakers match "${speakerSearch}"`}
@@ -1210,7 +1110,6 @@ export default function Admin() {
                 ) : filteredSpeakers.map(s => {
                   const relatedResource = resources.find(r => r.id === s.related_resource_id);
                   const verticalResources = resources.filter(r => r.vertical_id === s.vertical_id);
-                  const speakerTweets = tweetsBySpeakerId.get(s.id) ?? [];
                   return (
                   <tr key={s.id}>
                     <td style={{ ...cellStyle, fontWeight: 600, position: 'sticky', left: 0, zIndex: 1, background: '#12121e', minWidth: '120px', borderRight: '2px solid rgba(255,255,255,0.1)' }}>{s.name}</td>
@@ -1277,38 +1176,6 @@ export default function Admin() {
                             }}>{findResult.message}</div>
                           )}
                         </div>
-                      )}
-                    </td>
-                    <td style={{ ...cellStyle, maxWidth: '260px' }}>
-                      {speakerTweets.length === 0 ? (
-                        <span style={{ color: 'rgb(60, 60, 80)', fontSize: '11px' }}>—</span>
-                      ) : speakerTweets.length === 1 ? (
-                        <a
-                          href={speakerTweets[0].tweet_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title={`${speakerTweets[0].text}\n\nScore: ${Math.round(Number(speakerTweets[0].qrt_score))} — ${speakerTweets[0].qrt_reason ?? ''}`}
-                          style={{ color: '#3B82F6', textDecoration: 'none', fontSize: '11px', display: 'inline-block', maxWidth: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', verticalAlign: 'middle' }}
-                        >
-                          {speakerTweets[0].posted_at ? `${new Date(speakerTweets[0].posted_at).toISOString().slice(5, 10)} · ` : ''}
-                          {speakerTweets[0].text.slice(0, 80)}{speakerTweets[0].text.length > 80 ? '…' : ''}
-                        </a>
-                      ) : (
-                        <select
-                          defaultValue={speakerTweets[0].id}
-                          onChange={e => {
-                            const t = speakerTweets.find(x => x.id === e.target.value);
-                            if (t) window.open(t.tweet_url, '_blank', 'noopener');
-                          }}
-                          title={`${speakerTweets.length} candidate tweets — choose one to open`}
-                          style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '4px', color: '#3B82F6', fontSize: '11px', padding: '2px 4px', cursor: 'pointer', outline: 'none', maxWidth: '250px' }}
-                        >
-                          {speakerTweets.map(t => (
-                            <option key={t.id} value={t.id} style={{ background: '#1a1a2e' }}>
-                              {Math.round(Number(t.qrt_score))} · {t.text.slice(0, 60)}{t.text.length > 60 ? '…' : ''}
-                            </option>
-                          ))}
-                        </select>
                       )}
                     </td>
                     <td style={cellStyle}>
