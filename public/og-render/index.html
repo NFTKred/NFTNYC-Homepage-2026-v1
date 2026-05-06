@@ -323,6 +323,7 @@
     'blog-xp-kredits':       { eyebrow: 'NFT.NYC Blog',            color: '#f06347', shape: 'article',     h1: 'What are XP & Kredits?',                 sub: 'How hub-branded points and Kredits power the NFT.NYC community.', urlPath: '/blog/xp-and-kredits' },
     'blog-ts-challenge':     { eyebrow: 'NFT.NYC Blog',            color: '#f06347', shape: 'billboard',   h1: 'What is the Times Square Challenge?',    sub: 'How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art.', urlPath: '/blog/ts-challenge' },
     'journey':               { eyebrow: 'Our story',               color: '#f06347', shape: 'timeline',    h1: 'The NFT.NYC Journey',                    sub: 'Eight years and 200,000+ alumni building the world\u2019s leading NFT and Web3 community.', urlPath: '/journey' },
+    'vote':                  { eyebrow: 'Speaker voting',          color: '#8B5CF6', shape: 'ballot',      h1: 'Choose who takes the stage',             sub: 'Vote for the sessions you want to see live in Times Square. Your pick shapes the NFT.NYC 2026 lineup.', urlPath: 'vote.nft.nyc', urlOverride: 'vote.nft.nyc' },
   };
 
   // ========================================================================
@@ -426,6 +427,30 @@
           <line x1="125" y1="135" x2="195" y2="205" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
           <line x1="195" y1="135" x2="125" y2="205" stroke="${c}" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
         `;
+      case 'ballot':
+        // Ballot card showing four options with one selected (filled
+        // circle + checkmark). Reads at thumbnail size as "voting /
+        // make a choice".
+        return `
+          <!-- Card frame -->
+          <rect x="55" y="40" width="210" height="240" rx="16" fill="none" stroke="${c}" stroke-width="3" opacity="0.55"/>
+          <!-- Header bars (title) -->
+          <rect x="75" y="62" width="120" height="12" rx="3" fill="${c}" opacity="0.75"/>
+          <rect x="75" y="82" width="60"  height="6"  rx="2" fill="${c}" opacity="0.4"/>
+          <!-- Option 1 (unselected) -->
+          <circle cx="92" cy="130" r="9" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.45"/>
+          <rect x="115" y="123" width="120" height="14" rx="3" fill="${c}" opacity="0.32"/>
+          <!-- Option 2 (selected — filled with checkmark) -->
+          <circle cx="92" cy="170" r="13" fill="${c}" opacity="0.95"/>
+          <path d="M 84 170 L 90 176 L 100 164" stroke="#0a0a0f" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="115" y="162" width="140" height="16" rx="3" fill="${c}" opacity="0.85"/>
+          <!-- Option 3 (unselected) -->
+          <circle cx="92" cy="210" r="9" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.45"/>
+          <rect x="115" y="203" width="100" height="14" rx="3" fill="${c}" opacity="0.32"/>
+          <!-- Option 4 (unselected) -->
+          <circle cx="92" cy="250" r="9" fill="none" stroke="${c}" stroke-width="2.5" opacity="0.45"/>
+          <rect x="115" y="243" width="130" height="14" rx="3" fill="${c}" opacity="0.32"/>
+        `;
 
       default: return '';
     }
@@ -455,6 +480,13 @@
   } else {
     const eyebrow = isPage ? v.eyebrow : v.name;
     const urlPath = isPage ? v.urlPath : ('/' + slug);
+    // Pages on a different subdomain (e.g. vote.nft.nyc) can opt out of
+    // the default "nft.nyc/<path>" url stamp by providing a urlOverride.
+    // When set, the entire stamp is rendered as that string verbatim and
+    // the slug accent (the coral suffix) is dropped.
+    const urlStamp = (isPage && v.urlOverride)
+      ? v.urlOverride
+      : null;
     const iconSvg = `<svg viewBox="0 0 320 320" width="100%" height="100%">${shapeSvg(v.shape, v.color)}</svg>`;
     // In countdown mode, replace the H1 with a giant ticking timer and
     // override the subhead. Everything else (icon, glow, logo, eyebrow,
@@ -478,7 +510,7 @@
           ${headlineMarkup}
           ${subMarkup}
         </div>
-        <div class="url">nft.nyc<em>${urlPath}</em></div>
+        <div class="url">${urlStamp ? urlStamp : `nft.nyc<em>${urlPath}</em>`}</div>
       </div>
     ` : `
       <div class="og landscape" style="--eco:${v.color};">
@@ -492,7 +524,7 @@
           ${headlineMarkup}
           ${subMarkup}
         </div>
-        <div class="url">nft.nyc<em>${urlPath}</em></div>
+        <div class="url">${urlStamp ? urlStamp : `nft.nyc<em>${urlPath}</em>`}</div>
       </div>
     `;
     document.getElementById('stage').innerHTML = card;
