@@ -305,7 +305,7 @@ export const defaultAlaCarte: AlaCarteItem[] = [
     id: 106,
     name: "AV Loop Video",
     price: "$2,500",
-    description: "Run a 30-second video clip in the on-stage AV loop between sessions. High visibility throughout the event — your video plays to every attendee in the room as they wait for the next talk.",
+    description: "Run a 30-second video clip in the AV loop playing across screens throughout the event venue. High visibility wherever attendees are — between sessions, in walkways, and around activation areas.",
     availability: "Limited"
   },
   {
