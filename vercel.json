@@ -11,6 +11,11 @@
       "permanent": false
     },
     {
+      "source": "/billing",
+      "destination": "https://share.hsforms.com/1coLZEDNiR9iFmFM3OQd5Twaxu3",
+      "permanent": false
+    },
+    {
       "source": "/meet",
       "destination": "https://meet.google.com/seq-gyst-sie",
       "permanent": true
