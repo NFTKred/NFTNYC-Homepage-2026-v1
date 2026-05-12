@@ -113,7 +113,7 @@ const PATHWAYS = [
 ];
 
 const VOTE_TIERS = [
-  { multiplier: '1x', title: 'Public', desc: 'Anyone with an email can vote. One vote per submission per person. Email verification required.', color: 'rgb(149, 149, 176)' },
+  { multiplier: '1x', title: 'Community', desc: 'Anyone with an email can vote. One vote per submission per person. Email verification required.', color: 'rgb(149, 149, 176)' },
   { multiplier: '10x', title: 'GA Ticketholders', desc: 'General Admission ticket holders receive 10x vote weight. Verified by ticket purchase email.', color: '#06B6D4' },
   { multiplier: '30x', title: 'VIP Ticketholders', desc: 'VIP ticket holders receive 30x vote weight. The most invested community members shape the program the most.', color: '#8B5CF6' },
 ];
@@ -161,7 +161,7 @@ const PAST_SPEAKERS = [
 
 const DETAILED_TIMELINE = [
   { date: 'April 8 \u2013 30', title: 'Round 1 closed', desc: 'First submission window has closed. Round 1 applicants are under review and will move to community voting on May 7.', color: '#10B981' },
-  { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Public, GA, and VIP ticket holders can vote.', color: '#10B981' },
+  { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Community, GA, and VIP ticket holders can vote.', color: '#10B981' },
   { date: 'May', title: 'Round 2 opens soon', desc: 'Second submission window opens in May. Follow @NFT_NYC on X for the exact moment Round 2 goes live.', color: '#06B6D4' },
   { date: 'June', title: 'Round 3 open', desc: 'Final submission window. Remaining slots only. Team evaluates vote strength, video quality, and topic balance.', color: '#8B5CF6' },
   { date: 'July 2026', title: 'Selections announced', desc: 'Speakers selected and notified. Each speaker may appear in one accepted session (solo talk, panel, or product pitch).', color: '#EC4899' },
