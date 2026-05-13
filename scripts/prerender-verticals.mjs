@@ -63,6 +63,7 @@ const PAGES = [
   { route: "/blog/xp-and-kredits",  slug: "blog-xp-kredits",      title: "What are XP & Kredits? — NFT.NYC Blog",                            desc: "How hub-branded points and Kredits power the NFT.NYC community and reward builders, brands, and creators." },
   { route: "/blog/ts-challenge",    slug: "blog-ts-challenge",    title: "What is the Times Square Challenge? — NFT.NYC Blog",               desc: "How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square's biggest screens." },
   { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community." },
+  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea dinner to eight editions, 40,000+ cumulative attendees, and the 12-mission Times Square Challenge at NFT.NYC 2026. The full origin story." },
 ];
 
 const ORIGIN = "https://www.nft.nyc";
@@ -87,7 +88,7 @@ function buildHead({ title, desc, url, ogImage, alt }) {
     `<meta name="description" content="${escapeHtml(cleanDesc)}">`,
     `<link rel="canonical" href="${url}">`,
     `<meta property="og:type" content="website">`,
-    `<meta property="og:site_name" content="NFT.NYC 2026">`,
+    `<meta property="og:site_name" content="NFT.NYC">`,
     `<meta property="og:title" content="${escapeHtml(title)}">`,
     `<meta property="og:description" content="${escapeHtml(cleanDesc)}">`,
     `<meta property="og:url" content="${url}">`,

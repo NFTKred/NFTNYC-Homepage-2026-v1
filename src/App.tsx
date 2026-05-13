@@ -11,6 +11,7 @@ import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
 import BlogTsChallenge from "./pages/BlogTsChallenge";
 import Journey from "./pages/Journey";
+import Origins from "./pages/Origins";
 import NotFound from "./pages/NotFound";
 import VerticalPage from "./pages/VerticalPage";
 import CardPreview from "./pages/CardPreview";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
           <Route path="/blog/ts-challenge" element={<BlogTsChallenge />} />
           <Route path="/journey" element={<Journey />} />
+          <Route path="/origins" element={<Origins />} />
           <Route path="/ts-optout" element={<TSOptout />} />
           <Route path="/sponsor" element={<Sponsor />} />
           <Route path="/sponsor/ts-challenge" element={<SponsorTSChallenge />} />
