@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 interface FAQItem {
   q: string;
   a: React.ReactNode;
+  /** Plain-text fallback used for FAQPage JSON-LD. Required when `a`
+   *  is JSX (links/etc.) since structured data must be plain text.
+   *  When `a` is already a string, this is optional. */
+  plainA?: string;
 }
 
 interface FAQCategory {
@@ -20,7 +25,8 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: '2026 Satellite Events',
-        a: 'In 2022 we welcomed 450+ Satellite Events during NFT.NYC. If you have a satellite event during NFT.NYC 2026 Week please check back soon to add it to our calendar.',
+        a: <>If you’re hosting a satellite event during NFT.NYC 2026 Week (1–3 September), email <a href="mailto:team@nft.nyc" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>team@nft.nyc</a> to be included in the official Events page. Across eight editions, NFT.NYC has hosted hundreds of satellite events — over 450 in 2022 alone.</>,
+        plainA: 'If you’re hosting a satellite event during NFT.NYC 2026 Week (1–3 September), email team@nft.nyc to be included in the official Events page. Across eight editions, NFT.NYC has hosted hundreds of satellite events — over 450 in 2022 alone.',
       },
       {
         q: 'What to expect during NFT.NYC 2026?',
@@ -33,6 +39,7 @@ const FAQ_DATA: FAQCategory[] = [
       {
         q: 'How do I transfer my ticket to a friend if I\'m unable to make it?',
         a: <>Eventbrite allows you to easily transfer your ticket to someone else, using their full name and email address. See <a href="https://www.eventbrite.com/help/en-us/articles/431834/how-to-transfer-tickets-to-someone-else/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Eventbrite's guide to transfer a ticket</a>.</>,
+        plainA: 'Eventbrite allows you to easily transfer your ticket to someone else, using their full name and email address. See Eventbrite\'s guide to transfer a ticket: https://www.eventbrite.com/help/en-us/articles/431834/how-to-transfer-tickets-to-someone-else/',
       },
       {
         q: 'I purchased my ticket with cryptocurrency. What happens next?',
@@ -46,6 +53,7 @@ const FAQ_DATA: FAQCategory[] = [
       {
         q: 'How can I apply to be a speaker at NFT.NYC?',
         a: <>Round 1 of speaker submissions for NFT.NYC 2026 closed on 30 April. Round 2 opens soon — follow <a href="https://twitter.com/NFT_NYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC on X</a> to be the first to know when submissions reopen, then visit <a href="/speak" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/speak</a> for the full application details.</>,
+        plainA: 'Round 1 of speaker submissions for NFT.NYC 2026 closed on 30 April. Round 2 opens soon — follow NFT.NYC on X (https://twitter.com/NFT_NYC) to be the first to know when submissions reopen, then visit https://www.nft.nyc/speak for the full application details.',
       },
       {
         q: 'Do we each need to submit a separate application for collaborations?',
@@ -62,6 +70,7 @@ const FAQ_DATA: FAQCategory[] = [
       {
         q: 'Is the event recorded or streamed?',
         a: <>We will record select sessions and upload the videos to our YouTube channel - <a href="https://www.youtube.com/@NFTNYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC/youtube</a>. We will not be streaming the event this year.</>,
+        plainA: 'We will record select sessions and upload the videos to our YouTube channel at https://www.youtube.com/@NFTNYC. We will not be streaming the event this year.',
       },
       {
         q: 'What do I receive as a speaker?',
@@ -98,7 +107,8 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: 'Do you have a sponsorship pack?',
-        a: <>The NFT.NYC 2026 Sponsor Guide will be released shortly. In the meantime, please contact <a href="mailto:team@nft.nyc" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>team@NFT.NYC</a> to start the conversation.</>,
+        a: <>Browse partnership packages and request a custom proposal on the <a href="/sponsor" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC Sponsor page</a>, or email <a href="mailto:team@nft.nyc" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>team@nft.nyc</a> to start the conversation directly.</>,
+        plainA: 'Browse partnership packages and request a custom proposal at https://www.nft.nyc/sponsor, or email team@nft.nyc to start the conversation directly.',
       },
       {
         q: 'Do we still need to submit a Speaker application if our sponsor package includes a talk?',
@@ -127,11 +137,12 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: 'How do I buy tickets?',
-        a: 'Tickets to NFT.NYC 2026 will be available soon via the NFT.NYC website.',
+        a: 'Earlybird tickets to NFT.NYC 2026 are on sale now via Eventbrite. Click the "Earlybird Tickets" button in the site header to purchase — promo code "Earlybird" is applied automatically.',
       },
       {
         q: 'How can I learn more and engage ahead of time?',
         a: <><a href="https://twitter.com/NFT_NYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Follow us on X</a> for event updates and conversations about the 2026 event.</>,
+        plainA: 'Follow us on X at https://twitter.com/NFT_NYC for event updates and conversations about the 2026 event.',
       },
     ],
   },
@@ -144,6 +155,23 @@ export default function FAQ() {
     setOpenItems(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // FAQPage structured data — flattens every Q/A across categories.
+  // Uses plainA when set (JSX answers), otherwise the string answer.
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_DATA.flatMap(category =>
+      category.items.map(item => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.plainA ?? (typeof item.a === 'string' ? item.a : ''),
+        },
+      }))
+    ),
+  };
+
   return (
     <section
       id="faq"
@@ -152,6 +180,11 @@ export default function FAQ() {
         borderTop: '1px solid var(--card-border)',
       }}
     >
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(faqJsonLd)}
+        </script>
+      </Helmet>
       <div className="max-w-[800px] mx-auto">
         <div className="text-center mb-4 scroll-fade-up">
           <p style={{

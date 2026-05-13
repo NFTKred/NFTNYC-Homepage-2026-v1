@@ -125,6 +125,7 @@ export default function VerticalPage() {
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDesc} />
         <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image:alt" content={`${eco.name} — NFT.NYC 2026`} />
       </Helmet>
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 

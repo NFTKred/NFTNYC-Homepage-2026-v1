@@ -181,6 +181,7 @@
       font-weight: 700;
       line-height: 0.95;
       letter-spacing: -0.03em;
+      text-transform: uppercase;
       margin-bottom: var(--space-8);
     }
     .hero__title--gradient {
@@ -260,6 +261,7 @@
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.02em;
+      text-transform: uppercase;
       color: var(--color-text);
       margin-bottom: var(--space-6);
     }
@@ -311,8 +313,10 @@
     .value-card__title {
       font-family: var(--font-display);
       font-size: var(--text-lg);
-      font-weight: 600;
+      font-weight: 700;
       color: var(--color-text);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
       margin-bottom: var(--space-3);
     }
     .value-card__desc {
@@ -320,6 +324,26 @@
       color: var(--color-text-muted);
       line-height: 1.6;
       max-width: none;
+    }
+
+    /* ========================
+       UNIVERSE (PART 5) CARDS - 3-col + ecosystem accent borders
+    ======================== */
+    #universe .values-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+    @media (max-width: 900px) {
+      #universe .values-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 560px) {
+      #universe .values-grid { grid-template-columns: 1fr !important; }
+    }
+    #universe .value-card {
+      position: relative;
+      border-top: 3px solid var(--card-accent, var(--color-cyan));
+    }
+    #universe .value-card:hover {
+      border-top-color: var(--card-accent, var(--color-cyan));
     }
 
     /* ========================
@@ -352,7 +376,9 @@
     .pillar-card__title {
       font-family: var(--font-display);
       font-size: var(--text-lg);
-      font-weight: 600;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
       margin-bottom: var(--space-2);
     }
     .pillar-card__desc {
@@ -653,6 +679,8 @@
       font-family: var(--font-display);
       font-size: var(--text-xl);
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
       background: var(--gradient-brand-text);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -740,6 +768,7 @@
       font-size: var(--text-2xl);
       font-weight: 700;
       text-align: center;
+      text-transform: uppercase;
       padding: var(--space-6);
       background: var(--gradient-brand-text);
       -webkit-background-clip: text;
@@ -767,6 +796,7 @@
       font-size: var(--text-3xl);
       font-weight: 700;
       letter-spacing: -0.02em;
+      text-transform: uppercase;
       color: var(--color-text);
       position: relative;
     }
@@ -940,6 +970,8 @@
       font-size: var(--text-lg);
       font-weight: 600;
       color: var(--color-text);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
       margin-bottom: var(--space-3);
       line-height: 1.25;
     }

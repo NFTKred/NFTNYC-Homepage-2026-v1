@@ -1,7 +1,27 @@
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import PageMeta from '@/components/PageMeta';
+
+const ARTICLE_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'What are XP and Kredits? How hub-branded points and Kredits work',
+  description: 'XP and Kr are hub-branded versions of experience points and Kredits on the PeopleBrowsr platform — how they power the NFT.NYC community and reward builders, brands, and creators.',
+  url: 'https://www.nft.nyc/blog/xp-and-kredits',
+  mainEntityOfPage: 'https://www.nft.nyc/blog/xp-and-kredits',
+  image: 'https://www.nft.nyc/og/blog-xp-kredits.png',
+  author: { '@type': 'Organization', name: 'NFT.NYC', url: 'https://www.nft.nyc' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'NFT.NYC',
+    logo: { '@type': 'ImageObject', url: 'https://www.nft.nyc/favicon.jpg' },
+  },
+  datePublished: '2026-02-01',
+  dateModified: '2026-05-11',
+  inLanguage: 'en',
+};
 
 const heading: React.CSSProperties = {
   fontFamily: 'var(--font-display)',
@@ -80,6 +100,9 @@ export default function BlogXpKred() {
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <PageMeta page="blog-xp-kredits" />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(ARTICLE_JSON_LD)}</script>
+      </Helmet>
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <article style={{ padding: 'calc(4rem + 56px) 1.5rem 4rem' }}>

@@ -1,7 +1,27 @@
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import PageMeta from '@/components/PageMeta';
+
+const ARTICLE_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: 'What is the Times Square Billboard Challenge and how to participate',
+  description: 'How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square’s biggest screens. A complete guide to the TS Challenge, T-XP, gift NFTs, and the leaderboard.',
+  url: 'https://www.nft.nyc/blog/ts-challenge',
+  mainEntityOfPage: 'https://www.nft.nyc/blog/ts-challenge',
+  image: 'https://www.nft.nyc/og/blog-ts-challenge.png',
+  author: { '@type': 'Organization', name: 'NFT.NYC', url: 'https://www.nft.nyc' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'NFT.NYC',
+    logo: { '@type': 'ImageObject', url: 'https://www.nft.nyc/favicon.jpg' },
+  },
+  datePublished: '2026-02-15',
+  dateModified: '2026-05-11',
+  inLanguage: 'en',
+};
 
 const heading: React.CSSProperties = {
   fontFamily: 'var(--font-display)',
@@ -80,6 +100,9 @@ export default function BlogTsChallenge() {
   return (
     <div data-theme={theme} style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <PageMeta page="blog-ts-challenge" />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(ARTICLE_JSON_LD)}</script>
+      </Helmet>
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       <article style={{ padding: 'calc(4rem + 56px) 1.5rem 4rem' }}>
