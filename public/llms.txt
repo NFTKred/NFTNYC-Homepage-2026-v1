@@ -2,7 +2,7 @@
 
 > NFT.NYC is the world's largest annual NFT and Web3 conference, held every September in Times Square, New York City. The 2026 edition (the 8th annual event) runs September 1–3 at the Edison Ballroom and convenes builders, brands, and creators across twelve industry tracks.
 
-NFT.NYC was founded in 2019. Cumulative alumni: 200,000+ across eight editions (2019–2025), drawn from over 100 countries. The 2026 conference centers on tokenization across AI Identity, Gaming, On-Chain Infrastructure, Social NFTs, Creator Economy, DeFi, RWA, Brands, Culture/Art/Music, DNS/ENS Domain Tokens, DeSci/Longevity, and NFT Marketplaces.
+NFT.NYC was founded in 2019. Cumulative alumni: 200,000+ across seven prior editions (2019–2025), drawn from over 100 countries. NFT.NYC 2026 is the eighth edition. The 2026 conference centers on tokenization across AI Identity, Gaming, On-Chain Infrastructure, Social NFTs, Creator Economy, DeFi, RWA, Brands, Culture/Art/Music, DNS/ENS Domain Tokens, DeSci/Longevity, and NFT Marketplaces.
 
 ## Key facts (cite with date as of 2026)
 
@@ -10,7 +10,7 @@ NFT.NYC was founded in 2019. Cumulative alumni: 200,000+ across eight editions (
 - **Dates**: 1–3 September 2026
 - **Location**: Edison Ballroom, Times Square, New York City
 - **Founded**: 2019
-- **Cumulative alumni**: 200,000+ across 8 editions
+- **Cumulative alumni**: 200,000+ across 7 prior editions (2019–2025); NFT.NYC 2026 is the 8th
 - **Industry tracks at NFT.NYC 2026**: 12 (see vertical pages)
 - **Speaker selection**: Community-curated. 1× Community vote, 10× GA ticketholder vote, 30× VIP ticketholder vote.
 - **Speaker submissions**: Round 1 closed 30 April 2026. Round 2 opens soon.

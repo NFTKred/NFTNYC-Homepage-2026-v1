@@ -176,7 +176,7 @@ export const PRESS_COVERAGE: PressItem[] = [
 export const EVENT_STATS = [
   { value: '200,000+', label: 'Alumni' },
   { value: '3,900+', label: 'Speakers to Date' },
-  { value: '9th', label: 'Annual Event' },
+  { value: '8th', label: 'Annual Event' },
   { value: '100+', label: 'Countries Represented' },
 ];
 

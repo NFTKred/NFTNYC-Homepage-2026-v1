@@ -83,8 +83,9 @@ export default function SatelliteEvents() {
           }}
         >
           Since 2019, major brands and builders have launched projects and
-          engaged their communities at NFT.NYC. In 2022 alone, over 450
-          satellite events took place across New York City during NFT.NYC Week.
+          engaged their communities at NFT.NYC — including a record 450+
+          satellite events during NFT.NYC Week 2022. Submit yours for 2026
+          to reach the full alumni network.
         </p>
 
         {/* Two-tier cards */}
