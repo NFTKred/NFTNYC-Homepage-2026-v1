@@ -28,6 +28,22 @@
       margin-inline: auto;
       padding-inline: clamp(var(--space-6), 5vw, var(--space-16));
     }
+
+    /* Tailwind also defines .container — scope with parent to win the cascade */
+    .origins-article .container {
+      width: 100% !important;
+      max-width: var(--content-default) !important;
+      margin-inline: auto !important;
+      padding-inline: clamp(var(--space-6), 5vw, var(--space-16)) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .origins-article .container--wide {
+      max-width: var(--content-wide) !important;
+    }
+    .origins-article .container--narrow {
+      max-width: var(--content-narrow) !important;
+    }
     .container--wide {
       max-width: var(--content-wide);
     }
@@ -422,7 +438,7 @@
       border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
     }
     .pull-quote__text {
-      font-family: var(--font-display);
+      font-family: var(--font-body);
       font-size: var(--text-lg);
       line-height: 1.5;
       color: var(--color-text);

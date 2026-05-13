@@ -166,6 +166,38 @@ function main() {
     written++;
   }
   console.log(`✔ prerendered ${written} pages (${VERTICALS.length} verticals + ${PAGES.length} site pages)`);
+
+  // ── Sitemap.xml ─────────────────────────────────────────────────
+  // Generated alongside the prerender so the URL list stays in sync.
+  // Homepage gets priority 1.0; high-traffic pages 0.9; verticals 0.8;
+  // blog + secondary pages 0.7. lastmod stamped at build time.
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = [
+    { loc: `${ORIGIN}/`, priority: "1.0", changefreq: "weekly" },
+    { loc: `${ORIGIN}/speak`,                priority: "0.9", changefreq: "weekly" },
+    { loc: `${ORIGIN}/sponsor`,              priority: "0.9", changefreq: "weekly" },
+    { loc: `${ORIGIN}/sponsor/ts-challenge`, priority: "0.8", changefreq: "weekly" },
+    { loc: `${ORIGIN}/ts-challenge`,         priority: "0.8", changefreq: "weekly" },
+    { loc: `${ORIGIN}/origins`,              priority: "0.7", changefreq: "monthly" },
+    { loc: `${ORIGIN}/journey`,              priority: "0.6", changefreq: "monthly" },
+    { loc: `${ORIGIN}/blog`,                 priority: "0.7", changefreq: "weekly" },
+    { loc: `${ORIGIN}/blog/xp-and-kredits`,  priority: "0.5", changefreq: "monthly" },
+    { loc: `${ORIGIN}/blog/ts-challenge`,    priority: "0.5", changefreq: "monthly" },
+    ...VERTICALS.map(v => ({
+      loc: `${ORIGIN}/${v.id}`,
+      priority: "0.8",
+      changefreq: "weekly",
+    })),
+  ];
+  const sitemap = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`),
+    '</urlset>',
+    '',
+  ].join("\n");
+  writeFileSync(join(DIST, "sitemap.xml"), sitemap);
+  console.log(`✔ sitemap.xml written with ${urls.length} URLs`);
 }
 
 main();
