@@ -201,12 +201,16 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+    .hero__content p {
+      margin-bottom: 2.5rem;
+    }
     .hero__meta {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
       max-width: 48rem;
       margin-inline: auto;
+      margin-top: 2.5rem;
     }
     @media (min-width: 768px) {
       .hero__meta {
