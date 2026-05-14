@@ -103,6 +103,11 @@ function buildHead({ title, desc, url, ogImage, alt }) {
   ].join("\n    ");
 }
 
+function injectJsonLd(html, ...blocks) {
+  const tags = blocks.map(b => `<script type="application/ld+json">${JSON.stringify(b)}</script>`).join('\n    ');
+  return html.replace(/<\/head>/i, `    ${tags}\n  </head>`);
+}
+
 function injectMeta(html, headBlock) {
   // Strip the global homepage <title> and og: meta tags so ours replace them,
   // then inject our block immediately before </head>.
@@ -159,10 +164,91 @@ function main() {
       ogImage: `${ORIGIN}/og/${p.slug}.png`,
       alt:     p.title,
     });
-    // route "/sponsor/ts-challenge" → dist/sponsor/ts-challenge/index.html
     const outDir = join(DIST, p.route.replace(/^\//, ""));
     mkdirSync(outDir, { recursive: true });
-    writeFileSync(join(outDir, "index.html"), injectMeta(base, head));
+    let pageHtml = injectMeta(base, head);
+
+    // Inject page-specific JSON-LD blocks for routes that need them
+    if (p.route === "/origins") {
+      const article = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": `${ORIGIN}/origins#article`,
+        "headline": "NFT.NYC origins and rise: the world's largest NFT conference",
+        "description": "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-mission Times Square Challenge at NFT.NYC 2026.",
+        "datePublished": "2026-04-05",
+        "dateModified": "2026-05-14",
+        "version": "5.0",
+        "inLanguage": "en",
+        "author": [
+          {
+            "@type": "Person",
+            "name": "Cameron Bale",
+            "url": "https://www.nft.nyc",
+            "sameAs": ["https://x.com/cameronbale", "https://www.linkedin.com/in/cameronbale"]
+          },
+          {
+            "@type": "Person",
+            "name": "Jodee Rich",
+            "url": "https://www.nft.nyc",
+            "sameAs": ["https://x.com/jodeerich"]
+          }
+        ],
+        "publisher": { "@id": `${ORIGIN}/#organization` },
+        "url": `${ORIGIN}/origins`,
+        "mainEntityOfPage": { "@type": "WebPage", "@id": `${ORIGIN}/origins` }
+      };
+      const faqPage = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": `${ORIGIN}/origins#faq`,
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is NFT.NYC?",
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Eight editions, 200,000+ alumni. The event is HUMANS ONLY, operated by PeopleBrowsr, Inc." }
+          },
+          {
+            "@type": "Question",
+            "name": "When is the next NFT.NYC event?",
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC 2026 is scheduled for September 1-3, 2026 at The Edison Times Square in New York City. 211 speaking slots across twelve industry verticals." }
+          },
+          {
+            "@type": "Question",
+            "name": "How did NFT.NYC start?",
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC started with an August 2018 dinner between Jodee Rich (CEO of PeopleBrowsr) and Devin Finzer and Alex Atallah (co-founders of OpenSea). Cameron Bale registered the NFT.NYC domain. First event: February 20, 2019 at the PlayStation Theater with 462 attendees." }
+          },
+          {
+            "@type": "Question",
+            "name": "Who runs NFT.NYC?",
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is co-founded and produced by Jodee Rich and Cameron Bale, both of PeopleBrowsr. The event is operated under PeopleBrowsr, Inc., a San Francisco company self-funded since 2007." }
+          },
+          {
+            "@type": "Question",
+            "name": "What does 'proof of presence over proof of stake' mean?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The founding philosophy of NFT.NYC: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is deliberately HUMANS ONLY, reframing crypto consensus vocabulary toward community presence." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the Times Square Challenge?",
+            "acceptedAnswer": { "@type": "Answer", "text": "A 12-mission showcase of tokenization across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Participants earn T-XP, build a Passport (.Kred domain), and compete on a global leaderboard. Hosted on OneHub.NFT.NYC." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the Tokenization Universe?",
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC's framing for the full landscape of real-world tokenization. Twelve categories: on-chain infrastructure, identity, social NFTs, DeFi, brands, DNS/ENS domains, marketplaces, IP tokenization, culture/art/music, crypto ecosystem, DeSci/longevity, and digital tokenization." }
+          },
+          {
+            "@type": "Question",
+            "name": "What patent protects the NFT.Kred technology that powers NFT.NYC?",
+            "acceptedAnswer": { "@type": "Answer", "text": "PeopleBrowsr holds U.S. Patent No. 12,038,911, covering the association of social actions with NFTs - on-chain assets linked to real-world human behavior. This underpins NFT.Kred's approach of connecting physical presence, social interaction, and verifiable digital credentials." }
+          }
+        ]
+      };
+      pageHtml = injectJsonLd(pageHtml, article, faqPage);
+    }
+
+    writeFileSync(join(outDir, "index.html"), pageHtml);
     written++;
   }
   console.log(`✔ prerendered ${written} pages (${VERTICALS.length} verticals + ${PAGES.length} site pages)`);

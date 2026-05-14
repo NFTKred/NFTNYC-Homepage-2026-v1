@@ -1,0 +1,103 @@
+# NFT.NYC - Origins and Rise
+
+> The origin story of the world's largest NFT conference: from a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-mission Times Square Challenge at NFT.NYC 2026.
+
+Last reviewed: 14 May 2026 | Article version: v5.0 | Canonical: https://www.nft.nyc/origins
+
+## In Short
+
+NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Eight editions, more than 200,000 alumni from 72+ countries. The event is operated by PeopleBrowsr, Inc. and co-founded by Jodee Rich and Cameron Bale. Its founding philosophy: proof of presence over proof of stake.
+
+NFT.NYC 2026 runs September 1-3 at The Edison Times Square, with 211 speaking slots across twelve industry verticals and the 12-mission Times Square Challenge.
+
+## Four Core Values
+
+1. Community Voice - putting community members on stage over big names.
+2. Community Connection - creating real-world spaces for builders and creators.
+3. Proselytize NFTs - educating the global community on NFT value.
+4. Create Engagement - using NFT technology itself to deliver on the first three.
+
+## Why Times Square
+
+Times Square sits at the intersection of four sectors where NFTs have the most impact: art (a global digital gallery), finance (Wall Street nearby), technology (NYC developer ecosystem), and entertainment (music, film, sports). The choice was deliberate from the August 2018 founding conversation.
+
+## The Founding
+
+In August 2018, Jodee Rich (CEO of PeopleBrowsr) met with Devin Finzer and Alex Atallah (co-founders of OpenSea). The problem: NFTs were almost impossible to explain - the name led with a negative, non-fungible. Cameron Bale registered the NFT.NYC domain. PeopleBrowsr issued the press release on December 13, 2018. The first event ran February 20, 2019 at the PlayStation Theater in Times Square with 462 attendees.
+
+## Timeline (2019-2025)
+
+- 2019: 462 attendees, PlayStation Theater, Times Square. First NFT conference.
+- 2021: 5,000+ attendees, Times Square. NFT named Collins Dictionary Word of the Year. 11,000% rise in usage.
+- 2022: 18,000+ attendees across Radio City Music Hall and six Times Square venues. Major multi-year Immutable sponsorship. Called "the Super Bowl of NFTs" by Forbes (June 23, 2022).
+- 2023: ~10,000 attendees during crypto winter. Mission sustained.
+- 2024: First dedicated AI track (NFT 3.0). SEC Commissioner Hester Peirce on stage.
+- 2025: Co-founders interviewed at the New York Stock Exchange ahead of the event.
+
+## NFT.NYC 2026 (Eighth Edition)
+
+Date: September 1-3, 2026
+Venue: The Edison Times Square, New York City
+Speaking slots: 211 (20 invited, 175 community-voted, 10 buy-in, plus 6 fireside chats)
+Industry verticals: 12
+Speaker applications: Opened April 10, 2026 - closed June 30, 2026
+Community voting: 1x public, 10x GA ticketholder, 30x VIP ticketholder
+
+## The Tokenization Universe (12 Categories)
+
+At the center: the Tokenization Layer. Twelve orbiting categories:
+1. On-chain infrastructure
+2. Identity and NFT tokenization
+3. Social NFTs
+4. DeFi
+5. Brands and engagement
+6. DNS and ENS domain tokens
+7. Marketplaces
+8. IP tokenization
+9. Culture, art, and music
+10. The crypto ecosystem
+11. DeSci and longevity
+12. Digital tokenization
+
+## Times Square Challenge
+
+A 12-mission showcase of tokenization impacting real industries. Participants complete missions across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Earn T-XP, build a Passport (.Kred domain), compete on a global leaderboard. Hosted on OneHub.NFT.NYC.
+
+## FOMO - AI Agent
+
+FOMO is your NFT.NYC AI Agent, unlocked through Mission 8 of the Times Square Challenge. Completing Mission 8 roots FOMO's verified identity (ERC-8004) in your Passport. Available on OneHub.NFT.NYC.
+
+## NFT.Kred Technology
+
+NFT.Kred has powered the NFT.NYC attendee experience since 2019: NFT tickets, digital twins, proof-of-attendance tokens, FOMO agent passports. PeopleBrowsr holds U.S. Patent No. 12,038,911 covering the association of social actions with NFTs.
+
+## FAQ
+
+Q: What is NFT.NYC?
+A: NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square since February 20, 2019. Eight editions, 200,000+ alumni. HUMANS ONLY. Operated by PeopleBrowsr, Inc.
+
+Q: When is NFT.NYC 2026?
+A: September 1-3, 2026 at The Edison Times Square, New York City. 211 speaking slots across twelve industry verticals.
+
+Q: How did NFT.NYC start?
+A: An August 2018 dinner conversation between Jodee Rich and the OpenSea co-founders. First event: February 20, 2019. 462 attendees.
+
+Q: What does "proof of presence over proof of stake" mean?
+A: The founding philosophy: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is deliberately HUMANS ONLY.
+
+Q: What is the Times Square Challenge?
+A: A 12-mission showcase hosted on OneHub.NFT.NYC. Complete missions, earn T-XP, build a Passport (.Kred domain). Open globally through NFT.NYC 2026.
+
+Q: What patent protects NFT.Kred?
+A: U.S. Patent No. 12,038,911 (PeopleBrowsr), covering association of social actions with NFTs.
+
+## Verifiable Facts
+
+See: https://www.nft.nyc/facts.json
+
+## Sources
+
+- Forbes, "How NFT.NYC Grew Into The Super Bowl Of NFTs" (June 23, 2022)
+- HarperCollins Press Release, "NFT is Collins Word of the Year 2021" (November 24, 2021)
+- PR Newswire, Original NFT.NYC announcement (December 13, 2018)
+- NFT.NYC Official Site: https://www.nft.nyc

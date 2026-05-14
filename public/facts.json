@@ -1,0 +1,103 @@
+{
+  "lastUpdated": "2026-05-14",
+  "facts": [
+    {
+      "id": "fact:cumulative-attendees",
+      "value": "200,000+",
+      "unit": "alumni",
+      "dateAsserted": "2026-05-14",
+      "previousValue": "40,000+",
+      "canonical": "https://www.nft.nyc/origins"
+    },
+    {
+      "id": "fact:attendees-2019",
+      "value": "462",
+      "unit": "attendees",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#timeline"
+    },
+    {
+      "id": "fact:attendees-2022",
+      "value": "18,000+",
+      "unit": "attendees",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#timeline"
+    },
+    {
+      "id": "fact:countries-represented",
+      "value": "72",
+      "unit": "countries",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins"
+    },
+    {
+      "id": "fact:first-event-date",
+      "value": "2019-02-20",
+      "unit": "date",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#founding"
+    },
+    {
+      "id": "fact:event-2026-dates",
+      "value": "2026-09-01 to 2026-09-03",
+      "unit": "dates",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#nft-nyc-2026"
+    },
+    {
+      "id": "fact:event-2026-venue",
+      "value": "The Edison Times Square",
+      "unit": "venue",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#nft-nyc-2026"
+    },
+    {
+      "id": "fact:speaking-slots-2026",
+      "value": "211",
+      "unit": "speaking slots",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#nft-nyc-2026"
+    },
+    {
+      "id": "fact:industry-verticals-2026",
+      "value": "12",
+      "unit": "industry verticals",
+      "dateAsserted": "2026-05-14",
+      "previousValue": "9",
+      "canonical": "https://www.nft.nyc/origins#nft-nyc-2026"
+    },
+    {
+      "id": "fact:patent-number",
+      "value": "U.S. Patent No. 12,038,911",
+      "unit": "patent",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#nft-kred"
+    },
+    {
+      "id": "fact:super-bowl-of-nfts",
+      "value": "the Super Bowl of NFTs",
+      "unit": "attribution",
+      "source": "Forbes, June 23, 2022",
+      "sourceUrl": "https://www.forbes.com/sites/falonfatemi/2022/06/23/how-nftnyc-grew-into-the-super-bowl-of-nfts-according-to-its-co-founder/",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins"
+    },
+    {
+      "id": "fact:worlds-largest-nft-conference",
+      "value": "the world's largest NFT conference",
+      "unit": "attribution",
+      "dateAsserted": "2026-04-05",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins"
+    }
+  ]
+}

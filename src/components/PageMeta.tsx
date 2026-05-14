@@ -100,6 +100,7 @@ export default function PageMeta({ page }: PageMetaProps) {
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={ogImage} />
       <meta name="twitter:image:alt" content={meta.title} />
+      <meta name="twitter:site" content="@NFT_NYC" />
 
       <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
     </Helmet>

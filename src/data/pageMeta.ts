@@ -77,7 +77,7 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
   },
   origins: {
     title: "NFT.NYC origins and rise: the world's largest NFT conference",
-    description: "From a 2018 OpenSea dinner to eight editions, 40,000+ cumulative attendees, and the 12-mission Times Square Challenge at NFT.NYC 2026. The full origin story.",
+    description: "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-mission Times Square Challenge at NFT.NYC 2026. The full origin story.",
     path: "/origins",
     ogImage: "/og/journey.png",
   },
