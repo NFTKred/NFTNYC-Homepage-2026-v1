@@ -162,6 +162,15 @@
       text-align: center;
       max-width: 900px;
       padding-inline: var(--space-8);
+      /* Push title clear of the fixed navbar.
+         Sponsor page uses pt-40/md:pt-48 (160px/192px from page top).
+         Our <main> already offsets 92px, so we add the remainder. */
+      padding-top: 4.25rem;   /* 68px  → total ≈ 160px from page top */
+    }
+    @media (min-width: 768px) {
+      .hero__content {
+        padding-top: 6.25rem; /* 100px → total ≈ 192px from page top */
+      }
     }
     .hero__label {
       display: inline-block;
@@ -250,9 +259,9 @@
       display: inline-block;
       font-size: var(--text-xs);
       text-transform: uppercase;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.15em;
       color: var(--color-cyan);
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: var(--space-4);
     }
     .section-title {
@@ -312,7 +321,7 @@
     }
     .value-card__title {
       font-family: var(--font-display);
-      font-size: var(--text-lg);
+      font-size: 18px;
       font-weight: 700;
       color: var(--color-text);
       text-transform: uppercase;
@@ -375,7 +384,7 @@
     .pillar-card__content {}
     .pillar-card__title {
       font-family: var(--font-display);
-      font-size: var(--text-lg);
+      font-size: 18px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: -0.01em;
@@ -968,7 +977,7 @@
     .faq__q {
       font-family: var(--font-display);
       font-size: var(--text-lg);
-      font-weight: 600;
+      font-weight: 700;
       color: var(--color-text);
       text-transform: uppercase;
       letter-spacing: -0.01em;
