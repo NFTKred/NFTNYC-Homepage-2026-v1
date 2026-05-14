@@ -97,13 +97,43 @@
     },
     {
       "source": "/award-terms",
-      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFT%20NYC%20Award%20Terms%20v3.pdf",
-      "permanent": true
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AwardTerms-v4.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/Award-Terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AwardTerms-v4.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/awardterms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AwardTerms-v4.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/AwardTerms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AwardTerms-v4.2.pdf",
+      "permanent": false
     },
     {
       "source": "/attendee-terms",
-      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT%20NYC%20Attendee%20Terms%20v1.5.pdf",
-      "permanent": true
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AttendeeTerms-v2.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/Attendee-Terms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AttendeeTerms-v2.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/attendeeterms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AttendeeTerms-v2.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/AttendeeTerms",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/NFTNYC-AttendeeTerms-v2.2.pdf",
+      "permanent": false
     },
     {
       "source": "/nft-sale-terms",
@@ -137,8 +167,18 @@
     },
     {
       "source": "/speakertos",
-      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/Legal/NFT.NYC%20Speaker%20Terms%20v6.pdf",
-      "permanent": true
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/PBE-SpeakerTOS-v3.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/speakerTOS",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/PBE-SpeakerTOS-v3.2.pdf",
+      "permanent": false
+    },
+    {
+      "source": "/SpeakerTOS",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/PBE-SpeakerTOS-v3.2.pdf",
+      "permanent": false
     },
     {
       "source": "/release",
