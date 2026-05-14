@@ -121,6 +121,11 @@
       "permanent": false
     },
     {
+      "source": "/SponsorTOS",
+      "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/PBE-SponsorTOS-v2.1.pdf",
+      "permanent": false
+    },
+    {
       "source": "/nda",
       "destination": "https://f005.backblazeb2.com/file/PB-HubSpot/PeopleBrowsr%20Events%20Pty%20Ltd%20-%20Non-disclosure%20Agreement.pdf",
       "permanent": true
