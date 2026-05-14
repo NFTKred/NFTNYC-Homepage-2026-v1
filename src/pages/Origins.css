@@ -1,12 +1,13 @@
 :root {
   /* Origin story article-specific tokens not in site index.css */
-  --gradient-brand: linear-gradient(90deg, #ff2d78 0%, #ff6b1a 50%, #ffc107 100%);
-  --gradient-brand-text: linear-gradient(90deg, #ff2d78 0%, #ff8c42 50%, #ffd43b 100%);
-  --gradient-cyan-pink: linear-gradient(135deg, #00e5ff 0%, #ff2d78 100%);
-  --color-pink:  #ff2d78;
-  --color-orange: #ff6b1a;
-  --color-gold:  #ffc107;
-  --color-cyan:  #00e5ff;
+  /* Rainbow gradient matches site-wide usage in Speak.tsx */
+  --gradient-brand: linear-gradient(135deg, #E85D2B, #F5A623, #E8D44D, #7BC67E, #3DBFB8);
+  --gradient-brand-text: linear-gradient(135deg, #E85D2B, #F5A623, #E8D44D, #7BC67E, #3DBFB8);
+  --gradient-cyan-pink: linear-gradient(135deg, #06B6D4 0%, #8B5CF6 100%);
+  --color-pink:  #EC4899;
+  --color-orange: #F97316;
+  --color-gold:  #F59E0B;
+  --color-cyan:  #06B6D4;
   --color-surface-card: #141414;
   --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
   --content-narrow:  680px;
@@ -683,7 +684,7 @@
       padding: var(--space-8);
       transition: border-color var(--transition);
     }
-    .founder-card:hover { border-color: rgba(255, 45, 120, 0.3); }
+    .founder-card:hover { border-color: rgba(232, 93, 43, 0.3); }
     .founder-card__name {
       font-family: var(--font-display);
       font-size: var(--text-xl);
@@ -798,7 +799,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(255, 45, 120, 0.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(232, 93, 43, 0.08) 0%, transparent 70%);
     }
     .mission-banner__phrase {
       font-family: var(--font-display);
@@ -895,7 +896,7 @@
       max-width: var(--content-default);
       margin: var(--space-12) auto var(--space-8);
       padding: var(--space-8) clamp(var(--space-6), 5vw, var(--space-10));
-      background: linear-gradient(160deg, rgba(255, 45, 120, 0.05) 0%, rgba(255, 193, 7, 0.04) 100%);
+      background: linear-gradient(160deg, rgba(232, 93, 43, 0.05) 0%, rgba(59, 130, 246, 0.04) 100%);
       border: 1px solid var(--color-border);
       border-left: 3px solid var(--color-pink);
       border-radius: var(--radius-lg);
