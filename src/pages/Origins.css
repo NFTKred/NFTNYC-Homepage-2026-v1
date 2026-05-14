@@ -853,10 +853,7 @@
        FOOTER
     ======================== */
     .footer {
-      background: var(--color-surface);
-      border-top: 1px solid var(--color-border);
-      padding-block: var(--space-12);
-      text-align: center;
+      display: none;
     }
     .footer__logo {
       font-family: var(--font-display);
