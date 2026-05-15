@@ -10,11 +10,11 @@ import NewsletterCapture from '@/components/NewsletterCapture';
    ============================================================ */
 
 const STEPS = [
-  { num: '01', icon: 'ℹ️', title: 'The Challenge',   desc: '12 NFT missions showing how tokenization is reshaping real industries.' },
+  { num: '01', icon: 'ℹ️', title: 'The Challenge',   desc: '12 NFT Missions showing how tokenization is reshaping real industries.' },
   { num: '02', icon: '🏷️', title: 'The 6 Industries', desc: 'Art · Collectibles · Certifications · Gameplay · Identity · DeFi.' },
-  { num: '03', icon: '🗺️', title: 'The NYC Map',     desc: 'Discover every mission on a live, interactive map of New York City.' },
+  { num: '03', icon: '🗺️', title: 'The NYC Map',     desc: 'Discover every Mission on a live, interactive map of New York City.' },
   { num: '04', icon: '⚡', title: 'T-XP Engine',     desc: 'Three ways to earn, three ways to spend. Climb the global leaderboard.' },
-  { num: '05', icon: '🛂', title: 'Your Passport',   desc: 'Your .Kred domain — the permanent record of every mission you complete.' },
+  { num: '05', icon: '🛂', title: 'Your Passport',   desc: 'Your .Kred domain — the permanent record of every Mission you complete.' },
   { num: '06', icon: '🎯', title: 'The Outcome',     desc: 'Arrive at NFT.NYC 2026 already part of the conversation.' },
 ];
 
@@ -26,11 +26,11 @@ const MISSIONS = [
   { num:  3, category: 'Certifications', title: 'Claim your Proof of Exhibition',            desc: "For artists in the 2025 Community Showcase — claim your certificate on-chain." },
   { num:  4, category: 'Gameplay',       title: 'Design your TS Collectible car',            desc: 'Use HotGarage — the AI-powered design studio inspired by NYC streetscapes.' },
   { num:  5, category: 'Art',            title: 'Submit Art for the 2026 Showcase',          desc: 'Submit your work to the NFT.NYC 2026 Community Artist Showcase open call.' },
-  { num:  6, category: 'Identity',       title: 'Claim your Passport',                       desc: 'A .Kred domain that holds every mission, T-XP, attestation, and collectible you earn.' },
+  { num:  6, category: 'Identity',       title: 'Claim your Passport',                       desc: 'A .Kred domain that holds every Mission, T-XP, attestation, and collectible you earn.' },
   { num:  7, category: 'DeFi',           title: 'List on the Social Stockmarket',            desc: 'Experience social DeFi — list on the Social Stockmarket and discover Gen 2 Shares.' },
   { num:  8, category: 'Identity',       title: 'Meet FOMO — your AI Agent',                 desc: 'Extend your Passport with FOMO, your own NFT.NYC AI agent anchored to your .Kred.' },
   { num:  9, category: 'Gameplay',       title: 'Race your car in the streets of NYC',       desc: 'Race the TS Collectible car you designed in Mission #4 across the streets of NYC.' },
-  { num: 10, category: 'DeFi',           title: 'Collect 10 Gen 2 Shares',                   desc: 'Collect 10 Gen 2 Shares on the Social Stockmarket to advance your DeFi mission.' },
+  { num: 10, category: 'DeFi',           title: 'Collect 10 Gen 2 Shares',                   desc: 'Collect 10 Gen 2 Shares on the Social Stockmarket to advance your DeFi Mission.' },
   { num: 11, category: 'Collectibles',   title: 'Collect 10 NFT Speaker Cards',              desc: "Each card is an attestation from a speaker's Passport, signed onto yours." },
   { num: 12, category: 'Certifications', title: 'Claim NFT Proof of Attendance',             desc: 'The permanent closing attestation on your Passport, signed on-chain after the event.' },
 ];
@@ -59,14 +59,14 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 1, kicker: 'Overview', title: 'What Is The', accent: 'TS Challenge',
     content: () => (
       <>
-        <p className="ts-lead">The Times Square Challenge is a free 12-mission program on OneHub.NFT.NYC that showcases how tokenization is reshaping real industries — leading up to NFT.NYC 2026 on September 1–3, 2026.</p>
+        <p className="ts-lead">The Times Square Challenge is a free 12-Mission program on OneHub.NFT.NYC that showcases how tokenization is reshaping real industries — leading up to NFT.NYC 2026 on September 1–3, 2026.</p>
         <ul className="ts-list">
-          <li><strong>12 missions</strong> across six industries: Art, Collectibles, Certifications, Gameplay, Identity, and DeFi</li>
-          <li>Each mission is a <strong>working example</strong> of tokenization in a different real-world vertical</li>
-          <li>Every mission is plotted on an <strong>interactive map of New York City</strong> — discover them geographically</li>
+          <li><strong>12 Missions</strong> across six industries: Art, Collectibles, Certifications, Gameplay, Identity, and DeFi</li>
+          <li>Each Mission is a <strong>working example</strong> of tokenization in a different real-world vertical</li>
+          <li>Every Mission is plotted on an <strong>interactive map of New York City</strong> — discover them geographically</li>
           <li>Participants earn <strong>T-XP</strong> (Times Square Experience Points), climb a global leaderboard, and grow their <strong>Passport</strong></li>
           <li><strong>Mission #1 is the on-ramp</strong>: collect art from NFT.NYC's global community of 1,500+ artists, curated by Superchief Gallery</li>
-          <li>Free to join — every signup gets a welcome bonus. Some missions require T-XP to interact</li>
+          <li>Free to join — every signup gets a welcome bonus. Some Missions require T-XP to interact</li>
           <li>Powered by <strong>OneHub</strong>, built by the NFT.NYC team and powered by <strong>NFT.Kred</strong></li>
         </ul>
         <div className="ts-stats-row">
@@ -81,7 +81,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 2, kicker: 'Six Verticals', title: 'The', accent: '6 Industries',
     content: () => (
       <>
-        <p className="ts-lead">Every mission is a working example of tokenization in a real-world industry. The 12 missions split across six categories — giving participants a full tour of how NFTs are being used in 2026.</p>
+        <p className="ts-lead">Every Mission is a working example of tokenization in a real-world industry. The 12 Missions split across six categories — giving participants a full tour of how NFTs are being used in 2026.</p>
         <div className="ts-industries-grid">
           {INDUSTRIES.map(ind => (
             <div key={ind.name} className="ts-industry-card" style={{ borderColor: `${ind.color}55` }}>
@@ -100,10 +100,10 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 3, kicker: 'Discovery', title: 'The Interactive', accent: 'NYC Map',
     content: () => (
       <>
-        <p className="ts-lead">Every mission is plotted on an interactive map of New York City. Discover them geographically — pin by pin, neighborhood by neighborhood.</p>
+        <p className="ts-lead">Every Mission is plotted on an interactive map of New York City. Discover them geographically — pin by pin, neighborhood by neighborhood.</p>
         <ul className="ts-list">
-          <li>The map is the <strong>central discovery surface</strong>. Each mission is a pin you can select and interact with directly.</li>
-          <li>It's a <strong>living surface</strong> — new missions appear in the lead-up to NFT.NYC 2026 as partners and industries come online.</li>
+          <li>The map is the <strong>central discovery surface</strong>. Each Mission is a pin you can select and interact with directly.</li>
+          <li>It's a <strong>living surface</strong> — new Missions appear in the lead-up to NFT.NYC 2026 as partners and industries come online.</li>
           <li>See at a glance which experiences are <strong>live</strong>, which are <strong>coming soon</strong>, and where each one sits in the city.</li>
           <li>The map ties digital experience to physical place — Times Square, Fifth Avenue, Coney Island, the Flatiron, the Hudson.</li>
           <li>Open the live map at <a href="https://onehub.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>OneHub.NFT.NYC/map</a>.</li>
@@ -115,12 +115,12 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 4, kicker: 'The Engine', title: 'T-XP:', accent: 'Earn & Spend',
     content: () => (
       <>
-        <p className="ts-lead">T-XP (Times Square Experience Points) rewards engagement and powers the leaderboard. Three ways to earn, three ways to spend — a clean mental model that mirrors the mission-driven structure of the Challenge.</p>
+        <p className="ts-lead">T-XP (Times Square Experience Points) rewards engagement and powers the leaderboard. Three ways to earn, three ways to spend — a clean mental model that mirrors the Mission-driven structure of the Challenge.</p>
         <div className="ts-split-three" style={{ marginTop: 8 }}>
           <div className="ts-split-card">
             <h4>Three ways to earn</h4>
             <ul className="ts-list">
-              <li><strong>Complete missions</strong> across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi.</li>
+              <li><strong>Complete Missions</strong> across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi.</li>
               <li><strong>Take daily actions</strong> — send and receive gifts, redeem benefits, share on social, invite friends.</li>
               <li><strong>Engage with the community</strong> — post, comment, like, and grow your network.</li>
             </ul>
@@ -150,7 +150,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 5, kicker: 'Your Identity', title: 'Your', accent: 'Passport',
     content: () => (
       <>
-        <p className="ts-lead">Every mission completion signs to your Passport — the permanent, portable record of your TS Challenge year. Your Passport is a <strong>.Kred domain</strong> that you claim in Mission #6.</p>
+        <p className="ts-lead">Every Mission completion signs to your Passport — the permanent, portable record of your TS Challenge year. Your Passport is a <strong>.Kred domain</strong> that you claim in Mission #6.</p>
         <ul className="ts-list">
           <li><strong>One Passport, every record.</strong> Mission completions, T-XP, attestations, and collectibles all sign to it.</li>
           <li><strong>It's yours, permanently.</strong> The .Kred domain is portable — it travels with you beyond the Challenge.</li>
@@ -182,7 +182,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
           <li><strong>Industry professionals</strong> get a live sandbox of how NFTs are being applied across art, collectibles, credentials, gaming, identity, and DeFi.</li>
           <li><strong>NFT.NYC attendees and alumni</strong> stay engaged year-round and arrive at the event having already interacted with every use case firsthand.</li>
           <li><strong>Eligible artists</strong> may earn USDC through Mission #1 Featured Art and the 2026 Showcase open call.</li>
-          <li><strong>Every participant</strong> closes the year with a Passport that records every mission, attestation, and collectible — a permanent record of NFT.NYC 2026.</li>
+          <li><strong>Every participant</strong> closes the year with a Passport that records every Mission, attestation, and collectible — a permanent record of NFT.NYC 2026.</li>
         </ul>
         <div className="ts-compliance">
           <strong>Earn Stage Eligibility &amp; USDC Payouts:</strong> The Earn Stage is optional and requires an affirmative opt-in. To access the Earn Stage, participants must: (1) meet the applicable eligibility requirements set out in our Terms of Service, (2) complete KYC (Know Your Customer) identity verification in accordance with our AML/CTF (Anti-Money Laundering / Counter-Terrorism Financing) compliance obligations, and (3) accept the Earn Stage Terms. USDC payouts are subject to successful KYC verification and are not guaranteed by participation in the TS Challenge.
@@ -287,7 +287,7 @@ export default function TSChallenge() {
               fontFamily: 'var(--font-body)', fontSize: 'clamp(14px, 2vw, 20px)',
               color: 'var(--color-text-muted)', maxWidth: 640, margin: '0 auto 16px', lineHeight: 1.6,
             }}>
-              12 NFT missions across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — each a working example of how tokenization is reshaping a real industry. Plotted on an interactive NYC map, leading up to NFT.NYC 2026.
+              12 NFT Missions across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — each a working example of how tokenization is reshaping a real industry. Plotted on an interactive NYC map, leading up to NFT.NYC 2026.
             </p>
             <p className="scroll-fade-up" style={{
               fontFamily: 'var(--font-body)', fontSize: 14,
@@ -348,7 +348,7 @@ export default function TSChallenge() {
                 fontFamily: 'var(--font-body)', fontSize: 'clamp(14px, 1.5vw, 17px)',
                 color: 'var(--color-text-muted)', maxWidth: 680, margin: '0 auto', lineHeight: 1.6,
               }}>
-                Each mission is a working example of tokenization in a different industry. Missions release progressively and appear on the interactive NYC map as they go live.
+                Each Mission is a working example of tokenization in a different industry. Missions release progressively and appear on the interactive NYC map as they go live.
               </p>
             </div>
 

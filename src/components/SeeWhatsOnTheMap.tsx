@@ -142,7 +142,7 @@ export default function SeeWhatsOnTheMap() {
           Join the <span className="accent">Times Square Challenge</span>
         </h2>
         <p className="swotm-subtitle">
-          12 missions. 6 industries. One map. See how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — and earn T-XP for every mission you complete.
+          12 Missions. 6 industries. One map. See how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — and earn T-XP for every Mission you complete.
         </p>
 
         {/* Featured map marker — in document flow between the subtitle and
@@ -173,7 +173,7 @@ export default function SeeWhatsOnTheMap() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Complete your first mission
+            Complete your first Mission
           </a>
         </div>
 

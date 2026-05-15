@@ -63,7 +63,7 @@ const PAGES = [
   { route: "/blog/xp-and-kredits",  slug: "blog-xp-kredits",      title: "What are XP & Kredits? — NFT.NYC Blog",                            desc: "How hub-branded points and Kredits power the NFT.NYC community and reward builders, brands, and creators." },
   { route: "/blog/ts-challenge",    slug: "blog-ts-challenge",    title: "What is the Times Square Challenge? — NFT.NYC Blog",               desc: "How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square's biggest screens." },
   { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community." },
-  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-mission Times Square Challenge at NFT.NYC 2026." },
+  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026." },
 ];
 
 const ORIGIN = "https://www.nft.nyc";
@@ -175,7 +175,7 @@ function main() {
         "@type": "Article",
         "@id": `${ORIGIN}/origins#article`,
         "headline": "NFT.NYC origins and rise: the world's largest NFT conference",
-        "description": "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-mission Times Square Challenge at NFT.NYC 2026.",
+        "description": "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026.",
         "datePublished": "2026-04-05",
         "dateModified": "2026-05-14",
         "version": "5.0",
@@ -231,7 +231,7 @@ function main() {
           {
             "@type": "Question",
             "name": "What is the Times Square Challenge?",
-            "acceptedAnswer": { "@type": "Answer", "text": "A 12-mission showcase of tokenization across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Participants earn T-XP, build a Passport (.Kred domain), and compete on a global leaderboard. Hosted on OneHub.NFT.NYC." }
+            "acceptedAnswer": { "@type": "Answer", "text": "A 12-Mission showcase of tokenization across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Participants earn T-XP, build a Passport (.Kred domain), and compete on a global leaderboard. Hosted on OneHub.NFT.NYC." }
           },
           {
             "@type": "Question",

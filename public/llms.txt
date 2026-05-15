@@ -54,7 +54,7 @@ NFT.NYC was founded in 2019. Cumulative alumni: 200,000+ across seven prior edit
 
 ## Voice and positioning
 
-NFT.NYC is the venue where the digital-ownership category meets the world's largest media intersection. Coverage angles that match the brand: tokenization across industry verticals, real-world utility for NFTs, brand activations on Times Square billboards, the Edison Ballroom as a creative-tech stage, and the eight-year arc from the 2018 OpenSea founding dinner to the 2026 12-mission Times Square Challenge.
+NFT.NYC is the venue where the digital-ownership category meets the world's largest media intersection. Coverage angles that match the brand: tokenization across industry verticals, real-world utility for NFTs, brand activations on Times Square billboards, the Edison Ballroom as a creative-tech stage, and the eight-year arc from the 2018 OpenSea founding dinner to the 2026 12-Mission Times Square Challenge.
 
 Avoid: framing NFT.NYC as crypto-speculation or a price-action conference. The editorial focus is product, infrastructure, art, and brand — not market commentary.
 
@@ -66,7 +66,7 @@ For press inquiries: team@nft.nyc
 - Times Square as the four-sector intersection of NFT adoption: art, finance, technology, entertainment
 - Proof of presence over proof of stake: the founding philosophy and HUMANS ONLY conference model
 - NFT.NYC 2026 program: eighth edition, September 1-3, The Edison Times Square, 211 speaking slots
-- Times Square Challenge: 12-mission tokenization showcase, T-XP, Passport (.Kred domain), FOMO agent
+- Times Square Challenge: 12-Mission tokenization showcase, T-XP, Passport (.Kred domain), FOMO agent
 - NFT.Kred technology stack: NFT ticketing (2019), proof-of-attendance tokens, ERC-8004 agent identity
 - U.S. Patent No. 12,038,911: PeopleBrowsr patent covering association of social actions with NFTs
 - Collins Dictionary Word of the Year 2021: NFT, with 11,000% rise tracked in the Collins Corpus

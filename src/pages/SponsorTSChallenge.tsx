@@ -51,11 +51,11 @@ type FaqItem = { q: string; a: (open: () => void) => React.ReactNode };
 const FAQ: FaqItem[] = [
   {
     q: "What is the Times Square Challenge?",
-    a: () => "A month-long community-wide online experience running before, during, and after NFT.NYC 2026. Participants complete missions — minting, collecting, curating, or interacting with sponsor activations — to earn T-XP and a spot on the leaderboard. The highest-engaged moments play out live on Times Square billboards.",
+    a: () => "A month-long community-wide online experience running before, during, and after NFT.NYC 2026. Participants complete Missions — minting, collecting, curating, or interacting with sponsor activations — to earn T-XP and a spot on the leaderboard. The highest-engaged moments play out live on Times Square billboards.",
   },
   {
     q: "How does my sponsorship show up?",
-    a: () => "Your product, token, game, or activation becomes a mission in the Challenge. Participants complete it to earn rewards. Your brand sits alongside NFT.NYC's in all Challenge interfaces, social, email, and the Times Square moments themselves.",
+    a: () => "Your product, token, game, or activation becomes a Mission in the Challenge. Participants complete it to earn rewards. Your brand sits alongside NFT.NYC's in all Challenge interfaces, social, email, and the Times Square moments themselves.",
   },
   {
     q: "Can we integrate a custom experience?",
@@ -174,7 +174,7 @@ export default function SponsorTSChallenge() {
             margin: '0 auto 2.5rem',
           }}>
             A month-long, community-wide experience running <strong style={{ color: 'var(--color-text)' }}>before, during, and after NFT.NYC 2026</strong>.
-            Integrate your product, token, or artwork into a mission that the NFT.NYC community plays through — live from Times Square.
+            Integrate your product, token, or artwork into a Mission that the NFT.NYC community plays through — live from Times Square.
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
@@ -386,7 +386,7 @@ export default function SponsorTSChallenge() {
           {[
             { icon: Mic, title: '1. Submit details', desc: 'Share the product, activation, or experience you\'d like to feature.' },
             { icon: Sparkles, title: '2. Scope together', desc: 'We design the integration with you — turnkey or custom.' },
-            { icon: Gift, title: '3. Launch & amplify', desc: 'Your mission goes live. NFT.NYC drives the community to it.' },
+            { icon: Gift, title: '3. Launch & amplify', desc: 'Your Mission goes live. NFT.NYC drives the community to it.' },
           ].map(s => {
             const Icon = s.icon;
             return (
