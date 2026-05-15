@@ -20,14 +20,17 @@ interface Feature {
   video?: string;
 }
 
+// Cycling featured tile content — labels mapped to the 12 TS Challenge
+// missions (or platform surfaces where there's no 1:1 mission). The
+// "Mission #N ·" prefix anchors the visual to the article's framing.
 const FEATURES: Feature[] = [
-  { label: 'Race 5th Ave',     video: STORAGE_BASE + '/hotgarage-ts-musclecar-v1.mp4' },
-  { label: 'Billboard Art',    image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_Showcase_Animation_2132385581765501553.jpg?width=568&format=webp' },
-  { label: 'Leaderboard',      image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_TS_BB_Showcase_992032624851765501812.jpg?width=568&format=webp' },
-  { label: 'Community Hub',    image: 'https://f005.backblazeb2.com/file/PB-HubSpot/files/chmln-crm-ts.png' },
-  { label: 'Gift Studio',      image: STORAGE_BASE + '/relay-giftstudio-v1.jpg' },
-  { label: 'Domain Market',    image: STORAGE_BASE + '/mapmarker-domainmarket-v1.png' },
-  { label: 'Artist Open Call', image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_TS_BB_Showcase_2020359081765501856.jpg?width=568&format=webp' },
+  { label: 'Mission #1 · Collect TS Art', image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_Showcase_Animation_2132385581765501553.jpg?width=568&format=webp' },
+  { label: 'Mission #2 · Send Gifts',     image: STORAGE_BASE + '/relay-giftstudio-v1.jpg' },
+  { label: 'Mission #5 · Submit Art',     image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_TS_BB_Showcase_2020359081765501856.jpg?width=568&format=webp' },
+  { label: 'Mission #6 · Claim Passport', image: STORAGE_BASE + '/mapmarker-domainmarket-v1.png' },
+  { label: 'Mission #9 · Race in NYC',    video: STORAGE_BASE + '/hotgarage-ts-musclecar-v1.mp4' },
+  { label: 'Leaderboard',                 image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_TS_BB_Showcase_992032624851765501812.jpg?width=568&format=webp' },
+  { label: 'Community Hub',               image: 'https://f005.backblazeb2.com/file/PB-HubSpot/files/chmln-crm-ts.png' },
 ];
 
 const DECOR: { x: number; y: number }[] = [
@@ -139,7 +142,7 @@ export default function SeeWhatsOnTheMap() {
           Join the <span className="accent">Times Square Challenge</span>
         </h2>
         <p className="swotm-subtitle">
-          Complete missions to see how tokenization is impacting AI Identity, Ticketing, Gaming, Art and more. Each mission you complete earns you more T-XP that you can use to collect collectible TS Art as featured on billboards during NFT.NYC.
+          12 missions. 6 industries. One map. See how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — and earn T-XP for every mission you complete.
         </p>
 
         {/* Featured map marker — in document flow between the subtitle and
