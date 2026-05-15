@@ -10,12 +10,40 @@ import NewsletterCapture from '@/components/NewsletterCapture';
    ============================================================ */
 
 const STEPS = [
-  { num: '01', icon: 'ℹ️', title: 'Overview', desc: 'What is the TS Challenge and how it brings collectors and artists together.' },
-  { num: '02', icon: '📍', title: 'Meet Relay', desc: 'The official NFT.NYC mascot and your guide through the challenge.' },
-  { num: '03', icon: '👥', title: 'Two Tracks', desc: 'Parallel journeys for collectors and artists, both fueled by T-XP.' },
-  { num: '04', icon: '⚡', title: 'T-XP Engine', desc: 'Daily actions, multipliers, and the leaderboard race.' },
-  { num: '05', icon: '🪙', title: 'T-XP & T-Kredits', desc: 'Two currencies powering the challenge — earn, spend, and climb.' },
-  { num: '06', icon: '🎯', title: 'The Outcome', desc: 'Visibility, engagement, and earning — turn art into sustainable opportunity.' },
+  { num: '01', icon: 'ℹ️', title: 'The Challenge',   desc: '12 NFT missions showing how tokenization is reshaping real industries.' },
+  { num: '02', icon: '🏷️', title: 'The 6 Industries', desc: 'Art · Collectibles · Certifications · Gameplay · Identity · DeFi.' },
+  { num: '03', icon: '🗺️', title: 'The NYC Map',     desc: 'Discover every mission on a live, interactive map of New York City.' },
+  { num: '04', icon: '⚡', title: 'T-XP Engine',     desc: 'Three ways to earn, three ways to spend. Climb the global leaderboard.' },
+  { num: '05', icon: '🛂', title: 'Your Passport',   desc: 'Your .Kred domain — the permanent record of every mission you complete.' },
+  { num: '06', icon: '🎯', title: 'The Outcome',     desc: 'Arrive at NFT.NYC 2026 already part of the conversation.' },
+];
+
+// Master list of the 12 missions — used by the new mission grid section.
+// Categories map to the six industries showcased on /ts-challenge.
+const MISSIONS = [
+  { num:  1, category: 'Art',            title: 'Collect Collectible TS Art',                desc: "Mission #1 and the on-ramp. Collect editions from NFT.NYC's global community of artists." },
+  { num:  2, category: 'Collectibles',   title: 'Send Collectible NFT Gifts',                desc: 'Share recognition with fun NFT gifts. Both sender and recipient earn T-XP.' },
+  { num:  3, category: 'Certifications', title: 'Claim your Proof of Exhibition',            desc: "For artists in the 2025 Community Showcase — claim your certificate on-chain." },
+  { num:  4, category: 'Gameplay',       title: 'Design your TS Collectible car',            desc: 'Use HotGarage — the AI-powered design studio inspired by NYC streetscapes.' },
+  { num:  5, category: 'Art',            title: 'Submit Art for the 2026 Showcase',          desc: 'Submit your work to the NFT.NYC 2026 Community Artist Showcase open call.' },
+  { num:  6, category: 'Identity',       title: 'Claim your Passport',                       desc: 'A .Kred domain that holds every mission, T-XP, attestation, and collectible you earn.' },
+  { num:  7, category: 'DeFi',           title: 'List on the Social Stockmarket',            desc: 'Experience social DeFi — list on the Social Stockmarket and discover Gen 2 Shares.' },
+  { num:  8, category: 'Identity',       title: 'Meet FOMO — your AI Agent',                 desc: 'Extend your Passport with FOMO, your own NFT.NYC AI agent anchored to your .Kred.' },
+  { num:  9, category: 'Gameplay',       title: 'Race your car in the streets of NYC',       desc: 'Race the TS Collectible car you designed in Mission #4 across the streets of NYC.' },
+  { num: 10, category: 'DeFi',           title: 'Collect 10 Gen 2 Shares',                   desc: 'Collect 10 Gen 2 Shares on the Social Stockmarket to advance your DeFi mission.' },
+  { num: 11, category: 'Collectibles',   title: 'Collect 10 NFT Speaker Cards',              desc: "Each card is an attestation from a speaker's Passport, signed onto yours." },
+  { num: 12, category: 'Certifications', title: 'Claim NFT Proof of Attendance',             desc: 'The permanent closing attestation on your Passport, signed on-chain after the event.' },
+];
+
+// Six industries shown on the TS Challenge, each with its color and the
+// mission numbers that belong to it. Powers the "6 Industries" section.
+const INDUSTRIES = [
+  { name: 'Art',            color: '#D946EF', missions: '#1 · #5',  blurb: 'Collect limited-edition NFT art from the global community and submit your own for 2026.' },
+  { name: 'Collectibles',   color: '#EC4899', missions: '#2 · #11', blurb: 'Send Collectible NFT Gifts and collect Speaker Card attestations.' },
+  { name: 'Certifications', color: '#F59E0B', missions: '#3 · #12', blurb: 'Claim on-chain Proof of Exhibition and Proof of Attendance certificates.' },
+  { name: 'Gameplay',       color: '#10B981', missions: '#4 · #9',  blurb: 'Design TS Collectible cars in HotGarage, then race them in the streets of NYC.' },
+  { name: 'Identity',       color: '#8B5CF6', missions: '#6 · #8',  blurb: 'Claim your .Kred Passport and extend it with FOMO, your own NFT.NYC AI agent.' },
+  { name: 'DeFi',           color: '#3B82F6', missions: '#7 · #10', blurb: 'Experience social DeFi by listing and collecting Gen 2 Shares on the Social Stockmarket.' },
 ];
 
 interface GuideSection {
@@ -31,188 +59,109 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 1, kicker: 'Overview', title: 'What Is The', accent: 'TS Challenge',
     content: () => (
       <>
-        <p className="ts-lead">A one-time, limited-edition community experience on OneHub.NFT.NYC where collectors and artists engage, compete, and earn.</p>
+        <p className="ts-lead">The Times Square Challenge is a free 12-mission program on OneHub.NFT.NYC that showcases how tokenization is reshaping real industries — leading up to NFT.NYC 2026 on September 1–3, 2026.</p>
         <ul className="ts-list">
-          <li>Artwork from the <strong>NFT.NYC 2025 Community Artist Showcase</strong> is transformed into <strong>Limited Edition Collectible TS Art</strong></li>
-          <li>New art categories released <strong>weekly</strong> on <strong>OneHub.NFT.NYC</strong></li>
-          <li>Collectors purchase <strong>Collectible TS Art</strong> — limited-edition, limited-time derivatives</li>
-          <li>Participants earn <strong>T-XP</strong>, climb the leaderboard, and unlock rewards</li>
-          <li>When artwork reaches <strong>5 unique collectors</strong>, it unlocks <strong>T-Kredits</strong> pricing and moves to the <strong>Featured Category</strong></li>
-          <li><strong>T-Kredits</strong> are the only way to purchase Featured Art — purchased separately from T-XP</li>
-          <li>Eligible artists may earn <strong>USDC</strong> — T-Kredits sales pay out <strong>in USDC</strong> direct to artists</li>
+          <li><strong>12 missions</strong> across six industries: Art, Collectibles, Certifications, Gameplay, Identity, and DeFi</li>
+          <li>Each mission is a <strong>working example</strong> of tokenization in a different real-world vertical</li>
+          <li>Every mission is plotted on an <strong>interactive map of New York City</strong> — discover them geographically</li>
+          <li>Participants earn <strong>T-XP</strong> (Times Square Experience Points), climb a global leaderboard, and grow their <strong>Passport</strong></li>
+          <li><strong>Mission #1 is the on-ramp</strong>: collect art from NFT.NYC's global community of 1,500+ artists, curated by Superchief Gallery</li>
+          <li>Free to join — every signup gets a welcome bonus. Some missions require T-XP to interact</li>
+          <li>Powered by <strong>OneHub</strong>, built by the NFT.NYC team and powered by <strong>NFT.Kred</strong></li>
         </ul>
         <div className="ts-stats-row">
-          <div className="ts-stat"><div className="ts-stat-number">1,500</div><div className="ts-stat-label">Artworks Showcased</div></div>
-          <div className="ts-stat"><div className="ts-stat-number">12</div><div className="ts-stat-label">Week Campaign</div></div>
-          <div className="ts-stat"><div className="ts-stat-number">10M</div><div className="ts-stat-label">T-XP Giveaway</div></div>
+          <div className="ts-stat"><div className="ts-stat-number">12</div><div className="ts-stat-label">Missions</div></div>
+          <div className="ts-stat"><div className="ts-stat-number">6</div><div className="ts-stat-label">Industries</div></div>
+          <div className="ts-stat"><div className="ts-stat-number">150K+</div><div className="ts-stat-label">Community Members</div></div>
         </div>
       </>
     ),
   },
   {
-    step: 2, kicker: 'Your Guide', title: 'Meet', accent: 'Relay the Rat',
+    step: 2, kicker: 'Six Verticals', title: 'The', accent: '6 Industries',
     content: () => (
       <>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' as const }}>
-          <img
-            src="/relay-rat.png"
-            alt="Relay the Rat"
-            style={{
-              width: 140, height: 140, objectFit: 'contain', flexShrink: 0,
-              filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.4))',
-            }}
-          />
-          <div style={{ flex: 1, minWidth: 240 }}>
-            <p className="ts-lead">The official mascot of NFT.NYC — and the narrator of the TS Challenge.</p>
-            <p>Before the stages, screens, and crowds — there were builders. Meeting in basements, coffee shops, and Discords. NFT.NYC chose the rat as its symbol because in NYC culture, the rat represents <strong>adaptability</strong>, <strong>intelligence</strong>, and <strong>thriving in complex systems</strong>.</p>
-            <button
-          onClick={() => {
-            const btn = document.getElementById('relay-chat-btn') as HTMLElement;
-            if (btn) btn.click();
-          }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 24,
-            padding: '0.65rem 1.75rem',
-            borderRadius: '9999px',
-            fontFamily: 'var(--font-body)',
-            fontWeight: 600,
-            fontSize: '14px',
-            cursor: 'pointer',
-            border: 'none',
-            background: '#fff',
-            color: '#000',
-            transition: 'all 180ms cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-            (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 20px rgba(255,255,255,0.2)';
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-            (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-          }}
-        >
-          Chat with RELAY
-        </button>
-          </div>
+        <p className="ts-lead">Every mission is a working example of tokenization in a real-world industry. The 12 missions split across six categories — giving participants a full tour of how NFTs are being used in 2026.</p>
+        <div className="ts-industries-grid">
+          {INDUSTRIES.map(ind => (
+            <div key={ind.name} className="ts-industry-card" style={{ borderColor: `${ind.color}55` }}>
+              <div className="ts-industry-header">
+                <span className="ts-industry-name" style={{ color: ind.color }}>{ind.name}</span>
+                <span className="ts-industry-missions" style={{ background: `${ind.color}22`, color: ind.color }}>{ind.missions}</span>
+              </div>
+              <p className="ts-industry-blurb">{ind.blurb}</p>
+            </div>
+          ))}
         </div>
       </>
     ),
   },
   {
-    step: 3, kicker: 'Two Tracks', title: 'How It', accent: 'Works',
-    content: (tab, setTab) => (
-      <>
-        <p className="ts-lead">Parallel journeys for collectors and artists — both fueled by T-XP.</p>
-        <div className="ts-tab-toggle">
-          <div className="ts-tab-inner">
-            <button className={`ts-tab-btn${tab === 'collectors' ? ' active' : ''}`} onClick={() => setTab('collectors')}>For Collectors</button>
-            <button className={`ts-tab-btn${tab === 'artists' ? ' active' : ''}`} onClick={() => setTab('artists')}>For Artists</button>
-          </div>
-        </div>
-        {tab === 'collectors' ? (
-          <>
-            <div className="ts-flow-grid three">
-              <FlowCard icon="🎁" title="Your 500 T-XP Are Waiting" badge="Free to Start" badgeType="free">New Collectors can claim a <strong>500 T-XP free Welcome NFT</strong> at launch—enough to grab your first piece. Earn more daily or buy T-XP to build your edge.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="🎨" title="Browse Collectible TS Art" badge="Weekly Drops" badgeType="tip">New art drops every week across three tiers: <strong>Gallery</strong>, <strong>Billboard</strong>, and <strong>Monument</strong>. Use your T-XP to buy collectible art as soon as it drops.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="⏳" title="First 24 Hours = Best Price" badge="Price Doubles" badgeType="tip">Prices <strong>double after day one</strong>. Early collectors lock in the lowest price—and the bragging rights that come with it.</FlowCard>
-            </div>
-            <div style={{ height: 12 }} />
-            <div className="ts-flow-grid two">
-              <FlowCard icon="👑" title="Unlock Featured Art" badge="Utilize T-Kredits" badgeType="vip">The most popular pieces get promoted to <strong>Featured</strong>. T-Kredits are the <strong>only way</strong> to purchase Featured Art—if you don't have them, you're locked out.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="💫" title="Build Your Collection" badge="On Chain Record" badgeType="flex">Every piece you collect lives <strong>on-chain</strong>. Show off your taste, track your collection's growth, and stand out in the community.</FlowCard>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="ts-flow-grid three">
-              <FlowCard icon="🎨" title="Your Art is Listed" badge="Auto-Listed" badgeType="tip">Your Times Square artwork is listed automatically by tier—<strong>Gallery</strong>, <strong>Billboard</strong>, or <strong>Monument</strong>.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="💰" title="Earn T-XP" badge="50% Commission" badgeType="free">Earn <strong>50% T-XP</strong> on every sale during the initial listing period.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="🔓" title="Reach 5 Collectors" badge="Unlock Moment" badgeType="unlock">Once <strong>5 unique collectors</strong> own your work, it unlocks T-Kredits pricing and moves to <strong>Featured Category</strong>.</FlowCard>
-            </div>
-            <div style={{ height: 12 }} />
-            <div className="ts-flow-grid three">
-              <FlowCard icon="💵" title="Earn Real Money" badge="USDC Payout" badgeType="usdc">T-Kredits sales pay out <strong>in USDC</strong>—real dollars, direct to you.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="🛡️" title="Verify to Unlock" badge="One-Time Step" badgeType="unlock">Complete a simple <strong>identity verification</strong> step to release your USDC balance. Earnings held safely until verified.</FlowCard>
-              <div className="ts-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
-              <FlowCard icon="♾️" title="Your Art Lives Forever" badge="Permanent" badgeType="forever">Even after a listing expires, your artwork always lives in your <strong>portfolio</strong>.</FlowCard>
-            </div>
-          </>
-        )}
-      </>
-    ),
-  },
-  {
-    step: 4, kicker: 'The Engine', title: 'T-XP:', accent: 'Experience Points',
+    step: 3, kicker: 'Discovery', title: 'The Interactive', accent: 'NYC Map',
     content: () => (
       <>
-        <p className="ts-lead">T-XP is the core mechanic — offchain experience points that work like airline miles or hotel loyalty rewards.</p>
-        <div className="ts-xp-flow">
-          <span className="ts-xp-node">Collect Collectible TS Art</span>
-          <span className="ts-xp-arrow">+</span>
-          <span className="ts-xp-node">Send Gifts</span>
-          <span className="ts-xp-arrow">+</span>
-          <span className="ts-xp-node">Receive Gifts</span>
-          <span className="ts-xp-arrow">+</span>
-          <span className="ts-xp-node">Engage on Hub</span>
-          <span className="ts-xp-arrow">=</span>
-          <span className="ts-xp-node ts-xp-highlight">T-XP</span>
+        <p className="ts-lead">Every mission is plotted on an interactive map of New York City. Discover them geographically — pin by pin, neighborhood by neighborhood.</p>
+        <ul className="ts-list">
+          <li>The map is the <strong>central discovery surface</strong>. Each mission is a pin you can select and interact with directly.</li>
+          <li>It's a <strong>living surface</strong> — new missions appear in the lead-up to NFT.NYC 2026 as partners and industries come online.</li>
+          <li>See at a glance which experiences are <strong>live</strong>, which are <strong>coming soon</strong>, and where each one sits in the city.</li>
+          <li>The map ties digital experience to physical place — Times Square, Fifth Avenue, Coney Island, the Flatiron, the Hudson.</li>
+          <li>Open the live map at <a href="https://onehub.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>OneHub.NFT.NYC/map</a>.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    step: 4, kicker: 'The Engine', title: 'T-XP:', accent: 'Earn & Spend',
+    content: () => (
+      <>
+        <p className="ts-lead">T-XP (Times Square Experience Points) rewards engagement and powers the leaderboard. Three ways to earn, three ways to spend — a clean mental model that mirrors the mission-driven structure of the Challenge.</p>
+        <div className="ts-split-three" style={{ marginTop: 8 }}>
+          <div className="ts-split-card">
+            <h4>Three ways to earn</h4>
+            <ul className="ts-list">
+              <li><strong>Complete missions</strong> across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi.</li>
+              <li><strong>Take daily actions</strong> — send and receive gifts, redeem benefits, share on social, invite friends.</li>
+              <li><strong>Engage with the community</strong> — post, comment, like, and grow your network.</li>
+            </ul>
+          </div>
+          <div className="ts-split-card">
+            <h4>Three ways to spend</h4>
+            <ul className="ts-list">
+              <li><strong>Collect Collectible TS Art</strong>, Speaker Cards, and HotGarage creations.</li>
+              <li><strong>Send Collectible NFT Gifts</strong> to friends — earn bonus T-XP on every send.</li>
+              <li><strong>Design and race</strong> in HotGarage — design in Mission #4, race in Mission #9.</li>
+            </ul>
+          </div>
+          <div className="ts-split-card">
+            <h4>Streaks multiply</h4>
+            <ul className="ts-list">
+              <li>Daily actions across consecutive days build a <strong>streak</strong>.</li>
+              <li>Streaks apply a <strong>Boost Multiplier</strong> starting at 1.1× and increasing up to 4×.</li>
+              <li>Breaking a streak resets the multiplier — consistency is the fastest way to climb.</li>
+            </ul>
+          </div>
         </div>
-        <p style={{ marginTop: 20 }}><strong>T-XP powers:</strong> Gameplay, community interaction, expressive gifting, and leaderboard progression.</p>
-        <p><strong>The more you participate, the higher you climb.</strong> Top leaderboard participants unlock exclusive rewards, benefits, and challenge recognition.</p>
-        <p><strong>T-Kredits</strong> are a separate premium currency. While T-XP fuels gameplay and progression, <strong>T-Kredits are the only way to purchase Featured Art</strong>. Artists earn <strong>USDC from T-Kredits sales</strong>.</p>
+        <p style={{ marginTop: 20, fontSize: 13, color: 'var(--color-text-muted)' }}>Earned T-XP expires 60 days after issuance. Purchased T-XP expires 12 months after issuance. T-XP has no cash value and cannot be redeemed for money.</p>
+      </>
+    ),
+  },
+  {
+    step: 5, kicker: 'Your Identity', title: 'Your', accent: 'Passport',
+    content: () => (
+      <>
+        <p className="ts-lead">Every mission completion signs to your Passport — the permanent, portable record of your TS Challenge year. Your Passport is a <strong>.Kred domain</strong> that you claim in Mission #6.</p>
+        <ul className="ts-list">
+          <li><strong>One Passport, every record.</strong> Mission completions, T-XP, attestations, and collectibles all sign to it.</li>
+          <li><strong>It's yours, permanently.</strong> The .Kred domain is portable — it travels with you beyond the Challenge.</li>
+          <li><strong>Speakers have Passports too.</strong> Each Speaker Card you collect in Mission #11 is an attestation from a speaker's <code>SpeakerName.Kred</code> Passport, signed onto yours.</li>
+          <li><strong>Anchor your AI agent.</strong> In Mission #8 you extend your Passport with FOMO — your own NFT.NYC AI agent.</li>
+          <li><strong>Close the loop on event day.</strong> Mission #12 signs an NFT Proof of Attendance onto your Passport — the permanent closing attestation of NFT.NYC 2026.</li>
+        </ul>
         <div className="ts-stats-row" style={{ marginTop: 20 }}>
-          <div className="ts-stat" style={{ flex: 2 }}><div className="ts-stat-number">10,000,000</div><div className="ts-stat-label">T-XP Giveaway at Launch</div></div>
-        </div>
-        <p style={{ fontSize: 13, color: 'var(--color-text-muted)', marginTop: 8, textAlign: 'center' as const }}>Distributed to the community to jumpstart the Challenge from Day 1.</p>
-      </>
-    ),
-  },
-  {
-    step: 5, kicker: 'The Assets', title: 'Collectible TS Art,', accent: 'Gift NFTs & T-Kredits',
-    content: () => (
-      <>
-        <p className="ts-lead">Three types of digital assets power the Challenge.</p>
-        <div className="ts-split-three">
-          <div className="ts-split-card">
-            <h4>Collectible TS Art</h4>
-            <ul className="ts-list">
-              <li>Limited-edition artwork from the Community Showcase</li>
-              <li>Available <strong>only for a short time</strong></li>
-              <li>Built directly from <strong>Community Showcase artwork</strong></li>
-              <li>Lives forever as a <strong>Times Square moment</strong></li>
-              <li>New category <strong>released each Monday</strong></li>
-            </ul>
-          </div>
-          <div className="ts-split-card">
-            <h4>Gift NFTs</h4>
-            <ul className="ts-list">
-              <li>Licensed digital items to send to friends &amp; community</li>
-              <li>Used for <strong>expression</strong> and <strong>recognition</strong></li>
-              <li>Drive <strong>leaderboard momentum</strong></li>
-              <li><strong>Send a Gift</strong> = earn T-XP</li>
-              <li><strong>Receive a Gift</strong> = earn T-XP</li>
-            </ul>
-          </div>
-          <div className="ts-split-card">
-            <h4>T-Kredits</h4>
-            <ul className="ts-list">
-              <li>Premium currency for <strong>Featured Art</strong> only</li>
-              <li>The <strong>only way</strong> to purchase art in the Featured Category</li>
-              <li>Purchased separately from T-XP</li>
-              <li>Artist payout: <strong>USDC</strong> per sale</li>
-              <li>Unlocked when artwork reaches <strong>5 unique collectors</strong></li>
-            </ul>
-          </div>
+          <div className="ts-stat"><div className="ts-stat-number">.Kred</div><div className="ts-stat-label">Domain</div></div>
+          <div className="ts-stat"><div className="ts-stat-number">ERC-8004</div><div className="ts-stat-label">Reputation Layer</div></div>
+          <div className="ts-stat"><div className="ts-stat-number">12</div><div className="ts-stat-label">Mission Attestations</div></div>
         </div>
       </>
     ),
@@ -222,18 +171,18 @@ const GUIDE_SECTIONS: GuideSection[] = [
     content: () => (
       <>
         <div className="ts-outcome-flow">
-          <div className="ts-outcome-node"><div className="ts-outcome-icon">🎨</div><div className="ts-outcome-label">Visibility</div></div>
+          <div className="ts-outcome-node"><div className="ts-outcome-icon">🗺️</div><div className="ts-outcome-label">Explore</div></div>
           <div className="ts-outcome-arrow">→</div>
-          <div className="ts-outcome-node"><div className="ts-outcome-icon">🔥</div><div className="ts-outcome-label">Engagement</div></div>
+          <div className="ts-outcome-node"><div className="ts-outcome-icon">⚡</div><div className="ts-outcome-label">Complete</div></div>
           <div className="ts-outcome-arrow">→</div>
-          <div className="ts-outcome-node ts-outcome-final"><div className="ts-outcome-icon">💰</div><div className="ts-outcome-label">Earn</div></div>
+          <div className="ts-outcome-node ts-outcome-final"><div className="ts-outcome-icon">🛂</div><div className="ts-outcome-label">Arrive</div></div>
         </div>
-        <div className="ts-closing-quote">"Turn visibility into <em>sustainable opportunity</em>"</div>
+        <div className="ts-closing-quote">"Arrive at NFT.NYC 2026 <em>already in the conversation</em>"</div>
         <ul className="ts-list" style={{ marginTop: 24 }}>
-          <li>Eligible artists may earn revenue (USDC) through the challenge</li>
-          <li>Collectors build collections and climb leaderboards</li>
-          <li>Community grows through gifting, sharing, and engagement</li>
-          <li>NFT.NYC strengthens its position as the artist-first platform</li>
+          <li><strong>Industry professionals</strong> get a live sandbox of how NFTs are being applied across art, collectibles, credentials, gaming, identity, and DeFi.</li>
+          <li><strong>NFT.NYC attendees and alumni</strong> stay engaged year-round and arrive at the event having already interacted with every use case firsthand.</li>
+          <li><strong>Eligible artists</strong> may earn USDC through Mission #1 Featured Art and the 2026 Showcase open call.</li>
+          <li><strong>Every participant</strong> closes the year with a Passport that records every mission, attestation, and collectible — a permanent record of NFT.NYC 2026.</li>
         </ul>
         <div className="ts-compliance">
           <strong>Earn Stage Eligibility &amp; USDC Payouts:</strong> The Earn Stage is optional and requires an affirmative opt-in. To access the Earn Stage, participants must: (1) meet the applicable eligibility requirements set out in our Terms of Service, (2) complete KYC (Know Your Customer) identity verification in accordance with our AML/CTF (Anti-Money Laundering / Counter-Terrorism Financing) compliance obligations, and (3) accept the Earn Stage Terms. USDC payouts are subject to successful KYC verification and are not guaranteed by participation in the TS Challenge.
@@ -338,7 +287,7 @@ export default function TSChallenge() {
               fontFamily: 'var(--font-body)', fontSize: 'clamp(14px, 2vw, 20px)',
               color: 'var(--color-text-muted)', maxWidth: 640, margin: '0 auto 16px', lineHeight: 1.6,
             }}>
-              A one-time, limited-edition community experience on OneHub.NFT.NYC — collect art, earn T-XP, and climb the leaderboard.
+              12 NFT missions across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — each a working example of how tokenization is reshaping a real industry. Plotted on an interactive NYC map, leading up to NFT.NYC 2026.
             </p>
             <p className="scroll-fade-up" style={{
               fontFamily: 'var(--font-body)', fontSize: 14,
@@ -371,6 +320,65 @@ export default function TSChallenge() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ======== THE 12 MISSIONS ======== */}
+        <section className="ts-missions-section">
+          <div className="ts-missions-inner">
+            <div className="scroll-fade-up" style={{ textAlign: 'center' as const, marginBottom: 48 }}>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 500,
+                letterSpacing: '0.25em', textTransform: 'uppercase' as const,
+                color: 'var(--color-primary)', marginBottom: 12,
+              }}>The Showcase</p>
+              <h2 style={{
+                fontFamily: 'var(--font-display)', fontWeight: 700,
+                fontSize: 'clamp(28px, 5vw, 48px)', lineHeight: 1.1,
+                letterSpacing: '0.02em', textTransform: 'uppercase' as const,
+                marginBottom: 16, color: 'var(--color-text)',
+              }}>
+                The 12{' '}
+                <span style={{
+                  background: 'linear-gradient(135deg, var(--color-primary), #ff8a50)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}>Missions</span>
+              </h2>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: 'clamp(14px, 1.5vw, 17px)',
+                color: 'var(--color-text-muted)', maxWidth: 680, margin: '0 auto', lineHeight: 1.6,
+              }}>
+                Each mission is a working example of tokenization in a different industry. Missions release progressively and appear on the interactive NYC map as they go live.
+              </p>
+            </div>
+
+            <div className="ts-missions-grid scroll-fade-up">
+              {MISSIONS.map(m => {
+                const ind = INDUSTRIES.find(i => i.name === m.category)!;
+                return (
+                  <div key={m.num} className="ts-mission-card" style={{ borderColor: `${ind.color}30` }}>
+                    <div className="ts-mission-head">
+                      <span className="ts-mission-num">#{m.num}</span>
+                      <span className="ts-mission-cat" style={{ background: `${ind.color}1c`, color: ind.color }}>{m.category}</span>
+                    </div>
+                    <h3 className="ts-mission-title">{m.title}</h3>
+                    <p className="ts-mission-desc">{m.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <p className="scroll-fade-up" style={{
+              fontFamily: 'var(--font-body)', fontSize: 13,
+              color: 'var(--color-text-muted)', textAlign: 'center' as const,
+              marginTop: 32, lineHeight: 1.6,
+            }}>
+              Have an idea?{' '}
+              <a href="https://onehub.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                Submit a Mission
+              </a>{' '}
+              that showcases how your project, brand, or use case is putting tokenization to work.
+            </p>
           </div>
         </section>
 
@@ -735,6 +743,126 @@ export default function TSChallenge() {
           .ts-tab-btn { padding: 12px 24px; font-size: 12px; }
           .ts-flow-card { padding: 22px 20px; }
           .ts-section-header h2 { font-size: 18px !important; }
+        }
+
+        /* ── 12 Missions section ───────────────────────────────── */
+        .ts-missions-section {
+          padding: 80px 24px 96px;
+          background: linear-gradient(180deg, transparent 0%, rgba(241,86,33,0.03) 100%);
+          border-top: 1px solid var(--card-border);
+        }
+        .ts-missions-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+        .ts-missions-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 16px;
+        }
+        .ts-mission-card {
+          background: var(--color-surface);
+          border: 1px solid var(--card-border);
+          border-radius: 14px;
+          padding: 20px 22px;
+          transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .ts-mission-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+        }
+        .ts-mission-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+        }
+        .ts-mission-num {
+          font-family: var(--font-display);
+          font-size: 22px;
+          font-weight: 700;
+          color: var(--color-text);
+          letter-spacing: -0.01em;
+        }
+        .ts-mission-cat {
+          font-family: var(--font-body);
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 4px 10px;
+          border-radius: 9999px;
+        }
+        .ts-mission-title {
+          font-family: var(--font-display);
+          font-size: 15px;
+          font-weight: 700;
+          color: var(--color-text);
+          line-height: 1.3;
+          margin: 0;
+        }
+        .ts-mission-desc {
+          font-family: var(--font-body);
+          font-size: 13px;
+          color: var(--color-text-muted);
+          line-height: 1.55;
+          margin: 0;
+        }
+
+        /* ── 6 Industries grid (inside the "How It Works" accordion) ─── */
+        .ts-industries-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+          gap: 14px;
+          margin-top: 16px;
+        }
+        .ts-industry-card {
+          background: rgba(255,255,255,0.02);
+          border: 1px solid;
+          border-radius: 12px;
+          padding: 18px 20px;
+          transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .ts-industry-card:hover {
+          transform: translateY(-2px);
+          background: rgba(255,255,255,0.04);
+        }
+        .ts-industry-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          margin-bottom: 10px;
+        }
+        .ts-industry-name {
+          font-family: var(--font-display);
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: -0.01em;
+        }
+        .ts-industry-missions {
+          font-family: var(--font-body);
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          padding: 3px 9px;
+          border-radius: 9999px;
+        }
+        .ts-industry-blurb {
+          font-family: var(--font-body);
+          font-size: 13px;
+          color: var(--color-text-muted);
+          line-height: 1.55;
+          margin: 0;
+        }
+
+        @media (max-width: 640px) {
+          .ts-missions-section { padding: 56px 18px 72px; }
+          .ts-missions-grid { grid-template-columns: 1fr; }
+          .ts-industries-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </div>
