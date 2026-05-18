@@ -218,34 +218,11 @@ export default function SiteFooter({ stage = 0, hideIndustryFeed = false }: { st
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>
             © 2026 NFT.NYC
           </p>
-          {/* Hidden trigger for Eventbrite widget */}
-          <span id="eb-trigger" style={{ display: 'none' }} />
+          {/* Easter-egg footer R — opens the global ticketing modal. The
+              modal owns the Eventbrite widget setup + the #eb-trigger
+              element; we just dispatch the event. */}
           <span
-            onClick={() => {
-              const w = window as any;
-              if (!w._ebWidgetReady) {
-                if (w.EBWidgets?.createWidget) {
-                  w.EBWidgets.createWidget({
-                    widgetType: 'checkout',
-                    eventId: '1985747187292',
-                    promoCode: 'Earlybird',
-                    themeSettings: {
-                      brandColor: '#f06347',
-                      fontColor: '#FFFFFF',
-                      background: '#111118',
-                    },
-                    modal: true,
-                    modalTriggerElementId: 'eb-trigger',
-                    onOrderComplete: () => console.log('Order complete!'),
-                  });
-                  w._ebWidgetReady = true;
-                }
-              }
-              setTimeout(() => {
-                const trigger = document.getElementById('eb-trigger');
-                if (trigger) trigger.click();
-              }, 100);
-            }}
+            onClick={() => window.dispatchEvent(new CustomEvent('nftnyc:open-ticketing'))}
             style={{
               display: 'inline-block',
               marginTop: '1rem',

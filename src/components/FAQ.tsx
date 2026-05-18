@@ -137,7 +137,7 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: 'How do I buy tickets?',
-        a: 'Earlybird tickets to NFT.NYC 2026 are on sale now via Eventbrite. Click the "Earlybird Tickets" button in the site header to purchase — promo code "Earlybird" is applied automatically.',
+        a: 'Earlybird tickets to NFT.NYC 2026 are on sale now. Click the "Earlybird Tickets" button in the site header to choose how you\'d like to pay — by credit card via Eventbrite (Visa, Mastercard, Amex, Apple Pay, Google Pay) or with cryptocurrency via our Shopify store (BTC, ETH, USDC, and more). Earlybird pricing is applied automatically.',
       },
       {
         q: 'How can I learn more and engage ahead of time?',

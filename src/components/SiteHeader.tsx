@@ -10,30 +10,10 @@ interface HeaderProps {
   stage?: number;
 }
 
-function openEventbrite() {
-  const w = window as any;
-  if (!w._ebWidgetReady) {
-    if (w.EBWidgets?.createWidget) {
-      w.EBWidgets.createWidget({
-        widgetType: 'checkout',
-        eventId: '1985747187292',
-        promoCode: 'Earlybird',
-        themeSettings: {
-          brandColor: '#f06347',
-          fontColor: '#FFFFFF',
-          background: '#111118',
-        },
-        modal: true,
-        modalTriggerElementId: 'eb-trigger',
-        onOrderComplete: () => console.log('Order complete!'),
-      });
-      w._ebWidgetReady = true;
-    }
-  }
-  setTimeout(() => {
-    const trigger = document.getElementById('eb-trigger');
-    if (trigger) trigger.click();
-  }, 100);
+// Fires the global ticketing modal (CC / Crypto choice). The modal is
+// mounted once in App.tsx and listens for this CustomEvent.
+function openTicketing() {
+  window.dispatchEvent(new CustomEvent('nftnyc:open-ticketing'));
 }
 
 export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps) {
@@ -192,7 +172,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             ))}
             <Countdown compact />
             <button
-              onClick={openEventbrite}
+              onClick={openTicketing}
               style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: '13px',
@@ -299,7 +279,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             <button
               onClick={() => {
                 setMenuOpen(false);
-                openEventbrite();
+                openTicketing();
               }}
               style={{
                 fontFamily: 'var(--font-body)',

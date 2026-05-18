@@ -21,6 +21,7 @@ import TSOptout from "./pages/TSOptout";
 import Sponsor from "./pages/Sponsor";
 import SponsorTSChallenge from "./pages/SponsorTSChallenge";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
+import TicketingModal from "./components/TicketingModal";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,10 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      {/* Global ticketing modal — fired site-wide via the
+          'nftnyc:open-ticketing' CustomEvent. Mounted once here so any
+          'Earlybird Tickets' button anywhere on the site can open it. */}
+      <TicketingModal />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
