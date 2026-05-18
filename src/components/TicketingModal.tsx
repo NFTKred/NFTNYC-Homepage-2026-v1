@@ -30,6 +30,8 @@ interface TicketTier {
   name: string;
   description: string;
   variantId: string;
+  price: string;
+  strikePrice?: string;
 }
 
 const CRYPTO_TIERS: TicketTier[] = [
@@ -38,18 +40,22 @@ const CRYPTO_TIERS: TicketTier[] = [
     name: "General Admission",
     description: "Access to the main event and expo floor for the full conference.",
     variantId: "50045717315863",
+    price: "$399",
+    strikePrice: "$599",
   },
   {
     id: "vip",
     name: "VIP Access",
-    description: "GA access plus the VIP Opening Party, Chandelier Room VIP Lounge, and priority seating.",
+    description: "Includes invitation to the VIP and speaker reception the evening before the event.",
     variantId: "50045719052567",
+    price: "$1,499",
   },
   {
     id: "elite",
     name: "Elite Access",
-    description: "Everything in VIP plus front-of-house experiences and the elite reception.",
+    description: "Everything in VIP plus; Your Elite Attendee NFT displayed on Times Square Billboard, Elite Concierge and more.",
     variantId: "50045738516759",
+    price: "$3,499",
   },
 ];
 
@@ -176,7 +182,7 @@ export default function TicketingModal() {
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-foreground">Pay with cryptocurrency</div>
                     <div className="text-xs text-muted-foreground mt-0.5">
-                      Checkout via our Shopify store. BTC, ETH, USDC, and more.
+                      Checkout via BitPay. BTC, ETH, USDC, and more.
                     </div>
                   </div>
                   <span className="text-brand-coral text-sm font-semibold">→</span>
@@ -211,7 +217,7 @@ export default function TicketingModal() {
                 </DialogTitle>
                 <DialogDescription asChild>
                   <p className="text-sm text-muted-foreground pt-1">
-                    Select a ticket tier and quantity. You'll continue to our Shopify checkout to pay.
+                    Select a ticket tier and quantity. You'll continue to our Shopify checkout to pay via BitPay.
                   </p>
                 </DialogDescription>
               </DialogHeader>
@@ -246,7 +252,17 @@ export default function TicketingModal() {
                           )}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-foreground">{tier.name}</div>
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="font-semibold text-foreground">{tier.name}</div>
+                            <div className="flex items-baseline gap-1.5 shrink-0 whitespace-nowrap">
+                              <span className="font-semibold text-foreground tabular-nums">{tier.price}</span>
+                              {tier.strikePrice && (
+                                <span className="text-xs text-muted-foreground/70 line-through tabular-nums">
+                                  {tier.strikePrice}
+                                </span>
+                              )}
+                            </div>
+                          </div>
                           <div className="text-xs text-muted-foreground mt-1 leading-relaxed">
                             {tier.description}
                           </div>
@@ -293,7 +309,7 @@ export default function TicketingModal() {
               </button>
 
               <p className="text-[11px] text-muted-foreground/60 text-center pt-2">
-                You'll be redirected to <span className="text-foreground">nftnyc.myshopify.com</span> to complete your purchase.
+                You'll be redirected to <span className="text-foreground">shop.nft.nyc</span> to complete your purchase.
               </p>
             </>
           )}
