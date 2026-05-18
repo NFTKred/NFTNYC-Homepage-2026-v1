@@ -194,6 +194,66 @@
       "source": "/sessions/:path*",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/collections",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/whotofollow",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/whotofollow/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/nftnyc2019",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/sponsors-2022",
+      "destination": "/sponsor",
+      "permanent": true
+    },
+    {
+      "source": "/sponsor-billboards",
+      "destination": "/sponsor/ts-challenge",
+      "permanent": true
+    },
+    {
+      "source": "/sponsor-signup-bronze",
+      "destination": "/sponsor",
+      "permanent": true
+    },
+    {
+      "source": "/success-stories",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gallery/ai",
+      "destination": "/ai",
+      "permanent": true
+    },
+    {
+      "source": "/gallery/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/art",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/times-square-billboard-challenge",
+      "destination": "/ts-challenge",
+      "permanent": true
     }
   ],
   "rewrites": [
