@@ -71,13 +71,13 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
   },
   journey: {
     title: "Our Story — NFT.NYC",
-    description: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community.",
+    description: "Nine years and 200,000+ alumni building the world's leading NFT and Web3 community.",
     path: "/journey",
     ogImage: "/og/journey.png",
   },
   origins: {
     title: "NFT.NYC origins and rise: the world's largest NFT conference",
-    description: "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026. The full origin story.",
+    description: "From a 2018 OpenSea dinner to nine editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026. The full origin story.",
     path: "/origins",
     ogImage: "/og/journey.png",
   },
