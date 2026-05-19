@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
@@ -48,6 +48,21 @@ export default function Sponsor() {
   const [selectedTrack, setSelectedTrack] = useState<string | null>('AI Identity Tokenization');
   const [inquiry, setInquiry] = useState<InquiryBasePackage | null>(null);
   const [generalInquiryOpen, setGeneralInquiryOpen] = useState(false);
+  const [reelOpen, setReelOpen] = useState(false);
+
+  // Escape key closes the reel modal.
+  useEffect(() => {
+    if (!reelOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setReelOpen(false); };
+    document.addEventListener('keydown', onKey);
+    // Lock body scroll while modal is open.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [reelOpen]);
   const openGeneralInquiry = () => setGeneralInquiryOpen(true);
 
   const openPackageInquiry = (pkg: Package) => {
@@ -270,6 +285,119 @@ export default function Sponsor() {
           + Talk to partnerships button between the description sentence
           and the partner logo grid (CTA #4). */}
       <SponsorPartners onTalkToPartnerships={openGeneralInquiry} />
+
+      {/* Sponsor reel — final visual hook before the footer.
+          Autoplays muted on-page; click expands to modal with sound. */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="mb-8 text-center">
+            <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Join the action this September</h2>
+          </div>
+          <button
+            type="button"
+            onClick={() => setReelOpen(true)}
+            aria-label="Play the sponsor reel with sound"
+            className="block w-full rounded-2xl overflow-hidden shadow-2xl cursor-pointer group relative"
+            style={{ border: '1px solid var(--color-border)', background: '#000', padding: 0 }}
+          >
+            <video
+              src="/sponsor-reel-v10.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              style={{ width: '100%', display: 'block', aspectRatio: '16 / 9', pointerEvents: 'none' }}
+            >
+              Your browser does not support the video tag.
+            </video>
+            {/* Play-with-sound affordance overlay */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: 'rgba(0,0,0,0.25)' }}
+            >
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.6rem 1.1rem',
+                  borderRadius: '999px',
+                  background: 'rgba(0,0,0,0.6)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                }}
+              >
+                ▶ Play with sound
+              </span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      {/* Sponsor reel modal — larger view, controls + sound. */}
+      {reelOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Sponsor reel"
+          onClick={() => setReelOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            background: 'rgba(0,0,0,0.88)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem',
+            cursor: 'zoom-out',
+          }}
+        >
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={(e) => { e.stopPropagation(); setReelOpen(false); }}
+            style={{
+              position: 'absolute',
+              top: '1rem',
+              right: '1rem',
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.25)',
+              color: '#fff',
+              fontSize: 20,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            ×
+          </button>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ width: 'min(1200px, 92vw)', cursor: 'default' }}
+          >
+            <video
+              src="/sponsor-reel-v10.mp4"
+              autoPlay
+              loop
+              controls
+              playsInline
+              style={{ width: '100%', display: 'block', aspectRatio: '16 / 9', borderRadius: 12 }}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      )}
 
       <SiteFooter stage={stage} hideIndustryFeed />
     </div>
