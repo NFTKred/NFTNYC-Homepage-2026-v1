@@ -100,6 +100,59 @@ export default function Sponsor() {
       <PageMeta page="sponsor" />
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
+      {/* Sponsor reel — full-bleed hero video at the very top of the page.
+          Autoplays muted on loop; click expands to modal with sound. */}
+      <button
+        type="button"
+        onClick={() => setReelOpen(true)}
+        aria-label="Play the sponsor reel with sound"
+        className="block w-full cursor-pointer group relative"
+        style={{ background: '#000', padding: 0, border: 0 }}
+      >
+        <video
+          src="/sponsor-reel-v10.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          style={{
+            width: '100%',
+            display: 'block',
+            aspectRatio: '16 / 9',
+            maxHeight: '70vh',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+          }}
+        >
+          Your browser does not support the video tag.
+        </video>
+        {/* Play-with-sound affordance overlay */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{ background: 'rgba(0,0,0,0.25)' }}
+        >
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.6rem 1.1rem',
+              borderRadius: '999px',
+              background: 'rgba(0,0,0,0.6)',
+              border: '1px solid rgba(255,255,255,0.25)',
+              color: '#fff',
+              fontSize: '13px',
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+            }}
+          >
+            ▶ Play with sound
+          </span>
+        </span>
+      </button>
+
       <SponsorHeader />
 
       {/* ─── Choose Your Path ─── */}
@@ -285,59 +338,6 @@ export default function Sponsor() {
           + Talk to partnerships button between the description sentence
           and the partner logo grid (CTA #4). */}
       <SponsorPartners onTalkToPartnerships={openGeneralInquiry} />
-
-      {/* Sponsor reel — final visual hook before the footer.
-          Autoplays muted on-page; click expands to modal with sound. */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold" style={{ color: 'var(--color-text)' }}>Join the action this September</h2>
-          </div>
-          <button
-            type="button"
-            onClick={() => setReelOpen(true)}
-            aria-label="Play the sponsor reel with sound"
-            className="block w-full rounded-2xl overflow-hidden shadow-2xl cursor-pointer group relative"
-            style={{ border: '1px solid var(--color-border)', background: '#000', padding: 0 }}
-          >
-            <video
-              src="/sponsor-reel-v10.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              style={{ width: '100%', display: 'block', aspectRatio: '16 / 9', pointerEvents: 'none' }}
-            >
-              Your browser does not support the video tag.
-            </video>
-            {/* Play-with-sound affordance overlay */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ background: 'rgba(0,0,0,0.25)' }}
-            >
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.6rem 1.1rem',
-                  borderRadius: '999px',
-                  background: 'rgba(0,0,0,0.6)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  color: '#fff',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                ▶ Play with sound
-              </span>
-            </span>
-          </button>
-        </div>
-      </section>
 
       {/* Sponsor reel modal — larger view, controls + sound. */}
       {reelOpen && (
