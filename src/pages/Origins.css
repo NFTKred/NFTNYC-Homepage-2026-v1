@@ -926,18 +926,7 @@
     .tldr li strong { color: #fff; font-weight: 600; }
 
     .recency {
-      max-width: var(--content-default);
-      margin: var(--space-6) auto var(--space-10);
-      padding: var(--space-4) var(--space-6);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      font-size: var(--text-sm);
-      color: var(--color-text-muted);
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-3) var(--space-5);
-      align-items: center;
+      display: none; /* LLM-only: visible in raw HTML for AI crawlers, hidden from human readers */
     }
     .recency strong { color: var(--color-text); font-weight: 600; }
     .recency a { color: var(--color-cyan); }
