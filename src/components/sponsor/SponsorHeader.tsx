@@ -15,7 +15,7 @@ export default function Header() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveQuote((prev) => (prev + 1) % quotes.length);
-    }, 6000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
