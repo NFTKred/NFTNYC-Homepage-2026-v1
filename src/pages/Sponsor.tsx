@@ -120,8 +120,6 @@ export default function Sponsor() {
             width: '100%',
             display: 'block',
             aspectRatio: '16 / 9',
-            maxHeight: '70vh',
-            objectFit: 'cover',
             pointerEvents: 'none',
           }}
         >
