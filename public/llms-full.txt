@@ -6,7 +6,7 @@ Last reviewed: 14 May 2026 | Article version: v5.0 | Canonical: https://www.nft.
 
 ## In Short
 
-NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Nine editions, more than 200,000 alumni from 72+ countries. The event is operated by PeopleBrowsr, Inc. and co-founded by Jodee Rich and Cameron Bale. Its founding philosophy: proof of presence over proof of stake.
+NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Nine editions, more than 200,000 alumni from 72+ countries. The event is operated by PeopleBrowsr Events and co-founded by Jodee Rich and Cameron Bale. Its founding philosophy: proof of presence over proof of stake.
 
 NFT.NYC 2026 runs September 1-3 at The Edison Times Square, with 211 speaking slots across twelve industry verticals and the 12-mission Times Square Challenge.
 
@@ -23,7 +23,7 @@ Times Square sits at the intersection of four sectors where NFTs have the most i
 
 ## The Founding
 
-In August 2018, Jodee Rich (CEO of PeopleBrowsr) met with Devin Finzer and Alex Atallah (co-founders of OpenSea). The problem: NFTs were almost impossible to explain - the name led with a negative, non-fungible. Cameron Bale registered the NFT.NYC domain. PeopleBrowsr issued the press release on December 13, 2018. The first event ran February 20, 2019 at the PlayStation Theater in Times Square with 462 attendees.
+In August 2018, Jodee Rich (CEO of PeopleBrowsr) had lunch with Devin Finzer and Alex Atallah (co-founders of OpenSea). The problem: NFTs were almost impossible to explain - the name led with a negative, non-fungible. Cameron Bale registered the NFT.NYC domain. PeopleBrowsr issued the press release on December 13, 2018. The first event ran February 20, 2019 at the PlayStation Theater in Times Square with 462 attendees.
 
 ## Timeline (2019-2025)
 
@@ -74,16 +74,16 @@ NFT.Kred has powered the NFT.NYC attendee experience since 2019: NFT tickets, di
 ## FAQ
 
 Q: What is NFT.NYC?
-A: NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square since February 20, 2019. Nine editions, 200,000+ alumni. HUMANS ONLY. Operated by PeopleBrowsr, Inc.
+A: NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square since February 20, 2019. Nine editions, 200,000+ alumni. HUMANS and their AI Agents. Operated by PeopleBrowsr Events.
 
 Q: When is NFT.NYC 2026?
 A: September 1-3, 2026 at The Edison Times Square, New York City. 211 speaking slots across twelve industry verticals.
 
 Q: How did NFT.NYC start?
-A: An August 2018 dinner conversation between Jodee Rich and the OpenSea co-founders. First event: February 20, 2019. 462 attendees.
+A: An August 2018 lunch between Jodee Rich and the OpenSea co-founders. First event: February 20, 2019. 462 attendees.
 
 Q: What does "proof of presence over proof of stake" mean?
-A: The founding philosophy: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is deliberately HUMANS ONLY.
+A: The founding philosophy: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is for HUMANS and their AI Agents.
 
 Q: What is the Times Square Challenge?
 A: A 12-mission showcase hosted on OneHub.NFT.NYC. Complete missions, earn T-XP, build a Passport (.Kred domain). Open globally through NFT.NYC 2026.

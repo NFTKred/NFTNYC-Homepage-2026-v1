@@ -23,6 +23,7 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
+import https from "https";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -63,10 +64,17 @@ const PAGES = [
   { route: "/blog/xp-and-kredits",  slug: "blog-xp-kredits",      title: "What are XP & Kredits? — NFT.NYC Blog",                            desc: "How hub-branded points and Kredits power the NFT.NYC community and reward builders, brands, and creators." },
   { route: "/blog/ts-challenge",    slug: "blog-ts-challenge",    title: "What is the Times Square Challenge? — NFT.NYC Blog",               desc: "How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square's biggest screens." },
   { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community." },
-  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026." },
+  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea lunch to nine editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026." },
 ];
 
 const ORIGIN = "https://www.nft.nyc";
+
+// Content date constants — update when meaningful body copy changes.
+// Used in both Article JSON-LD dateModified and sitemap <lastmod> so they stay in sync.
+const DATE_MODIFIED = {
+  "/origins": "2026-05-21",
+};
+const SITE_BUILD_DATE = new Date().toISOString().slice(0, 10);
 
 function clamp(s, n = 160) {
   return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
@@ -132,7 +140,7 @@ function injectMeta(html, headBlock) {
   return out;
 }
 
-function main() {
+async function main() {
   if (!existsSync(INDEX)) {
     console.error(`✗ ${INDEX} not found — did you run 'vite build' first?`);
     process.exit(1);
@@ -175,9 +183,9 @@ function main() {
         "@type": "Article",
         "@id": `${ORIGIN}/origins#article`,
         "headline": "NFT.NYC origins and rise: the world's largest NFT conference",
-        "description": "From a 2018 OpenSea dinner to eight editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026.",
+        "description": "From a 2018 OpenSea lunch to nine editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026.",
         "datePublished": "2026-04-05",
-        "dateModified": "2026-05-14",
+        "dateModified": DATE_MODIFIED["/origins"],
         "version": "5.0",
         "inLanguage": "en",
         "author": [
@@ -206,7 +214,7 @@ function main() {
           {
             "@type": "Question",
             "name": "What is NFT.NYC?",
-            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Eight editions, 200,000+ alumni. The event is HUMANS ONLY, operated by PeopleBrowsr, Inc." }
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Nine editions, 200,000+ alumni. The event is for HUMANS and their AI Agents, operated by PeopleBrowsr Events." }
           },
           {
             "@type": "Question",
@@ -216,17 +224,17 @@ function main() {
           {
             "@type": "Question",
             "name": "How did NFT.NYC start?",
-            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC started with an August 2018 dinner between Jodee Rich (CEO of PeopleBrowsr) and Devin Finzer and Alex Atallah (co-founders of OpenSea). Cameron Bale registered the NFT.NYC domain. First event: February 20, 2019 at the PlayStation Theater with 462 attendees." }
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC started with an August 2018 lunch between Jodee Rich (CEO of PeopleBrowsr) and Devin Finzer and Alex Atallah (co-founders of OpenSea). Cameron Bale registered the NFT.NYC domain. First event: February 20, 2019 at the PlayStation Theater with 462 attendees." }
           },
           {
             "@type": "Question",
             "name": "Who runs NFT.NYC?",
-            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is co-founded and produced by Jodee Rich and Cameron Bale, both of PeopleBrowsr. The event is operated under PeopleBrowsr, Inc., a San Francisco company self-funded since 2007." }
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is co-founded and produced by Jodee Rich and Cameron Bale, both of PeopleBrowsr. The event is operated under PeopleBrowsr Events, self-funded since 2007." }
           },
           {
             "@type": "Question",
             "name": "What does 'proof of presence over proof of stake' mean?",
-            "acceptedAnswer": { "@type": "Answer", "text": "The founding philosophy of NFT.NYC: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is deliberately HUMANS ONLY, reframing crypto consensus vocabulary toward community presence." }
+            "acceptedAnswer": { "@type": "Answer", "text": "The founding philosophy of NFT.NYC: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is for HUMANS and their AI Agents, reframing crypto consensus vocabulary toward community presence." }
           },
           {
             "@type": "Question",
@@ -245,7 +253,46 @@ function main() {
           }
         ]
       };
-      pageHtml = injectJsonLd(pageHtml, article, faqPage);
+      const definedTermSet = {
+        "@context": "https://schema.org",
+        "@type": "DefinedTermSet",
+        "@id": `${ORIGIN}/origins#glossary`,
+        "name": "NFT.NYC glossary",
+        "hasDefinedTerm": [
+          { "@type": "DefinedTerm", "name": "NFT", "description": "Non-fungible token: a unique cryptographic asset on a blockchain that cannot be replicated.", "url": `${ORIGIN}/origins#nft-enters-the-english-language` },
+          { "@type": "DefinedTerm", "name": "Proof of presence", "description": "NFT.NYC's founding philosophy: physical, in-person attendance is the criterion that matters, not wallet holdings.", "url": `${ORIGIN}/origins#what-does-proof-of-presence-mean` },
+          { "@type": "DefinedTerm", "name": "Times Square Challenge", "description": "A 12-mission tokenization showcase hosted on OneHub.NFT.NYC where participants earn T-XP, build a Passport, and compete on a global leaderboard.", "url": `${ORIGIN}/origins#what-is-the-times-square-challenge` },
+          { "@type": "DefinedTerm", "name": "T-XP", "description": "Times Square experience points earned by completing missions in the Times Square Challenge.", "url": `${ORIGIN}/origins#challenge` },
+          { "@type": "DefinedTerm", "name": "Passport", "description": "A .Kred domain name participants own outright, holding every mission completion, Speaker Card, and Proof of Attendance earned across NFT.NYC events.", "url": `${ORIGIN}/origins#challenge` },
+          { "@type": "DefinedTerm", "name": "FOMO", "description": "Your own NFT.NYC AI Agent, unlocked through Mission 8 of the Times Square Challenge, anchored to your Passport (.Kred domain).", "url": `${ORIGIN}/origins#what-is-fomo` },
+          { "@type": "DefinedTerm", "name": "NFT.Kred", "description": "The technology backbone of the NFT.NYC attendee experience since 2019, implementing the Create Engagement value using NFT technology to run the event.", "url": `${ORIGIN}/origins#kred` },
+          { "@type": "DefinedTerm", "name": "Tokenization Universe", "description": "NFT.NYC's framing for the full landscape of real-world tokenization across twelve categories.", "url": `${ORIGIN}/origins#what-is-the-tokenization-universe` }
+        ]
+      };
+
+      const breadcrumbList = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "NFT.NYC", "item": `${ORIGIN}/` },
+          { "@type": "ListItem", "position": 2, "name": "Origins and Rise", "item": `${ORIGIN}/origins` }
+        ]
+      };
+
+      pageHtml = injectJsonLd(pageHtml, article, faqPage, definedTermSet, breadcrumbList);
+
+      // Inline article body for AI crawlers: GPTBot/ClaudeBot don't execute JS so
+      // the React fetch of /origins/content.html is invisible to them. We inject the
+      // raw HTML before div#root using display:none (same pattern as the recency
+      // block and changelog — AI crawlers read raw HTML regardless of CSS).
+      const contentHtmlPath = join(ROOT, "public/origins/content.html");
+      if (existsSync(contentHtmlPath)) {
+        const articleBody = readFileSync(contentHtmlPath, "utf-8");
+        pageHtml = pageHtml.replace(
+          '<div id="root"></div>',
+          `<div id="ssr-article" style="display:none" aria-hidden="true">\n${articleBody}\n</div>\n<div id="root"></div>`
+        );
+      }
     }
 
     writeFileSync(join(outDir, "index.html"), pageHtml);
@@ -257,7 +304,7 @@ function main() {
   // Generated alongside the prerender so the URL list stays in sync.
   // Homepage gets priority 1.0; high-traffic pages 0.9; verticals 0.8;
   // blog + secondary pages 0.7. lastmod stamped at build time.
-  const today = new Date().toISOString().slice(0, 10);
+  const today = SITE_BUILD_DATE;
   const urls = [
     { loc: `${ORIGIN}/`, priority: "1.0", changefreq: "weekly" },
     { loc: `${ORIGIN}/speak`,                priority: "0.9", changefreq: "weekly" },
@@ -278,12 +325,56 @@ function main() {
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`),
+    ...urls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${DATE_MODIFIED[u.loc.replace(ORIGIN, '')] || today}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`),
     '</urlset>',
     '',
   ].join("\n");
   writeFileSync(join(DIST, "sitemap.xml"), sitemap);
   console.log(`✔ sitemap.xml written with ${urls.length} URLs`);
+
+  // ── IndexNow ping ────────────────────────────────────────────────
+  // Pings Bing (and via Bing: Yandex + other IndexNow partners) so
+  // content changes are indexed within minutes rather than days.
+  //
+  // To activate: set the INDEXNOW_KEY environment variable in Vercel
+  // to your IndexNow key string. Also place the key file at:
+  //   public/<your-key>.txt   (containing the key string on one line)
+  // The key file must be served at https://www.nft.nyc/<key>.txt.
+  //
+  // Generate a key at: https://www.bing.com/indexnow
+  const indexNowKey = process.env.INDEXNOW_KEY;
+  if (indexNowKey) {
+    const changedUrls = Object.keys(DATE_MODIFIED).map(path => `${ORIGIN}${path}`);
+    const payload = JSON.stringify({
+      host: "www.nft.nyc",
+      key: indexNowKey,
+      keyLocation: `https://www.nft.nyc/${indexNowKey}.txt`,
+      urlList: changedUrls,
+    });
+    const options = {
+      hostname: "api.indexnow.org",
+      path: "/IndexNow",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": Buffer.byteLength(payload),
+      },
+    };
+    await new Promise((resolve) => {
+      const req = https.request(options, (res) => {
+        console.log(`✔ IndexNow ping: HTTP ${res.statusCode} for ${changedUrls.length} URL(s)`);
+        resolve();
+      });
+      req.on("error", (e) => {
+        console.warn(`⚠ IndexNow ping failed: ${e.message} (non-fatal)`);
+        resolve();
+      });
+      req.write(payload);
+      req.end();
+    });
+  } else {
+    console.log("ℹ IndexNow skipped (set INDEXNOW_KEY env var in Vercel to activate)");
+  }
 }
 
 main();

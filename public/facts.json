@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-14",
+  "lastUpdated": "2026-05-21",
   "facts": [
     {
       "id": "fact:cumulative-attendees",
@@ -98,6 +98,33 @@
       "dateAsserted": "2026-04-05",
       "previousValue": null,
       "canonical": "https://www.nft.nyc/origins"
+    },
+    {
+      "id": "fact:innovation-2025",
+      "value": "personalized artist OneHubs",
+      "unit": "innovation",
+      "description": "NFT.NYC 2025 introduced personalized artist OneHubs, embodying the Community Connection value",
+      "dateAsserted": "2026-05-21",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#timeline"
+    },
+    {
+      "id": "fact:innovation-2026",
+      "value": "Times Square Challenge gamification",
+      "unit": "innovation",
+      "description": "NFT.NYC 2026 introduces the 12-Mission Times Square Challenge, embodying the Create Engagement value",
+      "dateAsserted": "2026-05-21",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#timeline"
+    },
+    {
+      "id": "fact:founding-event",
+      "value": "August 2018 lunch with OpenSea co-founders",
+      "unit": "event",
+      "description": "Jodee Rich lunched with Devin Finzer and Alex Atallah of OpenSea in August 2018, leading to the founding of NFT.NYC",
+      "dateAsserted": "2026-05-21",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins#founding"
     }
   ]
 }
