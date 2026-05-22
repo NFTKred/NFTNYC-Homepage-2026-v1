@@ -257,6 +257,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|[^/]+\\.txt$|[^/]+\\.xml$|[^/]+\\.json$).*)", "destination": "/index.html" }
   ]
 }
