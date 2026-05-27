@@ -55,7 +55,7 @@ const billboardByTrack: Record<string, BillboardMeta> = {
   },
   "Social NFTs": {
     name: "Showcase your social platform in Times Square",
-    description: "Showcase your social platform, PFP collection, or community tools on some of Times Square's biggest screens." + TIMES_SQUARE_REACH,
+    description: "Showcase your social platform, PFP collection, memecoin community, or community tools on some of Times Square's biggest screens." + TIMES_SQUARE_REACH,
   },
   "Creator Economy": {
     name: "Showcase your creator tools in Times Square",
@@ -63,7 +63,7 @@ const billboardByTrack: Record<string, BillboardMeta> = {
   },
   "DeFi": {
     name: "Showcase your DeFi protocol in Times Square",
-    description: "Showcase your DeFi protocol or NFT-fi product on some of Times Square's biggest screens — reach the NFT.NYC DeFi community with your yield strategies, lending mechanics, or portfolio dashboard." + TIMES_SQUARE_REACH,
+    description: "Showcase your DeFi protocol, prediction market, or NFT-fi product on some of Times Square's biggest screens — reach the NFT.NYC DeFi community with your yield strategies, lending mechanics, prediction market activity, or portfolio dashboard." + TIMES_SQUARE_REACH,
   },
   "RWA Tokenization": {
     name: "Showcase your RWA platform in Times Square",
@@ -310,7 +310,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "track",
       name: "Position yourself as the leader of the Social NFTs track",
       price: "$75,000",
-      description: "Connect your brand with the NFT.NYC social and PFP community — the DAO operators, community builders, PFP collectors who wear their projects as their on-chain identity, and social platform founders shaping community tokens, social graphs, and creator-fan engagement. Your sponsorship anchors every conversation about the social layer of web3.",
+      description: "Connect your brand with the NFT.NYC social, PFP, and memecoin community — the DAO operators, community builders, memecoin community leaders, PFP collectors who wear their projects as their on-chain identity, and social platform founders shaping community tokens, social graphs, and creator-fan engagement. Your sponsorship anchors every conversation about the social layer of web3.",
       includes: [
         "Branded stage backdrop for all Social NFTs track sessions",
         "Logo on all track session intro slides and interstitials",
@@ -325,7 +325,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "timessquare",
       name: "Showcase your social experiences before, during, and after the event",
       price: "$35,000",
-      description: "Integrate your social platform or PFP collection into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the social track engage with your digital experience as part of the challenge, reaching the community-driven social NFT and PFP audience that treats their avatar as their digital identity.",
+      description: "Integrate your social platform, PFP collection, or memecoin community into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the social track engage with your digital experience as part of the challenge, reaching the community-driven social NFT, PFP, and memecoin audience that treats their avatar or token as their digital identity.",
       includes: [
         "Your platform integrated into the social NFTs challenge track",
         "Branded presence throughout the online challenge interface",
@@ -340,7 +340,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "activation",
       name: "Feature your social platform in a premium activation",
       price: "$25,000",
-      description: "Secure a premium activation space to build and install your own custom social experience for NFT.NYC community builders and PFP collectors. Examples include token-gated lounges, PFP holder meetups, social minting stations, or DAO onboarding experiences — the format is yours to design.",
+      description: "Secure a premium activation space to build and install your own custom social experience for NFT.NYC community builders, PFP collectors, and memecoin communities. Examples include token-gated lounges, PFP holder meetups, memecoin community meetups, social minting stations, or DAO onboarding experiences — the format is yours to design.",
       includes: [
         "20'x 20' premium activation space",
         "Full creative control over your custom installation",
@@ -364,7 +364,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "demo",
       name: "Introduce your social platform with a demo table",
       price: "$5,000",
-      description: "Meet the NFT.NYC social and PFP community at a dedicated demo table — perfect for live demos of social graphs, PFP collections, token-gated experiences, and community engagement features.",
+      description: "Meet the NFT.NYC social, PFP, and memecoin community at a dedicated demo table — perfect for live demos of social graphs, PFP collections, memecoin community tools, token-gated experiences, and community engagement features.",
       includes: [...demoIncludes],
       tickets: { vip: 1, ga: 2 },
     },
@@ -372,7 +372,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "marketing",
       name: "Reach NFT.NYC's social community with marketing support",
       price: "$7,500",
-      description: "Reach the NFT.NYC community with a dedicated feature in a community update and supporting social campaign — tailored to community builders, DAO operators, PFP collectors, and social platform founders.",
+      description: "Reach the NFT.NYC community with a dedicated feature in a community update and supporting social campaign — tailored to community builders, DAO operators, memecoin community leaders, PFP collectors, and social platform founders.",
       includes: [...marketingIncludes],
     },
   ],
@@ -452,7 +452,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "track",
       name: "Position yourself as the leader of the DeFi track",
       price: "$75,000",
-      description: "Position your brand at the center of the NFT.NYC DeFi community — the traders, yield strategists, protocol teams, and NFT-fi builders driving the convergence of DeFi and NFTs. Your sponsorship puts you in front of the audience shaping decentralized finance.",
+      description: "Position your brand at the center of the NFT.NYC DeFi community — the traders, yield strategists, prediction market operators, protocol teams, and NFT-fi builders driving the convergence of DeFi, prediction markets, and NFTs. Your sponsorship puts you in front of the audience shaping decentralized finance.",
       includes: [
         "Branded stage backdrop for all DeFi track sessions",
         "Logo on all track session intro slides and interstitials",
@@ -467,7 +467,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "timessquare",
       name: "Showcase your DeFi experiences before, during, and after the event",
       price: "$35,000",
-      description: "Integrate your DeFi protocol into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the DeFi track interact with your product as part of the challenge, reaching the community focused on decentralized finance and NFT-backed assets.",
+      description: "Integrate your DeFi protocol or prediction market into the Times Square Challenge — an online experience running before, during, and after NFT.NYC 2026. Participants in the DeFi track interact with your product as part of the challenge, reaching the community focused on decentralized finance, prediction markets, and NFT-backed assets.",
       includes: [
         "Your protocol integrated into the DeFi challenge track",
         "Branded presence throughout the online challenge interface",
@@ -482,7 +482,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "activation",
       name: "Feature your DeFi protocol in a premium activation",
       price: "$25,000",
-      description: "Secure a premium activation space to build and install your own custom DeFi experience for the NFT.NYC finance community. Examples include live trading simulations, yield farming demos, or NFT-backed lending showcases — the format is yours to design.",
+      description: "Secure a premium activation space to build and install your own custom DeFi experience for the NFT.NYC finance community. Examples include live trading simulations, yield farming demos, prediction market showcases, or NFT-backed lending experiences — the format is yours to design.",
       includes: [
         "20'x 20' premium activation space",
         "Full creative control over your custom installation",
@@ -506,7 +506,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "demo",
       name: "Introduce your DeFi protocol with a demo table",
       price: "$5,000",
-      description: "Meet the NFT.NYC DeFi community at a dedicated demo table — walk traders, yield strategists, and NFT-fi builders through your protocol's features one-on-one.",
+      description: "Meet the NFT.NYC DeFi community at a dedicated demo table — walk traders, yield strategists, prediction market operators, and NFT-fi builders through your protocol's features one-on-one.",
       includes: [...demoIncludes],
       tickets: { vip: 1, ga: 2 },
     },
@@ -514,7 +514,7 @@ export const trackPackages: Record<string, TrackPackage[]> = {
       type: "marketing",
       name: "Reach NFT.NYC's DeFi community with marketing support",
       price: "$7,500",
-      description: "Reach the NFT.NYC DeFi community with a dedicated feature in a community update and supporting social campaign — tailored to traders, yield strategists, protocol teams, and NFT-fi builders.",
+      description: "Reach the NFT.NYC DeFi community with a dedicated feature in a community update and supporting social campaign — tailored to traders, yield strategists, prediction market operators, protocol teams, and NFT-fi builders.",
       includes: [...marketingIncludes],
     },
   ],
