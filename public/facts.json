@@ -1,12 +1,28 @@
 {
-  "lastUpdated": "2026-05-21",
+  "lastUpdated": "2026-06-01",
   "facts": [
     {
       "id": "fact:cumulative-attendees",
-      "value": "200,000+",
+      "value": "40,000+",
+      "unit": "attendees",
+      "dateAsserted": "2026-06-01",
+      "previousValue": "200,000+",
+      "canonical": "https://www.nft.nyc/origins"
+    },
+    {
+      "id": "fact:cumulative-alumni",
+      "value": "40,000+",
       "unit": "alumni",
-      "dateAsserted": "2026-05-14",
-      "previousValue": "40,000+",
+      "dateAsserted": "2026-06-01",
+      "previousValue": null,
+      "canonical": "https://www.nft.nyc/origins"
+    },
+    {
+      "id": "fact:edition-count",
+      "value": "nine",
+      "unit": "editions",
+      "dateAsserted": "2026-06-01",
+      "previousValue": null,
       "canonical": "https://www.nft.nyc/origins"
     },
     {

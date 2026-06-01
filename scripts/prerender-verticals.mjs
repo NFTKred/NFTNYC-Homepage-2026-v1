@@ -63,8 +63,8 @@ const PAGES = [
   { route: "/blog",                 slug: "blog",                 title: "Blog — NFT.NYC 2026",                                              desc: "Industry analysis, event updates, and stories from the on-chain frontier." },
   { route: "/blog/xp-and-kredits",  slug: "blog-xp-kredits",      title: "What are XP & Kredits? — NFT.NYC Blog",                            desc: "How hub-branded points and Kredits power the NFT.NYC community and reward builders, brands, and creators." },
   { route: "/blog/ts-challenge",    slug: "blog-ts-challenge",    title: "What is the Times Square Challenge? — NFT.NYC Blog",               desc: "How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square's biggest screens." },
-  { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Eight years and 200,000+ alumni building the world's leading NFT and Web3 community." },
-  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea lunch to nine editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026." },
+  { route: "/journey",              slug: "journey",              title: "Our Story — NFT.NYC",                                              desc: "Nine editions and more than 40,000 attendees and 40,000 alumni building the world's leading NFT and Web3 community." },
+  { route: "/origins",              slug: "journey",              title: "NFT.NYC origins and rise: the world's largest NFT conference",       desc: "From a 2018 OpenSea lunch to nine editions, more than 40,000 attendees and 40,000 alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026." },
 ];
 
 const ORIGIN = "https://www.nft.nyc";
@@ -72,7 +72,7 @@ const ORIGIN = "https://www.nft.nyc";
 // Content date constants — update when meaningful body copy changes.
 // Used in both Article JSON-LD dateModified and sitemap <lastmod> so they stay in sync.
 const DATE_MODIFIED = {
-  "/origins": "2026-05-21",
+  "/origins": "2026-06-01",
 };
 const SITE_BUILD_DATE = new Date().toISOString().slice(0, 10);
 
@@ -183,7 +183,7 @@ async function main() {
         "@type": "Article",
         "@id": `${ORIGIN}/origins#article`,
         "headline": "NFT.NYC origins and rise: the world's largest NFT conference",
-        "description": "From a 2018 OpenSea lunch to nine editions, 200,000+ alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026.",
+        "description": "From a 2018 OpenSea lunch to nine editions, more than 40,000 attendees and 40,000 alumni, and the 12-Mission Times Square Challenge at NFT.NYC 2026.",
         "datePublished": "2026-04-05",
         "dateModified": DATE_MODIFIED["/origins"],
         "version": "5.0",
@@ -214,7 +214,7 @@ async function main() {
           {
             "@type": "Question",
             "name": "What is NFT.NYC?",
-            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Nine editions, 200,000+ alumni. The event is for HUMANS and their AI Agents, operated by PeopleBrowsr Events." }
+            "acceptedAnswer": { "@type": "Answer", "text": "NFT.NYC is the world's largest NFT conference, a live in-person event held in Times Square, New York City since February 20, 2019. Nine editions through 2026, more than 40,000 attendees and more than 40,000 alumni. The event is for HUMANS and their AI Agents, operated by PeopleBrowsr Events." }
           },
           {
             "@type": "Question",
