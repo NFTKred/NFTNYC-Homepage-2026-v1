@@ -342,6 +342,15 @@
     }
 
     /* ========================
+       NFT.NYC 2026 SECTION - stacked single column
+    ======================== */
+    #nft-nyc-2026 .values-grid {
+      grid-template-columns: 1fr !important;
+      max-width: 48rem;
+      margin-inline: auto;
+    }
+
+    /* ========================
        UNIVERSE (PART 5) CARDS - 3-col + ecosystem accent borders
     ======================== */
     #universe .values-grid {
