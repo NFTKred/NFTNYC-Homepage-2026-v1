@@ -33,6 +33,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/speak",
     ogImage: "/og/speak.png",
   },
+  speakers: {
+    title: "Speakers — NFT.NYC 2026",
+    description: "Meet the speakers shaping NFT.NYC 2026. Builders, artists, founders, and operators across AI Identity, Gaming, DeFi, RWA, Culture, and the rest of the 12-track programme.",
+    path: "/speakers",
+    ogImage: "/og/speak.png",
+  },
   sponsor: {
     title: "Partner with NFT.NYC 2026",
     description: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track.",
