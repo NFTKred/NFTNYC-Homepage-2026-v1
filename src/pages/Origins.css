@@ -220,8 +220,8 @@
     }
     @media (min-width: 1024px) {
       .hero__meta {
-        grid-template-columns: repeat(6, 1fr);
-        max-width: 72rem;
+        grid-template-columns: repeat(5, 1fr);
+        max-width: 64rem;
       }
     }
     .hero__stat {
