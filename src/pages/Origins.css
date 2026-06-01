@@ -214,7 +214,14 @@
     }
     @media (min-width: 768px) {
       .hero__meta {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 56rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .hero__meta {
+        grid-template-columns: repeat(6, 1fr);
+        max-width: 72rem;
       }
     }
     .hero__stat {
