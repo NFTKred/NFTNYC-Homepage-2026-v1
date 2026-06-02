@@ -165,21 +165,41 @@ export default function Speakers() {
                   onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
                 >
                   <Avatar speaker={s} size={96} />
-                  {/* Text block — overflow-wrap: anywhere is the rule that
-                      stops long unbroken display names (e.g. "MaRbLeMoNuMeNt
-                      DeSiGn") from spilling outside the card. Applies to all
-                      child text automatically since overflow-wrap inherits. */}
-                  <div style={{ minWidth: 0, width: '100%', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
-                    <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18, margin: 0, lineHeight: 1.2 }}>
+                  {/* Text block — single-line + ellipsis on each field.
+                      minWidth: 0 lets the flex child shrink properly.
+                      The full name is always visible in the modal on click. */}
+                  <div style={{ minWidth: 0, width: '100%' }}>
+                    <p
+                      title={s.displayName}
+                      style={{
+                        fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18,
+                        margin: 0, lineHeight: 1.2,
+                        whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                      }}
+                    >
                       {s.displayName}
                     </p>
                     {s.tagLine && (
-                      <p style={{ fontSize: 13, color: 'var(--color-text-muted)', margin: '0.25rem 0 0', lineHeight: 1.35 }}>
+                      <p
+                        title={s.tagLine}
+                        style={{
+                          fontSize: 13, color: 'var(--color-text-muted)',
+                          margin: '0.25rem 0 0', lineHeight: 1.35,
+                          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                        }}
+                      >
                         {s.tagLine}
                       </p>
                     )}
                     {s.company && (
-                      <p style={{ fontSize: 13, color: 'var(--color-text)', margin: '0.1rem 0 0', fontWeight: 500 }}>
+                      <p
+                        title={s.company}
+                        style={{
+                          fontSize: 13, color: 'var(--color-text)',
+                          margin: '0.1rem 0 0', fontWeight: 500,
+                          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                        }}
+                      >
                         {s.company}
                       </p>
                     )}
@@ -250,7 +270,7 @@ export default function Speakers() {
           >
             <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
               <Avatar speaker={openSpeaker} size={112} />
-              <div style={{ flex: 1, minWidth: 0, overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
+              <div style={{ flex: 1, minWidth: 0, overflowWrap: 'break-word' }}>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 700, margin: 0, lineHeight: 1.1 }}>
                   {openSpeaker.displayName}
                 </h2>
