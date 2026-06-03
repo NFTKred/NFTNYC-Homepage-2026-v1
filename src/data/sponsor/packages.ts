@@ -140,9 +140,9 @@ export const defaultPackages: Package[] = [
   {
     id: 9,
     tier: "standard",
-    name: "Chandelier Room VIP Lounge Sponsor",
+    name: "Chandelier Room Gaming Lounge Sponsor",
     price: "$75,000",
-    description: "Brand the VIP lounge inside the Edison Ballroom's iconic Chandelier Room. This is where speakers, VIPs, and industry leaders connect between sessions — an intimate, high-value environment with direct access to the most influential attendees at NFT.NYC 2026.",
+    description: "Brand the Gaming Lounge inside the Edison Ballroom's iconic Chandelier Room. This is where speakers, VIPs, and industry leaders connect between sessions — an intimate, high-value environment with direct access to the most influential attendees at NFT.NYC 2026.",
     branding: [
       "**Lounge branding (Sept 1-3):**",
       "Branded signage and welcome display at the Chandelier Room lounge entrance",
