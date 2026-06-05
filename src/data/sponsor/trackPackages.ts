@@ -26,7 +26,7 @@ const marketingIncludes = [
 
 const billboardIncludes = [
   "15 second video clip featured in Times Square",
-  "Clip included in NFT.NYC 1 Hour Kickoff Roadblock",
+  "Clip included in NFT.NYC 20 Minute Kickoff Roadblock",
   "Premium placement alongside NFT.NYC branded content",
   "Reach the NFT.NYC community AND ~1.5M daily Times Square passers-by (330,000+ pedestrians/day, 50M visitors/year per the Times Square Alliance)",
   "2 VIP tickets",
