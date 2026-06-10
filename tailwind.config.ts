@@ -4,6 +4,14 @@ export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
+  // Gate every Tailwind `hover:*` utility behind @media (hover: hover) so
+  // iOS Safari / Chrome on iOS does not interpret the first tap as
+  // "show me the hover state" and force a second tap to fire the click.
+  // Without this, every button/link with a hover utility (and there are
+  // dozens across the site) needs a double-tap on iOS.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     container: {
       center: true,
