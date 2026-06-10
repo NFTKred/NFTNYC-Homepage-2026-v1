@@ -1,11 +1,12 @@
 import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
-// Bisection step 6: bug is in NeuralMesh or StatsBar. Remove
-// NeuralMesh (continuously animating SVG rings = top suspect), keep
-// StatsBar.
-// If single-tap works now -> NeuralMesh is the culprit.
-// If double-tap persists -> StatsBar is the culprit.
+// Bisection step 7: NeuralMesh was the culprit. Two fixes shipped:
+// (1) the rAF loop now only runs during transitions, not at rest
+// (2) the SVG container is promoted to its own GPU compositing layer
+// Re-include all six homepage chunks to verify the fix.
+import NeuralMesh from "@/components/NeuralMesh";
 import StatsBar from "@/components/StatsBar";
+import NotableSpeakers from "@/components/NotableSpeakers";
 import EcosystemSection from "@/components/EcosystemSection";
 import FAQ from "@/components/FAQ";
 import SiteFooter from "@/components/SiteFooter";
@@ -154,7 +155,9 @@ export default function TapTest() {
           now need double-tap, the bug is in one of: NeuralMesh, StatsBar,
           NotableSpeakers, EcosystemSection, FAQ, SiteFooter.
         </p>
+        <NeuralMesh />
         <StatsBar />
+        <NotableSpeakers />
         <EcosystemSection />
         <FAQ />
         <SiteFooter stage={0} />

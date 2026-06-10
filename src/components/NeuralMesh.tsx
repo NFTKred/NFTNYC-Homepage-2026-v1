@@ -371,26 +371,47 @@ export default function NeuralMesh() {
 
   const animationLoop = useCallback((timestamp: number) => {
     const s = stateRef.current;
-    if (s.transitionStart !== null) {
-      const elapsed = timestamp - s.transitionStart;
-      const rawT = Math.min(elapsed / TRANSITION_MS, 1);
-      const t = rawT < 0.5 ? 4 * rawT * rawT * rawT : 1 - Math.pow(-2 * rawT + 2, 3) / 2;
 
-      for (let i = 0; i < N; i++) {
-        s.currentPositions[i] = {
-          x: s.sourcePositions[i].x + (s.targetPositions[i].x - s.sourcePositions[i].x) * t,
-          y: s.sourcePositions[i].y + (s.targetPositions[i].y - s.sourcePositions[i].y) * t,
-        };
-      }
-
-      if (rawT >= 1) {
-        s.transitionStart = null;
-        s.featuredIdx = s.nextFeatured;
-        s.currentPositions = getRestPositions(s.featuredIdx);
-        s.timeoutId = setTimeout(startNextCycle, CYCLE_MS);
-      }
+    // Only run rAF + renderFrame() while a transition is actually in
+    // progress. The previous version of this loop fired every frame
+    // forever (even during the 4-second rest between cycles), which on
+    // iOS Chrome was constant DOM churn on the SVG. iOS treats a
+    // constantly-mutating page as "busy" and queues / drops first-tap
+    // events anywhere on the document — that was the source of the
+    // site-wide "everything needs a double-tap" bug.
+    if (s.transitionStart === null) {
+      // At rest. Nothing to draw. Don't request the next frame —
+      // startNextCycle (called via setTimeout) will kick rAF back on.
+      return;
     }
+
+    const elapsed = timestamp - s.transitionStart;
+    const rawT = Math.min(elapsed / TRANSITION_MS, 1);
+    const t = rawT < 0.5 ? 4 * rawT * rawT * rawT : 1 - Math.pow(-2 * rawT + 2, 3) / 2;
+
+    for (let i = 0; i < N; i++) {
+      s.currentPositions[i] = {
+        x: s.sourcePositions[i].x + (s.targetPositions[i].x - s.sourcePositions[i].x) * t,
+        y: s.sourcePositions[i].y + (s.targetPositions[i].y - s.sourcePositions[i].y) * t,
+      };
+    }
+
     renderFrame();
+
+    if (rawT >= 1) {
+      s.transitionStart = null;
+      s.featuredIdx = s.nextFeatured;
+      s.currentPositions = getRestPositions(s.featuredIdx);
+      // One last render after settling so the rest-state matches the
+      // final positions exactly (rounded to integer pixels).
+      renderFrame();
+      s.timeoutId = setTimeout(() => {
+        startNextCycle();
+        s.rafId = requestAnimationFrame(animationLoop);
+      }, CYCLE_MS);
+      return;
+    }
+
     s.rafId = requestAnimationFrame(animationLoop);
   }, [renderFrame, startNextCycle]);
 
@@ -772,8 +793,14 @@ export default function NeuralMesh() {
     nodesGroup.appendChild(dynNodesG);
 
     renderFrame();
-    stateRef.current.rafId = requestAnimationFrame(animationLoop);
-    stateRef.current.timeoutId = setTimeout(startNextCycle, CYCLE_MS);
+    // First cycle: wait CYCLE_MS, then start the first transition AND
+    // kick off the rAF loop. With the new "rest-aware" animation loop
+    // we no longer keep rAF running 100% of the time; it only spins
+    // up during the brief 1.2s transition windows.
+    stateRef.current.timeoutId = setTimeout(() => {
+      startNextCycle();
+      stateRef.current.rafId = requestAnimationFrame(animationLoop);
+    }, CYCLE_MS);
   }, [renderFrame, animationLoop, startNextCycle]);
 
   useEffect(() => {
@@ -822,6 +849,15 @@ export default function NeuralMesh() {
   return (
     <div
       className="w-full max-w-[900px] relative z-10 -mt-4"
+      // Force the visualization onto its own GPU compositing layer.
+      // iOS Chrome / Safari otherwise let the SVG's rendering churn
+      // ripple into the rest of the document's hit-testing pipeline,
+      // delaying first-tap clicks anywhere on the page.
+      style={{
+        transform: "translateZ(0)",
+        willChange: "transform",
+        contain: "layout paint style",
+      }}
       aria-label="Interactive ecosystem network visualization showing NFTs at the center connected to 10 adjacent ecosystems"
     >
       <svg
