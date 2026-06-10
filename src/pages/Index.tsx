@@ -168,6 +168,34 @@ export default function Index() {
               wordWrap: 'break-word',
               padding: '0 0.5rem',
             }}>TIMES SQUARE, NEW YORK CITY&ensp;|&ensp;1–3 SEPTEMBER 2026</p>
+
+            {/* Primary hero CTA: opens the global ticketing modal
+                (CC / Crypto choice). The modal is mounted once in
+                App.tsx and listens for the nftnyc:open-ticketing
+                CustomEvent, so we just dispatch it. */}
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('nftnyc:open-ticketing'))}
+                style={{
+                  ...btnBase,
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
+                  backgroundSize: '300% 300%',
+                  animation: 'liquidGradient 12s ease-in-out infinite',
+                  boxShadow: '0 4px 16px rgba(139,92,246,0.3)',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 24px rgba(139,92,246,0.5)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(139,92,246,0.3)';
+                }}
+              >
+                Earlybird Tickets
+              </button>
+            </div>
           </div>
 
           {/* Neural mesh */}
