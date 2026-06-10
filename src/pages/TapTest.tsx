@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
 
 /**
  * Diagnostic page for the iOS double-tap bug. Bare bones: no
@@ -25,13 +26,18 @@ export default function TapTest() {
     <div
       style={{
         padding: "2rem",
+        paddingTop: "8rem",
         fontFamily: "system-ui, -apple-system, sans-serif",
         background: "#fff",
         color: "#000",
         minHeight: "100vh",
       }}
     >
-      <h1 style={{ marginBottom: "1rem" }}>iOS Tap Test</h1>
+      {/* Bisection step 2: include the site header on this page. If
+          taps now need to double, the header (fixed + backdrop-filter
+          blur, known iOS bug surface) is the culprit. */}
+      <SiteHeader theme="light" onToggleTheme={() => {}} stage={0} />
+      <h1 style={{ marginBottom: "1rem" }}>iOS Tap Test (with SiteHeader)</h1>
       <p style={{ marginBottom: "2rem", maxWidth: "40rem" }}>
         Tap each button once. The counter next to it should increment by 1.
         If you need to tap twice, the iOS double-tap bug is in the global
