@@ -244,6 +244,14 @@
     line-height: 1.6;
   }
 
+  /* Eliminate iOS Safari / Chrome on iOS double-tap-to-zoom delay on
+     interactive elements. Without this the browser waits ~300ms after
+     a tap to see if a second tap is coming (zoom gesture), which on
+     hover-styled elements reads as "double tap to click." */
+  a, button, [role="button"], input[type="button"], input[type="submit"], summary, label {
+    touch-action: manipulation;
+  }
+
   * {
     @apply border-border;
   }
@@ -408,16 +416,21 @@
   overflow: hidden;
 }
 
-.card-with-glow:hover .card-glow-ring {
-  opacity: 1;
-  animation-play-state: running;
-}
+/* Hover effects are gated behind hover-capable devices so iOS Safari /
+   Chrome on iOS does not interpret the first tap as "show the hover
+   state" and force the user to double-tap to click. */
+@media (hover: hover) and (pointer: fine) {
+  .card-with-glow:hover .card-glow-ring {
+    opacity: 1;
+    animation-play-state: running;
+  }
 
-.card-with-glow:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 0 30px 6px color-mix(in srgb, var(--glow-c, #fff) 35%, transparent),
-    0 8px 32px -4px color-mix(in srgb, var(--glow-c, #fff) 25%, transparent);
+  .card-with-glow:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 30px 6px color-mix(in srgb, var(--glow-c, #fff) 35%, transparent),
+      0 8px 32px -4px color-mix(in srgb, var(--glow-c, #fff) 25%, transparent);
+  }
 }
 
 .card-inner-mask {
@@ -446,13 +459,15 @@
     0 4px 16px -2px color-mix(in srgb, var(--glow-c, #fff) 15%, transparent);
 }
 
-.card-with-glow.glow-always:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 0 30px 6px color-mix(in srgb, var(--glow-c, #fff) 35%, transparent),
-    0 8px 32px -4px color-mix(in srgb, var(--glow-c, #fff) 25%, transparent);
-}
+@media (hover: hover) and (pointer: fine) {
+  .card-with-glow.glow-always:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 30px 6px color-mix(in srgb, var(--glow-c, #fff) 35%, transparent),
+      0 8px 32px -4px color-mix(in srgb, var(--glow-c, #fff) 25%, transparent);
+  }
 
-.card-with-glow.glow-always:hover .card-glow-ring {
-  opacity: 1;
+  .card-with-glow.glow-always:hover .card-glow-ring {
+    opacity: 1;
+  }
 }
