@@ -1,5 +1,11 @@
 import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
+import NeuralMesh from "@/components/NeuralMesh";
+import StatsBar from "@/components/StatsBar";
+import NotableSpeakers from "@/components/NotableSpeakers";
+import EcosystemSection from "@/components/EcosystemSection";
+import FAQ from "@/components/FAQ";
+import SiteFooter from "@/components/SiteFooter";
 
 /**
  * Diagnostic page for the iOS double-tap bug. Bare bones: no
@@ -33,11 +39,12 @@ export default function TapTest() {
         minHeight: "100vh",
       }}
     >
-      {/* Bisection step 2: include the site header on this page. If
-          taps now need to double, the header (fixed + backdrop-filter
-          blur, known iOS bug surface) is the culprit. */}
+      {/* Bisection step 3: pull in the biggest homepage chunks
+          (NeuralMesh, StatsBar, NotableSpeakers, EcosystemSection, FAQ,
+          SiteFooter). Each has its own animations / observers / SVGs.
+          If taps now need to double, the bug is in one of these. */}
       <SiteHeader theme="light" onToggleTheme={() => {}} stage={0} />
-      <h1 style={{ marginBottom: "1rem" }}>iOS Tap Test (with SiteHeader)</h1>
+      <h1 style={{ marginBottom: "1rem" }}>iOS Tap Test (with SiteHeader + homepage chunks)</h1>
       <p style={{ marginBottom: "2rem", maxWidth: "40rem" }}>
         Tap each button once. The counter next to it should increment by 1.
         If you need to tap twice, the iOS double-tap bug is in the global
@@ -134,6 +141,23 @@ export default function TapTest() {
       <p style={{ marginTop: "3rem", fontSize: "0.875rem", color: "#666" }}>
         build: {typeof __BUILD_SHA__ !== "undefined" ? __BUILD_SHA__ : "dev"}
       </p>
+
+      {/* Render homepage chunks below the test buttons. Scroll to
+          re-test the buttons after these have mounted. */}
+      <div style={{ marginTop: "4rem", borderTop: "1px solid #ddd", paddingTop: "2rem" }}>
+        <h2 style={{ marginBottom: "1rem" }}>Homepage chunks below</h2>
+        <p style={{ marginBottom: "2rem", color: "#666" }}>
+          Scroll up and re-tap each button after these have mounted. If they
+          now need double-tap, the bug is in one of: NeuralMesh, StatsBar,
+          NotableSpeakers, EcosystemSection, FAQ, SiteFooter.
+        </p>
+        <NeuralMesh />
+        <StatsBar />
+        <NotableSpeakers />
+        <EcosystemSection />
+        <FAQ />
+        <SiteFooter stage={0} />
+      </div>
     </div>
   );
 }
