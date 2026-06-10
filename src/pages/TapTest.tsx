@@ -1,11 +1,10 @@
 import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
-// Bisection step 5: previous build narrowed the bug to one of three:
-// NeuralMesh, StatsBar, NotableSpeakers. Add NeuralMesh + StatsBar
-// back; keep NotableSpeakers out.
-// If single-tap still works -> NotableSpeakers is the culprit.
-// If double-tap returns -> bug is in NeuralMesh or StatsBar.
-import NeuralMesh from "@/components/NeuralMesh";
+// Bisection step 6: bug is in NeuralMesh or StatsBar. Remove
+// NeuralMesh (continuously animating SVG rings = top suspect), keep
+// StatsBar.
+// If single-tap works now -> NeuralMesh is the culprit.
+// If double-tap persists -> StatsBar is the culprit.
 import StatsBar from "@/components/StatsBar";
 import EcosystemSection from "@/components/EcosystemSection";
 import FAQ from "@/components/FAQ";
@@ -155,7 +154,6 @@ export default function TapTest() {
           now need double-tap, the bug is in one of: NeuralMesh, StatsBar,
           NotableSpeakers, EcosystemSection, FAQ, SiteFooter.
         </p>
-        <NeuralMesh />
         <StatsBar />
         <EcosystemSection />
         <FAQ />
