@@ -216,7 +216,7 @@ export default function SiteFooter({ stage = 0, hideIndustryFeed = false }: { st
             Times Square, New York City | 1–3 September 2026
           </p>
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>
-            © 2026 NFT.NYC <span style={{ opacity: 0.5, fontFamily: 'monospace' }}>· build {typeof __BUILD_SHA__ !== 'undefined' ? __BUILD_SHA__ : 'dev'}</span>
+            © 2026 NFT.NYC
           </p>
           {/* Easter-egg footer R — opens the global ticketing modal. The
               modal owns the Eventbrite widget setup + the #eb-trigger

@@ -8,7 +8,6 @@ import Index from "./pages/Index";
 import TSChallenge from "./pages/TSChallenge";
 import Speak from "./pages/Speak";
 import Register from "./pages/Register";
-import TapTest from "./pages/TapTest";
 import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
 import BlogTsChallenge from "./pages/BlogTsChallenge";
@@ -43,7 +42,6 @@ const App = () => (
           <Route path="/ts-challenge" element={<TSChallenge />} />
           <Route path="/speak" element={<Speak />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/tap-test" element={<TapTest />} />
           <Route path="/blog" element={<Blogs />} />
           <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
           <Route path="/blog/ts-challenge" element={<BlogTsChallenge />} />
