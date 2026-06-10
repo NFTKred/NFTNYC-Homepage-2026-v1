@@ -1,9 +1,12 @@
 import { useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
-// Bisection step 4: remove first half of the 6 chunks (NeuralMesh,
-// StatsBar, NotableSpeakers). Keep EcosystemSection, FAQ, SiteFooter.
-// If single-tap works now -> bug was in the removed batch.
-// If double-tap persists -> bug is in the remaining three.
+// Bisection step 5: previous build narrowed the bug to one of three:
+// NeuralMesh, StatsBar, NotableSpeakers. Add NeuralMesh + StatsBar
+// back; keep NotableSpeakers out.
+// If single-tap still works -> NotableSpeakers is the culprit.
+// If double-tap returns -> bug is in NeuralMesh or StatsBar.
+import NeuralMesh from "@/components/NeuralMesh";
+import StatsBar from "@/components/StatsBar";
 import EcosystemSection from "@/components/EcosystemSection";
 import FAQ from "@/components/FAQ";
 import SiteFooter from "@/components/SiteFooter";
@@ -152,6 +155,8 @@ export default function TapTest() {
           now need double-tap, the bug is in one of: NeuralMesh, StatsBar,
           NotableSpeakers, EcosystemSection, FAQ, SiteFooter.
         </p>
+        <NeuralMesh />
+        <StatsBar />
         <EcosystemSection />
         <FAQ />
         <SiteFooter stage={0} />
