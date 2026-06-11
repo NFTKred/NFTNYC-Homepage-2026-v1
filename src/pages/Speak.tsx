@@ -92,7 +92,7 @@ const PATHWAYS = [
     bullets: [
       'Submit with talk title, description, and industry vertical',
       'Provide a link to a video of you speaking',
-      'Round 1: April 8\u201330 (closed) · Round 2: opens soon · Round 3: June',
+      'Round 1: April 8\u201330 (closed) · Round 2: opens soon · Round 3: July',
     ],
     pill: 'Community + Editorial',
     color: '#8B5CF6',
