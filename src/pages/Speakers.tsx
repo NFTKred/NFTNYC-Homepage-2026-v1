@@ -62,7 +62,18 @@ function processSessionizeData(api: any): SpeakerVM[] {
   const trackItemMap = new Map<number, string>();
   (trackCategory?.items ?? []).forEach((it: any) => trackItemMap.set(it.id, it.name));
 
-  return (api.speakers ?? []).map((s: any): SpeakerVM => {
+  // Acceptance gate: only show speakers who have at least one session
+  // with status === 'Accepted'. This protects against Round-2 / pending /
+  // declined speakers leaking onto the public page before they're approved.
+  const acceptedSpeakerIds = new Set<string>();
+  (api.sessions ?? []).forEach((sess: any) => {
+    if (String(sess?.status ?? '').toLowerCase() !== 'accepted') return;
+    for (const spkId of sess.speakers ?? []) acceptedSpeakerIds.add(String(spkId));
+  });
+
+  return (api.speakers ?? [])
+    .filter((s: any) => acceptedSpeakerIds.has(String(s.id)))
+    .map((s: any): SpeakerVM => {
     const xLink = (s.links ?? []).find((l: any) => l?.linkType === 'Twitter');
     const xHandleMatch = xLink?.url?.match(/(?:x|twitter)\.com\/([A-Za-z0-9_]+)/i);
     const company = (s.questionAnswers ?? []).find((qa: any) => qa?.questionId === COMPANY_QUESTION_ID)?.answerValue ?? '';
