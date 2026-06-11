@@ -167,15 +167,10 @@ export default function Speakers() {
       const hay = `${s.displayName} ${s.tagLine} ${s.company} ${s.xHandle}`.toLowerCase();
       return hay.includes(term);
     });
-    // In the All view, featured speakers (Sessionize "Top Speaker") come
-    // first. Within each group (featured, non-featured) the API's natural
-    // order is preserved. When a specific track is selected, no boosting —
-    // the list reads in API order so within-track curation stays the
-    // organiser's call in Sessionize.
-    if (activeTrack === 'all') {
-      return [...list].sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
-    }
-    return list;
+    // Featured (Sessionize "Top Speaker") always come first — in the All
+    // view AND inside any track filter. Within each group (featured /
+    // non-featured) the API's natural order is preserved (stable sort).
+    return [...list].sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
   }, [speakers, search, activeTrack]);
 
   return (
@@ -257,6 +252,7 @@ export default function Speakers() {
           handle cleanly. */}
       <style>{`
         .speaker-card {
+          position: relative;        /* anchor for the featured-label */
           background: rgba(255,255,255,0.03);
           border: 1px solid var(--color-border);
           border-radius: 16px;
@@ -269,6 +265,23 @@ export default function Speakers() {
           flex-direction: column;
           gap: 0.85rem;
           transition: transform 200ms ease, background 200ms ease, border-color 200ms ease;
+        }
+        .featured-label {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          padding: 3px 8px;
+          border-radius: 999px;
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #FBBF24;
+          background: rgba(251, 191, 36, 0.12);
+          border: 1px solid rgba(251, 191, 36, 0.45);
+          pointer-events: none;
+          line-height: 1.1;
+          white-space: nowrap;
         }
         .speaker-card:hover {
           transform: translateY(-2px);
@@ -359,6 +372,7 @@ export default function Speakers() {
                 className={`speaker-card${s.isFeatured ? ' is-featured' : ''}`}
                 onClick={() => setOpenSpeaker(s)}
               >
+                {s.isFeatured && <span className="featured-label">Featured Speaker</span>}
                 <Avatar speaker={s} size={96} />
                 {/* Single-line + ellipsis on each text field; full name in modal. */}
                 <div style={{ minWidth: 0, width: '100%' }}>
