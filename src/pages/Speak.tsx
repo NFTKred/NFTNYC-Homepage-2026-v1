@@ -162,9 +162,9 @@ const PAST_SPEAKERS = [
 const DETAILED_TIMELINE = [
   { date: 'April 8 \u2013 30', title: 'Round 1 closed', desc: 'First submission window has closed. Round 1 applicants are under review and will move to community voting on May 7.', color: '#10B981' },
   { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Community, GA, and VIP ticket holders can vote.', color: '#10B981' },
-  { date: 'May', title: 'Round 2 opens soon', desc: 'Second submission window opens in May. Follow @NFT_NYC on X for the exact moment Round 2 goes live.', color: '#06B6D4' },
-  { date: 'June', title: 'Round 3 open', desc: 'Final submission window. Remaining slots only. Team evaluates vote strength, video quality, and topic balance.', color: '#8B5CF6' },
-  { date: 'July 2026', title: 'Selections announced', desc: 'Speakers selected and notified. Each speaker may appear in one accepted session (solo talk, panel, or product pitch).', color: '#EC4899' },
+  { date: 'June', title: 'Round 2 opens soon', desc: 'Second submission window opens in June. Follow @NFT_NYC on X for the exact moment Round 2 goes live.', color: '#06B6D4' },
+  { date: 'July', title: 'Round 3 open', desc: 'Final submission window. Remaining slots only. Team evaluates vote strength, video quality, and topic balance.', color: '#8B5CF6' },
+  { date: 'August', title: 'Program Announced', desc: 'Official release of preliminary program.', color: '#EC4899' },
   { date: 'September 1\u20133', title: 'NFT.NYC 2026', desc: 'The Edison, Times Square NYC. Program published August 2026. Speaker prep begins upon acceptance.', color: '#F5A623' },
 ];
 
