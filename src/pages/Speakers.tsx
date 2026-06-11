@@ -22,19 +22,24 @@ const TRACK_CATEGORY_ID       = 124360;   // "Track" category in Sessionize
 const COMPANY_QUESTION_ID     = 124328;   // "Company Name" question
 
 // Filter-chip colours per track. The actual track names come from the
-// API; this map is here to color-code them consistently with the rest
-// of the site. New track? Add an entry. Missing entry? Falls back to coral.
+// API; this map is here to color-code them consistently with the
+// ECOSYSTEMS palette on /sponsor. Both the typo'd "Tokenizaton" and the
+// corrected "Tokenization" are mapped so the color survives if Sessionize
+// fixes the spelling. Missing entry? Falls back to coral.
 const TRACK_COLOR: Record<string, string> = {
-  'Art':               '#D946EF',
-  'Brands':            '#F97316',
-  'BTC and Ordinals':  '#FB923C',
-  'Community':         '#EC4899',
-  'Entertainment':     '#A78BFA',
-  'Future':            '#3B82F6',
-  'Gaming':            '#8B5CF6',
-  'Legal':             '#06B6D4',
-  'NFTs and AI':       '#10B981',
-  'Performer':         '#38BDF8',
+  'Culture, Art and Music':         '#D946EF',
+  'Creator Economy':                '#F59E0B',
+  'RWA Tokenization':               '#EF4444',
+  'Brands':                         '#F97316',
+  'AI Agent Tokenizaton':           '#3B82F6',
+  'AI Agent Tokenization':          '#3B82F6',
+  'Social NFTs':                    '#EC4899',
+  'NFT Marketplaces':               '#38BDF8',
+  'On-chain Infrastructure':        '#06B6D4',
+  'DeFi':                           '#10B981',
+  'Game Tokenization':              '#8B5CF6',
+  'DeSci - Longevity Tokenization': '#84CC16',
+  'DNS ENS Domain Tokens':          '#14B8A6',
 };
 const trackColor = (t: string | null) => (t && TRACK_COLOR[t]) || '#f06347';
 
@@ -50,29 +55,21 @@ interface SpeakerVM {
 }
 
 function processSessionizeData(api: any): SpeakerVM[] {
-  // Build itemId → trackName for the Track category only.
+  // Build itemId → trackName for the Track category only. Tracks are
+  // assigned at the speaker level in this Sessionize event — speaker
+  // .categoryItems contains both a country and a Track itemId.
   const trackCategory = (api.categories ?? []).find((c: any) => c.id === TRACK_CATEGORY_ID);
   const trackItemMap = new Map<number, string>();
   (trackCategory?.items ?? []).forEach((it: any) => trackItemMap.set(it.id, it.name));
-
-  // Build sessionId → trackName.
-  const sessionToTrack = new Map<number, string>();
-  (api.sessions ?? []).forEach((s: any) => {
-    for (const itemId of s.categoryItems ?? []) {
-      const trackName = trackItemMap.get(itemId);
-      if (trackName) {
-        sessionToTrack.set(s.id, trackName);
-        break;
-      }
-    }
-  });
 
   return (api.speakers ?? []).map((s: any): SpeakerVM => {
     const xLink = (s.links ?? []).find((l: any) => l?.linkType === 'Twitter');
     const xHandleMatch = xLink?.url?.match(/(?:x|twitter)\.com\/([A-Za-z0-9_]+)/i);
     const company = (s.questionAnswers ?? []).find((qa: any) => qa?.questionId === COMPANY_QUESTION_ID)?.answerValue ?? '';
-    const firstSession = (s.sessions ?? [])[0];
-    const track = firstSession != null ? sessionToTrack.get(firstSession) ?? null : null;
+    // First Track-category item on the speaker.
+    const track = (s.categoryItems ?? [])
+      .map((cid: number) => trackItemMap.get(cid))
+      .find((name: string | undefined) => !!name) ?? null;
 
     return {
       id: String(s.id ?? ''),
