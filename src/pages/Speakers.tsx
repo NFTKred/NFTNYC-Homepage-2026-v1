@@ -52,6 +52,7 @@ interface SpeakerVM {
   xHandle: string;
   profilePictureUrl: string;
   track: string | null;
+  isFeatured: boolean;        // Sessionize "Top Speaker" flag — sorts first in All view.
 }
 
 function processSessionizeData(api: any): SpeakerVM[] {
@@ -91,6 +92,7 @@ function processSessionizeData(api: any): SpeakerVM[] {
       xHandle: xHandleMatch?.[1] ?? '',
       profilePictureUrl: String(s.profilePicture ?? ''),
       track,
+      isFeatured: Boolean(s.isTopSpeaker),
     };
   });
 }
@@ -159,12 +161,21 @@ export default function Speakers() {
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
-    return speakers.filter(s => {
+    const list = speakers.filter(s => {
       if (activeTrack !== 'all' && s.track !== activeTrack) return false;
       if (!term) return true;
       const hay = `${s.displayName} ${s.tagLine} ${s.company} ${s.xHandle}`.toLowerCase();
       return hay.includes(term);
     });
+    // In the All view, featured speakers (Sessionize "Top Speaker") come
+    // first. Within each group (featured, non-featured) the API's natural
+    // order is preserved. When a specific track is selected, no boosting —
+    // the list reads in API order so within-track curation stays the
+    // organiser's call in Sessionize.
+    if (activeTrack === 'all') {
+      return [...list].sort((a, b) => Number(b.isFeatured) - Number(a.isFeatured));
+    }
+    return list;
   }, [speakers, search, activeTrack]);
 
   return (
