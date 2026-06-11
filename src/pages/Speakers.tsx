@@ -251,6 +251,83 @@ export default function Speakers() {
         </div>
       </section>
 
+      {/* Card styles. Defined here (not inline) so the foil border on
+          featured cards can use the dual-background gradient-border trick
+          and animate via a keyframe — both of which inline styles don't
+          handle cleanly. */}
+      <style>{`
+        .speaker-card {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid var(--color-border);
+          border-radius: 16px;
+          padding: 1.25rem;
+          cursor: pointer;
+          text-align: left;
+          color: inherit;
+          font-family: inherit;
+          display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
+          transition: transform 200ms ease, background 200ms ease, border-color 200ms ease;
+        }
+        .speaker-card:hover {
+          transform: translateY(-2px);
+          background: rgba(255,255,255,0.06);
+        }
+        /* Featured = Sessionize "Top Speaker". Holographic foil border via the
+           padding-box / border-box dual-background trick. The outer linear
+           gradient sits in the border layer, the inner solid fill sits in
+           the padding layer. Animation slides the gradient horizontally for
+           a slow shimmer. */
+        .speaker-card.is-featured {
+          border: 2px solid transparent;
+          /* Three stacked backgrounds, from top of paint order to bottom:
+             1) padding-box  → subtle white overlay so the inner fill still
+                               reads slightly lighter than the page (matches
+                               the non-featured cards).
+             2) padding-box  → opaque page background, blocks the gradient
+                               from bleeding into the card body.
+             3) border-box   → animated foil gradient, only the 2px border
+                               edge is visible since (1) and (2) cover the
+                               interior.
+             Only layer (3) is wider than the box so only it animates. */
+          background:
+            linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0.03)) padding-box,
+            linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+            linear-gradient(120deg,
+              #FBBF24 0%,
+              #F472B6 22%,
+              #60A5FA 45%,
+              #34D399 68%,
+              #FBBF24 100%
+            ) border-box;
+          background-size: 100% 100%, 100% 100%, 300% 100%;
+          background-position: 0% 50%, 0% 50%, 0% 50%;
+          animation: speakers-foil-shine 7s ease-in-out infinite;
+        }
+        .speaker-card.is-featured:hover {
+          transform: translateY(-2px);
+          background:
+            linear-gradient(rgba(255,255,255,0.06), rgba(255,255,255,0.06)) padding-box,
+            linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+            linear-gradient(120deg,
+              #FBBF24 0%,
+              #F472B6 22%,
+              #60A5FA 45%,
+              #34D399 68%,
+              #FBBF24 100%
+            ) border-box;
+          background-size: 100% 100%, 100% 100%, 300% 100%;
+        }
+        @keyframes speakers-foil-shine {
+          0%, 100% { background-position: 0% 50%, 0% 50%, 0% 50%; }
+          50%      { background-position: 0% 50%, 0% 50%, 100% 50%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .speaker-card.is-featured { animation: none; }
+        }
+      `}</style>
+
       {/* ── Loading / error / grid ─────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto" style={{ padding: '0 1.5rem 5rem' }}>
         {loading ? (
@@ -279,23 +356,8 @@ export default function Speakers() {
               <button
                 key={s.id}
                 type="button"
+                className={`speaker-card${s.isFeatured ? ' is-featured' : ''}`}
                 onClick={() => setOpenSpeaker(s)}
-                style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: 16,
-                  padding: '1.25rem',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'transform 200ms ease, border-color 200ms ease, background 200ms ease',
-                  color: 'inherit',
-                  fontFamily: 'inherit',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.85rem',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
               >
                 <Avatar speaker={s} size={96} />
                 {/* Single-line + ellipsis on each text field; full name in modal. */}
