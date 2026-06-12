@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import TSChallenge from "./pages/TSChallenge";
 import Speak from "./pages/Speak";
+import Speakers from "./pages/Speakers";
 import Register from "./pages/Register";
 import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/ts-challenge" element={<TSChallenge />} />
           <Route path="/speak" element={<Speak />} />
+          <Route path="/speakers" element={<Speakers />} />
           <Route path="/register" element={<Register />} />
           <Route path="/blog" element={<Blogs />} />
           <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
