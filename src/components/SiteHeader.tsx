@@ -72,7 +72,9 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
           }}
         >
           <a
-            href="/speak"
+            href="https://sessionize.com/nft-nyc-2026/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               fontFamily: 'var(--font-body)',
               fontSize: '13px',
