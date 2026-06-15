@@ -85,13 +85,13 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             }}
           >
             <span style={{ color: '#06B6D4', fontWeight: 700 }}>Round 2</span>
-            Speaker Submissions Open Soon.
+            Speaker Submissions Open — Closes 30 June.
             <span style={{
               fontWeight: 700,
               color: '#06B6D4',
               textDecoration: 'underline',
               textUnderlineOffset: '2px',
-            }}>Get Notified →</span>
+            }}>Apply Now →</span>
           </a>
           <button
             onClick={e => { e.stopPropagation(); setBannerDismissed(true); }}

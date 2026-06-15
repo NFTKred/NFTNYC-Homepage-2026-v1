@@ -29,9 +29,9 @@ export const SHOW_SPEAK_PAGE = true;
 
 /* ─── Constants ─── */
 const SESSIONIZE_URL = 'https://sessionize.com/nft-nyc-2026/';
-// Round 1 closed 30 April. Until Round 2 opens, the page's primary
-// CTAs point here so prospective speakers can opt in to be notified
-// the moment Round 2 opens.
+// Round 2 open 12 June 2026 → 30 June 2026. Primary CTAs link to
+// SESSIONIZE_URL for direct submission; TWITTER_URL retained for
+// secondary "follow for updates" links elsewhere on the site.
 const TWITTER_URL = 'https://twitter.com/NFT_NYC';
 
 /* ─── Data arrays ─── */
@@ -92,7 +92,7 @@ const PATHWAYS = [
     bullets: [
       'Submit with talk title, description, and industry vertical',
       'Provide a link to a video of you speaking',
-      'Round 1: April 8\u201330 (closed) · Round 2: opens soon · Round 3: July',
+      'Round 1: April 8\u201330 (closed) · Round 2: June 12\u201330 · Round 3: July',
     ],
     pill: 'Community + Editorial',
     color: '#8B5CF6',
@@ -162,7 +162,7 @@ const PAST_SPEAKERS = [
 const DETAILED_TIMELINE = [
   { date: 'April 8 \u2013 30', title: 'Round 1 closed', desc: 'First submission window has closed. Round 1 applicants are under review and will move to community voting on May 7.', color: '#10B981' },
   { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Community, GA, and VIP ticket holders can vote.', color: '#10B981' },
-  { date: 'June', title: 'Round 2 opens soon', desc: 'Second submission window opens in June. Follow @NFT_NYC on X for the exact moment Round 2 goes live.', color: '#06B6D4' },
+  { date: 'June 12 \u2013 30', title: 'Round 2 open', desc: 'Second submission window. Submit now to be reviewed in this round.', color: '#06B6D4' },
   { date: 'July', title: 'Round 3 open', desc: 'Final submission window. Remaining slots only. Team evaluates vote strength, video quality, and topic balance.', color: '#8B5CF6' },
   { date: 'August', title: 'Program Announced', desc: 'Official release of preliminary program.', color: '#EC4899' },
   { date: 'September 1\u20133', title: 'NFT.NYC 2026', desc: 'The Edison, Times Square NYC. Program published August 2026. Speaker prep begins upon acceptance.', color: '#F5A623' },
@@ -309,14 +309,14 @@ export default function Speak() {
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a
-            href={TWITTER_URL}
+            href={SESSIONIZE_URL}
             target="_blank"
             rel="noopener noreferrer"
             style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
           >
-            Follow @NFT_NYC for Round 2 →
+            Submit to speak
           </a>
           <button
             onClick={() => document.getElementById('tracks')?.scrollIntoView({ behavior: 'smooth' })}
@@ -346,10 +346,10 @@ export default function Speak() {
       <section style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
         <p style={sectionLabel}>Submissions are in rounds</p>
         <h2 style={sectionHeading}>
-          Round 2 opens <span style={rainbowText}>soon</span>
+          Round 2 closes <span style={rainbowText}>June 30</span>
         </h2>
         <p style={sectionSub}>
-          Round 1 closed April 30. Follow @NFT_NYC on X to be the first to know when Round 2 opens — historically, early applicants see a 55% selection rate vs. 13% for late applicants.
+          Round 2 is open through June 30. Early applicants get seen first — historically, early applicants see a 55% selection rate vs. 13% for late applicants.
         </p>
 
         <div style={{
@@ -359,9 +359,7 @@ export default function Speak() {
           maxWidth: '720px',
           margin: '0 auto',
         }} className="speak-rounds-grid">
-          {/* Round 2 announcement card — Round 1 closed 30 April. Until
-              Round 2 opens, this card invites prospective speakers to
-              follow @NFT_NYC on X for the announcement. */}
+          {/* Round 2 open submission card — 12 June through 30 June 2026. */}
           <div style={{
             ...cardStyle,
             borderColor: '#06B6D4',
@@ -388,7 +386,7 @@ export default function Speak() {
               padding: '6px 14px',
               borderRadius: '4px',
               marginBottom: '1.5rem',
-            }}>Coming soon</div>
+            }}>Open now</div>
             <h3 style={{
               fontFamily: 'var(--font-display)',
               fontSize: '32px',
@@ -405,7 +403,7 @@ export default function Speak() {
               color: '#06B6D4',
               lineHeight: 1.05,
               marginBottom: '1rem',
-            }}>Opens soon</p>
+            }}>Closes June 30</p>
             <p style={{
               fontFamily: 'var(--font-body)',
               fontSize: '15px',
@@ -413,16 +411,16 @@ export default function Speak() {
               lineHeight: 1.6,
               marginBottom: '1.75rem',
               maxWidth: '560px',
-            }}>Round 1 closed April 30 — applicants are now under review and move to community voting on May 7. Follow @NFT_NYC on X for the moment Round 2 opens.</p>
+            }}>Submit now to be reviewed in this round. Round 2 closes 30 June.</p>
             <a
-              href={TWITTER_URL}
+              href={SESSIONIZE_URL}
               target="_blank"
               rel="noopener noreferrer"
               style={{ ...ctaGradientStyle, padding: '14px 32px', fontSize: '15px' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
             >
-              Follow @NFT_NYC →
+              Apply now
             </a>
           </div>
         </div>
@@ -434,7 +432,7 @@ export default function Speak() {
           textAlign: 'center',
           marginTop: '1.5rem',
           fontWeight: 600,
-        }}>📣 Be first in line for Round 2 — follow @NFT_NYC on X for the announcement</p>
+        }}>⏰ Round 2 closes 30 June — historically, early applicants see a 55% selection rate vs. 13% for late applicants</p>
       </section>
 
       {dividerLine}
@@ -579,7 +577,7 @@ export default function Speak() {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Follow @NFT_NYC for Round 2 →</a>
+          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to speak →</a>
         </div>
       </section>
 
@@ -691,7 +689,7 @@ export default function Speak() {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Follow @NFT_NYC for Round 2 →</a>
+          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to speak →</a>
         </div>
       </section>
 
@@ -818,7 +816,7 @@ export default function Speak() {
           </ul>
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Follow @NFT_NYC for Round 2 →</a>
+          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to speak →</a>
         </div>
       </section>
 
@@ -889,17 +887,17 @@ export default function Speak() {
           margin: '0 auto 2.5rem',
           lineHeight: 1.6,
         }}>
-          Round 1 closed April 30. Round 2 opens soon — follow @NFT_NYC on X to be the first to know when submissions reopen.
+          Round 2 is open through 30 June. Submit now.
         </p>
         <a
-          href={TWITTER_URL}
+          href={SESSIONIZE_URL}
           target="_blank"
           rel="noopener noreferrer"
           style={{ ...ctaGradientStyle, padding: '16px 44px', fontSize: '18px' }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
         >
-          Follow @NFT_NYC for Round 2 →
+          Submit to speak →
         </a>
       </section>
 
@@ -993,14 +991,14 @@ export default function Speak() {
             </div>
 
             <a
-              href={TWITTER_URL}
+              href={SESSIONIZE_URL}
               target="_blank"
               rel="noopener noreferrer"
               style={{ ...ctaGradientStyle, padding: '14px 40px', fontSize: '16px' }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
-              Follow @NFT_NYC for Round 2 →
+              Submit to speak →
             </a>
           </div>
         </div>
