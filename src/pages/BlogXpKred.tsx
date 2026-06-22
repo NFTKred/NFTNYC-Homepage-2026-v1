@@ -176,7 +176,7 @@ export default function BlogXpKred() {
                 </tr>
                 <tr>
                   <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>KYC</td>
-                  <td style={tableCell}>Required only for receiving USDC payouts, withdrawing funds, or connecting external wallets. Earning and spending XP and Kredits requires no identity verification.</td>
+                  <td style={tableCell}>Required only for receiving USDC payouts, withdrawing funds, or transferring Regulated Virtual Assets off-platform. Earning and spending XP and Kredits requires no identity verification.</td>
                 </tr>
               </tbody>
             </table>
@@ -243,8 +243,8 @@ export default function BlogXpKred() {
           <p style={body}>There are three ways to accumulate Kredits:</p>
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Earn through milestones</strong> — reach engagement thresholds within your OneHub</li>
-            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Purchase directly</strong> — buy Kredits using USD or supported digital payment methods</li>
-            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Receive as platform gifts</strong> — other users or hub administrators can gift Kredits to you (no KYC needed)</li>
+            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Purchase directly</strong>: buy Kredits using USD or supported digital payment methods. Purchases up to USD $200 per day require no verification. Buying more than USD $200 in a single day triggers a one-time identity check (precautionary KYC).</li>
+            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Receive as a Platform allocation</strong>: a OneHub administrator may allocate Kredits to your account through the Platform (no KYC needed). Because Kredits are permanently transfer-locked, they cannot be sent directly between users.</li>
           </ol>
           <div style={summaryBox}>
             Section summary: T-Kr (Kredits) are on-chain, transfer-locked reward points. They exist solely to redeem collectible NFTs within PeopleBrowsr. They carry no monetary value and cannot leave the platform.
@@ -326,7 +326,7 @@ export default function BlogXpKred() {
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
             <li style={listItem}>Receiving USDC payouts as a creator</li>
             <li style={listItem}>Withdrawing funds from the platform</li>
-            <li style={listItem}>Connecting external wallets</li>
+            <li style={listItem}>Transferring Regulated Virtual Assets or USDC to an external wallet (Travel Rule information is required)</li>
           </ol>
           <p style={{ ...body, marginTop: '1rem' }}>
             These activities fall under the regulated virtual asset classification managed by KYC Kred Pty Ltd. KYC requirements are jurisdiction-specific, meaning they vary depending on your location.
@@ -336,6 +336,7 @@ export default function BlogXpKred() {
             <li style={listItem}>Earning or spending XP</li>
             <li style={listItem}>Earning or spending Kredits</li>
             <li style={listItem}>Collecting NFTs valued under USD $100</li>
+            <li style={listItem}>Transferring a Collectible NFT (under USD $100) to an external wallet</li>
             <li style={listItem}>Sending or receiving platform gifts</li>
           </ol>
           <p style={{ ...body, marginTop: '1rem' }}>

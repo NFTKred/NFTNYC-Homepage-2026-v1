@@ -519,7 +519,7 @@ export default function BlogTsChallenge() {
 
           {/* Disclaimer */}
           <div style={{ ...summaryBox, marginTop: '3rem' }}>
-            The TS Challenge features art from the NFT.NYC 2025 Community Artist Showcase. T-XP is an off-chain metric; it is not a cryptocurrency, token, or financial instrument. Leaderboard standings, T-XP values, and platform features described in this document are based on live platform data as of April 2026 and may change. Rewards for top leaderboard positions have not yet been determined.
+            The TS Challenge features art from the NFT.NYC 2025 Community Artist Showcase. T-XP is an off-chain metric; it is not a cryptocurrency, token, or financial instrument. The digital art and Gift NFTs in the TS Challenge are collectibles with no inherent commercial value. They are not financial products, securities, or investment instruments of any kind, and should not be collected with any expectation of financial return. Leaderboard standings, T-XP values, and platform features described in this document are based on live platform data as of April 2026 and may change. Rewards for top leaderboard positions have not yet been determined.
           </div>
 
         </div>
