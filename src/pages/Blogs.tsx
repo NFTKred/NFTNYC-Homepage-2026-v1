@@ -23,14 +23,17 @@ const BLOG_POSTS: BlogPost[] = [
     image: '/blog-ts-challenge-hero.png',
     tag: 'TS Challenge',
   },
-  {
-    title: 'What are XP and Kr?',
-    description: 'How hub-branded points and Kredits work — earning XP, graduating to Kredits, and redeeming collectible NFTs.',
-    slug: 'xp-and-kredits',
-    date: '2026-04-01',
-    image: '/blog-xp-kr-hero.png',
-    tag: 'Platform',
-  },
+  // XP & Kredits post hidden from /blog index. The route /blog/xp-and-kredits
+  // still resolves for anyone with the direct URL — re-add the entry below to
+  // surface it again.
+  // {
+  //   title: 'What are XP and Kr?',
+  //   description: 'How hub-branded points and Kredits work — earning XP, graduating to Kredits, and redeeming collectible NFTs.',
+  //   slug: 'xp-and-kredits',
+  //   date: '2026-04-01',
+  //   image: '/blog-xp-kr-hero.png',
+  //   tag: 'Platform',
+  // },
 ];
 
 const ACCENT = '#3B82F6';
