@@ -8,7 +8,7 @@ const ARTICLE_JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: 'What is the Times Square Billboard Challenge and how to participate',
-  description: 'How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square’s biggest screens. A complete guide to the TS Challenge, T-XP, gift NFTs, and the leaderboard.',
+  description: 'How collectors, artists, and fans worldwide engage with limited-edition NFT.NYC art on Times Square’s biggest screens. A complete guide to the TS Challenge, T-XP, Collectible Gifts, and the leaderboard.',
   url: 'https://www.nft.nyc/blog/ts-challenge',
   mainEntityOfPage: 'https://www.nft.nyc/blog/ts-challenge',
   image: 'https://www.nft.nyc/og/blog-ts-challenge.png',
@@ -19,7 +19,7 @@ const ARTICLE_JSON_LD = {
     logo: { '@type': 'ImageObject', url: 'https://www.nft.nyc/favicon.jpg' },
   },
   datePublished: '2026-02-15',
-  dateModified: '2026-05-11',
+  dateModified: '2026-06-23',
   inLanguage: 'en',
 };
 
@@ -129,7 +129,7 @@ export default function BlogTsChallenge() {
             color: 'var(--color-text-faint)',
             fontStyle: 'italic',
             marginBottom: '2rem',
-          }}>Published: April 2026 | Author: NFT.NYC and OneHub team | Last updated: April 3, 2026</p>
+          }}>Published: April 2026 | Author: NFT.NYC and OneHub team | Last updated: June 2026</p>
 
           {/* Hero image */}
           <img
@@ -145,7 +145,7 @@ export default function BlogTsChallenge() {
 
           {/* Summary */}
           <p style={body}>
-            The Times Square Billboard Challenge (TS Challenge) is a community engagement program on onehub.nft.nyc where collectors, artists, and fans worldwide collect limited-edition digital art from the NFT.NYC 2025 Community Artist Showcase. Participants send Gift NFTs, earn T-XP (Times Square Experience Points), and compete on a global leaderboard. The platform is powered by OneHub and organized by the NFT.NYC team.
+            The Times Square Billboard Challenge (TS Challenge) is a community engagement program on onehub.nft.nyc where collectors, artists, and fans worldwide collect limited-edition digital art from the NFT.NYC 2025 Community Artist Showcase. Participants send Collectible Gifts, earn T-XP (Times Square Experience Points), and compete on a global leaderboard. The platform is powered by OneHub and organized by the NFT.NYC team.
           </p>
 
           {/* Summary table */}
@@ -160,11 +160,11 @@ export default function BlogTsChallenge() {
               <tbody>
                 {[
                   ['Platform', 'onehub.nft.nyc'],
-                  ['Organizer', 'NFT.NYC team, powered by OneHub'],
-                  ['Art categories', 'Times Square Billboard Art (curated by Superchief Gallery) and Times Square Treasures'],
-                  ['Display venues', 'Times Square billboards, the Monument installation, and Superchief Gallery exhibition'],
+                  ['Organizer', 'OneHub, built by the NFT.NYC team and powered by NFT.Kred'],
+                  ['Art categories', 'Collectible TS Art (curated by Superchief Gallery) and Collectible Gifts'],
+                  ['Display venues', 'Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery'],
                   ['Progression metric', 'T-XP (Times Square Experience Points)'],
-                  ['Cost to join', 'Free. Gift NFTs cost T-XP. Billboard Art is available for collection.'],
+                  ['Cost to join', 'Free. Collectible Gifts cost T-XP. Billboard Art is available for collection.'],
                   ['Community size', '150,000+ members'],
                   ['Artists showcased', '1,500+ from the NFT.NYC 2025 Community Artist Showcase'],
                   ['Key features', 'Collect Art, Send Gifts, Gift Studio, Leaderboard, Dashboard, Daily Actions, Streak System'],
@@ -181,10 +181,10 @@ export default function BlogTsChallenge() {
           {/* What is the TS Challenge */}
           <h2 style={sectionTitle}>What is the Times Square Billboard Challenge?</h2>
           <p style={body}>
-            The TS Challenge is an interactive, community-driven competition that connects digital collecting with physical display in Times Square, New York City. Participants collect exclusive digital art from the NFT.NYC 2025 Community Artist Showcase, exchange Gift NFTs with other community members, and accumulate T-XP to rise on a global leaderboard.
+            The TS Challenge is an interactive, community-driven competition that connects digital collecting with physical display in Times Square, New York City. Participants collect exclusive digital art from the NFT.NYC 2025 Community Artist Showcase, exchange Collectible Gifts with other community members, and accumulate T-XP to rise on a global leaderboard.
           </p>
           <p style={{ ...body, marginTop: '1rem' }}>
-            Every piece of art in the challenge was displayed at physical scale across three venues: Times Square billboards, the Monument (a large-scale physical installation), and a Superchief Gallery exhibition. Collecting these works as NFTs on onehub.nft.nyc provides a direct connection to art that appeared in one of the most-visited locations on Earth.
+            Every piece of art in the challenge was displayed at physical scale across three venues: Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery. Collecting these works as NFTs on onehub.nft.nyc provides a direct connection to art that appeared in one of the most-visited locations on Earth.
           </p>
           <p style={{ ...body, marginTop: '1rem' }}>
             The challenge centers on three core actions: <strong style={{ color: 'var(--color-text)' }}>collect, earn, and compete</strong>. Every interaction on the platform generates T-XP, which determines leaderboard ranking. Top positions on the leaderboard may unlock future perks and recognition.
@@ -204,18 +204,18 @@ export default function BlogTsChallenge() {
           <h3 style={subTitle}>Three steps to start competing</h3>
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Collect NFTs.</strong> Connect your wallet and start collecting exclusive TS Art. Each NFT purchased helps support an artist and earns T-XP.</li>
-            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Earn T-XP.</strong> Collect art and send Gift NFTs to earn T-XP. Completing a Daily Action increases your multiplier.</li>
+            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Earn T-XP.</strong> Collect art and send Collectible Gifts to earn T-XP. Completing a Daily Action increases your multiplier.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Climb the ranks.</strong> The more you collect, the higher you climb. All of the T-XP you earn moves you up the leaderboard. Compete with collectors worldwide for the top spot.</li>
           </ol>
 
-          <h3 style={subTitle}>Times Square Billboard Art</h3>
+          <h3 style={subTitle}>Collectible TS Art</h3>
           <p style={body}>
-            This category features limited-edition art from the NFT.NYC 2025 Community Artist Showcase, curated by Superchief Gallery. These are the same pieces that were displayed on Times Square billboards, on the Monument installation, and in a physical gallery exhibition. Billboard Art features subcategories based on display venue: Shown on Billboards, Shown on Monument, and Shown in Art Gallery.
+            This category features limited-edition art from the NFT.NYC 2025 Community Artist Showcase, curated by Superchief Gallery. These are the same pieces that were displayed on Times Square billboards, on the Monument by Superchief, and in the NFT.NYC Community Artists Gallery. Collectible TS Art features subcategories based on display venue: Shown on Billboards, Shown on Monument, and Shown in Art Gallery.
           </p>
 
-          <h3 style={subTitle}>Times Square Treasures</h3>
+          <h3 style={subTitle}>Collectible Gifts</h3>
           <p style={body}>
-            Times Square Treasures are themed Gift NFTs that can be sent to other community members. Examples include The Botanical Garden Bloom, The Coney Island Spinner, After-Hours Aviators, and The Hudson River Parka. These cost T-XP to send and are central to the social gifting mechanism that drives leaderboard competition.
+            Collectible Gifts are themed Gifts that can be sent to other community members. Examples include The Botanical Garden Bloom, The Coney Island Spinner, After-Hours Aviators, and The Hudson River Parka. These cost T-XP to send and are central to the social gifting mechanism that drives leaderboard competition.
           </p>
 
           <div style={{ overflowX: 'auto', marginTop: '1rem' }}>
@@ -229,13 +229,13 @@ export default function BlogTsChallenge() {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>Times Square Billboard Art</td>
+                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>Collectible TS Art</td>
                   <td style={tableCell}>Limited-edition curated art from the NFT.NYC Community Artist Showcase, displayed on billboards and the Monument</td>
-                  <td style={tableCell}>Varies by edition</td>
+                  <td style={tableCell}>500 T-XP to 2,500 T-XP and up</td>
                 </tr>
                 <tr>
-                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>Times Square Treasures</td>
-                  <td style={tableCell}>Themed Gift NFTs for social gifting and community engagement</td>
+                  <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>Collectible Gifts</td>
+                  <td style={tableCell}>Themed Gifts for social gifting and community engagement</td>
                   <td style={tableCell}>50 to 500 T-XP per gift</td>
                 </tr>
               </tbody>
@@ -247,7 +247,7 @@ export default function BlogTsChallenge() {
 
           <h3 style={subTitle}>Send gifts</h3>
           <p style={body}>
-            Sending Gift NFTs is one of the primary ways to earn T-XP. Every gift sent and received generates points for both the sender and the recipient. This creates a positive-sum dynamic where generosity directly translates to leaderboard progress.
+            Sending Collectible Gifts is one of the primary ways to earn T-XP. Every gift sent and received generates points for both the sender and the recipient. This creates a positive-sum dynamic where generosity directly translates to leaderboard progress.
           </p>
 
           <h3 style={subTitle}>Connect with friends</h3>
@@ -257,16 +257,16 @@ export default function BlogTsChallenge() {
 
           <h3 style={subTitle}>Gift Studio</h3>
           <p style={body}>
-            The Gift Studio is an AI-enabled creation tool where participants can design custom Gift NFTs to share with friends. Choose a base design and the AI generates a unique gift. The current base design is Relay, the TS Challenge mascot.
+            The Gift Studio is an AI-enabled creation tool where participants can design custom Collectible Gifts to share with friends. Choose a base design and the AI generates a unique gift. The current base design is Relay, the TS Challenge mascot. Additional base designs may be added over time.
           </p>
 
           {/* T-XP system */}
           <h2 style={sectionTitle}>What is T-XP and how does the points system work?</h2>
           <p style={body}>
-            T-XP (Times Square Experience Points) is the off-chain progression metric that powers the entire TS Challenge. It determines leaderboard ranking, unlocks the ability to purchase exclusive TS Art and Gift NFTs, and tracks overall community engagement. T-XP is earned through platform activity and is displayed in the navigation bar and on your Dashboard. T-XP is not a cryptocurrency or token and cannot be traded or transferred.
+            T-XP (Times Square Experience Points) is the off-chain progression metric that powers the entire TS Challenge. It determines leaderboard ranking, unlocks the ability to purchase exclusive TS Art and Collectible Gifts, and tracks overall community engagement. T-XP is earned through platform activity and is displayed in the navigation bar and on your Dashboard. T-XP has no cash value and cannot be redeemed for money. Earned T-XP expires 60 days after issuance; any purchased T-XP expires 12 months after issuance.
           </p>
 
-          <h3 style={subTitle}>Daily actions (earn up to 500 T-XP each day)</h3>
+          <h3 style={subTitle}>Daily actions</h3>
           <div style={{ overflowX: 'auto', marginTop: '0.5rem' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--card-border)' }}>
               <thead>
@@ -306,7 +306,7 @@ export default function BlogTsChallenge() {
 
           <h3 style={subTitle}>Progression levels</h3>
           <p style={body}>
-            As you accumulate T-XP, you advance through a series of collector levels. Each level unlocks new capabilities and recognition on the platform. The current known level tier is Gift Animator, visible on the Dashboard.
+            As you accumulate T-XP, you advance through a series of collector levels. Each level unlocks new capabilities and recognition on the platform.
           </p>
 
           {/* Leaderboard */}
@@ -315,39 +315,8 @@ export default function BlogTsChallenge() {
             The TS Challenge Leaderboard ranks all participants by their total T-XP score. The leaderboard serves as the central competitive element of the entire challenge, and top positions may unlock future perks.
           </p>
 
-          <h3 style={subTitle}>Current standings (as of April 2026)</h3>
-          <div style={{ overflowX: 'auto', marginTop: '0.5rem' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--card-border)' }}>
-              <thead>
-                <tr>
-                  <th style={{ ...tableHeader, width: '15%' }}>Rank</th>
-                  <th style={tableHeader}>Collector</th>
-                  <th style={{ ...tableHeader, width: '20%' }}>T-XP</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  ['1', 'Cameron Bale', '11,900'],
-                  ['2', 'LJ', '11,800'],
-                  ['3', 'Ermac Kiyani', '7,200'],
-                  ['4', 'Lukar', '4,300'],
-                  ['5', 'Dexter Marlon Jebunan', '2,200'],
-                  ['6', 'Ted', '1,600'],
-                  ['7', 'Michael Battaglia', '1,500'],
-                  ['8', 'LJJ', '1,200'],
-                  ['9', 'Max Falsetta Spina', '1,100'],
-                ].map(([rank, name, xp]) => (
-                  <tr key={rank}>
-                    <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>{rank}</td>
-                    <td style={tableCell}>{name}</td>
-                    <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>{xp}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p style={{ ...body, fontSize: 'var(--text-sm)', marginTop: '0.5rem', fontStyle: 'italic', color: 'var(--color-text-faint)' }}>
-            The leaderboard is updated in real time. Top leaderboard positions may translate into future rewards; details are still being determined.
+          <p style={{ ...body, marginTop: '1rem' }}>
+            The live leaderboard is always available at <a href="https://onehub.nft.nyc/leaderboard" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>onehub.nft.nyc/leaderboard</a>.
           </p>
 
           {/* Platform features */}
@@ -382,12 +351,12 @@ export default function BlogTsChallenge() {
 
           <h3 style={subTitle}>Collect Art</h3>
           <p style={body}>
-            The Collect Art page organizes all available NFTs into two primary categories: Times Square Billboard Art and Times Square Treasures. Billboard Art features subcategories based on display venue: Shown on Billboards, Shown on Monument, and Shown in Art Gallery. Each piece includes the artist name, edition details, and collection options.
+            The Collect Art page organizes all available NFTs into two primary categories: Collectible TS Art and Collectible Gifts. Collectible TS Art features subcategories based on display venue: Shown on Billboards, Shown on Monument, and Shown in Art Gallery. Each piece includes the artist name, edition details, and collection options.
           </p>
 
           <h3 style={subTitle}>Send Gifts</h3>
           <p style={body}>
-            The Send Gifts page is the gateway to Times Square Treasures. Browse available Gift NFTs and send them to other community members. Gifting is reciprocal: both sender and recipient earn T-XP for each transaction.
+            The Send Gifts page is the gateway to Collectible Gifts. Browse available Collectible Gifts and send them to other community members. Gifting is reciprocal: both sender and recipient earn T-XP for each transaction.
           </p>
 
           <h3 style={subTitle}>Community directory</h3>
@@ -450,7 +419,7 @@ export default function BlogTsChallenge() {
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Visit onehub.nft.nyc.</strong> Go to onehub.nft.nyc and select Connect Wallet.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Connect your wallet.</strong> Link your preferred wallet to the platform.</li>
-            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Explore the collection.</strong> Browse Times Square Billboard Art and Times Square Treasures on the Collect Art page.</li>
+            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Explore the collection.</strong> Browse Collectible TS Art and Collectible Gifts on the Collect Art page.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Start earning T-XP.</strong> Claim your daily bonus on the Dashboard, send gifts, share NFTs on social media, and invite friends.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Climb the leaderboard.</strong> Watch your rank rise as you accumulate T-XP. Compete for the top spot. Top leaderboard positions may unlock future perks.</li>
           </ol>
@@ -469,12 +438,9 @@ export default function BlogTsChallenge() {
                 {[
                   ['Community members', '150,000+'],
                   ['Artists showcased', '1,500+'],
-                  ['Daily T-XP cap', '500'],
                   ['Max streak multiplier', '4x'],
                   ['Display venues', '3 (billboards, Monument, gallery)'],
                   ['Daily action types', '8'],
-                  ['Current leader T-XP score', '11,900'],
-                  ['Art categories', '2 (Billboard Art and Treasures)'],
                 ].map(([metric, value]) => (
                   <tr key={metric}>
                     <td style={{ ...tableCell, fontWeight: 700, color: 'var(--color-text)' }}>{metric}</td>
@@ -488,15 +454,15 @@ export default function BlogTsChallenge() {
           {/* FAQ */}
           <h2 style={sectionTitle}>Frequently asked questions</h2>
           {[
-            { q: 'What is the Times Square Billboard Challenge?', a: 'The TS Challenge is a community-driven competition hosted on onehub.nft.nyc where participants collect digital art from the NFT.NYC 2025 Community Artist Showcase, send Gift NFTs, earn T-XP, and compete on a global leaderboard.' },
+            { q: 'What is the Times Square Billboard Challenge?', a: 'The TS Challenge is a community-driven competition hosted on onehub.nft.nyc where participants collect digital art from the NFT.NYC 2025 Community Artist Showcase, send Collectible Gifts, earn T-XP, and compete on a global leaderboard.' },
             { q: 'How do I get started?', a: 'Visit onehub.nft.nyc, connect your wallet, and start collecting art or sending gifts. You can also claim a daily bonus on the Dashboard to begin earning T-XP immediately.' },
-            { q: 'What is T-XP?', a: 'T-XP (Times Square Experience Points) is the off-chain progression metric that determines your leaderboard ranking and unlocks the ability to purchase TS Art and Gift NFTs. It is earned through collecting, gifting, and daily engagement. T-XP is not a cryptocurrency or token. It cannot be traded or transferred.' },
+            { q: 'What is T-XP?', a: 'T-XP (Times Square Experience Points) is the off-chain progression metric that determines your leaderboard ranking and unlocks the ability to purchase TS Art and Collectible Gifts. It is earned through collecting, gifting, and daily engagement. T-XP is not a cryptocurrency or token. It cannot be traded or transferred.' },
             { q: 'Can I participate without buying anything?', a: 'Yes. Creating an account, connecting your wallet, using the Gift Studio, completing Daily Actions, and receiving gifts from others are all free ways to earn T-XP and climb the leaderboard.' },
             { q: 'What rewards do top collectors earn?', a: 'Top leaderboard positions may unlock perks for future NFT.NYC events. Details are still being determined. Leaderboard rank bonuses already provide ongoing daily T-XP advantages: +500 for rank 1, +250 for rank 2, +100 for rank 3, and +10 for ranks 4 through 10.' },
-            { q: 'What is the Gift Studio?', a: 'The Gift Studio is an AI-enabled tool where you can create custom Gift NFTs using base designs. These gifts can be shared with other community members and earn both sender and recipient T-XP.' },
+            { q: 'What is the Gift Studio?', a: 'The Gift Studio is an AI-enabled tool where you can create custom Collectible Gifts using base designs. These gifts can be shared with other community members and earn both sender and recipient T-XP.' },
             { q: 'What is the streak system?', a: 'The streak system tracks consecutive days of engagement. Each day you complete at least one Daily Action, your streak grows and your Boost Multiplier increases from 1.1x up to 4x. A higher multiplier means every T-XP-generating action earns more points.' },
-            { q: 'Who curated the Times Square Billboard Art?', a: 'The Times Square Billboard Art collection was curated by Superchief Gallery as part of the NFT.NYC 2025 Community Artist Showcase. Featured artwork was displayed on Times Square billboards, on the Monument, and in a physical gallery exhibition.' },
-            { q: 'Who built the TS Challenge platform?', a: 'The TS Challenge runs on OneHub, built by the team behind NFT.NYC. The team has operated in the NFT ecosystem since 2018 and has organized annual NFT conferences attended by over 15,000 participants.' },
+            { q: 'Who curated the Collectible TS Art?', a: 'The Collectible TS Art collection was curated by Superchief Gallery as part of the NFT.NYC 2025 Community Artist Showcase. Featured artwork was displayed on Times Square billboards, on the Monument by Superchief, and in the NFT.NYC Community Artists Gallery.' },
+            { q: 'Who built the TS Challenge platform?', a: 'The TS Challenge runs on OneHub, built by the team behind NFT.NYC. The team has operated in the NFT ecosystem since 2018 and has organized annual NFT conferences with 30K+ cumulative attendees across prior editions.' },
           ].map(({ q, a }) => (
             <div key={q} style={{ marginBottom: '1.5rem' }}>
               <h3 style={{ ...body, fontWeight: 700, color: 'var(--color-text)', marginBottom: '0.25rem' }}>{q}</h3>
@@ -508,10 +474,10 @@ export default function BlogTsChallenge() {
           <h2 style={sectionTitle}>Key takeaways</h2>
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
             <li style={listItem}>The TS Challenge is a free-to-join community competition on onehub.nft.nyc that combines digital art collecting with physical Times Square display.</li>
-            <li style={listItem}>All art was curated by Superchief Gallery and physically displayed on Times Square billboards, the Monument, and in a gallery exhibition.</li>
+            <li style={listItem}>All art was curated by Superchief Gallery and physically displayed on Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery.</li>
             <li style={listItem}>T-XP is the off-chain progression metric driving leaderboard rankings. Earn up to 500 T-XP per day through Daily Actions.</li>
             <li style={listItem}>The streak system rewards consistency with a Boost Multiplier ranging from 1.1x to 4x.</li>
-            <li style={listItem}>Social gifting is a core mechanic. Both sender and recipient earn T-XP for every Gift NFT exchanged.</li>
+            <li style={listItem}>Social gifting is a core mechanic. Both sender and recipient earn T-XP for every Collectible Gift exchanged.</li>
             <li style={listItem}>The platform includes a Gift Studio (AI-enabled custom gift creation), a Dashboard, a Community Directory, and an Activity feed.</li>
             <li style={listItem}>The community includes 150,000+ members and 1,500+ showcased artists.</li>
             <li style={listItem}>To start, visit onehub.nft.nyc, connect a wallet, and claim your daily bonus.</li>
@@ -519,7 +485,7 @@ export default function BlogTsChallenge() {
 
           {/* Disclaimer */}
           <div style={{ ...summaryBox, marginTop: '3rem' }}>
-            The TS Challenge features art from the NFT.NYC 2025 Community Artist Showcase. T-XP is an off-chain metric; it is not a cryptocurrency, token, or financial instrument. The digital art and Gift NFTs in the TS Challenge are collectibles with no inherent commercial value. They are not financial products, securities, or investment instruments of any kind, and should not be collected with any expectation of financial return. Leaderboard standings, T-XP values, and platform features described in this document are based on live platform data as of April 2026 and may change. Rewards for top leaderboard positions have not yet been determined.
+            The TS Challenge features art from the NFT.NYC 2025 Community Artist Showcase. T-XP is an off-chain metric; it is not a cryptocurrency, token, or financial instrument. The digital art and Collectible Gifts in the TS Challenge are collectibles with no inherent commercial value. They are not financial products, securities, or investment instruments of any kind, and should not be collected with any expectation of financial return. Leaderboard standings, T-XP values, and platform features described in this document are based on live platform data as of June 2026 and may change. Rewards for top leaderboard positions have not yet been determined. Digital Assets on this OneHub are provided by Empire.Kred Pty Ltd (ACN 602 735 973).
           </div>
 
         </div>
