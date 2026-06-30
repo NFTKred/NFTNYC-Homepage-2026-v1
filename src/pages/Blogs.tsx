@@ -16,6 +16,14 @@ interface BlogPost {
 
 const BLOG_POSTS: BlogPost[] = [
   {
+    title: 'Everything Is a Remix: A Short History of Borrowing',
+    description: 'From Gilgamesh and the Bible to Roman marble, Duchamp\'s moustache, hip-hop and AI style transfer - and where Web3 picks it up.',
+    slug: 'history-of-remix',
+    date: '2026-06-30',
+    image: '/blog/history-of-remix/img-mona-lisa_0000_remix.jpg',
+    tag: 'OneHub Journal',
+  },
+  {
     title: 'What is the Times Square Billboard Challenge?',
     description: 'The complete guide to collecting NFT art, earning T-XP, and climbing the leaderboard on onehub.nft.nyc.',
     slug: 'ts-challenge',

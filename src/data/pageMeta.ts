@@ -75,6 +75,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/blog/ts-challenge",
     ogImage: "/og/blog-ts-challenge.png",
   },
+  "blog-history-of-remix": {
+    title: "Everything Is a Remix - A Short History of Borrowing - NFT.NYC Blog",
+    description: "From Gilgamesh and the Bible to Roman marble, Duchamp's moustache, hip-hop and AI style transfer - the long history of borrowing, and where Web3 picks it up.",
+    path: "/blog/history-of-remix",
+    ogImage: "/og/blog-ts-challenge.png",
+  },
   journey: {
     title: "Our Story — NFT.NYC",
     description: "Nine years and 200,000+ alumni building the world's leading NFT and Web3 community.",
