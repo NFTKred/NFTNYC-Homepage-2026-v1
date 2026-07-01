@@ -72,7 +72,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
           }}
         >
           <a
-            href="https://sessionize.com/nft-nyc-2026/"
+            href="https://twitter.com/NFT_NYC"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -87,13 +87,13 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             }}
           >
             <span style={{ color: '#06B6D4', fontWeight: 700 }}>Round 2</span>
-            Speaker Submissions Open — Closes 30 June.
+            Speaker submissions now closed. Follow our socials for updates.
             <span style={{
               fontWeight: 700,
               color: '#06B6D4',
               textDecoration: 'underline',
               textUnderlineOffset: '2px',
-            }}>Apply Now →</span>
+            }}>@NFT_NYC →</span>
           </a>
           <button
             onClick={e => { e.stopPropagation(); setBannerDismissed(true); }}
