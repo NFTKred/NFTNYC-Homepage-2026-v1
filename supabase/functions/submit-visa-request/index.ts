@@ -16,6 +16,7 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -220,7 +221,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const base64 = btoa(String.fromCharCode(...pdfBytes));
+  const base64 = encodeBase64(pdfBytes);
   const safeName = clean.full_name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const filename = `NFT-NYC-2026-Letter-of-Invitation-${safeName}.pdf`;
 
