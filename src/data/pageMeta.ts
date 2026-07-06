@@ -39,6 +39,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/speakers",
     ogImage: "/og/speak.png",
   },
+  visa: {
+    title: "Visa support — NFT.NYC 2026",
+    description: "Request a signed letter of invitation for your NFT.NYC 2026 US visa application. International attendees can request a PDF letter — turnaround usually within 2 business days.",
+    path: "/visa",
+    ogImage: "/og/speak.png",
+  },
   sponsor: {
     title: "Partner with NFT.NYC 2026",
     description: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track.",
