@@ -738,6 +738,9 @@ export default function Admin() {
           textTransform: 'uppercase',
         }}>NFT.NYC Admin</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <a href="/admin/visa" style={{ ...btnStyle, background: 'rgba(6,182,212,0.15)', color: '#06B6D4', textDecoration: 'none' }}>
+            Visa Requests
+          </a>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'rgb(149, 149, 176)' }}>
             {user?.email}
           </span>
