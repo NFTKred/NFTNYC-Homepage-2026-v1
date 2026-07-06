@@ -27,7 +27,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
     { href: '/sponsor', label: 'Partnerships', minStage: 0 },
     { href: '#media', label: 'Media', minStage: 0 },
     { href: '#events', label: 'Events', minStage: 1 },
-    { href: '/visa', label: 'Visa', minStage: 0 },
+    { href: '/visa', label: 'VISA Request', minStage: 0 },
     { href: '#faq', label: 'FAQ', minStage: 0 },
   ];
 

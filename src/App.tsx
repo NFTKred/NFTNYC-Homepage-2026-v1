@@ -20,7 +20,6 @@ import VerticalPage from "./pages/VerticalPage";
 import CardPreview from "./pages/CardPreview";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
-import AdminVisa from "./pages/AdminVisa";
 import TSOptout from "./pages/TSOptout";
 import Sponsor from "./pages/Sponsor";
 import SponsorTSChallenge from "./pages/SponsorTSChallenge";
@@ -59,7 +58,6 @@ const App = () => (
           <Route path="/visa" element={<Visa />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-          <Route path="/admin/visa" element={<ProtectedRoute><AdminVisa /></ProtectedRoute>} />
           <Route path="/card/:resourceId" element={<CardPreview />} />
           <Route path="/:verticalId" element={<VerticalPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
