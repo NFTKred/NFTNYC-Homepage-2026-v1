@@ -21,12 +21,12 @@ const SESSIONIZE_URL          = "https://sessionize.com/api/v2/x65weaqz/view/All
 const TRACK_CATEGORY_ID       = 124360;   // "Track" category in Sessionize
 const COMPANY_QUESTION_ID     = 124328;   // "Company Name" question
 
-// Per-speaker avatar object-position overrides. Sessionize headshots are
-// centered by default, but some photographers frame the subject high in the
-// frame — centering crops the top of the head. Keys are lowercased display
-// names. Add "top" for anyone whose head gets cropped.
-const AVATAR_POSITION: Record<string, string> = {
-  "scott spiegel": "top",
+// Per-speaker avatar image URL overrides. Some Sessionize headshots are
+// pre-cropped so tightly that the top of the head gets clipped by the
+// circular avatar mask. When that happens, drop a better-framed square
+// crop in /public/speakers and map it here by lowercased display name.
+const AVATAR_URL: Record<string, string> = {
+  "scott spiegel": "/speakers/scott-spiegel.jpg",
 };
 
 // Filter-chip colours per track. The actual track names come from the
@@ -598,16 +598,16 @@ function Avatar({ speaker, size }: { speaker: SpeakerVM; size: number }) {
       </div>
     );
   }
+  const overrideUrl = AVATAR_URL[speaker.displayName.toLowerCase()];
   return (
     <img
-      src={speaker.profilePictureUrl}
+      src={overrideUrl ?? speaker.profilePictureUrl}
       alt={speaker.displayName}
       loading="lazy"
       onError={() => setErrored(true)}
       style={{
         width: size, height: size, borderRadius: '50%',
         objectFit: 'cover',
-        objectPosition: AVATAR_POSITION[speaker.displayName.toLowerCase()] ?? 'center',
         border: '1px solid var(--color-border)',
         flexShrink: 0,
         background: '#1a1a2e',
