@@ -24,6 +24,7 @@ import TSOptout from "./pages/TSOptout";
 import Sponsor from "./pages/Sponsor";
 import SponsorTSChallenge from "./pages/SponsorTSChallenge";
 import Visa from "./pages/Visa";
+import Media from "./pages/Media";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import TicketingModal from "./components/TicketingModal";
 
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/sponsor" element={<Sponsor />} />
           <Route path="/sponsor/ts-challenge" element={<SponsorTSChallenge />} />
           <Route path="/visa" element={<Visa />} />
+          <Route path="/media" element={<Media />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/card/:resourceId" element={<CardPreview />} />

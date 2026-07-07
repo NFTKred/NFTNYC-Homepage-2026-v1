@@ -45,6 +45,16 @@ const FAQ_DATA: FAQCategory[] = [
         q: 'I purchased my ticket with cryptocurrency. What happens next?',
         a: 'Crypto orders are processed via our Shopify backend (you should have received a confirmation email or text message when you ordered). Your ticket is held for you on Eventbrite (where we reconcile all registrations) and we will issue you a link to complete registration shortly. If you have any issues with your link, please send an email to Team@NFT.NYC',
       },
+      {
+        q: 'Do you provide a letter of invitation for my US visa application?',
+        a: <>Yes. International attendees can request a signed letter of invitation to support their US visa application. Submit your details at <a href="/visa" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/visa</a> and our team will email you the letter as a PDF, usually within 2 business days.</>,
+        plainA: 'Yes. International attendees can request a signed letter of invitation to support their US visa application. Submit your details at https://www.nft.nyc/visa and our team will email you the letter as a PDF, usually within 2 business days.',
+      },
+      {
+        q: 'How do I apply for a media pass?',
+        a: <>Journalists, podcasters, and creators can apply for a media pass at <a href="/media" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/media</a>. Applications are reviewed weekly and approved applicants will be contacted directly.</>,
+        plainA: 'Journalists, podcasters, and creators can apply for a media pass at https://www.nft.nyc/media. Applications are reviewed weekly and approved applicants will be contacted directly.',
+      },
     ],
   },
   {
