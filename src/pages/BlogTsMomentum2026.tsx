@@ -130,19 +130,10 @@ export default function BlogTsMomentum2026() {
             fontSize: "clamp(32px, 5vw, 52px)",
             fontWeight: 800,
             lineHeight: 1.1,
-            margin: "0 0 20px",
+            margin: 0,
           }}>
             The Times Square Challenge Is Heating Up and Art Submissions Are Open for NFT.NYC 2026
           </h1>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: 18,
-            lineHeight: 1.6,
-            color: "var(--color-text-muted)",
-            margin: 0,
-          }}>
-            Two months out from NFT.NYC 2026 (Sept 1 to 3), the Times Square Challenge platform is proving out the idea it was built for: keeping the NFT.NYC community connected all year, not just for three days in September.
-          </p>
         </div>
 
         {/* Section 1 */}
