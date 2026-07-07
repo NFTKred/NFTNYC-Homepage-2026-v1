@@ -21,6 +21,14 @@ const SESSIONIZE_URL          = "https://sessionize.com/api/v2/x65weaqz/view/All
 const TRACK_CATEGORY_ID       = 124360;   // "Track" category in Sessionize
 const COMPANY_QUESTION_ID     = 124328;   // "Company Name" question
 
+// Per-speaker avatar object-position overrides. Sessionize headshots are
+// centered by default, but some photographers frame the subject high in the
+// frame — centering crops the top of the head. Keys are lowercased display
+// names. Add "top" for anyone whose head gets cropped.
+const AVATAR_POSITION: Record<string, string> = {
+  "scott spiegel": "top",
+};
+
 // Filter-chip colours per track. The actual track names come from the
 // API; this map is here to color-code them consistently with the
 // ECOSYSTEMS palette on /sponsor. Both the typo'd "Tokenizaton" and the
@@ -599,6 +607,7 @@ function Avatar({ speaker, size }: { speaker: SpeakerVM; size: number }) {
       style={{
         width: size, height: size, borderRadius: '50%',
         objectFit: 'cover',
+        objectPosition: AVATAR_POSITION[speaker.displayName.toLowerCase()] ?? 'center',
         border: '1px solid var(--color-border)',
         flexShrink: 0,
         background: '#1a1a2e',
