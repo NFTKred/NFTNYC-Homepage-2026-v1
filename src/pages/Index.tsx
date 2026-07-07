@@ -207,6 +207,8 @@ export default function Index() {
 
         <StatsBar />
 
+        <ActivityFeed />
+
         <NotableSpeakers />
 
         {/* ======== STATEMENT ======== */}
@@ -366,8 +368,6 @@ export default function Index() {
             </div>
           </div>
         </section>
-
-        <ActivityFeed />
 
         <NewsletterCapture />
 
