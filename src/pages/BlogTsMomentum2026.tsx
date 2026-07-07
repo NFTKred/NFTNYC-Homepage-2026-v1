@@ -23,75 +23,36 @@ const ARTICLE_JSON_LD = {
   inLanguage: "en",
 };
 
-// Visible "team fill-in" callout for numbers/assets that still need to
-// come from the ops team. Keeps the draft honest instead of hiding gaps.
-function TodoCallout({ label, note }: { label: string; note: string }) {
+const IMG = "/blog/ts-momentum-2026";
+
+function Figure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
   return (
-    <div style={{
-      border: "1px dashed rgba(245,158,11,0.55)",
-      background: "rgba(245,158,11,0.06)",
-      borderRadius: 12,
-      padding: "14px 18px",
-      margin: "20px 0",
-      display: "flex",
-      alignItems: "flex-start",
-      gap: 12,
-    }}>
-      <span style={{
-        fontFamily: "var(--font-body)",
-        fontSize: 10,
-        fontWeight: 800,
-        letterSpacing: "0.2em",
-        color: "#F59E0B",
-        background: "rgba(245,158,11,0.12)",
-        border: "1px solid rgba(245,158,11,0.4)",
-        borderRadius: 999,
-        padding: "3px 10px",
-        flexShrink: 0,
-        whiteSpace: "nowrap",
-      }}>
-        {label}
-      </span>
-      <span style={{
+    <figure style={{ margin: "32px 0" }}>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        style={{
+          display: "block",
+          width: "100%",
+          height: "auto",
+          borderRadius: 16,
+          border: "1px solid var(--color-border)",
+        }}
+      />
+      <figcaption style={{
         fontFamily: "var(--font-body)",
         fontSize: 13,
-        lineHeight: 1.55,
         color: "var(--color-text-muted)",
+        textAlign: "center",
+        marginTop: 10,
+        lineHeight: 1.5,
       }}>
-        {note}
-      </span>
-    </div>
+        {caption}
+      </figcaption>
+    </figure>
   );
 }
-
-interface Step {
-  n: number;
-  title: string;
-  body: React.ReactNode;
-}
-
-const STEPS: Step[] = [
-  {
-    n: 1,
-    title: "Submit your work",
-    body: <>Upload one piece, an image or a short video, and add your name, your socials, and a short bio for the curators. That is the whole requirement. Selected artworks will be displayed on screens throughout NFT.NYC and on the Times Square billboards themselves.</>,
-  },
-  {
-    n: 2,
-    title: "Drop your Times Square Challenge sticker",
-    body: <>Place a Proof of Submission sticker on your own art, in a holo or black style, and that turns your piece into a limited edition fans can start collecting the moment you submit. Each edition starts at 500 T-XP for the fans who collect it, then doubles every 24 hours, so your earliest supporters move first. As more fans collect, your listing picks up momentum on the platform. Those collect counts matter beyond bragging rights: they are one signal our team uses, together with curator review, to help decide which pieces make it to the billboards. Your fans collecting your work is your work making its case.</>,
-  },
-  {
-    n: 3,
-    title: "Go viral with Remix",
-    body: <>Publish your featured piece to your own page and let fans reinterpret it in styles like Neon, Vapor, and Painterly. Every remix is a shareable moment that points back to you, and you get your own OneHub address in the process.</>,
-  },
-  {
-    n: 4,
-    title: "Get discovered with Kredentials",
-    body: <>Set up a .kred profile that gathers your links and your story so collectors, press, and even AI engines can find and cite your work. It normally costs $19 a year, and NFT.NYC is covering every submitting artist's first year.</>,
-  },
-];
 
 export default function BlogTsMomentum2026() {
   return (
@@ -101,14 +62,14 @@ export default function BlogTsMomentum2026() {
       </Helmet>
       <PageMeta
         title="TS Challenge is heating up, and 2026 submissions are open"
-        description="Two months out from NFT.NYC 2026, the Times Square Challenge is running hot. Community metrics, favorite art, and how to submit for the 2026 Times Square billboards."
+        description="Two months out from NFT.NYC 2026, the Times Square Challenge is running hot. Community metrics, favorite art, and how artists can submit for the 2026 Times Square billboards."
         path="/blog/ts-challenge-momentum-2026"
       />
       <Header theme="dark" onToggleTheme={() => {}} />
 
       <main style={{ maxWidth: 820, margin: "0 auto", padding: "140px 24px 80px" }}>
         {/* Hero */}
-        <div style={{ marginBottom: 48 }}>
+        <div style={{ marginBottom: 40 }}>
           <div style={{
             height: 6,
             borderRadius: 999,
@@ -140,15 +101,16 @@ export default function BlogTsMomentum2026() {
         <section style={{ marginBottom: 48 }}>
           <h2 style={sectionH2Style}>Something is happening in Times Square</h2>
           <p style={paragraphStyle}>
-            The Times Square Challenge was built to keep the NFT.NYC community connected all year, not just for three days in September. Two months out from NFT.NYC 2026, the platform is proving the idea works.
+            The Times Square Challenge was built to keep the NFT.NYC community connected all year, not just for three days in September. Two months out from NFT.NYC 2026, Sept 1 to 3, the platform is proving the idea works.
           </p>
           <p style={paragraphStyle}>
             In the last 30 days alone:
           </p>
 
-          <TodoCallout
-            label="TEAM FILL-IN"
-            note="Momentum numbers for the last 30 days go here: total collects, unique collectors, gifts sent, active artists. Source: OneHub metrics tracker, July 2026."
+          <Figure
+            src={`${IMG}/30-days-momentum.png`}
+            alt="30 Days of Momentum: 365 Times Square art editions collected, 1,200+ collectible gifts sent, 997 missions completed, 572 Gift Studio creations collected, 244 new collectors this month, 124 artists made their first drop."
+            caption="Momentum across the hub over the last 30 days. Source: onehub metrics tracker, July 2026."
           />
 
           <p style={paragraphStyle}>
@@ -166,12 +128,13 @@ export default function BlogTsMomentum2026() {
             The Times Square Challenge runs on two simple actions: collect the art you love, and send gifts to the people you meet. Every day, collectors claim limited editions from the NFT.NYC Community Artist Showcase and send each other collectible gifts that earn T-XP for everyone involved.
           </p>
           <p style={paragraphStyle}>
-            Right now the most-sent gift in the community is <strong>Love and Signals</strong>, created by MarsCitizen, passed between members 55 times in the last month. On the art side, pieces from artists like kamand kavand, Diba ADIB, Metamusex, and Fereshteh Farmand are among the collector favorites, the same works that appeared at physical scale in Times Square.
+            Right now the most-sent gift in the community is Love and Signals, created by MarsCitizen, passed between members 55 times in the last month. On the art side, pieces from artists like kamand kavand, Diba ADIB, Metamusex, and Fereshteh Farmand are among the collector favorites, the same works that appeared at physical scale in Times Square.
           </p>
 
-          <TodoCallout
-            label="ASSET"
-            note="Grid of favorite gifts + top-collected artworks from the last 30 days. Pulled from OneHub."
+          <Figure
+            src={`${IMG}/what-community-is-collecting.png`}
+            alt="What the community is collecting: Love & Signals by MarsCitizen (55 gifts sent) plus collector favorites by kamand kavand, Diba ADIB, Metamusex, and Fereshteh Farmand."
+            caption="What the community is collecting and gifting right now."
           />
 
           <p style={paragraphStyle}>
@@ -186,83 +149,44 @@ export default function BlogTsMomentum2026() {
             Here is the part every artist has been waiting for. Submissions for the NFT.NYC 2026 Community Artist Showcase are open, and getting your work considered for a Times Square billboard starts with a single upload.
           </p>
           <p style={paragraphStyle}>
-            The flow is fast and it is built for artists, not gatekeepers. Your first submission is free, and each additional piece costs 500 T-XP to submit.
+            The flow is fast and it is built for artists, not gatekeepers. Your first submission is free, and each additional piece you enter costs 500 T-XP to submit.
           </p>
 
-          {/* Step cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16, margin: "32px 0" }}>
-            {STEPS.map(step => (
-              <article
-                key={step.n}
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 16,
-                  padding: "22px 24px",
-                  background: "var(--color-surface)",
-                  display: "grid",
-                  gridTemplateColumns: "auto 1fr",
-                  gap: 18,
-                }}
-              >
-                <div style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 12,
-                  background: "linear-gradient(135deg, #F59E0B, #EF4444)",
-                  color: "#fff",
-                  fontFamily: "var(--font-display)",
-                  fontSize: 20,
-                  fontWeight: 800,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}>
-                  {step.n}
-                </div>
-                <div>
-                  <h3 style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(18px, 2.2vw, 22px)",
-                    fontWeight: 700,
-                    lineHeight: 1.25,
-                    margin: "0 0 8px",
-                  }}>
-                    {step.title}
-                  </h3>
-                  <p style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: 15,
-                    lineHeight: 1.6,
-                    color: "var(--color-text)",
-                    margin: 0,
-                  }}>
-                    {step.body}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
+          <Figure
+            src={`${IMG}/how-to-get-your-art-to-times-square.png`}
+            alt="How to get your art to Times Square: (1) Submit your work, (2) Add your Times Square sticker, (3) Go viral with Remix, (4) Get discovered with Kredentials, (5) You are live."
+            caption="The full submission flow, start to finish."
+          />
 
+          <p style={paragraphStyle}>
+            <strong>Step one, submit your work.</strong> Upload one piece, an image or a short video, and add your name, your socials, and a short bio for the curators. That is the whole requirement. Selected artworks will be displayed on screens throughout NFT.NYC and on the Times Square billboards themselves.
+          </p>
+          <p style={paragraphStyle}>
+            <strong>Step two, drop your Times Square Challenge sticker.</strong> This is where it gets fun. You place a Proof of Submission sticker on your own art, in a holo or black style, and that turns your piece into a limited edition fans can start collecting the moment you submit. Each edition starts at 500 T-XP for the fans who collect it, then doubles every 24 hours, so your earliest supporters move first. As more fans collect, your listing picks up momentum on the platform.
+          </p>
+          <p style={paragraphStyle}>
+            Those collect counts matter beyond bragging rights. The number of times your Proof of Submission edition gets collected is one of the signals our team uses, together with curator review, to help decide which pieces make it to the billboards. Your fans collecting your work is your work making its case.
+          </p>
+          <p style={paragraphStyle}>
+            <strong>Step three, go viral with Remix.</strong> Publish your featured piece to your own page and let fans reinterpret it in styles like Neon, Vapor, and Painterly. Every remix is a shareable moment that points back to you, and you get your own OneHub address in the process.
+          </p>
+          <p style={paragraphStyle}>
+            <strong>Step four, get discovered with Kredentials.</strong> Set up a .kred profile that gathers your links and your story so collectors, press, and even AI engines can find and cite your work. It normally costs 19 dollars a year, and NFT.NYC is covering every submitting artist's first year.
+          </p>
           <p style={paragraphStyle}>
             Steps two through four are optional, but they are how your submission turns into a movement instead of a form. When you finish, your piece lands with the Showcase curators for display selection while your Challenge edition is already live for fans to collect. You are in review for the billboards and building your audience from day one.
           </p>
         </section>
 
-        {/* Deadline + CTA */}
+        {/* Section 4 */}
         <section style={{ marginBottom: 24 }}>
           <h2 style={sectionH2Style}>Get in before the deadline</h2>
           <p style={paragraphStyle}>
-            Submissions are open now and close on <strong>July 31 at midnight</strong>. Selected work goes live during NFT.NYC 2026, Sept 1 to 3, in the heart of Times Square.
+            Submissions are open now and close on July 31 at midnight. Selected work goes live during NFT.NYC 2026, Sept 1 to 3, in the heart of Times Square.
           </p>
           <p style={paragraphStyle}>
             If you have been waiting for a reason to put your art in front of the world, this is it. Submit your piece, drop your sticker, and let the community carry it to the billboards.
           </p>
-
-          <TodoCallout
-            label="CTA LINK"
-            note="Confirm the exact submission URL for 'Submit to the 2026 Showcase' — currently pointed at /ts-challenge."
-          />
 
           <div style={{ textAlign: "center", marginTop: 32 }}>
             <a
@@ -281,7 +205,7 @@ export default function BlogTsMomentum2026() {
                 padding: "0.85rem 2.25rem",
               }}
             >
-              Submit to the 2026 Showcase →
+              Submit to the 2026 Showcase
             </a>
           </div>
         </section>
