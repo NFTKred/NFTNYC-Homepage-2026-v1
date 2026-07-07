@@ -15,6 +15,7 @@ import WhyNYC from '@/components/WhyNYC';
 import PastEvents from '@/components/PastEvents';
 import SatelliteEvents from '@/components/SatelliteEvents';
 import NewsletterCapture from '@/components/NewsletterCapture';
+import ActivityFeed from '@/components/ActivityFeed';
 import FAQ from '@/components/FAQ';
 import SiteFooter from '@/components/SiteFooter';
 
@@ -365,6 +366,8 @@ export default function Index() {
             </div>
           </div>
         </section>
+
+        <ActivityFeed />
 
         <NewsletterCapture />
 
