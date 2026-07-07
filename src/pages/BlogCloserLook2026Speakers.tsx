@@ -29,6 +29,7 @@ interface Session {
   title: string;
   speaker: string;
   role: string;
+  avatar: string;
   body: React.ReactNode;
 }
 
@@ -39,6 +40,7 @@ const SESSIONS: Session[] = [
     title: "Culture, Web3 & the Metaverse, 3 Years Later: An Update from Animoca Brands",
     speaker: "Yat Siu",
     role: "Co-Founder and Executive Chairman, Animoca Brands",
+    avatar: "https://cdn.sessionize.com/image/3c39-400o400o1-MaGWEfynyiuXyzuCmhnCRP.jpg",
     body: (
       <>Three years after his landmark NFT.NYC talk on culture and the open metaverse, Yat Siu returns with an update from one of Web3's most consequential companies. Few people have a wider view of where game tokenization, digital property rights, and the metaverse economy actually stand, and where they're going next.</>
     ),
@@ -49,6 +51,7 @@ const SESSIONS: Session[] = [
     title: "Proof of Time: The NFT That Can Only Be Minted by Being There",
     speaker: "Tom Friend",
     role: "",
+    avatar: "https://cdn.sessionize.com/image/2de5-400o400o1-VGjQXLFUdb2rREmE5uCfnK.jpg",
     body: (
       <>&ldquo;Every NFT today is backed by computational work or capital: machines and money. Proof of Time proposes a third backing, verified shared human presence.&rdquo; It's a token that can't be bought and can't be farmed. In a year dominated by AI-generated everything, this may be the most human protocol idea on the program.</>
     ),
@@ -59,6 +62,7 @@ const SESSIONS: Session[] = [
     title: "Tokenizing AI Models: How NFTs Turn Decentralized Intelligence into a New Asset Class",
     speaker: "Jiahao Sun",
     role: "Founder & CEO, FLock.io",
+    avatar: "https://cdn.sessionize.com/image/5c86-400o400o1-HnfjGAV6jjQ4LCaB7qGV4U.jpg",
     body: (
       <>What happens when AI models themselves become tradeable on-chain assets? Jiahao Sun introduces Real Model Assets, a token class where &ldquo;value accrues from real AI inference revenue rather than speculation.&rdquo; It's one of the clearest visions yet of how NFTs and AI converge into something entirely new.</>
     ),
@@ -67,8 +71,9 @@ const SESSIONS: Session[] = [
     track: "Creator Economy",
     trackColor: "#F59E0B",
     title: "When Reality Is Fake: How Deepfakes Are Manipulating Crypto Markets and How to Fix It",
-    speaker: "Sandra",
+    speaker: "Sandra Cai",
     role: "Founder, Plurall AI",
+    avatar: "https://cdn.sessionize.com/image/4040-400o400o1-h6cDrwm24MuzXfj5P3Xsd4.png",
     body: (
       <>Voice-cloned CEOs pumping tokens. Synthetic influencer endorsements. AI-generated content faking NFT provenance. &ldquo;Deepfake attacks on crypto markets are accelerating, and the tools to detect them don't yet exist at scale.&rdquo; This session explores how on-chain verification and ZK-proof identity layers can provide defense.</>
     ),
@@ -79,6 +84,7 @@ const SESSIONS: Session[] = [
     title: "Smart Heritage: How Italy Is Using Experiential NFTs and AI to Solve Overtourism",
     speaker: "Luca Busolli",
     role: "Blockchain Consultant",
+    avatar: "https://cdn.sessionize.com/image/8de0-400o400o1-UWUN1cJp19ZPD2RmfjTVPj.jpg",
     body: (
       <>Italy's iconic cities are choking on tourists while its hidden villages go unvisited. Smart Heritage represents &ldquo;a national framework proposal that uses experiential NFTs (digital presence certificates claimed on location)&rdquo; to redirect visitor flow. Busolli presents a vision of NFTs functioning as real public infrastructure at a country scale.</>
     ),
@@ -89,6 +95,7 @@ const SESSIONS: Session[] = [
     title: "Art Beyond Earth: From the First NFT Museum on the Moon to the Future of Digital Ownership in Space",
     speaker: "Scott Spiegel",
     role: "CEO, BitBasel",
+    avatar: "/speakers/scott-spiegel.jpg",
     body: (
       <>BitBasel previously proposed bringing NFTs and digital art into space. That vision has materialized into actual lunar missions and permanent cultural archives beyond Earth. Spiegel returns with updates on the next phase of digital ownership extending beyond our planet.</>
     ),
@@ -97,8 +104,9 @@ const SESSIONS: Session[] = [
     track: "Culture, Art and Music",
     trackColor: "#D946EF",
     title: "All In: Music NFTs in the Age of AI",
-    speaker: "Ryan",
-    role: "CEO, gatefold.xyz",
+    speaker: "derelict.eth",
+    role: "CEO of gatefold.xyz",
+    avatar: "https://cdn.sessionize.com/image/7ead-400o400o1-fjEYsfYPK5vhabn3tcKx8h.jpg",
     body: (
       <>AI is transforming music distribution and may undermine the current all-you-can-eat streaming model. Drawing on experiences from previous music NFT cycles, this discussion examines how decentralized systems could reshape music creation, distribution, discovery, and ownership structures.</>
     ),
@@ -109,6 +117,7 @@ const SESSIONS: Session[] = [
     title: "You Don't Own Your NFT. Now What?",
     speaker: "Celine Moille",
     role: "Lawyer",
+    avatar: "https://cdn.sessionize.com/image/b727-400o400o1-pox6r1TXFXuF9duzdTP2uy.jpg",
     body: (
       <>Most collectors believe they fully own their NFTs. In reality, &ldquo;ownership is shaped by licenses, marketplace rules, and royalty enforcement that is inconsistent or absent across platforms.&rdquo; This legal examination clarifies what &ldquo;ownership&rdquo; actually entails and what changes are necessary.</>
     ),
@@ -119,6 +128,7 @@ const SESSIONS: Session[] = [
     title: "1099-DAs and AI Bots: How to Protect Your NFT Gains in 2026 and Beyond",
     speaker: "Zac McClure",
     role: "Co-Founder and CEO, TokenTax",
+    avatar: "https://cdn.sessionize.com/image/4a31-400o400o1-Bue5qQRAX49uYHTmagLR65.jpg",
     body: (
       <>Between Form 1099-DA introduction and IRS wallet-by-wallet tracking requirements, NFT taxation has become significantly more complex in 2026. This session offers practical guidance for the tax season, covering those who have engaged in NFT flipping or claim RWA-linked tokens.</>
     ),
@@ -129,6 +139,7 @@ const SESSIONS: Session[] = [
     title: "From JPEGs to Verifiable NFTs: Secure Reveal, Dynamic Logic & Max Guarantees",
     speaker: "ariutokintumi",
     role: "Author of Datamorpho, Co-Founder of EVVM.org",
+    avatar: "https://cdn.sessionize.com/image/67c5-400o400o1-hFvcE32GY2GfLoA3bfhX8n.jpg",
     body: (
       <>&ldquo;Most NFTs still run on trust: metadata servers, delayed reveals, off-chain logic.&rdquo; When NFTs power games, dynamic characteristics, AI identity, and RWAs, trust becomes insufficient. This session outlines verifiable NFT architecture with provable reveal mechanics and tamper-resistant dynamic tokens.</>
     ),
@@ -233,29 +244,52 @@ export default function BlogCloserLook2026Speakers() {
                 fontSize: "clamp(20px, 2.6vw, 26px)",
                 fontWeight: 700,
                 lineHeight: 1.25,
-                margin: "0 0 10px",
+                margin: "0 0 16px",
               }}>
                 {s.title}
               </h2>
-              <p style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 14,
-                fontWeight: 600,
-                color: "var(--color-text)",
-                margin: "0 0 4px",
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 14,
+                marginBottom: 18,
               }}>
-                {s.speaker}
-              </p>
-              {s.role && (
-                <p style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: 13,
-                  color: "var(--color-text-muted)",
-                  margin: "0 0 14px",
-                }}>
-                  {s.role}
-                </p>
-              )}
+                <img
+                  src={s.avatar}
+                  alt={s.speaker}
+                  loading="lazy"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: `1px solid ${s.trackColor}66`,
+                    background: "#1a1a2e",
+                    flexShrink: 0,
+                  }}
+                />
+                <div style={{ minWidth: 0 }}>
+                  <p style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: "var(--color-text)",
+                    margin: 0,
+                  }}>
+                    {s.speaker}
+                  </p>
+                  {s.role && (
+                    <p style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: 13,
+                      color: "var(--color-text-muted)",
+                      margin: "2px 0 0",
+                    }}>
+                      {s.role}
+                    </p>
+                  )}
+                </div>
+              </div>
               <p style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 15,
