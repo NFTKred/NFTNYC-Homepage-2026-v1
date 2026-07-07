@@ -45,6 +45,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/visa",
     ogImage: "/og/speak.png",
   },
+  media: {
+    title: "Media Pass Application — NFT.NYC 2026",
+    description: "Journalists, podcasters, and creators can apply for a Media Pass to cover NFT.NYC 2026. Applications reviewed weekly, approved applicants contacted directly.",
+    path: "/media",
+    ogImage: "/og/speak.png",
+  },
   sponsor: {
     title: "Partner with NFT.NYC 2026",
     description: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track.",
