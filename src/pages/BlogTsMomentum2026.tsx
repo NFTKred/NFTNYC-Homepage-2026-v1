@@ -114,7 +114,7 @@ export default function BlogTsMomentum2026() {
           />
 
           <p style={paragraphStyle}>
-            The numbers tell one story, but the shape of them tells a better one. Hundreds of these collectors and artists are brand new, making their very first collect or their very first drop this month. This is not a quiet leaderboard. It is a community that shows up.
+            Hundreds of these collectors and artists are brand new, making their very first collect or their very first drop this month. This is not a quiet leaderboard. It is a community that shows up.
           </p>
           <p style={paragraphStyle}>
             And that leaderboard is real. Collectors are racing for the top spots, gifters are trading art back and forth by the hundreds, and the most active creators are watching their work spread across the hub every single day.
@@ -174,7 +174,7 @@ export default function BlogTsMomentum2026() {
             <strong>Step four, get discovered with Kredentials.</strong> Set up a .kred profile that gathers your links and your story so collectors, press, and even AI engines can find and cite your work. It normally costs 19 dollars a year, and NFT.NYC is covering every submitting artist's first year.
           </p>
           <p style={paragraphStyle}>
-            Steps two through four are optional, but they are how your submission turns into a movement instead of a form. When you finish, your piece lands with the Showcase curators for display selection while your Challenge edition is already live for fans to collect. You are in review for the billboards and building your audience from day one.
+            Steps two through four are optional, however, they are how your submission turns into a movement instead of a form. When you finish, your piece lands with the Showcase curators for display selection while your Challenge edition is already live for fans to collect. You are in review for the billboards and building your audience from day one.
           </p>
         </section>
 
