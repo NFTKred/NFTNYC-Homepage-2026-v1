@@ -132,7 +132,7 @@ export default function BlogTsMomentum2026() {
             lineHeight: 1.1,
             margin: "0 0 20px",
           }}>
-            The Times Square Challenge Is Heating Up, and Art Submissions Are Open for NFT.NYC 2026
+            The Times Square Challenge Is Heating Up and Art Submissions Are Open for NFT.NYC 2026
           </h1>
           <p style={{
             fontFamily: "var(--font-body)",
