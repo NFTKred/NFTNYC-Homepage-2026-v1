@@ -198,7 +198,7 @@ export default function BlogCloserLook2026Speakers() {
             color: "var(--color-text-muted)",
             margin: 0,
           }}>
-            With the first two rounds of approved speakers now locked in, the shape of NFT.NYC 2026 is coming into focus. Programming is still being finalized, and more speakers, panels, and sessions will be announced in the weeks ahead. But the approved talks already tell a story about where this space is heading in 2026: AI agents with on-chain identities, tokenized real-world assets, national frameworks deploying NFTs at scale, and communities that outlasted the market that minted them. Here's one session we're excited about from each of the ten tracks.
+            With the first two rounds of approved speakers now locked in, the shape of NFT.NYC 2026 is coming into focus. Programming is still being finalized, and more speakers, panels, and sessions will be announced in the weeks ahead. The approved talks already tell a story about where this space is heading in 2026: AI agents with on-chain identities, tokenized real-world assets, national frameworks deploying NFTs at scale, and communities that outlasted the market that minted them. Here's one session we're excited about from each of the ten tracks.
           </p>
         </div>
 
