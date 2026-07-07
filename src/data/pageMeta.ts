@@ -87,6 +87,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/blog/history-of-remix",
     ogImage: "/og/blog-ts-challenge.png",
   },
+  "blog-closer-look-2026-speakers": {
+    title: "A Closer Look at Some Key NFT.NYC 2026 Speakers",
+    description: "One approved session from each of the ten NFT.NYC 2026 tracks — AI agents, RWAs, deepfake defense, national NFT frameworks, and the first NFT museum on the moon.",
+    path: "/blog/closer-look-2026-speakers",
+    ogImage: "/og/speak.png",
+  },
   journey: {
     title: "Our Story — NFT.NYC",
     description: "Nine years and 200,000+ alumni building the world's leading NFT and Web3 community.",
