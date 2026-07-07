@@ -93,6 +93,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/blog/closer-look-2026-speakers",
     ogImage: "/og/speak.png",
   },
+  "blog-ts-challenge-momentum-2026": {
+    title: "TS Challenge is heating up, and 2026 submissions are open",
+    description: "Two months out from NFT.NYC 2026, the Times Square Challenge platform is running hot. Community metrics, favorite art, and how artists can submit for the 2026 Times Square billboards.",
+    path: "/blog/ts-challenge-momentum-2026",
+    ogImage: "/og/ts-challenge.png",
+  },
   journey: {
     title: "Our Story — NFT.NYC",
     description: "Nine years and 200,000+ alumni building the world's leading NFT and Web3 community.",
