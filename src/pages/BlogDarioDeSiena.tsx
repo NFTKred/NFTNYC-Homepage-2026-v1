@@ -135,7 +135,7 @@ export default function BlogDarioDeSiena() {
         <section style={{ marginTop: 40 }}>
           <h2 style={sectionH2Style}>R3ORDR: ART AS A LIVING SYSTEM</h2>
           <p style={paragraphStyle}>
-            R3ORDR is where all of it converges. Described as an evolving generative art protocol, it sits at the intersection of contemporary art, internet culture, and AI-driven systems. The collection's Hall of Fame anchors the project with 69 one-of-one artworks, but the pieces themselves are only half the story.
+            R3ORDR is where all of it converges. Described as an evolving generative art protocol, it sits at the intersection of contemporary art, internet culture, and AI-driven systems. The collection's Hall of Fame anchors the project with 69 one-of-one artworks. However, the pieces themselves are only half the story.
           </p>
 
           <figure style={{ margin: "32px 0" }}>
