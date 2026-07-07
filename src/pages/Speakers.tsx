@@ -27,6 +27,7 @@ const COMPANY_QUESTION_ID     = 124328;   // "Company Name" question
 // crop in /public/speakers and map it here by lowercased display name.
 const AVATAR_URL: Record<string, string> = {
   "scott spiegel": "/speakers/scott-spiegel.jpg",
+  "tom friend": "/speakers/tom-friend.jpg",
 };
 
 // Filter-chip colours per track. The actual track names come from the

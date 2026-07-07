@@ -51,7 +51,7 @@ const SESSIONS: Session[] = [
     title: "Proof of Time: The NFT That Can Only Be Minted by Being There",
     speaker: "Tom Friend",
     role: "",
-    avatar: "https://cdn.sessionize.com/image/2de5-400o400o1-VGjQXLFUdb2rREmE5uCfnK.jpg",
+    avatar: "/speakers/tom-friend.jpg",
     body: (
       <>&ldquo;Every NFT today is backed by computational work or capital: machines and money. Proof of Time proposes a third backing, verified shared human presence.&rdquo; It's a token that can't be bought and can't be farmed. In a year dominated by AI-generated everything, this may be the most human protocol idea on the program.</>
     ),
