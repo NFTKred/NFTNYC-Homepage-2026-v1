@@ -13,6 +13,7 @@ import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
 import BlogTsChallenge from "./pages/BlogTsChallenge";
 import BlogHistoryOfRemix from "./pages/BlogHistoryOfRemix";
+import BlogDarioDeSiena from "./pages/BlogDarioDeSiena";
 import Journey from "./pages/Journey";
 import Origins from "./pages/Origins";
 import NotFound from "./pages/NotFound";
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
           <Route path="/blog/ts-challenge" element={<BlogTsChallenge />} />
           <Route path="/blog/history-of-remix" element={<BlogHistoryOfRemix />} />
+          <Route path="/blog/dario-de-siena" element={<BlogDarioDeSiena />} />
           <Route path="/journey" element={<Journey />} />
           <Route path="/origins" element={<Origins />} />
           <Route path="/ts-optout" element={<TSOptout />} />

@@ -93,6 +93,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/blog/history-of-remix",
     ogImage: "/og/blog-ts-challenge.png",
   },
+  "blog-dario-de-siena": {
+    title: "Speaker Spotlight: Dario De Siena — NFT.NYC 2026",
+    description: "The Swiss-based painter behind R3ORDR joins NFT.NYC Co-founder Jodee Rich for a fireside chat at NFT.NYC 2026 on breaking, rebuilding, and treating art as a living system.",
+    path: "/blog/dario-de-siena",
+    ogImage: "/blog/dario-de-siena/speaker-card.png",
+  },
   journey: {
     title: "Our Story — NFT.NYC",
     description: "Nine years and 200,000+ alumni building the world's leading NFT and Web3 community.",
