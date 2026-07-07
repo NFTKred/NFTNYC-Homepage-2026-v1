@@ -315,7 +315,7 @@ export default function BlogCloserLook2026Speakers() {
             marginLeft: "auto",
             marginRight: "auto",
           }}>
-            These ten are just the beginning. The full program — panels, performances, and featured sessions — will be announced as programming is finalized.
+            These ten are just the beginning. The full program, including panels, performances, and featured sessions, will be announced as programming is finalized.
           </p>
           <button
             onClick={openTicketing}
