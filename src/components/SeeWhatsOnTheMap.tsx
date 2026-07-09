@@ -1,109 +1,169 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
- * "Join the Times Square Challenge" — animated map section recreated from
- * the OneHub.NFT.NYC #rewards block. Pulsing decorative pins, a featured
- * marker tile that cycles through TS Challenge missions every 6s, and a
- * coral CTA pointing visitors at the first mission (Times Square Billboard
- * Art) on onehub.nft.nyc.
+ * "Join the Times Square Challenge" — live activity feed section.
  *
- * All CSS is scoped via .swotm-* class prefixes so it can't collide with
- * other components on the page. Brand colors match the project palette
- * (--primary-rgb is brand coral #f06347).
+ * The previous version of this component cycled through a hard-coded
+ * list of "featured" mission tiles. It has been replaced with a real
+ * activity feed sourced from the OneHub NFT platform API — each row
+ * is a genuine event (buy / sell / claim / mint / like / send) that
+ * happened on onehub.nft.nyc, tagged `tsbillboard`.
+ *
+ * All CSS is scoped via .swotm-* class prefixes so it can't collide
+ * with other components on the page. Brand colors match the project
+ * palette (--primary-rgb is brand coral #f06347).
  */
 
-const STORAGE_BASE = 'https://wspfuwokgyfyjbdlqoag.supabase.co/storage/v1/object/public/map-assets';
-
-interface Feature {
-  label: string;
-  image?: string;
-  video?: string;
-}
-
-// Cycling featured tile content — labels mapped to the 12 TS Challenge
-// missions (or platform surfaces where there's no 1:1 mission). The
-// "Mission #N ·" prefix anchors the visual to the article's framing.
-const FEATURES: Feature[] = [
-  { label: 'Mission #1 · Collect TS Art', image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_Showcase_Animation_2132385581765501553.jpg?width=568&format=webp' },
-  { label: 'Mission #2 · Send Gifts',     image: STORAGE_BASE + '/relay-giftstudio-v1.jpg' },
-  { label: 'Mission #5 · Submit Art',     image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_TS_BB_Showcase_2020359081765501856.jpg?width=568&format=webp' },
-  { label: 'Mission #6 · Claim Passport', image: STORAGE_BASE + '/mapmarker-domainmarket-v1.png' },
-  { label: 'Mission #9 · Race in NYC',    video: STORAGE_BASE + '/hotgarage-ts-musclecar-v1.mp4' },
-  { label: 'Leaderboard',                 image: 'https://imgcdn2-bd3.kxcdn.com/web/files/5c37fdb82f586d11f45a84b8/NFTNYC2025_TS_BB_Showcase_992032624851765501812.jpg?width=568&format=webp' },
-  { label: 'Community Hub',               image: 'https://f005.backblazeb2.com/file/PB-HubSpot/files/chmln-crm-ts.png' },
-];
+const FEED_URL =
+  'https://api.nftplatform.tech/nft/messages/?page=1&count=40&grab=onehub.nft.nyc&channel=onehub.nft.nyc&actions=send,claim,buy,like,sell,mint,ending_soon,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&sort=-created&tags=tsbillboard&token=734d4bf5-e766-46a9-be21-94035c1343d6';
 
 const DECOR: { x: number; y: number }[] = [
   { x: 12, y: 18 }, { x: 72, y: 8 },  { x: 88, y: 32 }, { x: 25, y: 55 },
   { x: 65, y: 70 }, { x: 90, y: 78 }, { x: 10, y: 82 }, { x: 78, y: 52 },
 ];
 
-const INTERVAL_MS = 6000;
-const GAP_MS = 1000;
+// Colour swatches per action so the feed reads at a glance. The
+// dot next to each item uses the matching colour.
+const ACTION_COLORS: Record<string, string> = {
+  buy: '#10B981',
+  sell: '#F59E0B',
+  claim: '#3B82F6',
+  mint: '#8B5CF6',
+  gift: '#EC4899',
+  send: '#EC4899',
+  collect: '#06B6D4',
+  like: '#F06347',
+  post: '#94A3B8',
+  comment: '#94A3B8',
+  ending_soon: '#EF4444',
+};
+
+interface FeedItem {
+  id: string;
+  action: string;
+  ago: string;
+  text: string;
+  image: string | null;
+  contributor: string | null;
+  color: string;
+}
+
+interface RawMessage {
+  id?: string;
+  action?: string;
+  ago?: string;
+  ftext?: string;
+  nft?: {
+    back?: string | null;
+    front?: string | null;
+    image?: string | null;
+    contributor_details?: { name?: string | null } | null;
+  } | null;
+}
+
+function normalizeMessages(raw: RawMessage[]): FeedItem[] {
+  return raw
+    .filter((m) => m && (m.ftext || m.action))
+    .map((m, idx) => {
+      const nft = m.nft ?? {};
+      const image = nft.back ?? nft.front ?? nft.image ?? null;
+      const action = (m.action ?? 'post').toLowerCase();
+      return {
+        id: m.id ?? `feed-${idx}`,
+        action,
+        ago: m.ago ?? '',
+        text: m.ftext ?? '',
+        image,
+        contributor: nft.contributor_details?.name ?? null,
+        color: ACTION_COLORS[action] ?? '#F06347',
+      };
+    });
+}
 
 export default function SeeWhatsOnTheMap() {
-  const tileRef = useRef<HTMLDivElement | null>(null);
-  const mediaRef = useRef<HTMLDivElement | null>(null);
-  const labelRef = useRef<HTMLDivElement | null>(null);
+  const [feed, setFeed] = useState<FeedItem[] | null>(null);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const tile = tileRef.current;
-    const tileMedia = mediaRef.current;
-    const tileLabel = labelRef.current;
-    if (!tile || !tileMedia || !tileLabel) return;
-
-    let index = 0;
-    let mounted = true;
-
-    function renderFeature(i: number) {
-      const f = FEATURES[i];
-      if (!tileLabel || !tileMedia) return;
-      tileLabel.textContent = f.label;
-      tileMedia.innerHTML = '';
-      let el: HTMLElement | null = null;
-      if (f.video) {
-        const v = document.createElement('video');
-        v.src = f.video;
-        v.autoplay = true;
-        v.loop = true;
-        v.muted = true;
-        (v as HTMLVideoElement).playsInline = true;
-        v.setAttribute('playsinline', '');
-        el = v;
-      } else if (f.image) {
-        const img = document.createElement('img');
-        img.src = f.image;
-        img.alt = f.label;
-        img.loading = 'lazy';
-        el = img;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(FEED_URL, { headers: { Accept: 'application/json' } });
+        if (!res.ok) return;
+        const data = (await res.json()) as { messages?: RawMessage[] };
+        if (cancelled) return;
+        const items = normalizeMessages(data.messages ?? []);
+        setFeed(items.length ? items : null);
+      } catch {
+        // Silent — the section still renders the map, title, CTA, etc.
+        // without the feed if the API is unavailable.
       }
-      if (el) tileMedia.appendChild(el);
-    }
-
-    // Initial render + fade in
-    renderFeature(index);
-    const raf = requestAnimationFrame(() => {
-      if (!mounted || !tile) return;
-      tile.classList.add('is-visible');
-    });
-
-    const interval = window.setInterval(() => {
-      if (!mounted || !tile) return;
-      tile.classList.remove('is-visible');
-      window.setTimeout(() => {
-        if (!mounted || !tile) return;
-        index = (index + 1) % FEATURES.length;
-        renderFeature(index);
-        tile.classList.add('is-visible');
-      }, GAP_MS);
-    }, INTERVAL_MS);
-
+    })();
     return () => {
-      mounted = false;
-      cancelAnimationFrame(raf);
-      window.clearInterval(interval);
+      cancelled = true;
     };
   }, []);
+
+  // Hover / focus: pause the marquee, hand the wrap over to the user
+  // for manual scrolling. On leave we reset scrollTop and let the CSS
+  // animation take over again. The transform baseline is captured at
+  // hover-time so scrollTop starts wherever the marquee was paused
+  // rather than snapping back to the top.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const track = trackRef.current;
+    if (!wrap || !track || !feed) return;
+
+    let baseline = 0;
+
+    const onEnter = () => {
+      const m = new DOMMatrixReadOnly(getComputedStyle(track).transform);
+      baseline = -m.m42;
+      // Only clear the specific longhands we set - using the `animation`
+      // shorthand would also reset animation-duration to 0s, which is why
+      // the marquee failed to resume on mouseleave the first time round.
+      track.style.animationName = 'none';
+      track.style.transform = 'none';
+      wrap.scrollTop = baseline > 0 ? baseline : 0;
+    };
+    const onLeave = () => {
+      // Resume the marquee from the scroll position the user left it at,
+      // not from translateY(0). Achieved by seeding a negative
+      // animation-delay so the animation "starts" mid-cycle at exactly
+      // the translateY the user was viewing. The animation keyframe goes
+      // 0 -> -50%, where 50% == half the duplicated track height (one
+      // loop), so we map (scrollTop mod loopHeight) -> fraction of
+      // duration.
+      const scrollY = wrap.scrollTop;
+      const durationSec =
+        parseFloat(getComputedStyle(track).animationDuration) || 30;
+      const loopHeight = track.scrollHeight / 2;
+      const delay =
+        loopHeight > 0
+          ? -((scrollY % loopHeight) / loopHeight) * durationSec
+          : 0;
+      wrap.scrollTop = 0;
+      track.style.animationName = '';
+      track.style.transform = '';
+      track.style.animationDelay = `${delay}s`;
+    };
+
+    wrap.addEventListener('mouseenter', onEnter);
+    wrap.addEventListener('mouseleave', onLeave);
+    wrap.addEventListener('focusin', onEnter);
+    wrap.addEventListener('focusout', onLeave);
+    return () => {
+      wrap.removeEventListener('mouseenter', onEnter);
+      wrap.removeEventListener('mouseleave', onLeave);
+      wrap.removeEventListener('focusin', onEnter);
+      wrap.removeEventListener('focusout', onLeave);
+    };
+  }, [feed]);
+
+  // Duplicate the list so the marquee scroll can loop seamlessly.
+  const loop = feed ? [...feed, ...feed] : [];
+  const durationSec = feed ? Math.max(feed.length * 3.5, 30) : 0;
 
   return (
     <section className="swotm-section" id="see-whats-on-the-map" aria-labelledby="swotm-heading">
@@ -139,29 +199,67 @@ export default function SeeWhatsOnTheMap() {
       {/* Foreground content */}
       <div className="swotm-content">
         <h2 className="swotm-title" id="swotm-heading">
-          Join the <span className="accent">Times Square Challenge</span>
+          <span className="accent">Start Collecting</span>
         </h2>
         <p className="swotm-subtitle">
-          12 Missions. 6 industries. One map. See how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi — and earn T-XP for every Mission you complete.
+          The Times Square Challenge showcases how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi.
+        </p>
+        <p className="swotm-subtitle">
+          Start by collecting Times Square Art from our global community of Artists - and earn T-XP for your activity.
         </p>
 
-        {/* Featured map marker — in document flow between the subtitle and
-            the CTA row so its position stays consistent regardless of
-            section height / viewport. The tile pops up above the pin via
-            the .swotm-tile bottom: 100% rule. */}
-        <div className="swotm-feature-wrap">
-          <div className="swotm-feature">
-            <div className="swotm-tile" ref={tileRef}>
-              <div className="media" ref={mediaRef}></div>
-              <div className="label" ref={labelRef}></div>
-              <div className="arrow"></div>
-            </div>
-            <div className="swotm-pin">
-              <span className="pulse" />
-              <span className="dot" />
+        {/* Live activity feed — real events from onehub.nft.nyc tagged
+            `tsbillboard`. Replaces the old cycling map-marker tile. When
+            the API is unreachable the block hides itself and the section
+            still reads cleanly. */}
+        {feed && feed.length > 0 && (
+          <div
+            className="swotm-feed-wrap"
+            ref={wrapRef}
+            aria-label="Live TS Challenge activity"
+          >
+            <div
+              className="swotm-feed-track"
+              ref={trackRef}
+              style={{ animationDuration: `${durationSec}s` }}
+            >
+              {loop.map((item, i) => (
+                <a
+                  key={`${item.id}-${i}`}
+                  className="swotm-feed-item"
+                  href="https://onehub.nft.nyc/activity"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ '--dot': item.color } as React.CSSProperties}
+                >
+                  {item.image ? (
+                    <img
+                      className="swotm-feed-thumb"
+                      src={item.image}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.visibility = 'hidden';
+                      }}
+                    />
+                  ) : (
+                    <span className="swotm-feed-thumb swotm-feed-thumb-empty" aria-hidden="true" />
+                  )}
+                  <span className="swotm-feed-body">
+                    <span className="swotm-feed-text">{item.text}</span>
+                    <span className="swotm-feed-meta">
+                      <span className="swotm-feed-action">{item.action.replace(/_/g, ' ')}</span>
+                      {item.ago && <span className="swotm-feed-ago">· {item.ago}</span>}
+                      {item.contributor && (
+                        <span className="swotm-feed-contrib">· {item.contributor}</span>
+                      )}
+                    </span>
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
-        </div>
+        )}
 
         <div className="swotm-cta-row">
           <a className="swotm-cta swotm-cta-secondary" href="/ts-challenge">
@@ -169,38 +267,12 @@ export default function SeeWhatsOnTheMap() {
           </a>
           <a
             className="swotm-cta"
-            href="https://onehub.nft.nyc/category/Times-Square-Billboard-Art"
+            href="https://onehub.nft.nyc/activity"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Complete your first Mission
+            Start Collecting
           </a>
-        </div>
-
-        {/* Meet Relay card — moved here from WhyNYC so it sits below the
-            primary CTAs in this section. */}
-        <div className="swotm-relay">
-          <img
-            src="/relay-rat.png"
-            alt="Relay the Rat"
-            className="swotm-relay-img"
-          />
-          <div className="swotm-relay-body">
-            <p className="swotm-relay-title">Meet your guide, Relay</p>
-            <p className="swotm-relay-desc">
-              Born and raised in Times Square, Relay is your local guide to NFT.NYC. Ask Relay anything about past events, what to expect in 2026, or how to get involved.
-            </p>
-            <button
-              type="button"
-              className="swotm-relay-btn"
-              onClick={() => {
-                const btn = document.getElementById('relay-chat-btn') as HTMLElement | null;
-                if (btn) btn.click();
-              }}
-            >
-              Ask Relay
-            </button>
-          </div>
         </div>
       </div>
     </section>
@@ -271,88 +343,132 @@ const SWOTM_CSS = `
   opacity: 0.7;
 }
 
-/* Featured marker container — sits in document flow between the subtitle
-   and the CTA row. The tile (the popup card with the rotating image +
-   label) absolute-positions itself above the pin via .swotm-tile's
-   bottom: 100% rule, so we reserve enough top margin here to give the
-   tile room to render without being clipped by the subtitle above. */
-.swotm-feature-wrap {
+/* Live activity feed — vertically auto-scrolling list of real events
+   from onehub.nft.nyc. Reuses the global @keyframes feedScrollUp from
+   src/index.css. The mask-image fades the top/bottom edges so items
+   appear to enter / leave rather than pop in / out. Duplicate item
+   set is rendered inline so the marquee can loop seamlessly at 50%. */
+.swotm-feed-wrap {
   position: relative;
+  width: min(720px, 100%);
+  height: 480px;
+  margin: 2.25rem auto 2.75rem;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+.swotm-feed-wrap:hover,
+.swotm-feed-wrap:focus-within {
+  overflow-y: auto;
+  cursor: grab;
+}
+.swotm-feed-wrap::-webkit-scrollbar { width: 6px; }
+.swotm-feed-wrap::-webkit-scrollbar-track { background: transparent; }
+.swotm-feed-wrap::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 3px;
+}
+.swotm-feed-track {
   display: flex;
-  justify-content: center;
-  margin: 240px auto 50px;   /* top reserves space for the popup tile */
+  flex-direction: column;
+  gap: 12px;
+  animation: feedScrollUp linear infinite;
+  will-change: transform;
 }
-.swotm-feature {
+.swotm-feed-wrap:hover .swotm-feed-track,
+.swotm-feed-wrap:focus-within .swotm-feed-track {
+  animation-play-state: paused;
+}
+.swotm-feed-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.92);
+  text-decoration: none;
+  transition: border-color 200ms ease, background 200ms ease, transform 200ms ease;
+  flex-shrink: 0;
+  text-align: left;
+}
+.swotm-feed-item:hover {
+  border-color: rgba(var(--swotm-primary-rgb)/0.55);
+  background: rgba(255,255,255,0.07);
+}
+.swotm-feed-thumb {
+  width: 160px; height: 160px;
+  object-fit: contain;
+  flex-shrink: 0;
   position: relative;
-  z-index: 20;
 }
-.swotm-pin {
-  position: relative;
-  width: 36px; height: 36px;
-}
-.swotm-pin .pulse {
-  position: absolute;
-  width: 36px; height: 36px;
-  left: 0; top: 0;
-  border-radius: 9999px;
-  background: rgba(var(--swotm-primary-rgb)/0.30);
-  animation: swotm-pulse 2.2s ease-in-out infinite;
-}
-.swotm-pin .dot {
-  position: absolute;
-  width: 14px; height: 14px;
-  left: 11px; top: 11px;
-  border-radius: 9999px;
-  background: rgb(var(--swotm-primary-rgb));
-  box-shadow: 0 4px 12px rgba(var(--swotm-primary-rgb)/0.40);
-}
-
-/* Tile that pops up above the pin */
-.swotm-tile {
-  position: absolute;
-  left: 50%;
-  bottom: 100%;
-  margin-bottom: 12px;
-  width: min(21vw, 150px);
-  display: flex; flex-direction: column; align-items: center;
-  transform: translateX(-50%) translateY(8px) scale(0.95);
-  opacity: 0;
-  transition: opacity 500ms ease, transform 500ms ease;
-  pointer-events: none;
-}
-.swotm-tile.is-visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0) scale(1);
-}
-.swotm-tile .media {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 12px;
-  border: 2px solid rgba(var(--swotm-primary-rgb)/0.60);
-  background: var(--swotm-bg);
-  box-shadow: 0 10px 30px rgba(var(--swotm-primary-rgb)/0.20);
-}
-.swotm-tile .media img,
-.swotm-tile .media video {
-  width: 100%; height: 100%;
-  object-fit: cover;
+.swotm-feed-thumb-empty {
   display: block;
 }
-.swotm-tile .label {
-  margin-top: 4px;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  background: rgba(var(--swotm-primary-rgb)/0.90);
-  color: #fff;
-  font-size: 10px; font-weight: 600;
-  white-space: nowrap;
+.swotm-feed-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
-.swotm-tile .arrow {
-  width: 0; height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 10px solid rgba(var(--swotm-primary-rgb)/0.60);
+.swotm-feed-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.swotm-feed-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.swotm-feed-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--dot, rgb(var(--swotm-primary-rgb)));
+  font-size: 10px;
+}
+.swotm-feed-action::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 9999px;
+  background: var(--dot, rgb(var(--swotm-primary-rgb)));
+  animation: feedDotPulse 3s ease-in-out infinite;
+}
+.swotm-feed-ago,
+.swotm-feed-contrib {
+  color: rgba(255,255,255,0.55);
+}
+.swotm-feed-contrib {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 480px) {
+  .swotm-feed-wrap { height: 420px; }
+  .swotm-feed-thumb { width: 120px; height: 120px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .swotm-feed-track { animation: none; }
 }
 
 /* Foreground content (title + button) */
@@ -380,6 +496,7 @@ const SWOTM_CSS = `
   margin: 0;
   line-height: 1.55;
 }
+.swotm-subtitle + .swotm-subtitle { margin-top: 0.9rem; }
 .swotm-cta-row {
   display: inline-flex;
   align-items: center;
@@ -420,65 +537,6 @@ const SWOTM_CSS = `
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.4);
   box-shadow: none;
-}
-
-/* Meet Relay card — moved here from WhyNYC. Sits below the CTA row. */
-.swotm-relay {
-  position: relative;
-  z-index: 10;
-  margin: 2rem auto 0;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 1rem;
-  padding: 1.25rem 1.5rem;
-  max-width: 480px;
-  text-align: left;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.swotm-relay-img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
-}
-.swotm-relay-body { flex: 1; }
-.swotm-relay-title {
-  font-family: var(--font-display, "Monument Extended", sans-serif);
-  font-size: var(--text-sm, 0.875rem);
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  margin: 0 0 0.35rem;
-}
-.swotm-relay-desc {
-  font-family: var(--font-body, sans-serif);
-  font-size: var(--text-xs, 0.75rem);
-  color: rgba(255,255,255,0.7);
-  line-height: 1.5;
-  margin: 0 0 0.75rem;
-}
-.swotm-relay-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.45rem 1.25rem;
-  border-radius: 9999px;
-  font-family: var(--font-body, sans-serif);
-  font-weight: 600;
-  font-size: 12px;
-  cursor: pointer;
-  background: #fff;
-  color: #000;
-  border: none;
-  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.swotm-relay-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(255,255,255,0.2);
 }
 
 @keyframes swotm-pulse {
