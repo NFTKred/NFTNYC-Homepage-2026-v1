@@ -6,7 +6,7 @@ import PageMeta from "@/components/PageMeta";
 const ARTICLE_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  headline: "A Closer Look at Some Key NFT.NYC 2026 Speakers",
+  headline: "NFT.NYC 2026 Speaker Spotlight #1",
   description:
     "One approved session from each of the ten NFT.NYC 2026 tracks — from AI agents with on-chain identities to lunar NFT museums, national experiential-NFT frameworks, and communities that outlasted the market that minted them.",
   url: "https://www.nft.nyc/blog/closer-look-2026-speakers",
@@ -19,7 +19,7 @@ const ARTICLE_JSON_LD = {
     logo: { "@type": "ImageObject", url: "https://www.nft.nyc/favicon.jpg" },
   },
   datePublished: "2026-07-07",
-  dateModified: "2026-07-07",
+  dateModified: "2026-07-09",
   inLanguage: "en",
 };
 
@@ -157,7 +157,7 @@ export default function BlogCloserLook2026Speakers() {
         <script type="application/ld+json">{JSON.stringify(ARTICLE_JSON_LD)}</script>
       </Helmet>
       <PageMeta
-        title="A Closer Look at Some Key NFT.NYC 2026 Speakers"
+        title="NFT.NYC 2026 Speaker Spotlight #1"
         description="One approved session from each of the ten NFT.NYC 2026 tracks — AI agents, RWAs, deepfake defense, national NFT frameworks, and the first NFT museum on the moon."
         path="/blog/closer-look-2026-speakers"
       />
@@ -180,7 +180,7 @@ export default function BlogCloserLook2026Speakers() {
             color: "var(--color-text-muted)",
             margin: "0 0 12px",
           }}>
-            NFT.NYC 2026 · SPEAKER PREVIEW · 7 JULY 2026
+            NFT.NYC 2026 · SPEAKER SPOTLIGHT · 9 JULY 2026
           </p>
           <h1 style={{
             fontFamily: "var(--font-display)",
@@ -189,7 +189,7 @@ export default function BlogCloserLook2026Speakers() {
             lineHeight: 1.1,
             margin: "0 0 20px",
           }}>
-            A Closer Look at Some Key NFT.NYC 2026 Speakers
+            NFT.NYC 2026 Speaker Spotlight #1
           </h1>
           <p style={{
             fontFamily: "var(--font-body)",
@@ -336,6 +336,79 @@ export default function BlogCloserLook2026Speakers() {
             Get your Earlybird ticket →
           </button>
         </div>
+
+        {/* Kredentials footer — speaker-facing CTA */}
+        <section style={{
+          marginTop: 64,
+          padding: "32px 32px",
+          borderRadius: 20,
+          border: "1px solid rgba(139,92,246,0.35)",
+          background: "linear-gradient(135deg, rgba(6,182,212,0.06), rgba(139,92,246,0.06), rgba(236,72,153,0.06))",
+        }}>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            color: "#8B5CF6",
+            margin: "0 0 12px",
+          }}>
+            For approved speakers
+          </p>
+          <h2 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(24px, 3vw, 32px)",
+            fontWeight: 800,
+            lineHeight: 1.15,
+            margin: "0 0 20px",
+          }}>
+            Activate your Kredentials page
+          </h2>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: 16,
+            lineHeight: 1.65,
+            color: "var(--color-text)",
+            margin: "0 0 16px",
+          }}>
+            Your Kredentials page has already been built for you. It's pre-populated with your NFT.NYC bio, headshot, and public profile data. All you need to do is claim your .Kred domain, the name attendees, press, and AI engines will use to find you at NFT.NYC and beyond.
+          </p>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: 16,
+            lineHeight: 1.65,
+            color: "var(--color-text)",
+            margin: "0 0 16px",
+          }}>
+            Your .Kred domain is yours for a full year as part of your speaker benefits. The domain anchors your Speaker Passport permanently to ICANN DNS and as an ERC-721 token on Base, so your NFT.NYC legacy lives well beyond the event and is citable by ChatGPT, Claude, Perplexity, Gemini, Bing AI, and Apple Intelligence. If you choose to keep it after year one, renewal is just $99/year.
+          </p>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: 16,
+            lineHeight: 1.65,
+            color: "var(--color-text)",
+            margin: "0 0 24px",
+          }}>
+            Activation takes about two minutes. Your profile is waiting for you.
+          </p>
+          <a
+            href="#"
+            style={{
+              display: "inline-block",
+              fontFamily: "var(--font-body)",
+              fontSize: 15,
+              fontWeight: 600,
+              color: "#fff",
+              background: "linear-gradient(135deg, #06B6D4, #8B5CF6, #EC4899)",
+              textDecoration: "none",
+              borderRadius: 9999,
+              padding: "0.75rem 2rem",
+            }}
+          >
+            Activate my Kredentials page →
+          </a>
+        </section>
       </main>
 
       <SiteFooter />
