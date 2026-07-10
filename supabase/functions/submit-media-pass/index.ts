@@ -16,7 +16,7 @@ import { decodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "authorization, apikey, x-client-info, content-type",
 };
 
 // Logo delivered as a data URL from the browser (base64). Kept small — the
