@@ -46,6 +46,11 @@ const FAQ_DATA: FAQCategory[] = [
         a: 'Crypto orders are processed via our Shopify backend (you should have received a confirmation email or text message when you ordered). Your ticket is held for you on Eventbrite (where we reconcile all registrations) and we will issue you a link to complete registration shortly. If you have any issues with your link, please send an email to Team@NFT.NYC',
       },
       {
+        q: 'Is there a hotel discount for NFT.NYC 2026 attendees?',
+        a: <>Yes. Hotel Edison, the venue for NFT.NYC 2026, offers a discounted rate for attendees. Rates start at $249 plus tax and include a waived facility fee (normally $48 per night). <a href="https://be.synxis.com/?Hotel=66316&Chain=16087&Group=2609NFT&Arrive=2026-08-31&Nights=3" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Book at the attendee rate</a>, or email <a href="mailto:edisonsales@triumphhotels.com" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>edisonsales@triumphhotels.com</a> for personal assistance.</>,
+        plainA: 'Yes. Hotel Edison, the venue for NFT.NYC 2026, offers a discounted rate for attendees. Rates start at $249 plus tax and include a waived facility fee (normally $48 per night). Book at the attendee rate: https://be.synxis.com/?Hotel=66316&Chain=16087&Group=2609NFT&Arrive=2026-08-31&Nights=3, or email edisonsales@triumphhotels.com for personal assistance.',
+      },
+      {
         q: 'Do you provide a letter of invitation for my US visa application?',
         a: <>Yes. International attendees can request a signed letter of invitation to support their US visa application. Submit your details at <a href="/visa" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/visa</a> and our team will email you the letter as a PDF, usually within 2 business days.</>,
         plainA: 'Yes. International attendees can request a signed letter of invitation to support their US visa application. Submit your details at https://www.nft.nyc/visa and our team will email you the letter as a PDF, usually within 2 business days.',
