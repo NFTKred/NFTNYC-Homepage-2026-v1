@@ -235,32 +235,7 @@ export default function Volunteer() {
               <FilePicker file={form.photo_id_file} accept={ACCEPT_PHOTO} onChange={onPhotoChange} onClear={() => update('photo_id_file', null)} />
             </Field>
 
-            {/* Volunteer Program blurb */}
-            <div style={{
-              marginTop: 32,
-              padding: '20px 22px',
-              borderRadius: 12,
-              border: '1px solid var(--color-border)',
-              background: 'var(--color-bg)',
-              fontFamily: 'var(--font-body)',
-              fontSize: 14,
-              lineHeight: 1.65,
-              color: 'var(--color-text-muted)',
-            }}>
-              <div style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--color-text)',
-                marginBottom: 8,
-              }}>
-                Volunteer Program
-              </div>
-              Each year our Volunteer Program helps us recruit new part-time and full-time members. It's another way for us to meet community members who want a career with NFT.NYC and our partners.
-            </div>
-
-            <label style={checkboxStyle}>
+            <label style={{ ...checkboxStyle, marginTop: 24 }}>
               <input
                 type="checkbox"
                 checked={form.wants_to_volunteer}
