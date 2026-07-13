@@ -67,8 +67,8 @@ const FAQ_DATA: FAQCategory[] = [
     items: [
       {
         q: 'How can I apply to be a speaker at NFT.NYC?',
-        a: <>Round 2 of speaker submissions for NFT.NYC 2026 closed on 30 June. Round 3 opens soon — follow <a href="https://twitter.com/NFT_NYC" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>NFT.NYC on X</a> to be the first to know when submissions reopen, then visit <a href="/speak" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/speak</a> for the full application details.</>,
-        plainA: 'Round 2 of speaker submissions for NFT.NYC 2026 closed on 30 June. Round 3 opens soon — follow NFT.NYC on X (https://twitter.com/NFT_NYC) to be the first to know when submissions reopen, then visit https://www.nft.nyc/speak for the full application details.',
+        a: <>Round 3 of speaker submissions for NFT.NYC 2026 is open — the third and final round. Applications close 24 July at midnight. Submit at <a href="https://sessionize.com/nft-nyc-2026/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Sessionize</a>, or visit <a href="/speak" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/speak</a> for the full application details.</>,
+        plainA: 'Round 3 of speaker submissions for NFT.NYC 2026 is open — the third and final round. Applications close 24 July at midnight. Submit at https://sessionize.com/nft-nyc-2026/, or visit https://www.nft.nyc/speak for the full application details.',
       },
       {
         q: 'Do we each need to submit a separate application for collaborations?',
