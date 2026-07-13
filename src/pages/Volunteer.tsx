@@ -176,20 +176,10 @@ export default function Volunteer() {
             fontSize: 'clamp(32px, 5vw, 52px)',
             fontWeight: 800,
             lineHeight: 1.1,
-            margin: '0 0 20px',
+            margin: 0,
           }}>
             Volunteer at NFT.NYC 2026
           </h1>
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '17px',
-            lineHeight: 1.6,
-            color: 'var(--color-text-muted)',
-            maxWidth: '640px',
-            margin: '0 auto',
-          }}>
-            Each year our Volunteer Program helps us recruit new part-time and full-time members. It's another way for us to meet community members who want a career with NFT.NYC and our partners.
-          </p>
         </div>
 
         {status === 'success' ? (
