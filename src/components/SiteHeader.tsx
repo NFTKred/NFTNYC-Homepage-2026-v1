@@ -87,7 +87,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
             }}
           >
             <span style={{ color: '#06B6D4', fontWeight: 700 }}>Round 3</span>
-            Speaker submissions are open. Final round — closes 24 July.
+            Speaker submissions are open. Final round — closes 26 July.
             <span style={{
               fontWeight: 700,
               color: '#06B6D4',

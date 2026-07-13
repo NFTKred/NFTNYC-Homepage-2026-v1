@@ -29,7 +29,7 @@ export const SHOW_SPEAK_PAGE = true;
 
 /* ─── Constants ─── */
 const SESSIONIZE_URL = 'https://sessionize.com/nft-nyc-2026/';
-// Round 3 is OPEN through 24 July 2026 at midnight (third and final
+// Round 3 is OPEN through 26 July 2026 at midnight (third and final
 // round). Primary CTAs point at SESSIONIZE_URL. TWITTER_URL kept for
 // the socials link in the banner.
 const TWITTER_URL = 'https://twitter.com/NFT_NYC';
@@ -92,7 +92,7 @@ const PATHWAYS = [
     bullets: [
       'Submit with talk title, description, and industry vertical',
       'Provide a link to a video of you speaking',
-      'Round 1: April 8\u201330 (closed) · Round 2: June 12\u201330 (closed) · Round 3: July 1\u201324 (open, final)',
+      'Round 1: April 8\u201330 (closed) · Round 2: June 12\u201330 (closed) · Round 3: July 1\u201326 (open, final)',
     ],
     pill: 'Community + Editorial',
     color: '#8B5CF6',
@@ -163,7 +163,7 @@ const DETAILED_TIMELINE = [
   { date: 'April 8 \u2013 30', title: 'Round 1 closed', desc: 'First submission window has closed. Round 1 applicants are under review and will move to community voting on May 7.', color: '#10B981' },
   { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Community, GA, and VIP ticket holders can vote.', color: '#10B981' },
   { date: 'June 12 \u2013 30', title: 'Round 2 closed', desc: 'Second submission window has closed. Applicants under review.', color: '#06B6D4' },
-  { date: 'July 1 – 24', title: 'Round 3 open — final round', desc: 'The third and final submission window is open. Submit by 24 July at midnight.', color: '#8B5CF6' },
+  { date: 'July 1 – 26', title: 'Round 3 open — final round', desc: 'The third and final submission window is open. Submit by 26 July at midnight.', color: '#8B5CF6' },
   { date: 'August', title: 'Program Announced', desc: 'Official release of preliminary program.', color: '#EC4899' },
   { date: 'September 1\u20133', title: 'NFT.NYC 2026', desc: 'The Edison, Times Square NYC. Program published August 2026. Speaker prep begins upon acceptance.', color: '#F5A623' },
 ];
@@ -349,7 +349,7 @@ export default function Speak() {
           Round 3 is <span style={rainbowText}>OPEN</span>
         </h2>
         <p style={sectionSub}>
-          Round 3 is now open — the third and final round of submissions. Applications close 24 July at midnight.
+          Round 3 is now open — the third and final round of submissions. Applications close 26 July at midnight.
         </p>
 
         <div style={{
@@ -359,7 +359,7 @@ export default function Speak() {
           maxWidth: '720px',
           margin: '0 auto',
         }} className="speak-rounds-grid">
-          {/* Round 3 announcement card — final submission window open through 24 July at midnight. */}
+          {/* Round 3 announcement card — final submission window open through 26 July at midnight. */}
           <div style={{
             ...cardStyle,
             borderColor: '#06B6D4',
@@ -403,7 +403,7 @@ export default function Speak() {
               color: '#06B6D4',
               lineHeight: 1.05,
               marginBottom: '1rem',
-            }}>Closes 24 July</p>
+            }}>Closes 26 July</p>
             <p style={{
               fontFamily: 'var(--font-body)',
               fontSize: '15px',
@@ -411,7 +411,7 @@ export default function Speak() {
               lineHeight: 1.6,
               marginBottom: '1.75rem',
               maxWidth: '560px',
-            }}>The third and final submission window is open through 24 July at midnight. This is the last chance to apply for NFT.NYC 2026.</p>
+            }}>The third and final submission window is open through 26 July at midnight. This is the last chance to apply for NFT.NYC 2026.</p>
             <a
               href={SESSIONIZE_URL}
               target="_blank"
@@ -432,7 +432,7 @@ export default function Speak() {
           textAlign: 'center',
           marginTop: '1.5rem',
           fontWeight: 600,
-        }}>📣 Final round — apply before 24 July at midnight</p>
+        }}>📣 Final round — apply before 26 July at midnight</p>
       </section>
 
       {dividerLine}
@@ -887,7 +887,7 @@ export default function Speak() {
           margin: '0 auto 2.5rem',
           lineHeight: 1.6,
         }}>
-          Round 3 is open — the third and final round of submissions. Applications close 24 July at midnight.
+          Round 3 is open — the third and final round of submissions. Applications close 26 July at midnight.
         </p>
         <a
           href={SESSIONIZE_URL}
