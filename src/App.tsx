@@ -25,6 +25,8 @@ import Sponsor from "./pages/Sponsor";
 import SponsorTSChallenge from "./pages/SponsorTSChallenge";
 import Visa from "./pages/Visa";
 import Media from "./pages/Media";
+import Volunteer from "./pages/Volunteer";
+import ManageVolunteers from "./pages/ManageVolunteers";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import TicketingModal from "./components/TicketingModal";
 
@@ -58,8 +60,10 @@ const App = () => (
           <Route path="/sponsor/ts-challenge" element={<SponsorTSChallenge />} />
           <Route path="/visa" element={<Visa />} />
           <Route path="/media" element={<Media />} />
+          <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+          <Route path="/manage/volunteers" element={<ProtectedRoute><ManageVolunteers /></ProtectedRoute>} />
           <Route path="/card/:resourceId" element={<CardPreview />} />
           <Route path="/:verticalId" element={<VerticalPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
