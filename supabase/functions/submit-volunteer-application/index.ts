@@ -4,8 +4,10 @@
  * The client uploads the photo ID and intro video directly to their private
  * Supabase Storage buckets BEFORE calling this function, then posts a JSON
  * payload with the resulting storage keys plus the rest of the form data.
- * This function inserts the row, generates 30-day signed URLs for both
- * files, and emails team@nft.nyc with the details + review links.
+ * This function inserts the row, generates a permanent public URL for
+ * the video (bucket is public) and a 30-day signed URL for the photo ID
+ * (bucket is private, PII), and emails team@nft.nyc with the details +
+ * review links.
  *
  * Required environment secrets:
  *   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY — auto-injected
@@ -118,13 +120,17 @@ Deno.serve(async (req) => {
     );
   }
 
-  // Generate 30-day signed URLs for team review.
-  const [{ data: photoSigned }, { data: videoSigned }] = await Promise.all([
-    supabase.storage.from("volunteer-photo-ids").createSignedUrl(clean.photo_id_path, 60 * 60 * 24 * 30),
-    supabase.storage.from("volunteer-videos").createSignedUrl(clean.video_path, 60 * 60 * 24 * 30),
-  ]);
+  // Photo ID → 30-day SIGNED URL (private bucket, sensitive PII).
+  // Video → permanent PUBLIC URL (public bucket, no expiry — volunteers
+  // were told videos may be reused on NFT.NYC social accounts).
+  const { data: photoSigned } = await supabase
+    .storage.from("volunteer-photo-ids")
+    .createSignedUrl(clean.photo_id_path, 60 * 60 * 24 * 30);
+  const { data: videoPub } = supabase
+    .storage.from("volunteer-videos")
+    .getPublicUrl(clean.video_path);
   const photoUrl = photoSigned?.signedUrl ?? null;
-  const videoUrl = videoSigned?.signedUrl ?? null;
+  const videoUrl = videoPub?.publicUrl ?? null;
 
   // Notify team@nft.nyc. Non-fatal — row is saved either way.
   if (RESEND_API_KEY) {
@@ -149,7 +155,7 @@ Deno.serve(async (req) => {
           <tr><td style="padding: 8px 0; color: #666; width: 180px;">Photo ID</td>
               <td style="padding: 8px 0;">${photoUrl ? `<a href="${escape(photoUrl)}" target="_blank" rel="noopener" style="font-weight:600;">View photo ID</a> <span style="color:#999">(30-day signed link)</span>` : "<em>signed URL unavailable</em>"}</td></tr>
           <tr><td style="padding: 8px 0; color: #666;">Intro video</td>
-              <td style="padding: 8px 0;">${videoUrl ? `<a href="${escape(videoUrl)}" target="_blank" rel="noopener" style="font-weight:600;">View intro video</a> <span style="color:#999">(30-day signed link)</span>` : "<em>signed URL unavailable</em>"}</td></tr>
+              <td style="padding: 8px 0;">${videoUrl ? `<a href="${escape(videoUrl)}" target="_blank" rel="noopener" style="font-weight:600;">View intro video</a> <span style="color:#999">(permanent link)</span>` : "<em>public URL unavailable</em>"}</td></tr>
         </table>
 
         <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: #666; margin: 24px 0 8px;">Consents recorded</h3>

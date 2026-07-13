@@ -55,9 +55,12 @@ VALUES ('volunteer-photo-ids', 'volunteer-photo-ids', false, 10485760,
         ARRAY['image/png','image/jpeg','image/webp','image/heic','image/heif','application/pdf'])
 ON CONFLICT (id) DO NOTHING;
 
--- Intro videos bucket. 100 MB max, common video MIME types.
+-- Intro videos bucket. 100 MB max, common video MIME types. PUBLIC —
+-- video URLs are permanent and unguessable (UUID paths). This is
+-- deliberate: volunteers are told the video may be reused on NFT.NYC
+-- social accounts, and reviewers need URLs that never expire.
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('volunteer-videos', 'volunteer-videos', false, 104857600,
+VALUES ('volunteer-videos', 'volunteer-videos', true, 104857600,
         ARRAY['video/mp4','video/quicktime','video/webm','video/x-m4v'])
 ON CONFLICT (id) DO NOTHING;
 
