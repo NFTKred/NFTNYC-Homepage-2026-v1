@@ -51,6 +51,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/media",
     ogImage: "/og/speak.png",
   },
+  volunteer: {
+    title: "Volunteer at NFT.NYC 2026",
+    description: "Sign up to volunteer at NFT.NYC 2026 (Sept 1–3). Volunteers receive a complimentary General Admission ticket in exchange for supporting the community during the event.",
+    path: "/volunteer",
+    ogImage: "/og/speak.png",
+  },
   sponsor: {
     title: "Partner with NFT.NYC 2026",
     description: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track.",

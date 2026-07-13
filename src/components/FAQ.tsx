@@ -60,6 +60,11 @@ const FAQ_DATA: FAQCategory[] = [
         a: <>Journalists, podcasters, and creators can apply for a media pass at <a href="/media" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/media</a>. Applications are reviewed weekly and approved applicants will be contacted directly.</>,
         plainA: 'Journalists, podcasters, and creators can apply for a media pass at https://www.nft.nyc/media. Applications are reviewed weekly and approved applicants will be contacted directly.',
       },
+      {
+        q: 'How do I volunteer at NFT.NYC 2026?',
+        a: <>Community members can apply to volunteer during NFT.NYC 2026 (Sept 1–3) at <a href="/volunteer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/volunteer</a>. Approved volunteers receive a complimentary General Admission ticket in exchange for supporting the community during the event.</>,
+        plainA: 'Community members can apply to volunteer during NFT.NYC 2026 (Sept 1–3) at https://www.nft.nyc/volunteer. Approved volunteers receive a complimentary General Admission ticket in exchange for supporting the community during the event.',
+      },
     ],
   },
   {
