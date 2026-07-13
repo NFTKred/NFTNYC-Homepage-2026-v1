@@ -284,7 +284,27 @@ export default function Volunteer() {
             {/* Intro video */}
             <SectionHeading style={{ marginTop: 40 }}>Step 2 · Intro video</SectionHeading>
 
-            <Field label="Upload a short intro video" required help="Please tell us: (1) what you think our volunteers do, and (2) why you're excited about NFT.NYC. MP4, MOV, or WebM. Max 100 MB.">
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 14,
+              lineHeight: 1.65,
+              color: 'var(--color-text-muted)',
+              margin: '0 0 8px',
+            }}>
+              To be considered, please continue to Step 2 and record a short video telling us what you are most excited about at NFT.NYC and what you think our volunteers do.
+            </p>
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 13,
+              lineHeight: 1.6,
+              color: 'var(--color-text-muted)',
+              fontStyle: 'italic',
+              margin: '0 0 20px',
+            }}>
+              Your video may be used on NFT.NYC social accounts.
+            </p>
+
+            <Field label="Upload your intro video" required help="MP4, MOV, or WebM. Max 100 MB.">
               <FilePicker file={form.video_file} accept={ACCEPT_VIDEO} onChange={onVideoChange} onClear={() => update('video_file', null)} icon="video" />
             </Field>
 
