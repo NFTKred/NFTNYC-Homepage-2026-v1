@@ -20,9 +20,8 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   const [menuOpen, setMenuOpen] = useState(false);
 
   const allNavLinks = [
-    { href: '#about', label: 'About', minStage: 0 },
+    { href: 'https://onehub.nft.nyc', label: 'Collect: Times Square', minStage: 0 },
     { href: '/speak', label: 'Speak', minStage: 0 },
-    { href: '#ecosystem', label: 'Ecosystem', minStage: 0 },
     { href: '/speakers', label: 'Speakers', minStage: 0 },
     { href: '/sponsor', label: 'Partnerships', minStage: 0 },
     { href: '#media', label: 'Media', minStage: 0 },
@@ -35,6 +34,11 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   const extLinks: { href: string; label: string }[] = [];
 
   const handleNavClick = (href: string) => {
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+      setMenuOpen(false);
+      return;
+    }
     if (href.startsWith('/')) {
       window.location.href = href;
       setMenuOpen(false);
