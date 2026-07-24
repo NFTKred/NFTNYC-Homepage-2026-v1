@@ -202,7 +202,7 @@ export default function SeeWhatsOnTheMap() {
           <span className="accent">Start Collecting</span>
         </h2>
         <p className="swotm-subtitle">
-          The Times Square Challenge showcases how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi.
+          Collect: Times Square showcases how tokenization is reshaping Art, Collectibles, Certifications, Gameplay, Identity, and DeFi.
         </p>
         <p className="swotm-subtitle">
           Start by collecting Times Square Art from our global community of Artists - and earn T-XP for your activity.
