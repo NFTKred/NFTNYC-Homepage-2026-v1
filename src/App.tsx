@@ -21,6 +21,8 @@ import VerticalPage from "./pages/VerticalPage";
 import CardPreview from "./pages/CardPreview";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
+import BlogList from "./pages/admin/BlogList";
+import BlogEditor from "./pages/admin/BlogEditor";
 import TSOptout from "./pages/TSOptout";
 import Sponsor from "./pages/Sponsor";
 import SponsorTSChallenge from "./pages/SponsorTSChallenge";
@@ -71,6 +73,8 @@ const App = () => (
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+          <Route path="/admin/blog" element={<ProtectedRoute><BlogList /></ProtectedRoute>} />
+          <Route path="/admin/blog/:id/edit" element={<ProtectedRoute><BlogEditor /></ProtectedRoute>} />
           <Route path="/manage/volunteers" element={<ProtectedRoute><ManageVolunteers /></ProtectedRoute>} />
           <Route path="/card/:resourceId" element={<CardPreview />} />
           <Route path="/:verticalId" element={<VerticalPage />} />
