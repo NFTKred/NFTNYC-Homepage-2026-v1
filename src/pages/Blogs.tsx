@@ -4,6 +4,7 @@ import Header from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import PageMeta from '@/components/PageMeta';
 import { FileText } from 'lucide-react';
+import { useBlogPosts } from '@/hooks/useBlogPost';
 
 interface BlogPost {
   title: string;
@@ -14,7 +15,14 @@ interface BlogPost {
   tag?: string;
 }
 
-const BLOG_POSTS: BlogPost[] = [
+// Legacy hardcoded posts. These map to bespoke React pages
+// (BlogTsChallenge, BlogHistoryOfRemix, BlogXpKred) that pre-date the
+// Supabase-backed block system. They surface on /blog alongside any
+// posts authored through the new system. When a legacy post is fully
+// migrated to a Supabase row with the same slug, the Supabase entry
+// wins on the /blog index (dedup by slug below) - the legacy route
+// mapping in App.tsx can be dropped at that point.
+const LEGACY_BLOG_POSTS: BlogPost[] = [
   {
     title: 'Everything Is a Remix: A Short History of Borrowing',
     description: 'From Gilgamesh and the Bible to Roman marble, Duchamp\'s moustache, hip-hop and AI style transfer - and where Web3 picks it up.',
@@ -70,6 +78,27 @@ export default function Blogs() {
   );
   const stage = useMemo(() => Number(localStorage.getItem('nftnyc-stage') ?? 0), []);
 
+  // Merge Supabase-backed posts (block system, edited via /admin/blog)
+  // with the legacy hardcoded list. Dedup by slug - Supabase wins so
+  // an editor migrating an existing article to blocks doesn't produce
+  // two cards on the index.
+  const { data: dbPosts } = useBlogPosts();
+  const posts = useMemo<BlogPost[]>(() => {
+    const dbSlugs = new Set((dbPosts ?? []).map((p) => p.slug));
+    const dbMapped: BlogPost[] = (dbPosts ?? []).map((p) => ({
+      title: p.title,
+      description: p.description ?? '',
+      slug: p.slug,
+      date: p.published_at ?? new Date().toISOString(),
+      image: p.hero_image_url ?? undefined,
+      tag: p.tag ?? undefined,
+    }));
+    const legacyRemaining = LEGACY_BLOG_POSTS.filter((p) => !dbSlugs.has(p.slug));
+    return [...dbMapped, ...legacyRemaining].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+  }, [dbPosts]);
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
@@ -102,7 +131,7 @@ export default function Blogs() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {BLOG_POSTS.map(post => (
+          {posts.map(post => (
             <Link
               to={`/blog/${post.slug}`}
               key={post.slug}

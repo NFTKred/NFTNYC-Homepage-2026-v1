@@ -13,6 +13,7 @@ import Blogs from "./pages/Blogs";
 import BlogXpKred from "./pages/BlogXpKred";
 import BlogTsChallenge from "./pages/BlogTsChallenge";
 import BlogHistoryOfRemix from "./pages/BlogHistoryOfRemix";
+import BlogPost from "./pages/BlogPost";
 import Journey from "./pages/Journey";
 import Origins from "./pages/Origins";
 import NotFound from "./pages/NotFound";
@@ -50,9 +51,16 @@ const App = () => (
           <Route path="/speakers" element={<Speakers />} />
           <Route path="/register" element={<Register />} />
           <Route path="/blog" element={<Blogs />} />
+          {/* Legacy bespoke React blog posts. Specific routes match
+              before the /blog/:slug catch-all below, so these render
+              their existing React pages. New posts authored through
+              the Supabase-backed block system are picked up by
+              /blog/:slug. When a legacy post migrates to blocks its
+              route line here can be removed. */}
           <Route path="/blog/xp-and-kredits" element={<BlogXpKred />} />
           <Route path="/blog/ts-challenge" element={<BlogTsChallenge />} />
           <Route path="/blog/history-of-remix" element={<BlogHistoryOfRemix />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/journey" element={<Journey />} />
           <Route path="/origins" element={<Origins />} />
           <Route path="/ts-optout" element={<TSOptout />} />
