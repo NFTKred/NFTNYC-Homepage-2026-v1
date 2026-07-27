@@ -85,8 +85,21 @@
   outline-offset: 2px;
 }
 
-/* hero */
-.vibesprint .hero { padding: 64px 0 8px; }
+/* hero
+   The generic .hero class in the site-wide vertical page styles is
+   `display: flex; align-items: center; justify-content: center;
+   min-height: 92vh; overflow: hidden;`. That leaks into every element
+   here that just says `.hero`. Reset back to a normal block hero so
+   the h1 / sub / badges / meters stack vertically instead of
+   collapsing into skinny side-by-side flex columns. */
+.vibesprint .hero {
+  display: block;
+  position: static;
+  min-height: 0;
+  overflow: visible;
+  padding: 64px 0 8px;
+  text-align: left;
+}
 .vibesprint .hero h1 {
   font-family: var(--font-display);
   font-weight: 700;
