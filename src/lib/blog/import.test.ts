@@ -225,6 +225,87 @@ describe("htmlToPost", () => {
   });
 });
 
+describe("htmlToPost normalization", () => {
+  it("descends into classed wrappers and isolates a widget (e.g. image slider) in place", () => {
+    const html = `
+      <div class="page-wrap">
+        <div class="content-col">
+          <h2>Intro</h2>
+          <p>Before the slider.</p>
+          <div class="ba-slider" data-slider>
+            <img src="/before.png"><img src="/after.png">
+            <button class="handle">drag</button>
+          </div>
+          <p>After the slider.</p>
+        </div>
+      </div>`;
+
+    const post = htmlToPost(html);
+    expect(post.blocks.map((b) => b.type)).toEqual([
+      "heading", "paragraph", "custom_html", "paragraph",
+    ]);
+    const slider = post.blocks[2];
+    if (slider.type !== "custom_html") throw new Error("expected custom_html");
+    expect(slider.html).toContain('class="ba-slider"');
+    expect(slider.html).toContain("/before.png");
+    expect(slider.html).toContain("<button");
+  });
+
+  it("normalizes inline markup: spans/styles stripped, standard tags kept", () => {
+    const html = `
+      <p>Keep <b>bold</b>, <span style="color:red">unwrap span</span>,
+         <a href="/x" class="fancy" style="font-weight:bold">link</a> and <code>code</code>.</p>`;
+
+    const post = htmlToPost(html);
+    const p = post.blocks[0];
+    if (p.type !== "paragraph") throw new Error("expected paragraph");
+    expect(p.html).toBe(
+      'Keep <strong>bold</strong>, unwrap span, <a href="/x">link</a> and <code>code</code>.',
+    );
+  });
+
+  it("prefers <article> content and drops nav/header/footer chrome", () => {
+    const html = `
+      <body>
+        <nav><a href="/">Home</a><a href="/blog">Blog</a></nav>
+        <header><img src="/logo.png"></header>
+        <article><p>The actual content.</p></article>
+        <footer><p>Copyright</p></footer>
+      </body>`;
+
+    const post = htmlToPost(html);
+    expect(post.blocks).toEqual([{ type: "paragraph", html: "The actual content." }]);
+  });
+
+  it("keeps a lone-image wrapper as an image block and nested lists inside items", () => {
+    const html = `
+      <p>x</p>
+      <div class="img-wrap"><img src="/hero.png" alt="Hero"></div>
+      <ul><li>top <b>one</b><ul><li>sub</li></ul></li><li>two</li></ul>`;
+
+    const post = htmlToPost(html);
+    expect(post.blocks[1]).toMatchObject({ type: "image", url: "/hero.png", alt: "Hero" });
+    const list = post.blocks[2];
+    if (list.type !== "list") throw new Error("expected list");
+    expect(list.items[0].html).toBe("top <strong>one</strong><ul><li>sub</li></ul>");
+    expect(list.items[1].html).toBe("two");
+  });
+
+  it("maps button-styled anchors to CTA blocks", () => {
+    const post = htmlToPost(
+      '<p>x</p><a class="btn btn-primary" href="/register">Register Now</a>',
+    );
+    expect(post.blocks[1]).toEqual({ type: "cta", label: "Register Now", href: "/register" });
+  });
+
+  it("keeps classed text-only containers verbatim as custom_html", () => {
+    const post = htmlToPost('<p>x</p><div class="stat-grid"><span>42</span><span>launches</span></div>');
+    const stat = post.blocks[1];
+    if (stat.type !== "custom_html") throw new Error("expected custom_html");
+    expect(stat.html).toContain('class="stat-grid"');
+  });
+});
+
 describe("importPostFile", () => {
   it("dispatches by extension and rejects unknown types", () => {
     expect(importPostFile("a.md", "# Hi\n\nBody.").title).toBe("Hi");

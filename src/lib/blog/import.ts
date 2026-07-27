@@ -334,16 +334,96 @@ export function markdownToPost(md: string): ImportedPost {
 /* ============================================================
    HTML
    ============================================================ */
+const WIDGET_SELECTOR =
+  "script,style,canvas,iframe,svg,form,input,select,textarea,button,object,embed";
 
-const CONTAINER_TAGS = new Set(["div", "section", "article", "main", "body", "header", "footer"]);
-const BLOCKISH_TAGS = new Set([
-  "p", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "table", "img",
-  "figure", "blockquote", "hr", "pre", "video", "details", "div", "section", "article",
-]);
+// Semantic block-level content the normalizer knows how to convert.
+const SEMANTIC_SELECTOR =
+  "h1,h2,h3,h4,h5,h6,p,ul,ol,table,blockquote,pre,figure,details";
+
+// Inline tags kept (normalized) inside paragraph/list content. Legacy
+// synonyms map to the standard tag; everything else is unwrapped to
+// its children and all class/style/id attributes are dropped.
+const INLINE_TAG_MAP: Record<string, string> = {
+  strong: "strong",
+  b: "strong",
+  em: "em",
+  i: "em",
+  code: "code",
+  sup: "sup",
+  sub: "sub",
+  mark: "mark",
+};
+
+const collapse = (s: string) => s.replace(/\s+/g, " ").trim();
+
+/**
+ * Rebuild an element's inline content as clean, standard markup:
+ * text, <strong>, <em>, <code>, <a href>, <img src alt>, <br>.
+ * Spans, fonts, styled wrappers, and all attributes are stripped.
+ */
+function normalizeInline(el: Element): string {
+  let out = "";
+  for (const node of Array.from(el.childNodes)) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      out += escapeHtml((node.textContent ?? "").replace(/\s+/g, " "));
+      continue;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) continue;
+    const child = node as Element;
+    const tag = child.tagName.toLowerCase();
+    if (tag === "br") {
+      out += "<br>";
+      continue;
+    }
+    if (tag === "img") {
+      const src = child.getAttribute("src");
+      if (src) {
+        out += `<img src="${escapeHtml(src)}" alt="${escapeHtml(child.getAttribute("alt") ?? "")}">`;
+      }
+      continue;
+    }
+    if (tag === "a") {
+      const href = child.getAttribute("href");
+      const inner = normalizeInline(child);
+      out += href ? `<a href="${escapeHtml(href)}">${inner}</a>` : inner;
+      continue;
+    }
+    const mapped = INLINE_TAG_MAP[tag];
+    if (mapped) out += `<${mapped}>${normalizeInline(child)}</${mapped}>`;
+    else out += normalizeInline(child);
+  }
+  return out;
+}
+
+/** <li> content normalized, preserving nested lists. */
+function listItemHtml(li: Element): string {
+  const clone = li.cloneNode(true) as Element;
+  Array.from(clone.children).forEach((c) => {
+    if (c.tagName === "UL" || c.tagName === "OL") c.remove();
+  });
+  let html = normalizeInline(clone).trim();
+  for (const c of Array.from(li.children)) {
+    if (c.tagName !== "UL" && c.tagName !== "OL") continue;
+    const tag = c.tagName.toLowerCase();
+    const inner = Array.from(c.children)
+      .filter((n) => n.tagName === "LI")
+      .map((n) => `<li>${listItemHtml(n)}</li>`)
+      .join("");
+    html += `<${tag}>${inner}</${tag}>`;
+  }
+  return html;
+}
 
 export function htmlToPost(html: string): ImportedPost {
   const doc = new DOMParser().parseFromString(html, "text/html");
-  const blocks = nodesToBlocks(Array.from(doc.body.childNodes));
+  // Prefer the article/main content over full-page chrome (nav,
+  // headers, footers around the actual post).
+  const root =
+    doc.body.querySelector("article") ??
+    doc.body.querySelector("main") ??
+    doc.body;
+  const blocks = nodesToBlocks(Array.from(root.childNodes), true);
 
   const docTitle = doc.querySelector("title")?.textContent?.trim();
   const h1 = doc.body.querySelector("h1")?.textContent?.trim();
@@ -362,7 +442,7 @@ export function htmlToPost(html: string): ImportedPost {
     description: metaContent('meta[name="description"]') ?? deriveDescription(blocks),
     author: metaContent('meta[name="author"]'),
     hero_image_url: metaContent('meta[property="og:image"]'),
-    read_minutes: estimateReadMinutes(doc.body.textContent ?? ""),
+    read_minutes: estimateReadMinutes(root.textContent ?? ""),
     blocks,
   };
 }
@@ -370,10 +450,10 @@ export function htmlToPost(html: string): ImportedPost {
 /** Convert an HTML fragment (no head/meta handling) to blocks. */
 export function htmlFragmentToBlocks(fragment: string): BlogBlock[] {
   const doc = new DOMParser().parseFromString(fragment, "text/html");
-  return nodesToBlocks(Array.from(doc.body.childNodes));
+  return nodesToBlocks(Array.from(doc.body.childNodes), false);
 }
 
-function nodesToBlocks(nodes: Node[]): BlogBlock[] {
+function nodesToBlocks(nodes: Node[], atRoot = false): BlogBlock[] {
   const blocks: BlogBlock[] = [];
   let faqRun: { q: string; a: string }[] = [];
 
@@ -384,20 +464,33 @@ function nodesToBlocks(nodes: Node[]): BlogBlock[] {
 
   for (const node of nodes) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent?.trim();
-      if (text) { flushFaq(); blocks.push({ type: "paragraph", html: escapeHtml(text) }); }
+      const text = collapse(node.textContent ?? "");
+      if (text) {
+        flushFaq();
+        blocks.push({ type: "paragraph", html: escapeHtml(text) });
+      }
       continue;
     }
     if (node.nodeType !== Node.ELEMENT_NODE) continue;
     const el = node as Element;
     const tag = el.tagName.toLowerCase();
 
+    // Site chrome: navigation is never post content; top-level
+    // header/footer/aside (or any that wrap a nav) are page chrome.
+    if (tag === "nav") continue;
+    if (
+      (tag === "header" || tag === "footer" || tag === "aside") &&
+      (atRoot || el.querySelector("nav"))
+    ) {
+      continue;
+    }
+
     // Consecutive <details> elements merge into one FAQ block.
     if (tag === "details") {
-      const q = el.querySelector("summary")?.textContent?.trim() ?? "";
+      const q = collapse(el.querySelector("summary")?.textContent ?? "");
       const clone = el.cloneNode(true) as Element;
       clone.querySelector("summary")?.remove();
-      const a = clone.textContent?.trim() ?? "";
+      const a = collapse(clone.textContent ?? "");
       if (q || a) faqRun.push({ q, a });
       continue;
     }
@@ -414,17 +507,32 @@ function nodesToBlocks(nodes: Node[]): BlogBlock[] {
 function elementToBlock(el: Element, tag: string): BlogBlock | BlogBlock[] | null {
   const headingMatch = tag.match(/^h([1-6])$/);
   if (headingMatch) {
-    const text = el.textContent?.trim() ?? "";
-    return text ? { type: "heading", level: clampHeading(Number(headingMatch[1])), text } : null;
+    const text = collapse(el.textContent ?? "");
+    return text
+      ? { type: "heading", level: clampHeading(Number(headingMatch[1])), text }
+      : null;
   }
 
   switch (tag) {
     case "p": {
-      const onlyImg = el.children.length === 1 && el.children[0].tagName === "IMG" &&
-        !(el.textContent ?? "").trim();
+      const onlyImg =
+        el.children.length === 1 &&
+        el.children[0].tagName === "IMG" &&
+        !collapse(el.textContent ?? "");
       if (onlyImg) return elementToBlock(el.children[0], "img");
-      const html = el.innerHTML.trim();
+      const html = normalizeInline(el).trim();
       return html ? { type: "paragraph", html } : null;
+    }
+    case "a": {
+      // A standalone block-level anchor: button-styled ones become
+      // CTAs, plain ones a paragraph with a normalized link.
+      const href = el.getAttribute("href") ?? "";
+      const label = collapse(el.textContent ?? "");
+      if (!label || !href) return null;
+      if (/\b(btn|button|cta)\b/i.test(el.getAttribute("class") ?? "")) {
+        return { type: "cta", label, href };
+      }
+      return { type: "paragraph", html: `<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>` };
     }
     case "img": {
       const url = el.getAttribute("src") ?? "";
@@ -439,7 +547,7 @@ function elementToBlock(el: Element, tag: string): BlogBlock | BlogBlock[] | nul
     case "figure": {
       const img = el.querySelector("img");
       const video = el.querySelector("video");
-      const caption = el.querySelector("figcaption")?.textContent?.trim() || undefined;
+      const caption = collapse(el.querySelector("figcaption")?.textContent ?? "") || undefined;
       if (img) {
         return {
           type: "image",
@@ -449,42 +557,51 @@ function elementToBlock(el: Element, tag: string): BlogBlock | BlogBlock[] | nul
         };
       }
       if (video) {
-        const src = video.getAttribute("src") ?? video.querySelector("source")?.getAttribute("src") ?? "";
-        return src ? { type: "video", url: src, poster: video.getAttribute("poster") || undefined, caption } : null;
+        const src =
+          video.getAttribute("src") ??
+          video.querySelector("source")?.getAttribute("src") ??
+          "";
+        return src
+          ? { type: "video", url: src, poster: video.getAttribute("poster") || undefined, caption }
+          : null;
       }
       return { type: "custom_html", html: el.outerHTML };
     }
     case "video": {
-      const src = el.getAttribute("src") ?? el.querySelector("source")?.getAttribute("src") ?? "";
-      return src ? { type: "video", url: src, poster: el.getAttribute("poster") || undefined } : null;
+      const src =
+        el.getAttribute("src") ?? el.querySelector("source")?.getAttribute("src") ?? "";
+      return src
+        ? { type: "video", url: src, poster: el.getAttribute("poster") || undefined }
+        : null;
     }
     case "ul":
     case "ol": {
       const items = Array.from(el.children)
         .filter((li) => li.tagName === "LI")
-        .map((li) => ({ html: li.innerHTML.trim() }));
+        .map((li) => ({ html: listItemHtml(li) }));
       if (items.length === 0) return null;
       const style: ListBlock["style"] = tag === "ol" ? "ordered" : "bullet";
       return { type: "list", style, items };
     }
     case "blockquote": {
-      const cite = el.querySelector("cite")?.textContent?.trim();
+      const cite = collapse(el.querySelector("cite")?.textContent ?? "");
       const clone = el.cloneNode(true) as Element;
       clone.querySelector("cite")?.remove();
-      const text = clone.textContent?.replace(/\s+/g, " ").trim() ?? "";
+      const text = collapse(clone.textContent ?? "");
       return text ? { type: "quote", text, attribution: cite || undefined } : null;
     }
     case "table": {
       const headerCells = el.querySelectorAll("thead th, thead td");
-      const headerRow = headerCells.length > 0
-        ? Array.from(headerCells)
-        : Array.from(el.querySelector("tr")?.children ?? []);
-      const headers = headerRow.map((c) => c.textContent?.trim() ?? "");
+      const headerRow =
+        headerCells.length > 0
+          ? Array.from(headerCells)
+          : Array.from(el.querySelector("tr")?.children ?? []);
+      const headers = headerRow.map((c) => collapse(c.textContent ?? ""));
       const bodyRows = Array.from(el.querySelectorAll("tr")).filter(
         (tr) => !headerRow.length || tr !== headerRow[0]?.parentElement,
       );
       const rows = bodyRows.map((tr) =>
-        Array.from(tr.children).map((c) => c.textContent?.trim() ?? ""),
+        Array.from(tr.children).map((c) => collapse(c.textContent ?? "")),
       );
       return { type: "table", headers, rows };
     }
@@ -495,16 +612,42 @@ function elementToBlock(el: Element, tag: string): BlogBlock | BlogBlock[] | nul
     case "pre":
       return { type: "custom_html", html: el.outerHTML };
     default: {
-      // Generic containers with block-level children: recurse.
-      if (CONTAINER_TAGS.has(tag)) {
-        const hasBlockChildren = Array.from(el.children).some((c) =>
-          BLOCKISH_TAGS.has(c.tagName.toLowerCase()),
-        );
-        if (hasBlockChildren && !el.getAttribute("class") && !el.getAttribute("style")) {
-          return nodesToBlocks(Array.from(el.childNodes));
-        }
+      const semanticCount = el.querySelectorAll(SEMANTIC_SELECTOR).length;
+      const isWidget =
+        el.matches(WIDGET_SELECTOR) || !!el.querySelector(WIDGET_SELECTOR);
+
+      // Interactive/scripted subtree with little semantic content is
+      // a self-contained widget (slider, chart, embed): preserve it
+      // verbatim as its own custom_html block, in position.
+      if (isWidget && semanticCount < 3) {
+        return { type: "custom_html", html: el.outerHTML };
       }
-      // Anything else (styled wrappers, embeds, scripts) stays intact.
+
+      // Anything holding real content is a wrapper - descend and
+      // normalize each child in place, regardless of class/style.
+      // Widget subtrees nested deeper isolate themselves on the way
+      // down via the rule above.
+      if (semanticCount > 0) {
+        return nodesToBlocks(Array.from(el.childNodes), false);
+      }
+
+      // No semantic content: a lone image wrapper unwraps to an
+      // image block; multiple images with no text reads as a
+      // gallery/slider and stays intact.
+      const imgs = el.querySelectorAll("img");
+      if (imgs.length === 1 && !collapse(el.textContent ?? "")) {
+        return elementToBlock(imgs[0], "img");
+      }
+      if (imgs.length > 1) return { type: "custom_html", html: el.outerHTML };
+
+      // Text in an unstyled wrapper reads as a paragraph; a classed
+      // or styled container carries bespoke presentation, so it
+      // survives verbatim.
+      const html = normalizeInline(el).trim();
+      if (!html) return null;
+      if (!el.getAttribute("class") && !el.getAttribute("style")) {
+        return { type: "paragraph", html };
+      }
       return { type: "custom_html", html: el.outerHTML };
     }
   }
