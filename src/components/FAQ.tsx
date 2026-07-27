@@ -72,8 +72,8 @@ const FAQ_DATA: FAQCategory[] = [
     items: [
       {
         q: 'How can I apply to be a speaker at NFT.NYC?',
-        a: <>Round 3 of speaker submissions for NFT.NYC 2026 is open — the third and final round. Applications close 26 July at midnight. Submit at <a href="https://sessionize.com/nft-nyc-2026/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Sessionize</a>, or visit <a href="/speak" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/speak</a> for the full application details.</>,
-        plainA: 'Round 3 of speaker submissions for NFT.NYC 2026 is open — the third and final round. Applications close 26 July at midnight. Submit at https://sessionize.com/nft-nyc-2026/, or visit https://www.nft.nyc/speak for the full application details.',
+        a: <>Speaker submissions for NFT.NYC 2026 are now closed. To apply as a Late Speaker you must hold a GA ticket — <a href="/register" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>get one here</a>. Visit <a href="/speak" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>/speak</a> for more details.</>,
+        plainA: 'Speaker submissions for NFT.NYC 2026 are now closed. To apply as a Late Speaker you must hold a GA ticket (https://www.nft.nyc/register). Visit https://www.nft.nyc/speak for more details.',
       },
       {
         q: 'Do we each need to submit a separate application for collaborations?',
