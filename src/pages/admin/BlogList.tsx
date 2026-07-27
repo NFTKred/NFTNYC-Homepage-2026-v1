@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { importPostFile, slugify } from '@/lib/blog/import';
 import {
   useAdminBlogPosts,
   useCreateBlogPost,
@@ -16,6 +18,7 @@ import {
   Globe,
   EyeOff,
   ExternalLink,
+  FileUp,
   LogOut,
   Loader2,
 } from 'lucide-react';
@@ -89,6 +92,55 @@ export default function BlogList() {
   const deletePost = useDeleteBlogPost();
 
   const posts = postsQuery.data ?? [];
+  const importInputRef = useRef<HTMLInputElement | null>(null);
+
+  /** Create a new draft straight from an .md or .html file. */
+  const handleImportFile = async (file: File | undefined) => {
+    if (!file) return;
+    let imported;
+    try {
+      imported = importPostFile(file.name, await file.text());
+    } catch (err) {
+      alert(`Import failed: ${err instanceof Error ? err.message : String(err)}`);
+      return;
+    } finally {
+      if (importInputRef.current) importInputRef.current.value = '';
+    }
+    if (imported.blocks.length === 0) {
+      alert(`No content found in ${file.name}.`);
+      return;
+    }
+    const title = imported.title ?? file.name.replace(/\.[^.]+$/, '');
+    const input = {
+      slug: slugify(title) || `imported-${Date.now().toString(36)}`,
+      title,
+      subtitle: imported.subtitle ?? null,
+      description: imported.description ?? null,
+      author: imported.author ?? 'NFT.NYC',
+      tag: imported.tag ?? null,
+      hero_image_url: imported.hero_image_url ?? null,
+      hero_image_alt: imported.hero_image_alt ?? null,
+      read_minutes: imported.read_minutes ?? null,
+      content: imported.blocks,
+    };
+    createPost.mutate(input, {
+      onSuccess: (post) => navigate(`/admin/blog/${post.id}/edit`),
+      onError: (err: Error) => {
+        // Slug collision: retry once with a unique suffix.
+        if (/duplicate|23505/i.test(err.message)) {
+          createPost.mutate(
+            { ...input, slug: `${input.slug}-${Date.now().toString(36)}` },
+            {
+              onSuccess: (post) => navigate(`/admin/blog/${post.id}/edit`),
+              onError: (err2: Error) => alert(`Import failed: ${err2.message}`),
+            },
+          );
+        } else {
+          alert(`Import failed: ${err.message}`);
+        }
+      },
+    });
+  };
 
   const handleNewPost = () => {
     createPost.mutate(
@@ -176,14 +228,31 @@ export default function BlogList() {
           >
             Posts ({posts.length})
           </h2>
-          <button
-            onClick={handleNewPost}
-            disabled={createPost.isPending}
-            style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}
-          >
-            {createPost.isPending ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
-            New Post
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button
+              onClick={() => importInputRef.current?.click()}
+              disabled={createPost.isPending}
+              title="Create a draft from a Markdown or HTML file"
+              style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#3B82F6' }}
+            >
+              <FileUp size={14} /> Import File
+            </button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept=".md,.markdown,.html,.htm,text/markdown,text/html"
+              style={{ display: 'none' }}
+              onChange={(e) => handleImportFile(e.target.files?.[0])}
+            />
+            <button
+              onClick={handleNewPost}
+              disabled={createPost.isPending}
+              style={{ ...btnStyle, background: '#3B82F6', color: '#fff' }}
+            >
+              {createPost.isPending ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
+              New Post
+            </button>
+          </div>
         </div>
 
         {postsQuery.isError && (

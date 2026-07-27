@@ -6,6 +6,7 @@ import {
   type BlogPostPatch,
 } from '@/lib/blog/mutations';
 import { uploadBlogMedia } from '@/lib/blog/media';
+import { importPostFile, slugify, type ImportedPost } from '@/lib/blog/import';
 import type {
   BeforeAfterBlock,
   BlogBlock,
@@ -31,6 +32,7 @@ import {
   Globe,
   ExternalLink,
   Upload,
+  FileUp,
   Loader2,
   X,
 } from 'lucide-react';
@@ -808,13 +810,6 @@ type MetaState = {
   read_minutes: string;
 };
 
-function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 export default function BlogEditor() {
   const { id } = useParams<{ id: string }>();
   const postQuery = useAdminBlogPost(id);
@@ -826,6 +821,8 @@ export default function BlogEditor() {
   const [blocks, setBlocks] = useState<EditorBlock[]>([]);
   const [initializedId, setInitializedId] = useState<string | null>(null);
   const [savedNote, setSavedNote] = useState<string | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const importInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (post && post.id !== initializedId) {
@@ -866,6 +863,56 @@ export default function BlogEditor() {
 
   const addBlock = (type: BlogBlock['type']) =>
     setBlocks((bs) => [...bs, { uid: crypto.randomUUID(), block: BLOCK_DEFAULTS[type]() }]);
+
+  /**
+   * Import an .md or .html file: converted blocks replace (or append
+   * to) the current block list, and any metadata found in the file
+   * fills fields that are still empty. Nothing is saved until Save
+   * Draft / Publish.
+   */
+  const handleImportFile = async (file: File | undefined) => {
+    if (!file) return;
+    setImportError(null);
+    let imported: ImportedPost;
+    try {
+      imported = importPostFile(file.name, await file.text());
+    } catch (err) {
+      setImportError(err instanceof Error ? err.message : String(err));
+      return;
+    } finally {
+      if (importInputRef.current) importInputRef.current.value = '';
+    }
+    if (imported.blocks.length === 0) {
+      setImportError(`No content found in ${file.name}.`);
+      return;
+    }
+    let replace = true;
+    if (blocks.length > 0) {
+      replace = window.confirm(
+        `Replace the ${blocks.length} existing block(s) with ${imported.blocks.length} imported block(s) from ${file.name}?\n\nOK = replace, Cancel = append below the existing blocks.`,
+      );
+    }
+    const importedBlocks = imported.blocks.map((block) => ({ uid: crypto.randomUUID(), block }));
+    setBlocks((bs) => (replace ? importedBlocks : [...bs, ...importedBlocks]));
+    setMeta((m) => {
+      if (!m) return m;
+      const next = { ...m };
+      if (imported.title && (!next.title.trim() || next.title === 'Untitled post')) {
+        next.title = imported.title;
+        if (next.slug.startsWith('untitled-')) next.slug = slugify(imported.title);
+      }
+      if (imported.subtitle && !next.subtitle.trim()) next.subtitle = imported.subtitle;
+      if (imported.description && !next.description.trim()) next.description = imported.description;
+      if (imported.author && !next.author.trim()) next.author = imported.author;
+      if (imported.tag && !next.tag.trim()) next.tag = imported.tag;
+      if (imported.hero_image_url && !next.hero_image_url.trim()) next.hero_image_url = imported.hero_image_url;
+      if (imported.hero_image_alt && !next.hero_image_alt.trim()) next.hero_image_alt = imported.hero_image_alt;
+      if (imported.read_minutes && !next.read_minutes.trim()) next.read_minutes = String(imported.read_minutes);
+      return next;
+    });
+    setSavedNote(`Imported ${imported.blocks.length} blocks from ${file.name} - review, then save`);
+    setTimeout(() => setSavedNote(null), 6000);
+  };
 
   const buildPatch = (status: 'draft' | 'published'): BlogPostPatch => {
     const m = meta!;
@@ -1052,17 +1099,45 @@ export default function BlogEditor() {
 
         {/* ─── Blocks ─── */}
         <section>
-          <h2
+          <div
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '14px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
               marginBottom: '1rem',
             }}
           >
-            Content Blocks ({blocks.length})
-          </h2>
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '14px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+              }}
+            >
+              Content Blocks ({blocks.length})
+            </h2>
+            <button
+              onClick={() => importInputRef.current?.click()}
+              title="Import a Markdown or HTML file - headings, paragraphs, tables, lists, quotes, and images become matching blocks; anything bespoke lands in custom_html."
+              style={{ ...btnStyle, background: 'rgba(59,130,246,0.15)', color: '#3B82F6' }}
+            >
+              <FileUp size={14} /> Import MD/HTML
+            </button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept=".md,.markdown,.html,.htm,text/markdown,text/html"
+              style={{ display: 'none' }}
+              onChange={(e) => handleImportFile(e.target.files?.[0])}
+            />
+          </div>
+
+          {importError && (
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#EF4444', marginBottom: '1rem' }}>
+              Import failed: {importError}
+            </p>
+          )}
 
           {blocks.length === 0 && (
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'rgb(90, 90, 117)', marginBottom: '1rem' }}>
