@@ -1,0 +1,626 @@
+/* ============================================================
+   VibeSprint (Kred Flash Sprints) — page-specific styles.
+   All rules scoped under `.vibesprint` so they cannot leak out.
+   Colors / fonts / borders use NFT.NYC tokens (var(--color-*),
+   var(--font-*), var(--card-border)) so the page inherits the
+   site's branding instead of the source's hard-coded palette.
+   ============================================================ */
+
+.vibesprint {
+  /* Local aliases mapping the source's palette onto site tokens. */
+  --vs-mono: Menlo, Consolas, "Courier New", monospace;
+
+  /* Secondary accents kept from the source for variety in the
+     sprint tiles / weight bars / hook figure. Use sparingly. */
+  --vs-cyan: #37D3E8;
+  --vs-pink: #FF4FA3;
+  --vs-green: #5CE08A;
+  --vs-red: #FF6B5B;
+  --vs-violet: #9D7BFF;
+}
+
+.vibesprint .wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+.vibesprint .eyebrow {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.vibesprint h1,
+.vibesprint h2,
+.vibesprint h3,
+.vibesprint h4 {
+  text-wrap: balance;
+  margin: 0;
+  color: var(--color-text);
+}
+.vibesprint h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 16px;
+}
+.vibesprint section { margin-top: 56px; }
+.vibesprint .lead {
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 66ch;
+  margin: 0 0 18px;
+}
+.vibesprint .lead b { color: var(--color-text); }
+
+.vibesprint a.btn,
+.vibesprint button.btn {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  border-radius: 5px;
+  border: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+.vibesprint a.btn:focus-visible,
+.vibesprint button.btn:focus-visible,
+.vibesprint input:focus-visible,
+.vibesprint select:focus-visible,
+.vibesprint a.excard:focus-visible {
+  outline: 2px solid var(--vs-cyan);
+  outline-offset: 2px;
+}
+
+/* hero */
+.vibesprint .hero { padding: 64px 0 8px; }
+.vibesprint .hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(40px, 8vw, 80px);
+  line-height: .94;
+  text-transform: uppercase;
+}
+.vibesprint .hero h1 .glow {
+  color: var(--color-primary);
+  text-shadow: 0 0 26px color-mix(in srgb, var(--color-primary) 45%, transparent);
+}
+.vibesprint .hero .sub {
+  color: var(--color-text-muted);
+  font-size: 17px;
+  line-height: 1.55;
+  max-width: 62ch;
+  margin: 18px 0 26px;
+}
+.vibesprint .hero .sub b { color: var(--color-text); }
+
+.vibesprint .badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+}
+.vibesprint .badge {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  border: 1px solid var(--card-border);
+  border-radius: 99px;
+  padding: 7px 14px;
+  color: var(--color-text-muted);
+}
+.vibesprint .badge.hot { border-color: var(--vs-pink); color: var(--vs-pink); }
+.vibesprint .badge.tool { border-color: var(--color-primary); color: var(--color-primary); }
+.vibesprint .badge.api { border-color: var(--vs-cyan); color: var(--vs-cyan); }
+
+.vibesprint .meters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 26px;
+}
+.vibesprint .meter {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 12px 18px;
+}
+.vibesprint .meter b {
+  font-family: var(--vs-mono);
+  font-size: 30px;
+  color: var(--vs-cyan);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 18px rgba(55, 211, 232, .4);
+  display: block;
+}
+.vibesprint .meter span {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.vibesprint .meter.reg b {
+  color: var(--color-primary);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--color-primary) 40%, transparent);
+}
+.vibesprint .hero .cta-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.vibesprint .hero .cta-note { font-size: 12.5px; color: var(--color-text-muted); }
+
+/* three sprints */
+.vibesprint .sprints {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.vibesprint .sp {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-top: 4px solid var(--tone);
+  border-radius: 8px;
+  padding: 18px;
+}
+.vibesprint .sp .no {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 44px;
+  line-height: .9;
+  color: var(--tone);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--tone) 40%, transparent);
+  float: right;
+  margin: 0 0 6px 10px;
+}
+.vibesprint .sp .date {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--tone);
+}
+.vibesprint .sp h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--tone);
+  margin: 4px 0 6px;
+}
+.vibesprint .sp p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+.vibesprint .sp.live {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--vs-pink) 12%, var(--color-surface)), var(--color-surface) 70%);
+}
+.vibesprint .sp .chip {
+  display: inline-block;
+  font-family: var(--vs-mono);
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  border: 1px solid var(--tone);
+  color: var(--tone);
+  border-radius: 99px;
+  padding: 3px 9px;
+  margin-top: 9px;
+}
+
+/* agent band */
+.vibesprint .agent {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--vs-cyan) 12%, var(--color-surface)), var(--color-surface) 70%);
+  border: 1px solid color-mix(in srgb, var(--vs-cyan) 35%, var(--card-border));
+  border-radius: 8px;
+  padding: 24px;
+}
+.vibesprint .agent h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  text-transform: uppercase;
+  color: var(--vs-cyan);
+  margin: 0 0 8px;
+}
+.vibesprint .agent p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 74ch;
+}
+.vibesprint .agent p b { color: var(--color-text); }
+.vibesprint .agent .mono {
+  font-family: var(--vs-mono);
+  font-size: 12px;
+  color: var(--vs-cyan);
+}
+
+/* the $4,288 hook */
+.vibesprint .hook {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--vs-red) 12%, var(--color-surface)), var(--color-surface) 65%);
+  border: 1px solid color-mix(in srgb, var(--vs-red) 35%, var(--card-border));
+  border-radius: 8px;
+  padding: 26px;
+}
+.vibesprint .hook .big {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(38px, 7vw, 64px);
+  color: var(--vs-red);
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(255, 107, 91, .35);
+}
+.vibesprint .hook .claim {
+  font-family: var(--vs-mono);
+  font-size: 13px;
+  color: var(--color-text);
+  margin: 10px 0 4px;
+  line-height: 1.6;
+}
+.vibesprint .hook .truth {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: 64ch;
+}
+.vibesprint .hook .truth b { color: var(--color-text); }
+.vibesprint .spread {
+  margin-top: 22px;
+  display: grid;
+  gap: 8px;
+}
+.vibesprint .srow {
+  display: grid;
+  grid-template-columns: 120px 1fr 110px;
+  gap: 12px;
+  align-items: center;
+  font-family: var(--vs-mono);
+  font-size: 12px;
+}
+.vibesprint .srow .who { color: var(--color-text-muted); letter-spacing: .08em; }
+.vibesprint .srow .bar {
+  height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--vs-red), #8a2f3a);
+  width: var(--w);
+  min-width: 10px;
+  box-shadow: 0 0 14px rgba(255, 107, 91, .25);
+}
+.vibesprint .srow.good .bar {
+  background: linear-gradient(90deg, var(--vs-green), #2a7a4d);
+  box-shadow: 0 0 14px rgba(92, 224, 138, .25);
+}
+.vibesprint .srow .amt {
+  color: var(--color-text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.vibesprint .spread-note {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* example apps */
+.vibesprint .examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+}
+.vibesprint a.excard {
+  display: block;
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color .15s ease;
+}
+.vibesprint a.excard:hover { border-color: var(--vs-cyan); }
+.vibesprint .excard img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid var(--card-border);
+}
+.vibesprint .excap {
+  padding: 16px 18px 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.vibesprint .excap b {
+  display: block;
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--vs-cyan);
+  margin-bottom: 8px;
+}
+.vibesprint .excap .exlink {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--vs-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+}
+
+/* tiles */
+.vibesprint .kit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+.vibesprint .tile {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+.vibesprint .tile b {
+  display: block;
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--vs-cyan);
+  margin-bottom: 6px;
+}
+.vibesprint .tile.star {
+  border-color: color-mix(in srgb, var(--vs-pink) 30%, var(--card-border));
+  background: linear-gradient(160deg, color-mix(in srgb, var(--vs-pink) 8%, var(--color-surface)), var(--color-surface) 75%);
+}
+.vibesprint .tile.star b { color: var(--vs-pink); }
+.vibesprint .tile code {
+  font-family: var(--vs-mono);
+  font-size: 11.5px;
+  color: var(--color-primary);
+}
+
+/* judging weights */
+.vibesprint .weights { display: grid; gap: 10px; }
+.vibesprint .wrow {
+  display: grid;
+  grid-template-columns: 210px 1fr 52px;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--color-text);
+}
+.vibesprint .wrow .bar {
+  height: 18px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--tone), transparent 160%);
+  width: var(--w);
+  border: 1px solid var(--tone);
+}
+.vibesprint .wrow .pct {
+  font-family: var(--vs-mono);
+  color: var(--tone);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* timeline */
+.vibesprint .tl {
+  display: grid;
+  gap: 0;
+  border-left: 2px solid var(--card-border);
+  margin-left: 8px;
+}
+.vibesprint .trow {
+  position: relative;
+  padding: 0 0 18px 22px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+.vibesprint .trow::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px solid var(--vs-cyan);
+}
+.vibesprint .trow.hot::before {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+.vibesprint .trow b {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  display: block;
+}
+.vibesprint .trow.hot b { color: var(--color-primary); }
+
+/* prizes table */
+.vibesprint table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.vibesprint th,
+.vibesprint td {
+  text-align: left;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--card-border);
+  line-height: 1.45;
+  color: var(--color-text);
+}
+.vibesprint th {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.vibesprint td.num {
+  font-family: var(--vs-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+.vibesprint .table-scroll {
+  overflow-x: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+}
+.vibesprint .form-note { font-size: 12px; color: var(--color-text-muted); }
+
+/* form */
+.vibesprint form {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.vibesprint .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.vibesprint .field.full { grid-column: 1 / -1; }
+.vibesprint label {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.vibesprint input,
+.vibesprint select {
+  background: var(--color-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 5px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  padding: 11px 12px;
+}
+.vibesprint .domain-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vibesprint .domain-row input { flex: 1; }
+.vibesprint .domain-row .tld {
+  font-family: var(--vs-mono);
+  font-size: 14px;
+  color: var(--color-primary);
+}
+.vibesprint .lovable-lock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 5px;
+  padding: 11px 12px;
+  font-size: 14px;
+  color: var(--color-text);
+}
+.vibesprint .lovable-lock .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--vs-pink);
+  box-shadow: 0 0 12px rgba(255, 79, 163, .6);
+  flex: none;
+}
+.vibesprint .agree {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+.vibesprint .agree input {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex: none;
+}
+.vibesprint .agree label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+.vibesprint .form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.vibesprint .success {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--color-primary) 12%, var(--color-surface)), var(--color-surface) 70%);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 35%, var(--card-border));
+  border-radius: 8px;
+  padding: 26px;
+  line-height: 1.6;
+  font-size: 14.5px;
+  color: var(--color-text);
+}
+.vibesprint .success b { color: var(--color-primary); }
+.vibesprint .success ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.vibesprint .foot {
+  margin-top: 56px;
+  border-top: 1px solid var(--card-border);
+  padding-top: 14px;
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  letter-spacing: .06em;
+  line-height: 1.9;
+}
+
+@media (max-width: 640px) {
+  .vibesprint form { grid-template-columns: 1fr; }
+  .vibesprint .srow { grid-template-columns: 90px 1fr 92px; }
+  .vibesprint .wrow { grid-template-columns: 150px 1fr 46px; }
+}

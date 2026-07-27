@@ -111,6 +111,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/origins",
     ogImage: "/og/journey.png",
   },
+  vibesprint: {
+    title: "Kred Flash Sprints - Three Fridays to NFT.NYC 2026",
+    description: "Ship a working app in five hours. Three sprints. One season. Every entry ships from Lovable. Awards at NFT.NYC 2026.",
+    path: "/vibesprint",
+    ogImage: "/og/speak.png",
+  },
 };
 
 export type PageMetaKey = keyof typeof PAGE_META;
