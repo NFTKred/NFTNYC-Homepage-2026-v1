@@ -29,9 +29,10 @@ export const SHOW_SPEAK_PAGE = true;
 
 /* ─── Constants ─── */
 const SESSIONIZE_URL = 'https://sessionize.com/nft-nyc-2026/';
-// Round 3 is OPEN through 26 July 2026 at midnight (third and final
-// round). Primary CTAs point at SESSIONIZE_URL. TWITTER_URL kept for
-// the socials link in the banner.
+// All submission rounds are CLOSED. Speakers who missed the window
+// can still apply as Late Speakers — that path requires an existing GA
+// ticket, so primary CTAs point at /register. SESSIONIZE_URL and
+// TWITTER_URL kept for historical reference.
 const TWITTER_URL = 'https://twitter.com/NFT_NYC';
 
 /* ─── Data arrays ─── */
@@ -92,7 +93,7 @@ const PATHWAYS = [
     bullets: [
       'Submit with talk title, description, and industry vertical',
       'Provide a link to a video of you speaking',
-      'Round 1: April 8\u201330 (closed) · Round 2: June 12\u201330 (closed) · Round 3: July 1\u201326 (open, final)',
+      'Round 1: April 8\u201330 (closed) · Round 2: June 12\u201330 (closed) · Round 3: July 1\u201326 (closed) · Late Speakers require a GA ticket',
     ],
     pill: 'Community + Editorial',
     color: '#8B5CF6',
@@ -163,7 +164,7 @@ const DETAILED_TIMELINE = [
   { date: 'April 8 \u2013 30', title: 'Round 1 closed', desc: 'First submission window has closed. Round 1 applicants are under review and will move to community voting on May 7.', color: '#10B981' },
   { date: '7 May', title: 'Round 1 voting opens', desc: 'Community voting begins on Round 1 submissions. Community, GA, and VIP ticket holders can vote.', color: '#10B981' },
   { date: 'June 12 \u2013 30', title: 'Round 2 closed', desc: 'Second submission window has closed. Applicants under review.', color: '#06B6D4' },
-  { date: 'July 1 – 26', title: 'Round 3 open — final round', desc: 'The third and final submission window is open. Submit by 26 July at midnight.', color: '#8B5CF6' },
+  { date: 'July 1 – 26', title: 'Round 3 closed', desc: 'All submission rounds are now closed. Late Speaker applications require a GA ticket.', color: '#8B5CF6' },
   { date: 'August', title: 'Program Announced', desc: 'Official release of preliminary program.', color: '#EC4899' },
   { date: 'September 1\u20133', title: 'NFT.NYC 2026', desc: 'The Edison, Times Square NYC. Program published August 2026. Speaker prep begins upon acceptance.', color: '#F5A623' },
 ];
@@ -309,14 +310,12 @@ export default function Speak() {
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a
-            href={SESSIONIZE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/register"
             style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
           >
-            Submit to Round 3 →
+            Get a GA ticket →
           </a>
           <button
             onClick={() => document.getElementById('tracks')?.scrollIntoView({ behavior: 'smooth' })}
@@ -346,10 +345,10 @@ export default function Speak() {
       <section style={{ padding: '80px 32px', maxWidth: '1100px', margin: '0 auto' }}>
         <p style={sectionLabel}>Submissions are in rounds</p>
         <h2 style={sectionHeading}>
-          Round 3 is <span style={rainbowText}>OPEN</span>
+          Speaker submissions are <span style={rainbowText}>closed</span>
         </h2>
         <p style={sectionSub}>
-          Round 3 is now open — the third and final round of submissions. Applications close 26 July at midnight.
+          To apply as a Late Speaker you must hold a GA ticket.
         </p>
 
         <div style={{
@@ -359,7 +358,7 @@ export default function Speak() {
           maxWidth: '720px',
           margin: '0 auto',
         }} className="speak-rounds-grid">
-          {/* Round 3 announcement card — final submission window open through 26 July at midnight. */}
+          {/* Late Speaker card — all rounds closed; path requires an existing GA ticket. */}
           <div style={{
             ...cardStyle,
             borderColor: '#06B6D4',
@@ -386,7 +385,7 @@ export default function Speak() {
               padding: '6px 14px',
               borderRadius: '4px',
               marginBottom: '1.5rem',
-            }}>Open now</div>
+            }}>Closed</div>
             <h3 style={{
               fontFamily: 'var(--font-display)',
               fontSize: '32px',
@@ -395,7 +394,7 @@ export default function Speak() {
               textTransform: 'uppercase',
               letterSpacing: '-0.5px',
               marginBottom: '0.75rem',
-            }}>Round 3</h3>
+            }}>Late Speaker</h3>
             <p style={{
               fontFamily: 'var(--font-body)',
               fontSize: '52px',
@@ -403,7 +402,7 @@ export default function Speak() {
               color: '#06B6D4',
               lineHeight: 1.05,
               marginBottom: '1rem',
-            }}>Closes 26 July</p>
+            }}>GA ticket required</p>
             <p style={{
               fontFamily: 'var(--font-body)',
               fontSize: '15px',
@@ -411,16 +410,14 @@ export default function Speak() {
               lineHeight: 1.6,
               marginBottom: '1.75rem',
               maxWidth: '560px',
-            }}>The third and final submission window is open through 26 July at midnight. This is the last chance to apply for NFT.NYC 2026.</p>
+            }}>Speaker submissions are now closed. To apply as a Late Speaker you must hold a GA ticket.</p>
             <a
-              href={SESSIONIZE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/register"
               style={{ ...ctaGradientStyle, padding: '14px 32px', fontSize: '15px' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
             >
-              Submit to Round 3 →
+              Get a GA ticket →
             </a>
           </div>
         </div>
@@ -432,7 +429,7 @@ export default function Speak() {
           textAlign: 'center',
           marginTop: '1.5rem',
           fontWeight: 600,
-        }}>📣 Final round — apply before 26 July at midnight</p>
+        }}>📣 Late Speaker applications require a GA ticket</p>
       </section>
 
       {dividerLine}
@@ -577,7 +574,7 @@ export default function Speak() {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to Round 3 →</a>
+          <a href="/register" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Get a GA ticket →</a>
         </div>
       </section>
 
@@ -689,7 +686,7 @@ export default function Speak() {
           ))}
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to Round 3 →</a>
+          <a href="/register" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Get a GA ticket →</a>
         </div>
       </section>
 
@@ -816,7 +813,7 @@ export default function Speak() {
           </ul>
         </div>
         <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-          <a href={SESSIONIZE_URL} target="_blank" rel="noopener noreferrer" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Submit to Round 3 →</a>
+          <a href="/register" style={{ ...ctaGradientStyle, padding: '14px 36px', fontSize: '16px' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>Get a GA ticket →</a>
         </div>
       </section>
 
@@ -887,17 +884,15 @@ export default function Speak() {
           margin: '0 auto 2.5rem',
           lineHeight: 1.6,
         }}>
-          Round 3 is open — the third and final round of submissions. Applications close 26 July at midnight.
+          Speaker submissions are closed. To apply as a Late Speaker you must hold a GA ticket.
         </p>
         <a
-          href={SESSIONIZE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/register"
           style={{ ...ctaGradientStyle, padding: '16px 44px', fontSize: '18px' }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
         >
-          Submit to Round 3 →
+          Get a GA ticket →
         </a>
       </section>
 
@@ -991,14 +986,12 @@ export default function Speak() {
             </div>
 
             <a
-              href={SESSIONIZE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/register"
               style={{ ...ctaGradientStyle, padding: '14px 40px', fontSize: '16px' }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(139,92,246,0.35)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
-              Submit to Round 3 →
+              Get a GA ticket →
             </a>
           </div>
         </div>
