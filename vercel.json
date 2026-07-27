@@ -186,6 +186,11 @@
       "permanent": true
     },
     {
+      "source": "/vibesprints",
+      "destination": "/vibesprint",
+      "permanent": true
+    },
+    {
       "source": "/sessions",
       "destination": "/",
       "permanent": true
