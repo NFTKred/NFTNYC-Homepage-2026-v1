@@ -914,7 +914,7 @@ export default function BlogEditor() {
     setTimeout(() => setSavedNote(null), 6000);
   };
 
-  const buildPatch = (status: 'draft' | 'published'): BlogPostPatch => {
+  const buildPatch = (status: BlogPostRecord['status']): BlogPostPatch => {
     const m = meta!;
     const readMinutes = parseInt(m.read_minutes, 10);
     const patch: BlogPostPatch = {
@@ -935,6 +935,34 @@ export default function BlogEditor() {
       patch.published_at = new Date().toISOString();
     }
     return patch;
+  };
+
+  /**
+   * Preview = save with the current status, then open /blog/:slug.
+   * Drafts render there for logged-in admins (RLS gates everyone
+   * else). The tab opens synchronously so popup blockers see it as
+   * part of the click, and navigates once the save lands.
+   */
+  const handlePreview = () => {
+    if (!post || !meta) return;
+    const win = window.open('', '_blank');
+    updatePost.mutate(
+      { id: post.id, patch: buildPatch(post.status) },
+      {
+        onSuccess: (updated) => {
+          setMetaField('slug', updated.slug);
+          setSavedNote('Saved');
+          setTimeout(() => setSavedNote(null), 3000);
+          const url = `/blog/${updated.slug}`;
+          if (win) win.location.href = url;
+          else window.open(url, '_blank');
+        },
+        onError: (err: Error) => {
+          win?.close();
+          alert(`Could not save before preview: ${err.message}`);
+        },
+      },
+    );
   };
 
   const save = (status: 'draft' | 'published') => {
@@ -1034,8 +1062,9 @@ export default function BlogEditor() {
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
           <button
-            onClick={() => window.open(`/blog/${slugify(meta.slug) || post.slug}`, '_blank', 'noopener')}
-            title="Open /blog/:slug in a new tab. Only published posts render publicly - drafts redirect to /blog."
+            onClick={handlePreview}
+            disabled={updatePost.isPending}
+            title="Save, then open /blog/:slug in a new tab. Drafts are visible there to logged-in admins only."
             style={{ ...btnStyle, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}
           >
             <ExternalLink size={14} /> Preview

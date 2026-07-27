@@ -108,6 +108,25 @@ export default function BlogPost() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
+      {post.status !== "published" && (
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 40,
+            textAlign: "center",
+            padding: "0.5rem 1rem",
+            background: "rgba(245, 158, 11, 0.95)",
+            color: "#1a1a1a",
+            fontFamily: "var(--font-body)",
+            fontSize: "13px",
+            fontWeight: 600,
+          }}
+        >
+          {post.status === "draft" ? "Draft" : "Scheduled"} preview - only
+          logged-in admins can see this page until it is published.
+        </div>
+      )}
       <article className="blog-post">
         <div className="blog-post-inner">
           <a href="/blog" className="blog-post-back">

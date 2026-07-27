@@ -15,7 +15,15 @@ export async function fetchPublishedPosts(): Promise<BlogPostSummary[]> {
   return (data ?? []) as BlogPostSummary[];
 }
 
-/** Fetch a single post by slug. Returns null when not found (404). */
+/**
+ * Fetch a single post by slug. Returns null when not found (404).
+ *
+ * No status filter here on purpose: RLS decides visibility. Anonymous
+ * readers only match published rows ("blog_posts read published"),
+ * while logged-in admins also match drafts ("blog_posts admin all"),
+ * which is what makes the editor's Preview button work on drafts at
+ * the real /blog/:slug URL before publishing.
+ */
 export async function fetchPostBySlug(
   slug: string,
 ): Promise<BlogPostRecord | null> {
@@ -23,7 +31,6 @@ export async function fetchPostBySlug(
     .from("blog_posts")
     .select("*")
     .eq("slug", slug)
-    .eq("status", "published")
     .maybeSingle();
   if (error) throw error;
   return (data as BlogPostRecord | null) ?? null;
