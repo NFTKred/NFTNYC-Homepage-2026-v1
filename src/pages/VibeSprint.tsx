@@ -169,7 +169,7 @@ export default function VibeSprint() {
             <div className="cta-row">
               <a className="btn" href="#register">Register free</a>
               <span className="cta-note">
-                Registration includes Kred API credits, a free Kred domain claim, and 1,000 XP.
+                Registration includes Kred API credits, a free standard Kred domain claim, and 1,000 XP.
               </span>
             </div>
           </header>
