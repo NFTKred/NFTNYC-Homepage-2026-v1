@@ -198,18 +198,20 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Neural mesh */}
-          <div className="flex justify-center w-full">
-            <NeuralMesh />
-          </div>
         </section>
+
+        <WhyNYC stage={stage} />
+        <SeeWhatsOnTheMap />
+
+        {/* Tokenization layer visual — moved out of the hero so
+            The World's Stage + Collect: Times Square land above it. */}
+        <div className="flex justify-center w-full">
+          <NeuralMesh />
+        </div>
 
         <StatsBar />
 
         <NotableSpeakers />
-
-        <WhyNYC stage={stage} />
-        <SeeWhatsOnTheMap />
 
         {/* ======== STATEMENT ======== */}
         <section
