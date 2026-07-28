@@ -313,7 +313,6 @@ export default function VibeSprint() {
                   Type one word and meet the domain already dressed: Cats.Kred wearing its own
                   cover art, origin story, trust score, and a live AI greeter - plus a gallery
                   where every domain idea ships with matching Kredentials imagery.
-                  <span className="exlink">Open the design reference →</span>
                 </div>
               </a>
               <a className="excard" href="ByronWaller%20Kredentials%20v7%20Golden%20Render%20v1%202026-07-20.html">
@@ -327,7 +326,6 @@ export default function VibeSprint() {
                   facts, 21 full-text answers, 21 cited sources - editorial for humans,
                   machine-readable for answer engines. Your search results can preview this
                   future for every name.
-                  <span className="exlink">Open the design reference →</span>
                 </div>
               </a>
             </div>
