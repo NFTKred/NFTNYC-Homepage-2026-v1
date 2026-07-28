@@ -471,24 +471,32 @@ export default function VibeSprint() {
                     onChange={(e) => setAgree(e.target.checked)}
                   />
                   <label htmlFor="fAgree">
-                    I accept the competition terms and the PeopleBrowsr Terms of Service, and I
-                    understand XP carries a 60-day expiry with zero monetary value.
+                    I accept the{" "}
+                    <a
+                      href="https://www.peoplebrowsr.com/tos"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      PeopleBrowsr Terms of Service
+                    </a>
+                    , and I understand XP carries a 60-day expiry with zero monetary value.
                   </label>
                 </div>
                 <div className="form-actions">
                   <button className="btn" type="submit">Claim my kit and register</button>
                   <span className="form-note">
-                    Free to enter. One registration covers all three sprints. Kit issued instantly.
+                    Free to enter. One registration covers all three sprints.
                   </span>
                 </div>
               </form>
             )}
             {submitted && (
               <div className="success" id="successCard" role="status">
-                <b>You're in - for the whole season.</b> Check your inbox for your API credits
-                and XP starter pack.<br />
-                Your domain <b>{claimedDomain}</b> is reserved - complete the claim from the
-                email link.
+                <b>You're in - for the whole season.</b> Your API credits and XP starter pack
+                will be delivered to your inbox in an onboarding welcome email from{" "}
+                team@nft.nyc on Wednesday 5 August.<br />
+                We've registered your request for <b>{claimedDomain}</b> - complete the claim
+                from the welcome email link.
                 <ul>
                   <li>The Sprint 1 brief, the story, and the example apps arrive in your welcome email.</li>
                   <li>Sprint 1: Friday 7 August, 12:00-17:00 ET, livestreamed.</li>
@@ -498,10 +506,6 @@ export default function VibeSprint() {
             )}
           </section>
 
-          <div className="foot">
-            KRED FLASH SPRINTS · THREE FRIDAYS TO NFT.NYC · PEOPLEBROWSR × NFT.NYC 2026 · AWARDS 1 SEPTEMBER, NEW YORK<br />
-            MOCKUP V3 · DEPLOYS TO HTTPS://NFT.NYC/VIBESPRINT · FORM, COUNTER AND COUNTDOWN ARE DEMO-ONLY · TERMS LINK PENDING LEGAL REVIEW
-          </div>
         </div>
       </div>
 
