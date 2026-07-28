@@ -208,6 +208,8 @@ export default function Index() {
 
         <NotableSpeakers />
 
+        <WhyNYC stage={stage} />
+
         {/* ======== STATEMENT ======== */}
         <section
           id="about"
@@ -369,7 +371,6 @@ export default function Index() {
         <NewsletterCapture />
 
         {stage >= 1 && <SpeakersSection />}
-        <WhyNYC stage={stage} />
         <SeeWhatsOnTheMap />
         <EcosystemSection />
         <BrandQuotes />
