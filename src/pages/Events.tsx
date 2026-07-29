@@ -18,6 +18,17 @@ interface SatelliteEvent {
 
 const EVENTS: SatelliteEvent[] = [
   {
+    name: 'BMAG presents Remains — a solo exhibition by Rupture',
+    host: 'Bitcoin Magazine Art Gallery & Museum (BMAG)',
+    date: '2026-09-02',
+    dateLabel: 'Opening: Tuesday, Sept 2, 6–9 PM · Exhibition: Sept 3–8, daily 1–6 PM',
+    venue: '46 Hester Street · Lower East Side · Free admission',
+    description:
+      'BMAG presents the New York solo debut of Rupture, creator of one of the most widely collected artist-made releases on Bitcoin. At the center of the show: Remains, four paintings, each bound to a digital counterpart inscribed permanently on Bitcoin. At the 2028 halving, the digital half begins to die — to preserve one, the collector must sacrifice the other. The exhibition also includes a new body of paintings, works on paper, and a monumental ink drawing made over eight months.',
+    registrationUrl: 'https://museum.b.tc/exhibitions/rupture-x-bmag-nftnyc',
+    tag: 'Community',
+  },
+  {
     name: 'DDNYC 2026',
     host: 'Doginal Dogs × TAO Hospitality Group',
     date: '2026-09-02',
