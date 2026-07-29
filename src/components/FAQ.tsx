@@ -25,8 +25,8 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: '2026 Satellite Events',
-        a: <>If you’re hosting a satellite event during NFT.NYC 2026 Week (1-3 September), email <a href="mailto:team@nft.nyc" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>team@nft.nyc</a> to be included in the official Events page. Across nine editions, NFT.NYC has hosted hundreds of satellite events, over 450 in 2022 alone.</>,
-        plainA: 'If you’re hosting a satellite event during NFT.NYC 2026 Week (1-3 September), email team@nft.nyc to be included in the official Events page. Across nine editions, NFT.NYC has hosted hundreds of satellite events, over 450 in 2022 alone.',
+        a: <>Browse the official <a href="/events" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Satellite Events page</a> for meetups, parties, and activations across NYC during NFT.NYC Week. If you’re hosting an event during NFT.NYC 2026 Week (1-3 September), email <a href="mailto:team@nft.nyc" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>team@nft.nyc</a> to be included. Across nine editions, NFT.NYC has hosted hundreds of satellite events, over 450 in 2022 alone.</>,
+        plainA: 'Browse the official Satellite Events page at /events for meetups, parties, and activations across NYC during NFT.NYC Week. If you’re hosting an event during NFT.NYC 2026 Week (1-3 September), email team@nft.nyc to be included. Across nine editions, NFT.NYC has hosted hundreds of satellite events, over 450 in 2022 alone.',
       },
       {
         q: 'What to expect during NFT.NYC 2026?',
