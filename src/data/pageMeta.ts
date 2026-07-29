@@ -57,6 +57,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/volunteer",
     ogImage: "/og/speak.png",
   },
+  events: {
+    title: "Satellite Events — NFT.NYC 2026",
+    description: "Community events, meetups, parties, and activations happening across New York City during NFT.NYC Week (Sept 1–3, 2026).",
+    path: "/events",
+    ogImage: "/og/speak.png",
+  },
   sponsor: {
     title: "Partner with NFT.NYC 2026",
     description: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track.",

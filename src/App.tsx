@@ -29,6 +29,7 @@ import SponsorTSChallenge from "./pages/SponsorTSChallenge";
 import Visa from "./pages/Visa";
 import Media from "./pages/Media";
 import Volunteer from "./pages/Volunteer";
+import Events from "./pages/Events";
 import VibeSprint from "./pages/VibeSprint";
 import ManageVolunteers from "./pages/ManageVolunteers";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
@@ -72,6 +73,7 @@ const App = () => (
           <Route path="/visa" element={<Visa />} />
           <Route path="/media" element={<Media />} />
           <Route path="/volunteer" element={<Volunteer />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/vibesprint" element={<VibeSprint />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
