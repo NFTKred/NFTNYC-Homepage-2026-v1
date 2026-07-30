@@ -14,6 +14,7 @@ interface SatelliteEvent {
   registrationUrl?: string;
   sourceUrl?: string;
   tag?: 'Official' | 'Community';
+  image?: string;
 }
 
 const EVENTS: SatelliteEvent[] = [
@@ -27,6 +28,7 @@ const EVENTS: SatelliteEvent[] = [
       'BMAG presents the New York solo debut of Rupture, creator of one of the most widely collected artist-made releases on Bitcoin. At the center of the show: Remains, four paintings, each bound to a digital counterpart inscribed permanently on Bitcoin. At the 2028 halving, the digital half begins to die — to preserve one, the collector must sacrifice the other. The exhibition also includes a new body of paintings, works on paper, and a monumental ink drawing made over eight months.',
     registrationUrl: 'https://museum.b.tc/exhibitions/rupture-x-bmag-nftnyc',
     tag: 'Community',
+    image: '/events/bmag-rupture.jpg',
   },
   {
     name: 'DDNYC 2026',
@@ -50,6 +52,7 @@ const EVENTS: SatelliteEvent[] = [
       'Rooftop party with music, drinks, food, games, and prizes. Registration requires host approval. Partners include the Quakey Collective, music by Stu Kwan, and media by VTATV.',
     registrationUrl: 'https://luma.com/kkxw3r3g',
     tag: 'Community',
+    image: '/events/honeybee-lounge.png',
   },
   {
     name: 'Beef Stew Radio Presents: The Jeetsons',
@@ -62,6 +65,7 @@ const EVENTS: SatelliteEvent[] = [
     registrationUrl:
       'https://www.eventbrite.com/e/beef-stew-radio-presents-the-jeetsons-party-comedy-show-during-nft-nyc-tickets-1992834789501',
     tag: 'Community',
+    image: '/events/jeetsons.jpg',
   },
 ];
 
@@ -147,7 +151,7 @@ export default function Events() {
                 background: 'rgba(255,255,255,0.03)',
                 border: '1px solid rgba(255,255,255,0.06)',
                 borderRadius: '16px',
-                padding: '1.75rem',
+                overflow: 'hidden',
                 transition: 'border-color 200ms ease',
               }}
               onMouseEnter={(e) => {
@@ -157,6 +161,24 @@ export default function Events() {
                 (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
               }}
             >
+              {event.image && (
+                <div
+                  style={{
+                    width: '100%',
+                    aspectRatio: '16 / 9',
+                    overflow: 'hidden',
+                    background: `linear-gradient(135deg, ${hexToRgba(ACCENT_HEX, 0.08)}, ${hexToRgba(ACCENT_HEX, 0.02)})`,
+                  }}
+                >
+                  <img
+                    src={event.image}
+                    alt={event.name}
+                    loading="lazy"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                </div>
+              )}
+              <div style={{ padding: '1.75rem' }}>
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
                 {event.tag && (
                   <span
@@ -296,6 +318,7 @@ export default function Events() {
                     <ExternalLink size={12} />
                   </a>
                 )}
+              </div>
               </div>
             </article>
           ))}
