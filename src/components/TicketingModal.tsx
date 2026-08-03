@@ -39,8 +39,7 @@ const CRYPTO_TIERS: TicketTier[] = [
     name: "General Admission",
     description: "Access to the main event and expo floor for the full conference.",
     variantId: "50045717315863",
-    price: "$399",
-    strikePrice: "$599",
+    price: "$599",
   },
   {
     id: "vip",
