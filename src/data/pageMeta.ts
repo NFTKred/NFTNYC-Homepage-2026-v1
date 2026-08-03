@@ -63,6 +63,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/events",
     ogImage: "/og/speak.png",
   },
+  program: {
+    title: "Program — NFT.NYC 2026",
+    description: "The full NFT.NYC 2026 conference schedule. Keynotes, panels, and fireside chats across three days at the Edison Ballroom in Times Square.",
+    path: "/program",
+    ogImage: "/og/speak.png",
+  },
   sponsor: {
     title: "Partner with NFT.NYC 2026",
     description: "Branded stages, speaking slots, activations, and Times Square billboards. Build your perfect partnership package across every industry track.",
