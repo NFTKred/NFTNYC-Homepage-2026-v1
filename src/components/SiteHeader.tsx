@@ -200,7 +200,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 (e.currentTarget as HTMLElement).style.boxShadow = 'none';
               }}
             >
-              Earlybird Tickets
+              Register
             </button>
             <button
               onClick={onToggleTheme}
@@ -299,7 +299,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 marginTop: '0.5rem',
               }}
             >
-              Earlybird Tickets
+              Register
             </button>
           </nav>
         </div>
