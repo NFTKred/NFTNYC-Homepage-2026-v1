@@ -5,6 +5,7 @@
 // cards grouped by day. Cards show time badge, title, speakers, and room.
 
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Search, Clock, MapPin, Users } from "lucide-react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -319,7 +320,32 @@ function SessionCard({ session, accent }: { session: ScheduleSession; accent: st
             }}
           >
             <Users size={13} style={{ marginTop: 3, flexShrink: 0 }} />
-            <span>{session.speakers.join(", ")}</span>
+            <span>
+              {session.speakers.map((name, i) => (
+                <span key={name + i}>
+                  <Link
+                    to={`/speakers?speaker=${encodeURIComponent(name)}`}
+                    style={{
+                      color: "var(--color-text)",
+                      textDecoration: "none",
+                      borderBottom: "1px dotted var(--color-text-faint)",
+                      transition: "color 150ms ease, border-color 150ms ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.color = accent;
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = accent;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.color = "var(--color-text)";
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = "var(--color-text-faint)";
+                    }}
+                  >
+                    {name}
+                  </Link>
+                  {i < session.speakers.length - 1 && ", "}
+                </span>
+              ))}
+            </span>
           </div>
         )}
 
