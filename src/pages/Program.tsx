@@ -76,7 +76,7 @@ export default function Program() {
               marginBottom: "0.75rem",
             }}
           >
-            Sept 1–3, 2026 · Times Square, NYC
+            Preliminary Program V.1 · Sept 1–3, 2026 · Times Square, NYC
           </p>
           <h1
             style={{
@@ -102,7 +102,7 @@ export default function Program() {
               marginRight: "auto",
             }}
           >
-            The full NFT.NYC 2026 conference schedule. Subject to change.
+            The preliminary NFT.NYC 2026 conference schedule. Sessions and times are subject to change.
           </p>
         </div>
       </section>
