@@ -23,7 +23,6 @@ import { CreditCard, Bitcoin, ChevronLeft, Minus, Plus } from "lucide-react";
  */
 
 const EVENTBRITE_EVENT_ID = "1985747187292";
-const EVENTBRITE_PROMO_CODE = "Earlybird";
 
 interface TicketTier {
   id: string;
@@ -40,8 +39,7 @@ const CRYPTO_TIERS: TicketTier[] = [
     name: "General Admission",
     description: "Access to the main event and expo floor for the full conference.",
     variantId: "50045717315863",
-    price: "$399",
-    strikePrice: "$599",
+    price: "$599",
   },
   {
     id: "vip",
@@ -81,7 +79,6 @@ function openEventbriteWidget() {
       w.EBWidgets.createWidget({
         widgetType: "checkout",
         eventId: EVENTBRITE_EVENT_ID,
-        promoCode: EVENTBRITE_PROMO_CODE,
         themeSettings: {
           brandColor: "#f06347",
           fontColor: "#FFFFFF",
@@ -148,7 +145,7 @@ export default function TicketingModal() {
                 </DialogTitle>
                 <DialogDescription asChild>
                   <p className="text-sm text-muted-foreground pt-1">
-                    Choose how you'd like to pay. Earlybird pricing is applied automatically.
+                    Choose how you'd like to pay.
                   </p>
                 </DialogDescription>
               </DialogHeader>

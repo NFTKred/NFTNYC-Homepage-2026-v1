@@ -157,7 +157,7 @@ const FAQ_DATA: FAQCategory[] = [
       },
       {
         q: 'How do I buy tickets?',
-        a: 'Tickets to NFT.NYC 2026 are on sale now. Click the "Register" button in the site header to choose how you\'d like to pay — by credit card via Eventbrite (Visa, Mastercard, Amex, Apple Pay, Google Pay) or with cryptocurrency via our Shopify store (BTC, ETH, USDC, and more). Earlybird pricing is applied automatically.',
+        a: 'Tickets to NFT.NYC 2026 are on sale now. Click the "Register" button in the site header to choose how you\'d like to pay — by credit card via Eventbrite (Visa, Mastercard, Amex, Apple Pay, Google Pay) or with cryptocurrency via our Shopify store (BTC, ETH, USDC, and more).',
       },
       {
         q: 'How can I learn more and engage ahead of time?',
