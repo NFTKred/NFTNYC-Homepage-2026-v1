@@ -193,7 +193,7 @@ export default function Index() {
                   (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(139,92,246,0.3)';
                 }}
               >
-                Earlybird Tickets
+                Register
               </button>
             </div>
           </div>
