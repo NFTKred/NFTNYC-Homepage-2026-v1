@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
+import { supabase } from "@/lib/supabase";
 import "@/styles/vibesprint.css";
 
 /**
@@ -96,8 +97,10 @@ export default function VibeSprint() {
   const [agree, setAgree] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
+  const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (!form.checkValidity()) {
@@ -105,16 +108,32 @@ export default function VibeSprint() {
       return;
     }
     const d = domain.trim() || "yourname";
+    setSending(true);
+    setFormError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "submit-vibesprint-registration",
+        {
+          body: {
+            name: name.trim(),
+            email: email.trim(),
+            segment,
+            domain: d,
+            agreed_tos: agree,
+          },
+        }
+      );
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+    } catch (err) {
+      console.error("VibeSprint registration failed:", err);
+      setFormError("We couldn't save your registration. Please try again, or email team@nft.nyc.");
+      setSending(false);
+      return;
+    }
+    setSending(false);
     setClaimedDomain(`${d}.Kred`);
     setSubmitted(true);
-    // TODO: wire this to a Supabase edge function (see
-    // supabase/functions/submit-media-pass, submit-visa-request,
-    // submit-volunteer-application for the pattern) so registrations
-    // persist. For now we only show the client-side success card.
-    // Payload: { name, email, segment, domain: d }.
-    void name;
-    void email;
-    void segment;
     // Scroll the success card into view once React renders it.
     window.setTimeout(() => {
       document.getElementById("successCard")?.scrollIntoView({
@@ -481,11 +500,18 @@ export default function VibeSprint() {
                   </label>
                 </div>
                 <div className="form-actions">
-                  <button className="btn" type="submit">Claim my kit and register</button>
+                  <button className="btn" type="submit" disabled={sending}>
+                    {sending ? "Registering…" : "Claim my kit and register"}
+                  </button>
                   <span className="form-note">
                     Free to enter. One registration covers all three sprints.
                   </span>
                 </div>
+                {formError && (
+                  <p className="form-note" role="alert" style={{ marginTop: 10, color: "#F15621" }}>
+                    {formError}
+                  </p>
+                )}
               </form>
             )}
             {submitted && (
