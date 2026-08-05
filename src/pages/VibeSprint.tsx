@@ -500,11 +500,18 @@ export default function VibeSprint() {
                   </label>
                 </div>
                 <div className="form-actions">
-                  <button className="btn" type="submit">Claim my kit and register</button>
+                  <button className="btn" type="submit" disabled={sending}>
+                    {sending ? "Registering…" : "Claim my kit and register"}
+                  </button>
                   <span className="form-note">
                     Free to enter. One registration covers all three sprints.
                   </span>
                 </div>
+                {formError && (
+                  <p className="form-note" role="alert" style={{ marginTop: 10, color: "#F15621" }}>
+                    {formError}
+                  </p>
+                )}
               </form>
             )}
             {submitted && (
