@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
+import { supabase } from "@/lib/supabase";
 import "@/styles/vibesprint.css";
 
 /**
