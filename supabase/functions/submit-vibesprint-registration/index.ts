@@ -20,6 +20,7 @@ interface Payload {
   email?: string;
   segment?: string;
   domain?: string;
+  build_tool?: string;
   agreed_tos?: boolean;
 }
 
@@ -54,6 +55,7 @@ Deno.serve(async (req) => {
   const email = String(body.email ?? "").trim().toLowerCase().slice(0, 255);
   const segment = String(body.segment ?? "").trim().slice(0, 120);
   const domain = String(body.domain ?? "").trim().replace(/\.kred$/i, "").slice(0, 80);
+  const buildTool = String(body.build_tool ?? "Lovable").trim().slice(0, 120) || "Lovable";
 
   if (!name || !email || !segment || !domain) {
     return json({ error: "Missing required fields: name, email, segment, domain" }, 422);
@@ -73,7 +75,7 @@ Deno.serve(async (req) => {
       email,
       segment,
       domain,
-      build_tool: "Lovable",
+      build_tool: buildTool,
       agreed_tos: true,
       user_agent: req.headers.get("user-agent"),
     })
@@ -96,7 +98,7 @@ Deno.serve(async (req) => {
           <tr><td style="padding:6px 0;color:#666;width:180px;">Email</td><td style="padding:6px 0;"><a href="mailto:${escape(email)}">${escape(email)}</a></td></tr>
           <tr><td style="padding:6px 0;color:#666;">Segment</td><td style="padding:6px 0;">${escape(segment)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Kred domain requested</td><td style="padding:6px 0;"><b>${escape(domain)}.Kred</b></td></tr>
-          <tr><td style="padding:6px 0;color:#666;">Build tool</td><td style="padding:6px 0;">Lovable</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Build platform</td><td style="padding:6px 0;">${escape(buildTool)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Accepted ToS</td><td style="padding:6px 0;">Yes</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Submitted</td><td style="padding:6px 0;">${escape(row.created_at)}</td></tr>
         </table>
