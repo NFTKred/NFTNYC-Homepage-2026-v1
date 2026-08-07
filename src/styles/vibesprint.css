@@ -693,3 +693,37 @@
   margin-top: 2px;
   text-transform: none;
 }
+
+/* read-more link cards */
+.vibesprint .links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.vibesprint a.lk {
+  display: inline-block;
+  background: var(--color-surface);
+  border: 1px solid var(--tone, var(--vs-cyan));
+  color: var(--tone, var(--vs-cyan));
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: var(--vs-mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-decoration: none;
+  line-height: 1.4;
+}
+.vibesprint a.lk:hover {
+  background: var(--tone, var(--vs-cyan));
+  color: var(--color-bg);
+}
+.vibesprint a.lk small {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.vibesprint a.lk:hover small { color: var(--color-bg); }
+.vibesprint a.lk.ext::after { content: " \2197"; }
