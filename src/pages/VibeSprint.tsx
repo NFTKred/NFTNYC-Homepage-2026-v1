@@ -4,6 +4,11 @@ import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/lib/supabase";
+import {
+  RegistrantContactFields,
+  EMPTY_CONTACT,
+  type RegistrantContact,
+} from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
 
 /**
@@ -105,6 +110,7 @@ export default function VibeSprint() {
   const [buildTool, setBuildTool] = useState("Lovable (primary — Agent Integrations)");
   const [domain, setDomain] = useState("");
   const [agree, setAgree] = useState(false);
+  const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
   const [submitted, setSubmitted] = useState(false);
   const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
   const [sending, setSending] = useState(false);
@@ -131,6 +137,7 @@ export default function VibeSprint() {
             domain: d,
             build_tool: buildTool,
             agreed_tos: agree,
+            ...contact,
           },
         }
       );
@@ -609,6 +616,7 @@ export default function VibeSprint() {
                     <span className="tld">.Kred</span>
                   </div>
                 </div>
+                <RegistrantContactFields open={domain.trim().length > 0} onChange={setContact} />
                 <div className="agree">
                   <input
                     id="fAgree"
