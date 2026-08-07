@@ -3,7 +3,7 @@ import { Loader2, Upload, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { ImageCropModal } from './ImageCropModal';
+import ImageCropModal from './ImageCropModal';
 import { uploadBlob } from '@/lib/speakerflow/api';
 import { updateImageURL } from '@/lib/speakerflow/media';
 
