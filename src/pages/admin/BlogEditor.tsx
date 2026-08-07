@@ -9,6 +9,7 @@ import { uploadBlogMedia } from '@/lib/blog/media';
 import { importPostFile, slugify, type ImportedPost } from '@/lib/blog/import';
 import type {
   BeforeAfterBlock,
+  BlogPostRecord,
   BlogBlock,
   CalloutBlock,
   CtaBlock,

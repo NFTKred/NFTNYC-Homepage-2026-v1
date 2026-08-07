@@ -1,4 +1,4 @@
-import type { AlaCarteItem } from "@/data/packages";
+import type { AlaCarteItem } from "@/data/sponsor/packages";
 
 interface AlaCarteCardProps {
   item: AlaCarteItem;

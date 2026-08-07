@@ -73,11 +73,7 @@ export default function Visa() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
-      <PageMeta
-        title="Visa support letter — NFT.NYC 2026"
-        description="Request a letter of invitation for your NFT.NYC 2026 US visa application. Attendees traveling from abroad can request a signed letter of invitation from NFT.NYC."
-        path="/visa"
-      />
+      <PageMeta page="visa" />
       <Header theme="dark" onToggleTheme={() => {}} />
 
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '140px 24px 80px' }}>

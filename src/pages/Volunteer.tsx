@@ -151,11 +151,7 @@ export default function Volunteer() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
-      <PageMeta
-        title="Volunteer at NFT.NYC 2026"
-        description="Sign up to volunteer at NFT.NYC 2026 (Sept 1-3). Volunteers get a complimentary General Admission ticket in exchange for their time supporting the community."
-        path="/volunteer"
-      />
+      <PageMeta page="volunteer" />
       <Header theme="dark" onToggleTheme={() => {}} />
 
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '140px 24px 80px' }}>

@@ -2,7 +2,7 @@ const BB = "https://f005.backblazeb2.com/file/PB-HubSpot/";
 
 export interface Package {
   id: number | null;
-  tier: "standard" | "standard";
+  tier: "standard" | "premium";
   name: string;
   price: string;
   description: string;
