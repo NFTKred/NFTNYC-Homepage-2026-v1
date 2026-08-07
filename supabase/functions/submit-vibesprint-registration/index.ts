@@ -209,7 +209,10 @@ Deno.serve(async (req) => {
 
   if (insertErr || !row) {
     console.error("vibesprint_registrations insert failed:", insertErr);
-    return json({ error: "Could not save your registration — please try again or email team@nft.nyc." }, 500);
+    return json({
+      error: "Could not save your registration — please try again or email team@nft.nyc.",
+      details: insertErr?.message ?? null,
+    }, 500);
   }
 
   // Claim the .kred domain for the registrant.
