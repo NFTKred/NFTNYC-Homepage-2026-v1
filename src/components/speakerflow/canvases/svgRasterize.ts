@@ -12,8 +12,8 @@
  * flows produce the same templated NFT artwork CK does.
  */
 
-import { uploadFormBlob } from '@/lib/api';
-import { updateImageURL } from '@/lib/media';
+import { uploadFormBlob } from '@/lib/speakerflow/api';
+import { updateImageURL } from '@/lib/speakerflow/media';
 
 export interface RasterizeOptions {
   /** DOM id of the `<svg>` element to rasterize. */
