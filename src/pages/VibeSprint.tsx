@@ -396,8 +396,8 @@ export default function VibeSprint() {
             <div className="examples">
               <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
                 <img
-                  src="/vibesprint/Example Visual Search Thumb v1.jpg"
-                  alt="DomainsKred visual search wireframe — Cats.Kred hero with browser search bar, cover art, and AI greeter"
+                  src="/vibesprint/demoapp-visualsearch-v2.jpg"
+                  alt="Cats.Kred visual search demo — a 'catsonmotorbikes' one-word query surfaces the domain with an available badge, buy price, and three preview parking-page variants featuring AI-generated cat imagery"
                 />
                 <div className="excap">
                   <b>The Visual Domain Search</b>
@@ -409,8 +409,8 @@ export default function VibeSprint() {
               </div>
               <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
                 <img
-                  src="/vibesprint/Example Kredentials Thumb v1.jpg"
-                  alt="Byron Waller Kredentials golden render — verified profile record with fact counts and editorial photography"
+                  src="/vibesprint/demoapp-domainreseller-v2.jpg"
+                  alt="dot.kred registrar demo — search available .kred names with a live availability check, whois status card, and a network visualization of the .kred namespace"
                 />
                 <div className="excap">
                   <b>The Domain Search App</b>
