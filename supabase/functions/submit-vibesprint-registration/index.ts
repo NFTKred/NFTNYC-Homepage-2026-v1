@@ -79,6 +79,17 @@ function normalizeCountry(raw: string) {
   return map[s.toLowerCase()] || s.toUpperCase().slice(0, 2);
 }
 
+/** Redacted fingerprint so we can confirm WHICH token is in the env without leaking it. */
+function fingerprint(token: string | undefined) {
+  if (!token) return "missing";
+  return `len=${token.length} head=${token.slice(0, 4)}… tail=…${token.slice(-4)}`;
+}
+
+/** Trim + hard length caps matching the Domains API contact schema. */
+function clean(v: unknown, max: number) {
+  return String(v ?? "").replace(/\s+/g, " ").trim().slice(0, max);
+}
+
 /** Registers <domain>.kred with the registrar. Returns an error string on failure. */
 async function registerKredDomain(fqdn: string, reg: {
   fullName: string; email: string; phone: string; address1: string;
@@ -90,6 +101,12 @@ async function registerKredDomain(fqdn: string, reg: {
     return { ok: false, error: "KRED_DOMAINS_ADMIN_TOKEN is not configured" };
   }
 
+  console.log("[kred] tokens", {
+    admin: fingerprint(adminToken),
+    user: fingerprint(userToken),
+    same: adminToken === userToken,
+  });
+
   const headers: Record<string, string> = {
     Authorization: `Bearer ${userToken}`,
     "Content-Type": "application/json",
@@ -97,41 +114,57 @@ async function registerKredDomain(fqdn: string, reg: {
   };
 
   const { first, last } = splitName(reg.fullName);
+  const contactPayload = {
+    first_name: clean(first, 64),
+    last_name: clean(last, 64),
+    street: clean(reg.address1, 128),
+    city: clean(reg.city, 64),
+    state: clean(reg.state || reg.city, 64),
+    postal_code: clean(reg.postalCode, 16),
+    country: normalizeCountry(reg.country),
+    phone: normalizePhone(reg.phone),
+    email: clean(reg.email, 128).toLowerCase(),
+  };
+
+  console.log("[kred] POST /contacts", {
+    url: `${KRED_API_BASE}/contacts`,
+    headers: { Authorization: "Bearer ***", "X-Admin-Token": "***", "Content-Type": "application/json" },
+    body: contactPayload,
+  });
+
   const contactRes = await fetch(`${KRED_API_BASE}/contacts`, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      first_name: first,
-      last_name: last,
-      street: reg.address1,
-      city: reg.city,
-      state: reg.state || reg.city,
-      postal_code: reg.postalCode,
-      country: normalizeCountry(reg.country),
-      phone: normalizePhone(reg.phone),
-      email: reg.email,
-    }),
+    body: JSON.stringify(contactPayload),
   });
   if (!contactRes.ok) {
     const details = await contactRes.text();
-    console.error(`[kred] contact failed [${contactRes.status}]: ${details}`);
+    console.error(`[kred] contact failed [${contactRes.status}]: ${details}`, {
+      sentPayload: contactPayload,
+      adminToken: fingerprint(adminToken),
+    });
     return { ok: false, error: `Contact create failed (${contactRes.status}): ${details.slice(0, 400)}` };
   }
   const contact = await contactRes.json();
+  console.log("[kred] contact created", contact);
   const registrantId = contact?.id || contact?.contact_id;
   if (!registrantId) return { ok: false, error: "Contact response missing id" };
 
+  const registerBody = { registrant: registrantId, years: 1, auto_renew: false };
+  console.log("[kred] POST /domains/register", { fqdn, body: registerBody });
   const registerRes = await fetch(`${KRED_API_BASE}/domains/${encodeURIComponent(fqdn)}/register`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ registrant: registrantId, years: 1, auto_renew: false }),
+    body: JSON.stringify(registerBody),
   });
   if (!registerRes.ok) {
     const details = await registerRes.text();
     console.error(`[kred] register failed [${registerRes.status}]: ${details}`);
     return { ok: false, error: `Domain register failed (${registerRes.status}): ${details.slice(0, 400)}` };
   }
-  return { ok: true, registration: await registerRes.json() };
+  const registration = await registerRes.json();
+  console.log("[kred] domain registered", registration);
+  return { ok: true, registration };
 }
 
 Deno.serve(async (req) => {
