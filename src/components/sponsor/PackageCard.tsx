@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Package } from "@/data/packages";
+import type { Package } from "@/data/sponsor/packages";
 
 function Badge({ children, variant = "default" }: { children: React.ReactNode; variant?: "default" | "soldOut" | "premium" }) {
   const styles = {

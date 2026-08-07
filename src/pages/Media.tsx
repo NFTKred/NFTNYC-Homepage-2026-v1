@@ -113,11 +113,7 @@ export default function Media() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-text)' }}>
-      <PageMeta
-        title="Media Pass Application — NFT.NYC 2026"
-        description="Journalists, podcasters, and creators can apply for a Media Pass to cover NFT.NYC 2026. Applications are reviewed weekly and approved applicants are contacted directly."
-        path="/media"
-      />
+      <PageMeta page="media" />
       <Header theme="dark" onToggleTheme={() => {}} />
 
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '140px 24px 80px' }}>

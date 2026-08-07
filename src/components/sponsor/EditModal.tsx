@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Package, AlaCarteItem } from "@/data/packages";
+import type { Package, AlaCarteItem } from "@/data/sponsor/packages";
 
 interface EditModalProps {
   item: Package | AlaCarteItem;
