@@ -105,6 +105,7 @@ export default function VibeSprint() {
   const [buildTool, setBuildTool] = useState("Lovable (primary — Agent Integrations)");
   const [domain, setDomain] = useState("");
   const [agree, setAgree] = useState(false);
+  const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
   const [submitted, setSubmitted] = useState(false);
   const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
   const [sending, setSending] = useState(false);
@@ -131,6 +132,7 @@ export default function VibeSprint() {
             domain: d,
             build_tool: buildTool,
             agreed_tos: agree,
+            ...contact,
           },
         }
       );
