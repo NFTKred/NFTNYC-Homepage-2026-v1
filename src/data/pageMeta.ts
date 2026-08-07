@@ -123,6 +123,12 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/vibesprint",
     ogImage: "/og/speak.png",
   },
+  sprint1: {
+    title: "Sprint 1 - The Next Gen Domain Reseller | Kred Flash Sprints",
+    description: "A 48-hour build sprint, 12-14 August: build a next generation Domain Reseller on the Kred TLD. Free to enter, live engineer support, Times Square Showcase.",
+    path: "/sprint1",
+    ogImage: "/og/speak.png",
+  },
 };
 
 export type PageMetaKey = keyof typeof PAGE_META;
