@@ -356,7 +356,7 @@ export default function VibeSprint() {
             <div className="examples">
               <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
                 <img
-                  src="/vibesprint/demoapp-visualsearch-v3.jpg"
+                  src="/vibesprint/demoapp-visualsearch-v4.jpg"
                   alt="Cats.Kred visual search demo — a 'catsonmotorbikes' one-word query surfaces the domain with an available badge, buy price, and three preview parking-page variants featuring AI-generated cat imagery"
                 />
                 <div className="excap">
