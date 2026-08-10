@@ -80,6 +80,7 @@
 .vibesprint button.btn:focus-visible,
 .vibesprint input:focus-visible,
 .vibesprint select:focus-visible,
+.vibesprint textarea:focus-visible,
 .vibesprint a.excard:focus-visible {
   outline: 2px solid var(--vs-cyan);
   outline-offset: 2px;
@@ -538,7 +539,8 @@
   color: var(--color-text-muted);
 }
 .vibesprint input,
-.vibesprint select {
+.vibesprint select,
+.vibesprint textarea {
   background: var(--color-bg);
   border: 1px solid var(--card-border);
   border-radius: 5px;
@@ -546,6 +548,11 @@
   font-family: var(--font-body);
   font-size: 14.5px;
   padding: 11px 12px;
+}
+.vibesprint textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
 }
 .vibesprint .domain-row {
   display: flex;
