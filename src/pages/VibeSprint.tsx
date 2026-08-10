@@ -111,10 +111,43 @@ export default function VibeSprint() {
   const [domain, setDomain] = useState("");
   const [agree, setAgree] = useState(false);
   const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
+  const [domainCheck, setDomainCheck] = useState<
+    { state: "idle" | "checking" | "available" | "taken" | "unknown"; message?: string }
+  >({ state: "idle" });
   const [submitted, setSubmitted] = useState(false);
   const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // Debounced .Kred availability check.
+  useEffect(() => {
+    const d = domain.trim().toLowerCase().replace(/\.kred$/i, "");
+    if (!d) {
+      setDomainCheck({ state: "idle" });
+      return;
+    }
+    if (!/^[a-z0-9-]+$/.test(d)) {
+      setDomainCheck({ state: "unknown", message: "Letters, numbers and hyphens only." });
+      return;
+    }
+    setDomainCheck({ state: "checking" });
+    const t = window.setTimeout(async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke(
+          "submit-vibesprint-registration",
+          { body: { action: "check_domain", domain: d } }
+        );
+        if (error) throw error;
+        if (data?.available === true) setDomainCheck({ state: "available" });
+        else if (data?.available === false)
+          setDomainCheck({ state: "taken", message: data?.error ?? undefined });
+        else setDomainCheck({ state: "unknown", message: "Couldn't check availability right now." });
+      } catch {
+        setDomainCheck({ state: "unknown", message: "Couldn't check availability right now." });
+      }
+    }, 500);
+    return () => window.clearTimeout(t);
+  }, [domain]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -124,6 +157,14 @@ export default function VibeSprint() {
       return;
     }
     const d = domain.trim() || "yourname";
+    if (domainCheck.state === "taken") {
+      setFormError(`${d}.Kred is already taken — please choose another name.`);
+      return;
+    }
+    if (domainCheck.state === "checking") {
+      setFormError("Just checking that domain is available — try again in a moment.");
+      return;
+    }
     setSending(true);
     setFormError(null);
     try {
@@ -636,6 +677,22 @@ export default function VibeSprint() {
                     />
                     <span className="tld">.Kred</span>
                   </div>
+                  {domainCheck.state === "checking" && (
+                    <p className="form-note" style={{ marginTop: 6 }}>Checking availability…</p>
+                  )}
+                  {domainCheck.state === "available" && (
+                    <p className="form-note" style={{ marginTop: 6, color: "#12a150" }}>
+                      {domain.trim()}.Kred is available.
+                    </p>
+                  )}
+                  {domainCheck.state === "taken" && (
+                    <p className="form-note" style={{ marginTop: 6, color: "#F15621" }}>
+                      {domainCheck.message || `${domain.trim()}.Kred is already taken — try another name.`}
+                    </p>
+                  )}
+                  {domainCheck.state === "unknown" && domainCheck.message && (
+                    <p className="form-note" style={{ marginTop: 6 }}>{domainCheck.message}</p>
+                  )}
                 </div>
                 <RegistrantContactFields open={domain.trim().length > 0} onChange={setContact} />
                 <div className="agree">
@@ -659,7 +716,11 @@ export default function VibeSprint() {
                   </label>
                 </div>
                 <div className="form-actions">
-                  <button className="btn" type="submit" disabled={sending}>
+                  <button
+                    className="btn"
+                    type="submit"
+                    disabled={sending || domainCheck.state === "taken" || domainCheck.state === "checking"}
+                  >
                     {sending ? "Registering…" : "Claim my kit and register"}
                   </button>
                   <span className="form-note">
