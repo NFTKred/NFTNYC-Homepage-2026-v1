@@ -33,6 +33,8 @@ interface Payload {
   postal_code?: string;
   country?: string;
   profile_link?: string;
+  profile_links?: string[];
+  action?: string;
 }
 
 const json = (body: unknown, status = 200) =>
@@ -94,6 +96,7 @@ function clean(v: unknown, max: number) {
 async function registerKredDomain(fqdn: string, reg: {
   fullName: string; email: string; phone: string; address1: string;
   city: string; state: string; postalCode: string; country: string;
+  profileLinks: string[];
 }): Promise<{ ok: true; registration: unknown } | { ok: false; error: string }> {
   const adminToken = Deno.env.get("KRED_DOMAINS_ADMIN_TOKEN");
   const userToken = Deno.env.get("KRED_DOMAINS_USER_TOKEN") || adminToken;
@@ -150,7 +153,14 @@ async function registerKredDomain(fqdn: string, reg: {
   const registrantId = contact?.id || contact?.contact_id;
   if (!registrantId) return { ok: false, error: "Contact response missing id" };
 
-  const registerBody = { registrant: registrantId, years: 1, auto_renew: false };
+  const registerBody = {
+    registrant: registrantId,
+    years: 1,
+    auto_renew: false,
+    // Seeds the Kredentials page build for this domain.
+    profile_links: reg.profileLinks,
+    kredentials: { links: reg.profileLinks, email: reg.email, name: reg.fullName },
+  };
   console.log("[kred] POST /domains/register", { fqdn, body: registerBody });
   const registerRes = await fetch(`${KRED_API_BASE}/domains/${encodeURIComponent(fqdn)}/register`, {
     method: "POST",
@@ -186,6 +196,45 @@ Deno.serve(async (req) => {
 
   const str = (v: unknown, max: number) => String(v ?? "").trim().slice(0, max);
 
+  // ── Availability check (no persistence, used by the form while typing) ──
+  if (body.action === "check_domain") {
+    const candidate = str(body.domain, 80).replace(/\.kred$/i, "").toLowerCase();
+    if (!/^[a-z0-9-]{1,63}$/.test(candidate)) {
+      return json({ available: false, error: "Domain can only contain letters, numbers and hyphens" });
+    }
+    const adminToken = Deno.env.get("KRED_DOMAINS_ADMIN_TOKEN");
+    const userToken = Deno.env.get("KRED_DOMAINS_USER_TOKEN") || adminToken;
+    if (!adminToken) return json({ available: null, error: "Availability check unavailable" });
+    try {
+      const res = await fetch(`${KRED_API_BASE}/domains/${candidate}.kred/check`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
+          "X-Admin-Token": adminToken,
+        },
+        body: "{}",
+      });
+      const text = await res.text();
+      let data: Record<string, unknown> = {};
+      try { data = JSON.parse(text); } catch { /* non-JSON */ }
+      if (!res.ok) {
+        console.error(`[kred] check failed [${res.status}]: ${text.slice(0, 300)}`);
+        return json({ available: null, error: `Check failed (${res.status})` });
+      }
+      const available =
+        typeof data.available === "boolean"
+          ? data.available
+          : typeof data.is_available === "boolean"
+            ? data.is_available
+            : String(data.status ?? "").toLowerCase() === "available";
+      return json({ available, domain: `${candidate}.kred`, premium: data.premium ?? null });
+    } catch (err) {
+      console.error("[kred] check threw:", err);
+      return json({ available: null, error: "Check failed" });
+    }
+  }
+
   const name = str(body.name, 120);
   const email = str(body.email, 255).toLowerCase();
   const segment = str(body.segment, 120);
@@ -197,7 +246,11 @@ Deno.serve(async (req) => {
   const state = str(body.state, 100);
   const postalCode = str(body.postal_code, 20);
   const country = str(body.country, 60);
-  const profileLink = str(body.profile_link, 300);
+  const profileLinks = (Array.isArray(body.profile_links) ? body.profile_links : [])
+    .map((l) => str(l, 300))
+    .filter(Boolean)
+    .slice(0, 10);
+  const profileLink = (profileLinks.join("\n") || str(body.profile_link, 300)).slice(0, 2000);
 
   if (!name || !email || !segment || !domain) {
     return json({ error: "Missing required fields: name, email, segment, domain" }, 422);
@@ -255,6 +308,7 @@ Deno.serve(async (req) => {
   try {
     const result = await registerKredDomain(fqdn, {
       fullName: name, email, phone, address1, city, state, postalCode, country,
+      profileLinks: profileLinks.length ? profileLinks : (profileLink ? [profileLink] : []),
     });
     if (result.ok) {
       domainStatus = "registered";
@@ -297,7 +351,7 @@ Deno.serve(async (req) => {
           <tr><td style="padding:6px 0;color:#666;">Build platform</td><td style="padding:6px 0;">${escape(buildTool)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Phone</td><td style="padding:6px 0;">${escape(phone)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Address</td><td style="padding:6px 0;">${escape(address1)}, ${escape(city)}${state ? `, ${escape(state)}` : ""} ${escape(postalCode)}, ${escape(country)}</td></tr>
-          ${profileLink ? `<tr><td style="padding:6px 0;color:#666;">Profile link</td><td style="padding:6px 0;">${escape(profileLink)}</td></tr>` : ""}
+          ${profileLink ? `<tr><td style="padding:6px 0;color:#666;">Profile links</td><td style="padding:6px 0;">${escape(profileLink).replace(/\n/g, "<br />")}</td></tr>` : ""}
           <tr><td style="padding:6px 0;color:#666;">Accepted ToS</td><td style="padding:6px 0;">Yes</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Submitted</td><td style="padding:6px 0;">${escape(row.created_at)}</td></tr>
         </table>
