@@ -10,6 +10,7 @@
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { ensureDnsZone } from "../_shared/dns.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -97,7 +98,7 @@ async function registerKredDomain(fqdn: string, reg: {
   fullName: string; email: string; phone: string; address1: string;
   city: string; state: string; postalCode: string; country: string;
   profileLinks: string[];
-}): Promise<{ ok: true; registration: unknown } | { ok: false; error: string }> {
+}): Promise<{ ok: true; registration: unknown; dns: unknown } | { ok: false; error: string }> {
   const adminToken = Deno.env.get("KRED_DOMAINS_ADMIN_TOKEN");
   const userToken = Deno.env.get("KRED_DOMAINS_USER_TOKEN") || adminToken;
   if (!adminToken || !userToken) {
@@ -174,7 +175,19 @@ async function registerKredDomain(fqdn: string, reg: {
   }
   const registration = await registerRes.json();
   console.log("[kred] domain registered", registration);
-  return { ok: true, registration };
+
+  // Registration only delegates the domain — create the hosted zone with
+  // apex + www A records so the Kredentials page actually resolves.
+  let dns: unknown = null;
+  try {
+    dns = await ensureDnsZone(fqdn, userToken, adminToken);
+    console.log("[kred] dns provisioned", JSON.stringify(dns));
+  } catch (dnsErr) {
+    console.error("[kred] dns provisioning failed", dnsErr);
+    dns = { error: dnsErr instanceof Error ? dnsErr.message : String(dnsErr) };
+  }
+
+  return { ok: true, registration, dns };
 }
 
 Deno.serve(async (req) => {
