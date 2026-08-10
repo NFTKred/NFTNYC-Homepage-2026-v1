@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { COUNTRIES } from "./countries";
 
 /**
  * Registrant contact details required by the api.domains.kred registrar in
@@ -13,6 +14,7 @@ export interface RegistrantContact {
   postal_code: string;
   country: string;
   profile_link: string;
+  profile_links: string[];
 }
 
 export const EMPTY_CONTACT: RegistrantContact = {
@@ -23,6 +25,7 @@ export const EMPTY_CONTACT: RegistrantContact = {
   postal_code: "",
   country: "",
   profile_link: "",
+  profile_links: [],
 };
 
 interface Props {
@@ -41,6 +44,18 @@ export function RegistrantContactFields({ open, onChange }: Props) {
   const set = (key: keyof RegistrantContact) => (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => setContact((c) => ({ ...c, [key]: e.target.value }));
+
+  const setLinks = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const raw = e.target.value;
+    setContact((c) => ({
+      ...c,
+      profile_link: raw,
+      profile_links: raw
+        .split(/[\n,]+/)
+        .map((l) => l.trim())
+        .filter(Boolean),
+    }));
+  };
 
   return (
     <details className="field full" open={open} style={{ marginTop: 4 }}>
@@ -110,26 +125,35 @@ export function RegistrantContactFields({ open, onChange }: Props) {
       </div>
       <div className="field">
         <label htmlFor="fCountry">Country</label>
-        <input
+        <select
           id="fCountry"
           name="country"
           required={open}
-          autoComplete="country-name"
-          placeholder="US"
+          autoComplete="country"
           value={contact.country}
-          onChange={set("country")}
-        />
+          onChange={(e) => setContact((c) => ({ ...c, country: e.target.value }))}
+        >
+          <option value="">Select a country…</option>
+          {COUNTRIES.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="field full">
-        <label htmlFor="fLink">Link we can build your Kredentials page from (optional)</label>
-        <input
+        <label htmlFor="fLink">Links we can build your Kredentials page from (optional)</label>
+        <textarea
           id="fLink"
-          name="profile_link"
-          type="url"
-          placeholder="https://x.com/yourhandle"
+          name="profile_links"
+          rows={4}
+          placeholder={"https://x.com/yourhandle\nhttps://linkedin.com/in/you\nhttps://yoursite.com"}
           value={contact.profile_link}
-          onChange={set("profile_link")}
+          onChange={setLinks}
         />
+        <p className="form-note" style={{ marginTop: 6 }}>
+          One link per line — all of them are sent to the Kredentials page builder.
+        </p>
       </div>
     </details>
   );
