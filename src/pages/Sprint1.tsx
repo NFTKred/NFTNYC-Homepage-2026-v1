@@ -350,10 +350,10 @@ export default function Sprint1() {
           <section>
             <h2>Live Support, Both Evenings</h2>
             <div className="agent">
-              <h3>Our lead engineer is on the call</h3>
+              <h3>Andrew Horn is on the call</h3>
               <p>
-                Sprint 1 carries <b>two live Google Meet support sessions</b>, hosted by our lead
-                engineer: from <b>4:00pm ET on Wednesday 12 and Thursday 13 August</b>, each running{" "}
+                Sprint 1 carries <b>two live Google Meet support sessions</b>, hosted by Andrew Horn,
+                our lead engineer: from <b>4:00pm ET on Wednesday 12 and Thursday 13 August</b>, each running{" "}
                 <b>five to eight hours</b> into the evening.
               </p>
               <p>
