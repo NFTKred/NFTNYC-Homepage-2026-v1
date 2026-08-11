@@ -261,7 +261,7 @@ export default function Sprint1() {
             <p className="form-note" style={{ marginTop: 12 }}>
               Achievements are objective bars, published before the sprint opens: Agent-Ready · Full
               Loop · Theatre · 100% Clear Card — 1,000 XP each. The Season Headliner, selected by the
-              review panel from the season's Spotlight and Featured submissions, presents at Demo
+              review panel from the sprints' Spotlight and Featured submissions, presents at Demo
               Day, NFT.NYC 2026, 1 September.
             </p>
           </section>
