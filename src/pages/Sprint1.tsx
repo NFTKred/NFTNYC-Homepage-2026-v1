@@ -4,17 +4,13 @@ import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/lib/supabase";
-import {
-  RegistrantContactFields,
-  EMPTY_CONTACT,
-  type RegistrantContact,
-} from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
 
 /**
  * Sprint 1 landing page (content v2) — "The Next Gen Domain Reseller".
- * Shares the .vibesprint stylesheet and the same registration flow as
- * /vibesprint (submit-vibesprint-registration edge function).
+ * Shares the .vibesprint stylesheet. The form on this page collects the
+ * close-out *submission* (submit-sprint-submission edge function) — season
+ * registration lives on /vibesprint.
  */
 
 /** Sprint 1 opens Wed 12 Aug 2026, 4:00pm ET (20:00 UTC). */
@@ -84,18 +80,26 @@ export default function Sprint1() {
     return () => window.clearInterval(id);
   }, []);
 
-  // Registration form state — same payload as /vibesprint.
-  const [name, setName] = useState("");
+  // Sprint 1 close-out submission form.
   const [email, setEmail] = useState("");
-  const [segment, setSegment] = useState("Designer or digital artist");
-  const [buildTool, setBuildTool] = useState("Lovable (primary — Agent Integrations)");
-  const [domain, setDomain] = useState("");
-  const [agree, setAgree] = useState(false);
-  const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
+  const [appUrl, setAppUrl] = useState("");
+  const [projectUrl, setProjectUrl] = useState("");
+  const [teamMembers, setTeamMembers] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
+  const [wasUpdate, setWasUpdate] = useState(false);
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const isKredUrl = (raw: string) => {
+    const s = raw.trim();
+    if (!s) return false;
+    try {
+      const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
+      return /\.kred$/i.test(u.hostname);
+    } catch {
+      return false;
+    }
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -104,34 +108,36 @@ export default function Sprint1() {
       form.reportValidity();
       return;
     }
-    const d = domain.trim() || "yourname";
+    if (!isKredUrl(appUrl)) {
+      setFormError("Your app URL needs to be live on your .kred domain.");
+      return;
+    }
     setSending(true);
     setFormError(null);
     try {
-      const { data, error } = await supabase.functions.invoke(
-        "submit-vibesprint-registration",
-        {
-          body: {
-            name: name.trim(),
-            email: email.trim(),
-            segment,
-            domain: d,
-            build_tool: buildTool,
-            agreed_tos: agree,
-            ...contact,
-          },
-        }
-      );
+      const { data, error } = await supabase.functions.invoke("submit-sprint-submission", {
+        body: {
+          sprint: "sprint1",
+          email: email.trim(),
+          app_url: appUrl.trim(),
+          project_url: projectUrl.trim(),
+          team_members: teamMembers.trim(),
+        },
+      });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
+      setWasUpdate(Boolean(data?.updated));
     } catch (err) {
-      console.error("Sprint 1 registration failed:", err);
-      setFormError("We couldn't save your registration. Please try again, or email team@nft.nyc.");
+      console.error("Sprint 1 submission failed:", err);
+      setFormError(
+        err instanceof Error && err.message
+          ? err.message
+          : "We couldn't save your submission. Please try again, or email team@nft.nyc."
+      );
       setSending(false);
       return;
     }
     setSending(false);
-    setClaimedDomain(`${d}.Kred`);
     setSubmitted(true);
     window.setTimeout(() => {
       document.getElementById("successCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -179,7 +185,8 @@ export default function Sprint1() {
               </div>
             </div>
             <div className="cta-row">
-              <a className="btn" href="#register">Register free</a>
+              <a className="btn" href="#submit">Submit your build</a>
+              <a className="btn ghost" href="/vibesprint#register">Register free</a>
               <span className="cta-note">
                 Registration covers all three sprints. Your kit — API credits, free .Kred domain
                 claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
@@ -411,67 +418,65 @@ export default function Sprint1() {
             </div>
           </section>
 
-          <section id="register">
-            <h2>Register</h2>
+          <section id="submit">
+            <h2>Submit Your Build</h2>
             <p className="lead">
-              One free registration covers all three sprints. Your kit — Kred API credits, a free
-              .Kred domain claim, 1,000 XP, and both example app links — arrives when Sprint 1 opens,
-              Wednesday 12 August at 4:00pm ET.
+              Submissions open with Sprint 1 — Wednesday 12 August, 4:00pm ET — and hard close
+              Friday 14 August, 4:00pm ET. You can edit or resubmit any time before close. Not
+              registered yet? <a href="/vibesprint#register" style={{ color: "var(--vs-cyan)" }}>Register free first</a>.
             </p>
             {!submitted && (
               <form onSubmit={onSubmit} noValidate>
                 <div className="field">
-                  <label htmlFor="fName">Name or agent name</label>
-                  <input id="fName" name="name" required autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div className="field">
-                  <label htmlFor="fEmail">Email</label>
+                  <label htmlFor="fEmail">Registration email</label>
                   <input id="fEmail" name="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className="field">
-                  <label htmlFor="fSegment">I am a</label>
-                  <select id="fSegment" name="segment" value={segment} onChange={(e) => setSegment(e.target.value)}>
-                    <option>Designer or digital artist</option>
-                    <option>Developer</option>
-                    <option>Domain investor or reseller</option>
-                    <option>AI agent (or agent owner)</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label htmlFor="fTool">Build platform</label>
-                  <select id="fTool" name="tool" value={buildTool} onChange={(e) => setBuildTool(e.target.value)}>
-                    <option>Lovable (primary — Agent Integrations)</option>
-                    <option>Replit</option>
-                    <option>Vercel + GitHub</option>
-                    <option>Base44</option>
-                    <option>Bolt</option>
-                    <option>Other</option>
-                  </select>
+                <div className="field full">
+                  <label htmlFor="fAppUrl">App URL — live on your Kred domain</label>
+                  <input
+                    id="fAppUrl"
+                    name="app_url"
+                    type="url"
+                    required
+                    placeholder="https://yourname.kred"
+                    value={appUrl}
+                    onChange={(e) => { setAppUrl(e.target.value); setFormError(null); }}
+                  />
+                  <span className="form-note">Must be published on your .kred domain.</span>
                 </div>
                 <div className="field full">
-                  <label htmlFor="fDomain">Claim your free Kred domain</label>
-                  <div className="domain-row">
-                    <input id="fDomain" name="domain" placeholder="yourname" required value={domain} onChange={(e) => setDomain(e.target.value)} />
-                    <span className="tld">.Kred</span>
-                  </div>
+                  <label htmlFor="fProjectUrl">Project link</label>
+                  <input
+                    id="fProjectUrl"
+                    name="project_url"
+                    type="url"
+                    required
+                    placeholder="https://lovable.dev/projects/..."
+                    value={projectUrl}
+                    onChange={(e) => setProjectUrl(e.target.value)}
+                  />
+                  <span className="form-note">Lovable, Replit, Vercel, Base44, Bolt, or other.</span>
                 </div>
-                <RegistrantContactFields open={domain.trim().length > 0} onChange={setContact} />
-                <div className="agree">
-                  <input id="fAgree" type="checkbox" required checked={agree} onChange={(e) => setAgree(e.target.checked)} />
-                  <label htmlFor="fAgree">
-                    I accept the{" "}
-                    <a href="https://www.peoplebrowsr.com/tos" target="_blank" rel="noopener noreferrer">
-                      PeopleBrowsr Terms of Service
-                    </a>
-                    , and I understand XP carries a 60-day expiry with zero monetary value.
-                  </label>
+                <div className="field full">
+                  <label htmlFor="fTeam">Team members (optional)</label>
+                  <textarea
+                    id="fTeam"
+                    name="team_members"
+                    rows={3}
+                    placeholder={"Name — email (one per line)"}
+                    value={teamMembers}
+                    onChange={(e) => setTeamMembers(e.target.value)}
+                  />
+                  <span className="form-note">
+                    Anyone else who worked on this — for reward credit only, not used in judging.
+                  </span>
                 </div>
                 <div className="form-actions">
                   <button className="btn" type="submit" disabled={sending}>
-                    {sending ? "Registering…" : "Claim my kit and register"}
+                    {sending ? "Submitting…" : "Submit my build"}
                   </button>
                   <span className="form-note">
-                    Free to enter · covers all three sprints · Participation Terms apply
+                    Edit or resubmit any time before Friday 14 August, 4:00pm ET
                   </span>
                 </div>
                 {formError && (
@@ -483,16 +488,19 @@ export default function Sprint1() {
             )}
             {submitted && (
               <div className="success" id="successCard" role="status">
-                <b>You're in — for the whole season.</b> Your kit — API credits, XP starter pack, and
-                both example apps — lands in your inbox when Sprint 1 opens.<br />
-                Your domain <b>{claimedDomain}</b> is reserved — complete the claim from the email
-                link.
+                <b>{wasUpdate ? "Submission updated — you're in." : "You're in — submission received."}</b>{" "}
+                We have your app URL and project link on file for Sprint 1.
                 <ul>
-                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Wednesday 12 August, 4:00pm ET.</li>
-                  <li>Sprint 1 runs Wednesday 12 – Friday 14 August, closing at 4:00pm ET.</li>
-                  <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
+                  <li>Keep building — you can resubmit with the same email any time before Friday 14 August, 4:00pm ET.</li>
+                  <li>The review harness checks your live app directly: liveness, the primary flow, mobile at 375px, and result-card clarity.</li>
+                  <li>Every valid submission earns Finisher XP, a Finisher Certificate, and a Build Report.</li>
                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
                 </ul>
+                <div className="form-actions" style={{ marginTop: 12 }}>
+                  <button className="btn ghost" type="button" onClick={() => setSubmitted(false)}>
+                    Edit my submission
+                  </button>
+                </div>
               </div>
             )}
           </section>
