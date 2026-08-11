@@ -311,7 +311,7 @@ export default function Sprint1() {
                 <b>Built from their links</b>
                 A pasted Linktree (which stays live and untouched), a .com website, social profiles,
                 press links. Wingman, the agent behind every page, gathers the sources, writes the
-                page, verifies every fact, and watches for changes.
+                page, and verifies every fact.
               </div>
               <div className="tile">
                 <b>Made for answer engines</b>
