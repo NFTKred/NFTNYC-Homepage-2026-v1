@@ -6,7 +6,7 @@
 
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Clock, MapPin, Users } from "lucide-react";
+import { Search, Clock, MapPin, Users, ChevronDown } from "lucide-react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
@@ -48,7 +48,7 @@ export default function Program() {
     return SCHEDULE.filter((s) => {
       if (activeDay !== "all" && s.day !== activeDay) return false;
       if (!term) return true;
-      const hay = `${s.title} ${s.speakers.map((sp) => sp.name).join(" ")} ${s.room}`.toLowerCase();
+      const hay = `${s.title} ${s.description} ${s.speakers.map((sp) => sp.name).join(" ")} ${s.room}`.toLowerCase();
       return hay.includes(term);
     });
   }, [search, activeDay]);
@@ -272,17 +272,16 @@ function SessionCard({
   session: ScheduleSession;
   accent: string;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const hasDescription = Boolean(session.description);
+  const detailsId = `s-desc-${session.day}-${session.time}-${session.title}`.replace(/\W+/g, "-");
   return (
     <article
       style={{
         background: "rgba(255,255,255,0.03)",
         border: "1px solid var(--color-border)",
         borderRadius: 16,
-        padding: "1.1rem 1.25rem",
-        display: "grid",
-        gridTemplateColumns: "minmax(0, 155px) 1fr",
-        gap: "1.25rem",
-        alignItems: "start",
+        overflow: "hidden",
         transition: "border-color 200ms ease, background 200ms ease",
       }}
       onMouseEnter={(e) => {
@@ -294,6 +293,31 @@ function SessionCard({
         (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
       }}
     >
+      <div
+        role={hasDescription ? "button" : undefined}
+        tabIndex={hasDescription ? 0 : undefined}
+        aria-expanded={hasDescription ? expanded : undefined}
+        aria-controls={hasDescription ? detailsId : undefined}
+        onClick={hasDescription ? () => setExpanded((v) => !v) : undefined}
+        onKeyDown={
+          hasDescription
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setExpanded((v) => !v);
+                }
+              }
+            : undefined
+        }
+        style={{
+          padding: "1.1rem 1.25rem",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 155px) 1fr auto",
+          gap: "1.25rem",
+          alignItems: "start",
+          cursor: hasDescription ? "pointer" : "default",
+        }}
+      >
       {/* Left column: time */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
         <div
@@ -350,6 +374,7 @@ function SessionCard({
                 <Link
                   key={sp.name}
                   to={`/speakers?speaker=${encodeURIComponent(linkTarget)}`}
+                  onClick={(e) => e.stopPropagation()}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -428,6 +453,55 @@ function SessionCard({
           {session.room}
         </div>
       </div>
+
+      {/* Chevron column */}
+      {hasDescription && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 28,
+            height: 28,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid var(--color-border)",
+            color: "var(--color-text-muted)",
+            transition: "transform 200ms ease, color 200ms ease",
+            transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+            flexShrink: 0,
+          }}
+        >
+          <ChevronDown size={14} />
+        </div>
+      )}
+      </div>
+
+      {/* Expandable description */}
+      {hasDescription && (
+        <div
+          id={detailsId}
+          hidden={!expanded}
+          style={{
+            padding: expanded ? "0 1.25rem 1.25rem 1.25rem" : "0 1.25rem",
+            borderTop: expanded ? "1px solid var(--color-border)" : "none",
+            marginTop: expanded ? "0.25rem" : 0,
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "14px",
+              color: "var(--color-text-muted)",
+              lineHeight: 1.7,
+              margin: "1rem 0 0",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {session.description}
+          </p>
+        </div>
+      )}
     </article>
   );
 }
