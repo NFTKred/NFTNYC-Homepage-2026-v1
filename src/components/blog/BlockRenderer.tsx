@@ -72,7 +72,7 @@ function Paragraph({ block }: { block: ParagraphBlock }) {
 }
 
 function Heading({ block }: { block: HeadingBlock }) {
-  const Tag = (`h${block.level}` as unknown) as keyof React.JSX.IntrinsicElements;
+  const Tag = (`h${block.level}` as unknown) as React.ElementType;
   return (
     <div className={`blog-block blog-block-heading level-${block.level}`}>
       {block.eyebrow && <span className="eyebrow">{block.eyebrow}</span>}

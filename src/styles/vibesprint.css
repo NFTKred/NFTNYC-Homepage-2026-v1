@@ -80,6 +80,7 @@
 .vibesprint button.btn:focus-visible,
 .vibesprint input:focus-visible,
 .vibesprint select:focus-visible,
+.vibesprint textarea:focus-visible,
 .vibesprint a.excard:focus-visible {
   outline: 2px solid var(--vs-cyan);
   outline-offset: 2px;
@@ -538,7 +539,8 @@
   color: var(--color-text-muted);
 }
 .vibesprint input,
-.vibesprint select {
+.vibesprint select,
+.vibesprint textarea {
   background: var(--color-bg);
   border: 1px solid var(--card-border);
   border-radius: 5px;
@@ -546,6 +548,11 @@
   font-family: var(--font-body);
   font-size: 14.5px;
   padding: 11px 12px;
+}
+.vibesprint textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
 }
 .vibesprint .domain-row {
   display: flex;
@@ -637,3 +644,93 @@
   .vibesprint .srow { grid-template-columns: 90px 1fr 92px; }
   .vibesprint .wrow { grid-template-columns: 150px 1fr 46px; }
 }
+
+/* earn ladder */
+.vibesprint .earn {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.vibesprint .ecard {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--vs-green) 10%, var(--color-surface)), var(--color-surface) 75%);
+  border: 1px solid color-mix(in srgb, var(--vs-green) 30%, var(--card-border));
+  border-radius: 8px;
+  padding: 15px 16px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+.vibesprint .ecard b {
+  display: block;
+  font-family: var(--vs-mono);
+  font-size: 10.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--vs-green);
+  margin-bottom: 6px;
+}
+.vibesprint .ecard .amt {
+  font-family: var(--vs-mono);
+  font-size: 18px;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 4px;
+}
+.vibesprint .ach {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.vibesprint .achip {
+  font-family: var(--vs-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border: 1px solid var(--vs-cyan);
+  color: var(--vs-cyan);
+  border-radius: 99px;
+  padding: 8px 16px;
+}
+.vibesprint .achip small {
+  display: block;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  letter-spacing: .08em;
+  margin-top: 2px;
+  text-transform: none;
+}
+
+/* read-more link cards */
+.vibesprint .links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.vibesprint a.lk {
+  display: inline-block;
+  background: var(--color-surface);
+  border: 1px solid var(--tone, var(--vs-cyan));
+  color: var(--tone, var(--vs-cyan));
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: var(--vs-mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-decoration: none;
+  line-height: 1.4;
+}
+.vibesprint a.lk:hover {
+  background: var(--tone, var(--vs-cyan));
+  color: var(--color-bg);
+}
+.vibesprint a.lk small {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.vibesprint a.lk:hover small { color: var(--color-bg); }
+.vibesprint a.lk.ext::after { content: " \2197"; }

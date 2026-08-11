@@ -3,29 +3,36 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
+import { supabase } from "@/lib/supabase";
+import {
+  RegistrantContactFields,
+  EMPTY_CONTACT,
+  type RegistrantContact,
+} from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
 
 /**
- * Kred Flash Sprints landing page.
+ * Kred Flash Sprints landing page (content v14 — merged P30 + P31 consolidated 8 Aug).
  *
- * Source of truth: /Users/cameronbale/claude-workspace/NFT.NYC/Flash Sprint Landing Page v3.html
- * The source's inline styles live in src/styles/vibesprint.css scoped
- * under `.vibesprint`, bound to NFT.NYC design tokens (fonts, colors,
- * borders). The countdown, live counter, and registration form are
- * ported to React state/effects.
+ * Styles live in src/styles/vibesprint.css scoped under `.vibesprint`,
+ * bound to NFT.NYC design tokens. The two-stage countdown, live counter,
+ * and registration form are React state/effects; the form posts to the
+ * `submit-vibesprint-registration` edge function.
  */
 
-/** Target: Friday 7 August 2026, 12:00 ET (16:00 UTC). */
-const TARGET_UTC = Date.UTC(2026, 7, 7, 16, 0, 0);
+/** Registration opens Tue 11 Aug 2026, 9:00am ET (13:00 UTC). */
+const REG_OPEN_UTC = Date.UTC(2026, 7, 11, 13, 0, 0);
+/** Sprint 1 opens Wed 12 Aug 2026, 4:00pm ET (20:00 UTC). */
+const SPRINT1_UTC = Date.UTC(2026, 7, 12, 20, 0, 0);
 
 const EVENT_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Event",
-  name: "Kred Flash Sprint 1 — The Domain Registrar Reseller",
+  name: "Kred Flash Sprint 1 — The Next Gen Domain Reseller",
   description:
-    "Build a better domain search experience on the Domains.Kred Registrar API. Five hours, all-Lovable, publish an agent-enabled entry that ChatGPT and Claude can call. Sprint 1 of three, leading to NFT.NYC 2026.",
-  startDate: "2026-08-07T12:00:00-04:00",
-  endDate: "2026-08-07T17:00:00-04:00",
+    "Build a next generation Domain Reseller on the Domains.Kred Registrar API. A 48-hour vibe coding sprint — build in Lovable or the platform of your choice, publish an agent-ready app that ChatGPT and Claude can call. Sprint 1 of three, leading to Demo Day at NFT.NYC 2026.",
+  startDate: "2026-08-12T16:00:00-04:00",
+  endDate: "2026-08-14T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   location: {
@@ -43,18 +50,28 @@ const EVENT_JSON_LD = {
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: "https://nft.nyc/vibesprint",
-    validFrom: "2026-08-03T08:00:00-04:00",
+    validFrom: "2026-08-11T09:00:00-04:00",
   },
   inLanguage: "en",
 };
 
-function formatCountdown(ms: number): string {
-  if (ms <= 0) return "LIVE NOW";
+function formatDuration(ms: number): string {
   const d = Math.floor(ms / 86400000);
   const h = Math.floor((ms % 86400000) / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
   const s = Math.floor((ms % 60000) / 1000);
   return `${d}d ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+function computeCountdown(): { value: string; label: string } {
+  const now = Date.now();
+  if (now < REG_OPEN_UTC) {
+    return { value: formatDuration(REG_OPEN_UTC - now), label: "until registration opens" };
+  }
+  if (now < SPRINT1_UTC) {
+    return { value: formatDuration(SPRINT1_UTC - now), label: "until Sprint 1 opens" };
+  }
+  return { value: "LIVE", label: "Sprint 1 is open" };
 }
 
 export default function VibeSprint() {
@@ -69,12 +86,10 @@ export default function VibeSprint() {
     document.documentElement.setAttribute("data-theme", next);
   };
 
-  // Countdown — updates once per second.
-  const [countdown, setCountdown] = useState<string>(() => formatCountdown(TARGET_UTC - Date.now()));
+  // Two-stage countdown — updates once per second.
+  const [countdown, setCountdown] = useState(computeCountdown);
   useEffect(() => {
-    const id = window.setInterval(() => {
-      setCountdown(formatCountdown(TARGET_UTC - Date.now()));
-    }, 1000);
+    const id = window.setInterval(() => setCountdown(computeCountdown()), 1000);
     return () => window.clearInterval(id);
   }, []);
 
@@ -92,12 +107,49 @@ export default function VibeSprint() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [segment, setSegment] = useState("Designer or digital artist");
+  const [buildTool, setBuildTool] = useState("Lovable (primary — Agent Integrations)");
   const [domain, setDomain] = useState("");
   const [agree, setAgree] = useState(false);
+  const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
+  const [domainCheck, setDomainCheck] = useState<
+    { state: "idle" | "checking" | "available" | "taken" | "unknown"; message?: string }
+  >({ state: "idle" });
   const [submitted, setSubmitted] = useState(false);
   const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
+  const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // Debounced .Kred availability check.
+  useEffect(() => {
+    const d = domain.trim().toLowerCase().replace(/\.kred$/i, "");
+    if (!d) {
+      setDomainCheck({ state: "idle" });
+      return;
+    }
+    if (!/^[a-z0-9-]+$/.test(d)) {
+      setDomainCheck({ state: "unknown", message: "Letters, numbers and hyphens only." });
+      return;
+    }
+    setDomainCheck({ state: "checking" });
+    const t = window.setTimeout(async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke(
+          "submit-vibesprint-registration",
+          { body: { action: "check_domain", domain: d } }
+        );
+        if (error) throw error;
+        if (data?.available === true) setDomainCheck({ state: "available" });
+        else if (data?.available === false)
+          setDomainCheck({ state: "taken", message: data?.error ?? undefined });
+        else setDomainCheck({ state: "unknown", message: "Couldn't check availability right now." });
+      } catch {
+        setDomainCheck({ state: "unknown", message: "Couldn't check availability right now." });
+      }
+    }, 500);
+    return () => window.clearTimeout(t);
+  }, [domain]);
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (!form.checkValidity()) {
@@ -105,17 +157,42 @@ export default function VibeSprint() {
       return;
     }
     const d = domain.trim() || "yourname";
+    if (domainCheck.state === "taken") {
+      setFormError(`${d}.Kred is already taken — please choose another name.`);
+      return;
+    }
+    if (domainCheck.state === "checking") {
+      setFormError("Just checking that domain is available — try again in a moment.");
+      return;
+    }
+    setSending(true);
+    setFormError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "submit-vibesprint-registration",
+        {
+          body: {
+            name: name.trim(),
+            email: email.trim(),
+            segment,
+            domain: d,
+            build_tool: buildTool,
+            agreed_tos: agree,
+            ...contact,
+          },
+        }
+      );
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+    } catch (err) {
+      console.error("VibeSprint registration failed:", err);
+      setFormError("We couldn't save your registration. Please try again, or email team@nft.nyc.");
+      setSending(false);
+      return;
+    }
+    setSending(false);
     setClaimedDomain(`${d}.Kred`);
     setSubmitted(true);
-    // TODO: wire this to a Supabase edge function (see
-    // supabase/functions/submit-media-pass, submit-visa-request,
-    // submit-volunteer-application for the pattern) so registrations
-    // persist. For now we only show the client-side success card.
-    // Payload: { name, email, segment, domain: d }.
-    void name;
-    void email;
-    void segment;
-    // Scroll the success card into view once React renders it.
     window.setTimeout(() => {
       document.getElementById("successCard")?.scrollIntoView({
         behavior: "smooth",
@@ -142,24 +219,26 @@ export default function VibeSprint() {
             <div className="eyebrow">PeopleBrowsr × NFT.NYC 2026 · https://NFT.NYC/vibesprint</div>
             <h1>
               Kred Flash Sprints<br />
-              <span className="glow">Three Fridays to NFT.NYC</span>
+              <span className="glow">Three Sprints to NFT.NYC</span>
             </h1>
             <p className="sub">
-              Three <b>5-hour vibe coding flash sprints</b> - Fridays <b>7, 14, and 21 August</b>,
-              12:00-17:00 ET, livestreamed. Build on the Kred domain and agent identity APIs in{" "}
-              <b>Lovable</b>, publish with Agent Integrations, and your entry becomes a tool{" "}
-              <b>ChatGPT and Claude can call</b>. The season ends on stage at NFT.NYC 2026 in New
-              York on 1 September.
+              Help us build a better domain identity search experience — customized,{" "}
+              <b>very visual</b>, AI driven, and made for the <b>creator community</b>. Three{" "}
+              <b>48-hour vibe coding sprints</b>, each opening Wednesday at <b>4:00pm ET</b>,
+              starting <b>12 August</b>. Build in <b>Lovable or the platform of your choice</b> —
+              publish a Lovable app with Agent Integrations and it works inside{" "}
+              <b>ChatGPT and Claude</b>.
             </p>
             <div className="badges">
-              <span className="badge tool">All-Lovable · remix our example apps</span>
-              <span className="badge api">Every entry becomes an agent tool</span>
-              <span className="badge hot">Sprint 1 · Fri 7 Aug · 12:00-17:00 ET</span>
+              <span className="badge hot">Registration opens Tue 11 Aug</span>
+              <span className="badge hot">Sprint 1 · Wed 12 – Fri 14 Aug · Opens 4:00pm ET</span>
+              <span className="badge tool">Lovable primary · any platform welcome</span>
+              <span className="badge api">Live engineer support · Both evenings</span>
             </div>
             <div className="meters">
               <div className="meter" aria-live="polite">
-                <b>{countdown}</b>
-                <span>until Sprint 1</span>
+                <b>{countdown.value}</b>
+                <span>{countdown.label}</span>
               </div>
               <div className="meter reg" aria-live="polite">
                 <b>{regCount}</b>
@@ -169,188 +248,311 @@ export default function VibeSprint() {
             <div className="cta-row">
               <a className="btn" href="#register">Register free</a>
               <span className="cta-note">
-                Registration includes Kred API credits, a free standard Kred domain claim, and 1,000 XP.
+                One free registration covers all three sprints. Your Sprint 1 kit — API credits, free
+                .Kred domain claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
               </span>
             </div>
           </header>
 
           <section>
-            <h2>Three Sprints, One Season</h2>
+            <h2>Why Now</h2>
+            <p className="lead">
+              Digital identity matters more every year, and the rise of <b>agentic identity</b> is
+              accelerating it: AI agents now need names they can verify and act on. This community
+              saw it first. A domain name can be <b>tokenized on the blockchain</b>, it can{" "}
+              <b>address a wallet</b>, and for a creator it is becoming the one name that carries
+              your gallery, your payments, and your brand.
+            </p>
+            <p className="lead">
+              The timing is real. ICANN has just closed its{" "}
+              <a
+                href="https://www.icann.org/resources/pages/newgtlds-history-2023-04-05-en"
+                style={{ color: "var(--vs-cyan)" }}
+              >
+                second round of new top-level domain applications, the first in 13 years
+              </a>
+              . Over the next 18 months, hundreds of new TLDs will arrive for domain registrars
+              like GoDaddy and others to sell — through a search experience that has barely changed
+              in decades. There is a unique opening to build a{" "}
+              <b>better, visual, AI driven domain search</b>, and the skills it needs — vibe
+              coding, AI remixing, tokenization, visual images — are the skills this community
+              already has.
+            </p>
+          </section>
+
+          <section>
+            <h2>Meet Kred</h2>
+            <div className="agent">
+              <h3>Our sister company's APIs</h3>
+              <p>
+                As many of you know, <b>Kred is a sister company of NFT.NYC</b> and owns the{" "}
+                <b>.Kred top-level domain</b>. Kred has built a series of domain and identity
+                APIs, packaged as <b>MCP</b> (the open protocol AI assistants use to call tools),
+                ready to use from vibe coding platforms like Lovable.
+              </p>
+              <p>
+                One ask: <b>build a next generation Domain Reseller using the features of the Kred
+                TLD</b> — the TLD synonymous with identity. Describe the app you want to an AI
+                coding agent and it builds with you. Design sense counts for more than syntax, and
+                digital designers think out of the box and think deeply — that is exactly who this
+                build needs.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>The Three Sprints</h2>
             <div className="sprints">
               <div className="sp live" style={{ ["--tone" as string]: "var(--vs-pink)" } as React.CSSProperties}>
                 <span className="no">1</span>
-                <span className="date">Fri 7 Aug · 12:00-17:00 ET</span>
-                <h3>The Domain Registrar Reseller</h3>
+                <span className="date">Wed 12 – Fri 14 Aug · Opens 4:00pm ET</span>
+                <h3>The Next Gen Domain Reseller</h3>
                 <p>
-                  Build a better domain search experience on the Domains.Kred Registrar API - a
-                  very visual experience, honest pricing on every card, every result explained.
+                  Build a next generation Domain Reseller on the Domains.Kred Registrar API — a
+                  very visual experience, 100% Clear pricing on every card, every result explained.
                 </p>
-                <span className="chip">Registration open</span>
+                <span className="chip">Registration opens Tue 11 Aug</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-cyan)" } as React.CSSProperties}>
                 <span className="no">2</span>
-                <span className="date">Fri 14 Aug · 12:00-17:00 ET</span>
+                <span className="date">Wed 19 – Fri 21 Aug · Opens 4:00pm ET</span>
                 <h3>The Agentic Domain Registrar</h3>
                 <p>
                   The customer flips to agents: they discover, price, register, and enroll their
-                  own .Kred agentic identity - AID, ANS, MCP-I, DNSid - end to end.
+                  own .Kred agentic identity — AID, ANS, MCP-I, DNSid — end to end.
                 </p>
-                <span className="chip">Brief drops Mon 10 Aug</span>
+                <span className="chip">Brief arrives Fri 14 Aug</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
-                <span className="date">Fri 21 Aug · 12:00-17:00 ET</span>
+                <span className="date">Wed 26 – Fri 28 Aug · Opens 4:00pm ET</span>
                 <h3>Agentic Debate on the Matrix</h3>
                 <p>
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
-                  and score - one week before NFT.NYC.
+                  and score — one week before NFT.NYC.
                 </p>
-                <span className="chip">Brief drops Mon 17 Aug</span>
+                <span className="chip">Brief arrives Fri 21 Aug</span>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
-              Every finished entry earns points on the shared Kred Vibe Series season table. The
-              season champion presents on the NFT.NYC 2026 stage on 1 September, with a Times
-              Square billboard feature.
+              One builder — selected by the review panel from the sprints' Spotlight and Featured
+              submissions — presents the marquee demo at Demo Day, NFT.NYC 2026, 1 September.
+              Up to 20 selected submissions per sprint join the Times Square Showcase.
             </p>
           </section>
 
           <section>
-            <h2>Your App Becomes a ChatGPT and Claude Tool</h2>
-            <div className="agent">
-              <h3>Publish once. Every assistant can use it</h3>
-              <p>
-                Lovable's new <b>Agent Integrations</b> turns any published entry into an MCP
-                server that ChatGPT, Claude, and any MCP client call directly. Submissions include
-                your MCP link, and judging features a <b>live tool call from Claude</b> on every
-                shortlisted entry.
-              </p>
-              <p>
-                Each sprint opens with the proof: <b>Claude registering a domain live</b> through
-                our own example app - then you remix that app as your starting point.
-              </p>
-              <p className="mono">Dark patterns die when the customer is an agent.</p>
-            </div>
-          </section>
-
-          <section>
-            <h2>Sprint 1 - The Search Result That Started This</h2>
-            <div className="hook">
-              <div className="big">$4,288.00</div>
-              <p className="claim">"islandbakery.com is available for $4,288.00 for the first year!"</p>
-              <p className="truth">
-                One registrar's search hero, July 2026. WHOIS shows the domain registered since{" "}
-                <b>2001</b> - held by the registrar's own corporate family. Across six major
-                registrars, the same one-word search returned six differently merchandised sales
-                pages: <b>PROMOTED</b> suggestion cards, teaser prices locked to 3-year terms,
-                renewal prices hidden in tooltips. The pattern regulators condemned in Trivago and
-                LendEDU, live in domain search today.
-              </p>
-              <div className="spread" role="img" aria-label="Price spread for the same domain across six registrars">
-                <div className="srow"><span className="who">Registrar A</span><span className="bar" style={{ ["--w" as string]: "100%" } as React.CSSProperties}></span><span className="amt">AU$7,255</span></div>
-                <div className="srow"><span className="who">Registrar B</span><span className="bar" style={{ ["--w" as string]: "85%" } as React.CSSProperties}></span><span className="amt">A$6,141</span></div>
-                <div className="srow"><span className="who">Registrar C</span><span className="bar" style={{ ["--w" as string]: "59%" } as React.CSSProperties}></span><span className="amt">$4,288</span></div>
-                <div className="srow"><span className="who">Registrar D</span><span className="bar" style={{ ["--w" as string]: "59%" } as React.CSSProperties}></span><span className="amt">$4,288</span></div>
-                <div className="srow"><span className="who">Registrar E</span><span className="bar" style={{ ["--w" as string]: "59%" } as React.CSSProperties}></span><span className="amt">$4,288</span></div>
-                <div className="srow good"><span className="who">New reg</span><span className="bar" style={{ ["--w" as string]: "2%" } as React.CSSProperties}></span><span className="amt">~$15</span></div>
-              </div>
-              <p className="spread-note">
-                Same domain, same day, same aftermarket feed - retail markups included. The green
-                bar is a standard new registration on an open name. The full story publishes on
-                the NFT.NYC blog Monday 3 August.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2>Sprint 1 Mission</h2>
+            <h2>The Five Features of a Next Gen Domain Search App</h2>
             <p className="lead">
-              Judged on the eyes first. Domain search should be <b>theatre</b>: every result
-              arrives dressed - cover art, story, true price, and proof. Honest data underneath,
-              a feast on top. A page of grey rows is an automatic loss.
+              Domain search should be a <b>very visual experience</b>: every result arrives
+              dressed — cover art, story, both prices, and proof — with 100% Clear data
+              underneath. These five features define "next generation", and the review rewards them.
             </p>
             <div className="kit">
               <div className="tile star">
-                <b>A very visual experience</b>
-                Results wear imagery, identity, and motion. Availability constellations,
-                price-spread charts, renewal-trap warnings - data display that belongs on a
-                billboard.
+                <b>1 · Positioned as Next Gen</b>
+                A Next Gen Domain Search App with Visual AI and optimized LLM Discoverability —
+                the category claim every submission makes.
               </div>
               <div className="tile">
-                <b>Search that answers</b>
-                One query in, honest results out: availability, true first-year price, and
-                renewal price on every single card.
+                <b>2 · 100% Clear results</b>
+                String results sorted by the best string results for the user — never a
+                TLD-sponsored search ladder — with the renewal price beside every first-year price
+                and a visible "why this result?" line on every card.{" "}
+                <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
+                  The evidence: our registrar search exposé
+                </a>
               </div>
               <div className="tile">
-                <b>Every result explained</b>
-                A visible "why this result?" line on every suggestion - your answer to the
-                PROMOTED card.
+                <b>3 · Visual AI results</b>
+                Produced with an AI assistant — <b>Wingman</b> — and associated with the domain
+                string. Results wear imagery, identity, and motion.
               </div>
               <div className="tile">
-                <b>Agent-enabled by default</b>
-                Publish publicly, enable Agent Integrations, submit your MCP link. Reference
-                model: <code>https://AgenticID.Kred</code>
+                <b>4 · A companion Kredentials page</b>
+                Offer every domain buyer the optional Kredentials add-on: a page generated from
+                their links. The section below has the whole story.
+              </div>
+              <div className="tile">
+                <b>5 · Embedded in frontier models</b>
+                Build on Lovable, publish publicly, enable Agent Integrations — your app works
+                inside ChatGPT and Claude. Other platforms offer comparable routes.
               </div>
             </div>
           </section>
 
           <section>
-            <h2>Remix Our Example Apps</h2>
+            <h2>Start From Our Example Apps</h2>
             <p className="lead">
-              We release two remixable, agent-enabled Lovable apps before the whistle - remix
-              either at kickoff and your build starts already talking to the API. Design
-              references below ship in your kit today; the live app links land in your kit
-              Wednesday 5 August.
+              Two remixable Lovable apps arrive with your Sprint 1 kit — remix either and your
+              submission starts already talking to the API. Design references arrive at
+              registration; the live app links arrive when Sprint 1 opens.
             </p>
             <div className="examples">
-              <a className="excard" href="DomainsKred%20Catch-All%20Wireframe%20v8b%202026-05-04.html">
+              <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
                 <img
-                  src="/vibesprint/Example Visual Search Thumb v1.jpg"
-                  alt="DomainsKred visual search wireframe - Cats.Kred hero with browser search bar, cover art, and AI greeter"
+                  src="/vibesprint/demoapp-visualsearch-v4.jpg"
+                  alt="Cats.Kred visual search demo — a 'catsonmotorbikes' one-word query surfaces the domain with an available badge, buy price, and three preview parking-page variants featuring AI-generated cat imagery"
                 />
                 <div className="excap">
                   <b>The Visual Domain Search</b>
-                  Type one word and meet the domain already dressed: Cats.Kred wearing its own
-                  cover art, origin story, trust score, and a live AI greeter - plus a gallery
-                  where every domain idea ships with matching Kredentials imagery.
+                  Built for digital creators: type your artist name and meet YourName.Kred already
+                  dressed — your cover art, your origin story, and a live AI greeter — plus a
+                  gallery where every creator name arrives with matching Kredentials imagery.
+                  <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
-              </a>
-              <a className="excard" href="ByronWaller%20Kredentials%20v7%20Golden%20Render%20v1%202026-07-20.html">
+              </div>
+              <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
                 <img
-                  src="/vibesprint/Example Kredentials Thumb v1.jpg"
-                  alt="Byron Waller Kredentials golden render - verified profile record with fact counts and editorial photography"
+                  src="/vibesprint/demoapp-domainreseller-v2.jpg"
+                  alt="dot.kred registrar demo — search available .kred names with a live availability check, whois status card, and a network visualization of the .kred namespace"
                 />
                 <div className="excap">
-                  <b>The Kredentials Maker</b>
-                  What a domain becomes after purchase: a verified identity record - 38 verified
-                  facts, 21 full-text answers, 21 cited sources - editorial for humans,
-                  machine-readable for answer engines. Your search results can preview this
-                  future for every name.
+                  <b>The Domain Search App</b>
+                  A clean, working domain search on the Domains.Kred Registrar API: availability,
+                  first-year price, and renewal price on every card. The straightforward starting
+                  point — remix it and make it yours.
+                  <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
-              </a>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>The Kredentials Add-On</h2>
+            <p className="lead">
+              Every Kred domain can carry a companion <b>Kredentials page</b> — a supplemental add-on
+              for anyone who receives a Kred domain, and the identity layer your search app can
+              offer with every name it sells.
+            </p>
+            <p className="form-note" style={{ maxWidth: 440, margin: "0 auto 18px", textAlign: "center" }}>
+              A live record at its own name:{" "}
+              <a href="https://Sketchlight.Kred" style={{ color: "var(--vs-cyan)" }}>
+                Sketchlight.Kred
+              </a>{" "}
+              - light-painting photographer Ray Vagner, with Wingman-verified links,
+              machine-readable identity, worn in the Bio format.
+            </p>
+            <div className="kit">
+              <div className="tile">
+                <b>Built from their links</b>
+                A pasted Linktree (which stays live and untouched), a .com website, social profiles,
+                press links. Wingman, the agent behind every page, gathers the sources, writes the
+                page, and verifies every fact.
+              </div>
+              <div className="tile">
+                <b>Made for answer engines</b>
+                A verified, machine-readable identity record — on the golden renders: 38 verified
+                facts, 21 full-text answers, 21 cited sources. Editorial for humans, readable by
+                LLMs.
+              </div>
+              <div className="tile">
+                <b>In your app</b>
+                The Kredentials API generates a page from a set of links — spec arrives with your
+                Sprint 1 kit. Offer it as the add-on on every domain your app sells.
+              </div>
+            </div>
+            <p className="form-note" style={{ marginTop: 12 }}>
+              Live pages:{" "}
+              <a href="https://Kredentials.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
+                Kredentials.Kred
+              </a>{" "}
+              · the Gallery:{" "}
+              <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
+                Kredentials.Kred/gallery
+              </a>{" "}
+              · how pages are built: the Wingman Pipeline Explainer on the{" "}
+              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>NFT.NYC blog</a>.
+            </p>
+          </section>
+
+          <section>
+            <h2>What Every Submission Earns</h2>
+            <p className="lead">
+              Progression, never elimination. Submit inside the window with live Kred API calls
+              and the full reward set is yours.
+            </p>
+            <div className="earn">
+              <div className="ecard"><b>Finisher XP</b><span className="amt">2,500 XP</span>For every sprint you submit.</div>
+              <div className="ecard"><b>Finisher Certificate</b><span className="amt">Minted NFT</span>Your submission's certificate, minted on the platform you built with.</div>
+              <div className="ecard"><b>Build Report</b><span className="amt">Full feedback</span>What passed, what scored what, and what to level up next sprint.</div>
+              <div className="ecard"><b>Times Square Showcase</b><span className="amt">Up to 20 per sprint</span>Up to 20 selected submissions per sprint are featured on the rotating Times Square billboard.</div>
+              <div className="ecard"><b>Spotlight</b><span className="amt">$1,000 grant</span>One Spotlight submission per sprint earns a build grant and a deep-dive on the NFT.NYC blog; two Featured submissions earn recap coverage.</div>
+            </div>
+            <p className="form-note" style={{ marginTop: 12 }}>
+              Achievements are objective bars, published before each sprint opens: Agent-Ready ·
+              Full Loop · Theatre · 100% Clear Card — 1,000 XP each.
+            </p>
+          </section>
+
+          <section>
+            <h2>Who We're Inviting</h2>
+            <div className="kit">
+              <div className="tile">
+                <b>Digital graphic designers</b>
+                This community. The review rewards visually attractive work: graphical excellence
+                carries 25%, equal with working product.
+              </div>
+              <div className="tile">
+                <b>Domainers who vibe code</b>
+                NamePros and other domainer forums: you know the results pages. Build the one you
+                wish existed.
+              </div>
+              <div className="tile">
+                <b>AI developers via Hugging Face</b>
+                Live registrar data, agent identity enrollment, and a published app that works
+                inside ChatGPT and Claude.
+              </div>
+            </div>
+            <p className="form-note" style={{ marginTop: 12 }}>
+              <b style={{ color: "var(--color-text)" }}>Who your app serves:</b> Linktree users who
+              want to control their own domain and care about their identity and AI
+              discoverability, people tired of misleading mainstream search, and anyone who wants
+              to be found by LLMs.
+            </p>
+          </section>
+
+          <section>
+            <h2>Live Support Both Evenings</h2>
+            <div className="agent">
+              <h3>Our lead engineer is on the call</h3>
+              <p>
+                Every sprint carries <b>two live Google Meet support sessions</b>, hosted by our
+                lead engineer: from <b>4:00pm ET on the first two evenings</b> of the build
+                window, each running <b>five to eight hours</b>. Sprint 1 sessions: Wednesday 12
+                and Thursday 13 August.
+              </p>
+              <p>
+                Authentication, API questions, publishing problems: bring the specific error and
+                work through it live with the engineer. The Meet link arrives with your Sprint 1 kit,
+                and registration is the only ticket required.
+              </p>
             </div>
           </section>
 
           <section>
             <h2>The API You Build On</h2>
             <div className="kit">
-              <div className="tile"><b>Check</b><code>POST /domains/{"{d}"}/check</code><br />Availability, premium flag, and price - one call, fully disclosed.</div>
+              <div className="tile"><b>Check</b><code>POST /domains/{"{d}"}/check</code><br />Availability, premium flag, and price — one call, fully disclosed.</div>
               <div className="tile"><b>Price any horizon</b><code>GET /domains/{"{d}"}/price?period=N</code><br />Multi-year cost for every result card. Renewal transparency is a query away.</div>
-              <div className="tile"><b>Status</b><code>GET /domains/{"{d}"}/status</code><br />Who holds it, since when, expiry and nameservers - the whole WHOIS story.</div>
-              <div className="tile"><b>Register</b><code>POST /domains/{"{d}"}/register</code><br />Real registrations funded by your kit's API credits. Live demos win.</div>
-              <div className="tile"><b>Agent identity</b><code>POST /domains/{"{d}"}/agent</code><br />AID, ANS, MCP-I, DNSid - the AgenticID.Kred enrollment stack. Sprint 2's core.</div>
-              <div className="tile"><b>Standout extras</b><code>POST /domains/{"{d}"}/token</code><br />Mint a domain token; ENS bridge; DNS zones; SSL.</div>
+              <div className="tile"><b>Status</b><code>GET /domains/{"{d}"}/status</code><br />Who holds it, since when, expiry and nameservers — the whole WHOIS story.</div>
+              <div className="tile"><b>Register</b><code>POST /domains/{"{d}"}/register</code><br />Real registrations funded by your Sprint 1 kit's API credits. Live demos earn.</div>
+              <div className="tile"><b>Tokenize</b><code>POST /domains/{"{d}"}/token</code><br />Mint a domain token; ENS bridge; DNS zones; SSL.</div>
+              <div className="tile"><b>Agent identity</b><code>POST /domains/{"{d}"}/agent</code><br />AID, ANS, MCP-I, DNSid — the AgenticID.Kred enrollment stack. Sprint 2's core.</div>
+              <div className="tile"><b>Kredentials page</b><code>Spec pending</code><br />Generate a Lander or a full Kredentials page for a set of links. Endpoint spec arrives with the Sprint 1 kit.</div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
               Full interactive docs:{" "}
-              <a href="https://api.Domains.Kred/docs" style={{ color: "var(--vs-cyan)" }}>api.Domains.Kred/docs</a>{" "}
+              <a href="https://api.Domains.Kred/docs" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>api.Domains.Kred/docs</a>{" "}
               · Keys from{" "}
-              <a href="https://console.Domains.Kred" style={{ color: "var(--vs-cyan)" }}>console.Domains.Kred</a>
+              <a href="https://console.Domains.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>console.Domains.Kred</a>{" "}
+              · For registrars:{" "}
+              <a href="https://Nic.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>Nic.Kred</a>
             </p>
           </section>
 
           <section>
-            <h2>How You Win Sprint 1</h2>
+            <h2>How Submissions Are Reviewed</h2>
             <div className="weights">
               <div className="wrow" style={{ ["--tone" as string]: "var(--vs-green)" } as React.CSSProperties}><span>Working product</span><span className="bar" style={{ ["--w" as string]: "100%" } as React.CSSProperties}></span><span className="pct">25%</span></div>
               <div className="wrow" style={{ ["--tone" as string]: "var(--vs-pink)" } as React.CSSProperties}><span>Graphical excellence</span><span className="bar" style={{ ["--w" as string]: "100%" } as React.CSSProperties}></span><span className="pct">25%</span></div>
@@ -359,48 +561,32 @@ export default function VibeSprint() {
               <div className="wrow" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}><span>Agent-readiness</span><span className="bar" style={{ ["--w" as string]: "60%" } as React.CSSProperties}></span><span className="pct">15%</span></div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
-              Agent-readiness is scored by a live Claude tool call on your MCP link. Fair by
-              design: our judging harness verifies every entry's API calls from our own server
-              logs and hands human judges a full evidence pack. Every entrant receives a
-              scorecard Monday - winners and eliminated alike.
+              Weights published before every sprint. Our review harness verifies API calls from
+              our own server logs, runs a live Claude tool call on your published app, and hands
+              the panel a full evidence pack. Every builder receives a Build Report after each
+              close.
             </p>
           </section>
 
           <section>
-            <h2>The Road to Friday</h2>
+            <h2>Sprint 1 Week</h2>
             <div className="tl">
-              <div className="trow"><b>Mon 3 Aug · 08:00 ET</b>The story drops on the NFT.NYC blog; announcement and forum threads follow at 09:00.</div>
-              <div className="trow"><b>Mon 3 - Thu 6 Aug</b>Register, claim your Kred domain, study the example apps, explore the API with your credits.</div>
-              <div className="trow"><b>Wed 5 Aug</b>Kits complete: both live example apps, the "Connect your Kred app to ChatGPT and Claude" one-pager, Lovable credit codes.</div>
-              <div className="trow hot"><b>Fri 7 Aug · 12:00-17:00 ET</b>Sprint 1. Opens with Claude registering a domain live. Five hours, Lovable open to ship.</div>
-              <div className="trow"><b>Fri 7 Aug · 17:00 ET</b>Submissions close: app URL on your Kred domain, Lovable project link, MCP link, 60-second demo video, API evidence.</div>
-              <div className="trow"><b>Mon 10 Aug</b>Winners, scorecards, season points - and the Sprint 2 brief drops the same morning.</div>
+              <div className="trow"><b>Tue 11 Aug</b>Sprint 1 announced; the story publishes on the NFT.NYC blog; registration opens.</div>
+              <div className="trow"><b>Tue 11 – Wed 12 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
+              <div className="trow hot"><b>Wed 12 Aug · 4:00pm ET</b>Sprint 1 opens: Sprint 1 kit published, 48-hour build window begins.</div>
+              <div className="trow"><b>Wed 12 + Thu 13 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
+              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
+              <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
             </div>
-          </section>
-
-          <section>
-            <h2>Prizes</h2>
-            <div className="table-scroll">
-              <table>
-                <thead>
-                  <tr><th>Prize</th><th>What you win</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Sprint winner (each sprint)</td><td className="num">$1,000 USD and 10,000 XP</td></tr>
-                  <tr><td>2nd place</td><td className="num">5,000 XP</td></tr>
-                  <tr><td>3rd place</td><td className="num">2,500 XP</td></tr>
-                  <tr><td>Every finished entry</td><td>Season points on the shared Kred Vibe Series table - the season champion takes the NFT.NYC 2026 stage on 1 September and a Times Square billboard feature</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p className="form-note" style={{ marginTop: 10 }}>
-              Season points: 1st = 10, 2nd = 5, 3rd = 3, every finished submission = 1. Flash
-              points and Vibe Series weekend points accrue on one table.
-            </p>
           </section>
 
           <section id="register">
             <h2>Register</h2>
+            <p className="lead">
+              One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits, a
+              free .Kred domain claim, 1,000 XP, and both example app links — arrives when
+              Sprint 1 opens, Wednesday 12 August at 4:00pm ET.
+            </p>
             {!submitted && (
               <form onSubmit={onSubmit} noValidate>
                 <div className="field">
@@ -441,10 +627,20 @@ export default function VibeSprint() {
                   </select>
                 </div>
                 <div className="field">
-                  <label>Build tool</label>
-                  <div className="lovable-lock">
-                    <span className="dot"></span>Lovable - every flash entry ships from Lovable
-                  </div>
+                  <label htmlFor="fTool">Build platform</label>
+                  <select
+                    id="fTool"
+                    name="tool"
+                    value={buildTool}
+                    onChange={(e) => setBuildTool(e.target.value)}
+                  >
+                    <option>Lovable (primary — Agent Integrations)</option>
+                    <option>Replit</option>
+                    <option>Vercel + GitHub</option>
+                    <option>Base44</option>
+                    <option>Bolt</option>
+                    <option>Other</option>
+                  </select>
                 </div>
                 <div className="field full">
                   <label htmlFor="fDomain">Claim your free Kred domain</label>
@@ -459,7 +655,24 @@ export default function VibeSprint() {
                     />
                     <span className="tld">.Kred</span>
                   </div>
+                  {domainCheck.state === "checking" && (
+                    <p className="form-note" style={{ marginTop: 6 }}>Checking availability…</p>
+                  )}
+                  {domainCheck.state === "available" && (
+                    <p className="form-note" style={{ marginTop: 6, color: "#12a150" }}>
+                      {domain.trim()}.Kred is available.
+                    </p>
+                  )}
+                  {domainCheck.state === "taken" && (
+                    <p className="form-note" style={{ marginTop: 6, color: "#F15621" }}>
+                      {domainCheck.message || `${domain.trim()}.Kred is already taken — try another name.`}
+                    </p>
+                  )}
+                  {domainCheck.state === "unknown" && domainCheck.message && (
+                    <p className="form-note" style={{ marginTop: 6 }}>{domainCheck.message}</p>
+                  )}
                 </div>
+                <RegistrantContactFields open={domain.trim().length > 0} onChange={setContact} />
                 <div className="agree">
                   <input
                     id="fAgree"
@@ -481,28 +694,72 @@ export default function VibeSprint() {
                   </label>
                 </div>
                 <div className="form-actions">
-                  <button className="btn" type="submit">Claim my kit and register</button>
+                  <button
+                    className="btn"
+                    type="submit"
+                    disabled={sending || domainCheck.state === "taken" || domainCheck.state === "checking"}
+                  >
+                    {sending ? "Registering…" : "Claim my kit and register"}
+                  </button>
                   <span className="form-note">
-                    Free to enter. One registration covers all three sprints.
+                    Free to enter. One registration covers all three sprints. Kit issued when
+                    Sprint 1 opens.
                   </span>
                 </div>
+                {formError && (
+                  <p className="form-note" role="alert" style={{ marginTop: 10, color: "#F15621" }}>
+                    {formError}
+                  </p>
+                )}
               </form>
             )}
             {submitted && (
               <div className="success" id="successCard" role="status">
-                <b>You're in - for the whole season.</b> Your API credits and XP starter pack
-                will be delivered to your inbox in an onboarding welcome email from{" "}
-                team@nft.nyc on Wednesday 5 August.<br />
-                We've registered your request for <b>{claimedDomain}</b> - complete the claim
-                from the welcome email link.
+                <b>You're in — for the whole season.</b> Your Sprint 1 kit — API credits, XP starter
+                pack, and both example apps — arrives when Sprint 1 opens.<br />
+                Your domain <b>{claimedDomain}</b> is reserved — complete the claim from the email
+                link.
                 <ul>
-                  <li>The Sprint 1 brief, the story, and the example apps arrive in your welcome email.</li>
-                  <li>Sprint 1: Friday 7 August, 12:00-17:00 ET, livestreamed.</li>
-                  <li>Sprints 2 and 3: Fridays 14 and 21 August - briefs drop each Monday.</li>
+                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Wednesday 12 August, 4:00pm ET.</li>
+                  <li>Sprint 1 runs Wednesday 12 – Friday 14 August, opening at 4:00pm ET.</li>
+                  <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
+                  <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
                 </ul>
               </div>
             )}
           </section>
+
+          <section>
+            <h2>Read More</h2>
+            <div className="links">
+              <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
+                <small>About the series (P14)</small>The Kred Flash Sprints — About Pillar
+              </a>
+              <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
+                <small>The market, documented (P24)</small>Navigating the Domain Search Muddle
+              </a>
+              <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
+                <small>Four eras ending at the Lander (P3)</small>Anatomy of a Parking Page
+              </a>
+              <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
+                <small>How Kredentials pages are built (P22)</small>The Wingman Pipeline Explainer
+              </a>
+              <a className="lk ext" href="https://Kredentials.Kred" target="_blank" rel="noopener noreferrer">
+                <small>The identity layer</small>Kredentials.Kred
+              </a>
+              <a className="lk ext" href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer">
+                <small>1,100+ names recently added</small>The Gallery
+              </a>
+              <a className="lk ext" href="https://Nic.Kred" target="_blank" rel="noopener noreferrer">
+                <small>For registrars</small>Nic.Kred
+              </a>
+            </div>
+          </section>
+
+          <div className="foot">
+            KRED FLASH SPRINTS · BUILD A BETTER DOMAIN IDENTITY SEARCH · PEOPLEBROWSR × NFT.NYC 2026 · DEMO DAY 1 SEPTEMBER, NEW YORK<br />
+            MOCKUP V14 · THE MERGED PAGE (P30 + P31 CONSOLIDATED 8 AUG) · DEPLOYS TO HTTPS://NFT.NYC/VIBESPRINT · REGISTRATION FLOW BUILT SEPARATELY IN LOVABLE · COUNTDOWN IS DEMO-ONLY
+          </div>
 
         </div>
       </div>

@@ -510,7 +510,7 @@ export default function NeuralMesh() {
     // Spine labels — the "TOKENIZATION LAYER" central hero node
     {
       const CX = 500, CY = 360;
-      const svg = nodesGroup.ownerSVGElement;
+      const svg = (nodesGroup as SVGElement).ownerSVGElement;
       const SVG_NS = 'http://www.w3.org/2000/svg';
 
       // Define shared gradient + filters in <defs> once
