@@ -80,7 +80,7 @@ export default function Program() {
               marginBottom: "0.75rem",
             }}
           >
-            Preliminary Program V.1 · Sept 1–3, 2026 · Times Square, NYC
+            Sept 1–3, 2026 · Times Square, NYC
           </p>
           <h1
             style={{
@@ -95,6 +95,20 @@ export default function Program() {
           >
             Program
           </h1>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "14px",
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--color-text-muted)",
+              marginTop: "0.75rem",
+              marginBottom: 0,
+            }}
+          >
+            Preliminary Program v.1
+          </p>
           <p
             style={{
               color: "var(--color-text-muted)",
