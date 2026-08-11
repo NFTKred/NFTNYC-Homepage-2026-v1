@@ -20,7 +20,7 @@ export interface ScheduleSession {
 export const SCHEDULE: ScheduleSession[] = [
   {
     "day": "Tue",
-    "time": "07:00pm - 08:30pm",
+    "time": "06:00pm - 08:00pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Opening Night Party",
     "description": "",
