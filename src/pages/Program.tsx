@@ -19,6 +19,8 @@ const SESSIONIZE_URL = "https://sessionize.com/api/v2/x65weaqz/view/All";
 interface AvatarInfo {
   url: string;
   displayName: string; // canonical Sessionize fullName (for the deep-link)
+  bio: string;         // used as a secondary match target: Sessionize speakers who use a
+                       // pseudonym for fullName often mention their real name in the bio.
 }
 
 const DAY_LABELS: Record<string, { short: string; full: string; date: string; color: string }> = {
@@ -58,8 +60,9 @@ export default function Program() {
         (data.speakers ?? []).forEach((s: any) => {
           const name = String(s.fullName ?? "").trim();
           const pic = String(s.profilePicture ?? "").trim();
+          const bio = String(s.bio ?? "").trim();
           if (!name || !pic) return;
-          pool.push({ url: pic, displayName: name });
+          pool.push({ url: pic, displayName: name, bio });
         });
         setAvatarPool(pool);
       } catch {
@@ -71,7 +74,15 @@ export default function Program() {
     };
   }, []);
 
-  // Precompute exact + substring lookup. Exact wins over substring.
+  // Precompute exact + substring lookup. Priority:
+  //   1) Exact match on Sessionize fullName
+  //   2) Word-boundary substring — either side contains the other (handles
+  //      "Jenifer Pepen" ↔ "Jenifer Pepen Aquino")
+  //   3) Bio mention — speakers who use a pseudonym for fullName (e.g.
+  //      "Cryptoverlord") often introduce themselves by real name in bio.
+  //      Only match if EXACTLY ONE speaker's bio contains the schedule
+  //      name — ambiguous multi-hit lookups are skipped to avoid false
+  //      positives from third-party mentions.
   const avatarLookup = useMemo(() => {
     const exact = new Map<string, AvatarInfo>();
     for (const a of avatarPool) exact.set(a.displayName.toLowerCase(), a);
@@ -80,15 +91,15 @@ export default function Program() {
       if (!q) return undefined;
       const hit = exact.get(q);
       if (hit) return hit;
-      // Fuzzy: either the schedule name contains the Sessionize name,
-      // or the Sessionize name contains the schedule name (matches on
-      // word boundary to avoid "Al" matching "Alexandra").
       for (const a of avatarPool) {
         const s = a.displayName.toLowerCase();
         if (s === q) return a;
         if (q.startsWith(s + " ") || q.endsWith(" " + s) || q.includes(" " + s + " ")) return a;
         if (s.startsWith(q + " ") || s.endsWith(" " + q) || s.includes(" " + q + " ")) return a;
       }
+      // Bio fallback — must be unique to avoid third-party name-drops.
+      const bioMatches = avatarPool.filter((a) => a.bio.toLowerCase().includes(q));
+      if (bioMatches.length === 1) return bioMatches[0];
       return undefined;
     };
   }, [avatarPool]);
