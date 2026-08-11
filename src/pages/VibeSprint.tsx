@@ -248,8 +248,8 @@ export default function VibeSprint() {
             <div className="cta-row">
               <a className="btn" href="#register">Register free</a>
               <span className="cta-note">
-                One free registration covers all three sprints. Your dev kit — API credits, free
-                .Kred domain claim, 1,000 XP, and both example apps — publishes when Sprint 1 opens.
+                One free registration covers all three sprints. Your Sprint 1 kit — API credits, free
+                .Kred domain claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
               </span>
             </div>
           </header>
@@ -321,7 +321,7 @@ export default function VibeSprint() {
                   The customer flips to agents: they discover, price, register, and enroll their
                   own .Kred agentic identity — AID, ANS, MCP-I, DNSid — end to end.
                 </p>
-                <span className="chip">Brief publishes Fri 14 Aug</span>
+                <span className="chip">Brief arrives Fri 14 Aug</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
@@ -331,23 +331,22 @@ export default function VibeSprint() {
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
                   and score — one week before NFT.NYC.
                 </p>
-                <span className="chip">Brief publishes Fri 21 Aug</span>
+                <span className="chip">Brief arrives Fri 21 Aug</span>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
               One builder — selected by the review panel from the sprints' Spotlight and Featured
               submissions — presents the marquee demo at Demo Day, NFT.NYC 2026, 1 September.
-              Every submission appears in the Demo Day reel; up to 20 selected submissions per
-              sprint join the Times Square Showcase.
+              Up to 20 selected submissions per sprint join the Times Square Showcase.
             </p>
           </section>
 
           <section>
-            <h2>The Six Features of a Next Gen Domain Search App</h2>
+            <h2>The Five Features of a Next Gen Domain Search App</h2>
             <p className="lead">
               Domain search should be a <b>very visual experience</b>: every result arrives
               dressed — cover art, story, both prices, and proof — with 100% Clear data
-              underneath. These six features define "next generation", and the review rewards them.
+              underneath. These five features define "next generation", and the review rewards them.
             </p>
             <div className="kit">
               <div className="tile star">
@@ -356,12 +355,7 @@ export default function VibeSprint() {
                 the category claim every submission makes.
               </div>
               <div className="tile">
-                <b>2 · DNS ENS Tokenization</b>
-                Mint a domain as a token through the API, with an ENS bridge — ownership readable
-                the way this community expects. <code>POST /domains/{"{d}"}/token</code>
-              </div>
-              <div className="tile">
-                <b>3 · 100% Clear results</b>
+                <b>2 · 100% Clear results</b>
                 String results sorted by the best string results for the user — never a
                 TLD-sponsored search ladder — with the renewal price beside every first-year price
                 and a visible "why this result?" line on every card.{" "}
@@ -370,17 +364,17 @@ export default function VibeSprint() {
                 </a>
               </div>
               <div className="tile">
-                <b>4 · Visual AI results</b>
+                <b>3 · Visual AI results</b>
                 Produced with an AI assistant — <b>Wingman</b> — and associated with the domain
                 string. Results wear imagery, identity, and motion.
               </div>
               <div className="tile">
-                <b>5 · The Kredentials Lander on every name</b>
-                Every .Kred name your app sells ships with a page from the first minute — and it
-                grows into a full identity record. The section below has the whole story.
+                <b>4 · A companion Kredentials page</b>
+                Offer every domain buyer the optional Kredentials add-on: a page generated from
+                their links. The section below has the whole story.
               </div>
               <div className="tile">
-                <b>6 · Embedded in frontier models</b>
+                <b>5 · Embedded in frontier models</b>
                 Build on Lovable, publish publicly, enable Agent Integrations — your app works
                 inside ChatGPT and Claude. Other platforms offer comparable routes.
               </div>
@@ -390,7 +384,7 @@ export default function VibeSprint() {
           <section>
             <h2>Start From Our Example Apps</h2>
             <p className="lead">
-              Two remixable Lovable apps arrive with your dev kit — remix either and your
+              Two remixable Lovable apps arrive with your Sprint 1 kit — remix either and your
               submission starts already talking to the API. Design references arrive at
               registration; the live app links arrive when Sprint 1 opens.
             </p>
@@ -405,7 +399,7 @@ export default function VibeSprint() {
                   Built for digital creators: type your artist name and meet YourName.Kred already
                   dressed — your cover art, your origin story, and a live AI greeter — plus a
                   gallery where every creator name arrives with matching Kredentials imagery.
-                  <span className="exlink">Live app link arrives with your dev kit</span>
+                  <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
               </div>
               <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
@@ -418,22 +412,18 @@ export default function VibeSprint() {
                   A clean, working domain search on the Domains.Kred Registrar API: availability,
                   first-year price, and renewal price on every card. The straightforward starting
                   point — remix it and make it yours.
-                  <span className="exlink">Live app link arrives with your dev kit</span>
+                  <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
               </div>
             </div>
           </section>
 
           <section>
-            <h2>The Kredentials Lander</h2>
+            <h2>The Kredentials Add-On</h2>
             <p className="lead">
-              The page every .Kred name ships with — built by{" "}
-              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
-                <b>AI Wingman</b>
-              </a>{" "}
-              in the minutes after registration, anchored on-chain by a <b>Domain Token</b>. Your
-              search app sells names that arrive with a working page from the first minute, and
-              the page grows with its owner.
+              Every Kred domain can carry a companion <b>Kredentials page</b> — a supplemental add-on
+              for anyone who receives a Kred domain, and the identity layer your search app can
+              offer with every name it sells.
             </p>
             <p className="form-note" style={{ maxWidth: 440, margin: "0 auto 18px", textAlign: "center" }}>
               A live record at its own name:{" "}
@@ -441,35 +431,25 @@ export default function VibeSprint() {
                 Sketchlight.Kred
               </a>{" "}
               - light-painting photographer Ray Vagner, with Wingman-verified links,
-              machine-readable identity, and the on-chain record, worn in the Bio format. The
-              Lander is where every new name starts; this is where it grows.
+              machine-readable identity, worn in the Bio format.
             </p>
             <div className="kit">
-              <div className="tile star">
-                <b>Ships at registration</b>
-                One AI-generated illustration from the name itself, the name displayed in large
-                type, one line of story, a Make an Offer button, and an email collector — with
-                JSON-LD and /llms.txt underneath so AI assistants can read it. Minimal on the
-                surface, complete underneath.
+              <div className="tile">
+                <b>Built from their links</b>
+                A pasted Linktree (which stays live and untouched), a .com website, social profiles,
+                press links. Wingman, the agent behind every page, gathers the sources, writes the
+                page, and verifies every fact.
               </div>
               <div className="tile">
-                <b>Grows into Kredentials</b>
-                The Lander is the floor. The owner adds their links — a Linktree (it stays live
-                and untouched), a .com website, socials, press — and Wingman writes the full
-                verified record: every fact with a source and a date, worn in one of three
-                formats.
-              </div>
-              <div className="tile">
-                <b>Beyond the Lander</b>
-                The same name can become a personal profile, a business page, an ENS-bridged
-                wallet address, an agent with a Kred Score, or a full website — with Wingman
-                attached to every path, refreshing the record and watching AI-crawler visibility.
+                <b>Made for answer engines</b>
+                A verified, machine-readable identity record — on the golden renders: 38 verified
+                facts, 21 full-text answers, 21 cited sources. Editorial for humans, readable by
+                LLMs.
               </div>
               <div className="tile">
                 <b>In your app</b>
-                The Kredentials API generates Landers and pages from a set of links — the spec
-                arrives with your dev kit. Every domain your app sells can carry its identity from
-                the moment of purchase.
+                The Kredentials API generates a page from a set of links — spec arrives with your
+                Sprint 1 kit. Offer it as the add-on on every domain your app sells.
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
@@ -477,14 +457,12 @@ export default function VibeSprint() {
               <a href="https://Kredentials.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
                 Kredentials.Kred
               </a>{" "}
-              · 1,100+ names recently added — see{" "}
+              · the Gallery:{" "}
               <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
-                the Gallery
+                Kredentials.Kred/gallery
               </a>{" "}
-              · the full story of the parking page's four eras, ending at the Lander:{" "}
-              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
-                Anatomy of a Parking Page
-              </a>
+              · how pages are built: the Wingman Pipeline Explainer on the{" "}
+              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>NFT.NYC blog</a>.
             </p>
           </section>
 
@@ -546,7 +524,7 @@ export default function VibeSprint() {
               </p>
               <p>
                 Authentication, API questions, publishing problems: bring the specific error and
-                work through it live with the engineer. The Meet link arrives with your dev kit,
+                work through it live with the engineer. The Meet link arrives with your Sprint 1 kit,
                 and registration is the only ticket required.
               </p>
             </div>
@@ -558,10 +536,10 @@ export default function VibeSprint() {
               <div className="tile"><b>Check</b><code>POST /domains/{"{d}"}/check</code><br />Availability, premium flag, and price — one call, fully disclosed.</div>
               <div className="tile"><b>Price any horizon</b><code>GET /domains/{"{d}"}/price?period=N</code><br />Multi-year cost for every result card. Renewal transparency is a query away.</div>
               <div className="tile"><b>Status</b><code>GET /domains/{"{d}"}/status</code><br />Who holds it, since when, expiry and nameservers — the whole WHOIS story.</div>
-              <div className="tile"><b>Register</b><code>POST /domains/{"{d}"}/register</code><br />Real registrations funded by your dev kit's API credits. Live demos earn.</div>
+              <div className="tile"><b>Register</b><code>POST /domains/{"{d}"}/register</code><br />Real registrations funded by your Sprint 1 kit's API credits. Live demos earn.</div>
               <div className="tile"><b>Tokenize</b><code>POST /domains/{"{d}"}/token</code><br />Mint a domain token; ENS bridge; DNS zones; SSL.</div>
               <div className="tile"><b>Agent identity</b><code>POST /domains/{"{d}"}/agent</code><br />AID, ANS, MCP-I, DNSid — the AgenticID.Kred enrollment stack. Sprint 2's core.</div>
-              <div className="tile"><b>Kredentials page</b><code>Spec pending</code><br />Generate a Lander or a full Kredentials page for a set of links. Endpoint spec publishes with the Sprint 1 dev kit.</div>
+              <div className="tile"><b>Kredentials page</b><code>Spec pending</code><br />Generate a Lander or a full Kredentials page for a set of links. Endpoint spec arrives with the Sprint 1 kit.</div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
               Full interactive docs:{" "}
@@ -595,9 +573,9 @@ export default function VibeSprint() {
             <div className="tl">
               <div className="trow"><b>Tue 11 Aug</b>Sprint 1 announced; the story publishes on the NFT.NYC blog; registration opens.</div>
               <div className="trow"><b>Tue 11 – Wed 12 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
-              <div className="trow hot"><b>Wed 12 Aug · 4:00pm ET</b>Sprint 1 opens: dev kit published, 48-hour build window begins.</div>
+              <div className="trow hot"><b>Wed 12 Aug · 4:00pm ET</b>Sprint 1 opens: Sprint 1 kit published, 48-hour build window begins.</div>
               <div className="trow"><b>Wed 12 + Thu 13 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
-              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link, MCP link, API evidence.</div>
+              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
             </div>
           </section>
@@ -605,8 +583,8 @@ export default function VibeSprint() {
           <section id="register">
             <h2>Register</h2>
             <p className="lead">
-              One free registration covers all three sprints. Your dev kit — Kred API credits, a
-              free .Kred domain claim, 1,000 XP, and both example app links — publishes when
+              One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits, a
+              free .Kred domain claim, 1,000 XP, and both example app links — arrives when
               Sprint 1 opens, Wednesday 12 August at 4:00pm ET.
             </p>
             {!submitted && (
@@ -737,12 +715,12 @@ export default function VibeSprint() {
             )}
             {submitted && (
               <div className="success" id="successCard" role="status">
-                <b>You're in — for the whole season.</b> Your dev kit — API credits, XP starter
-                pack, and both example apps — publishes when Sprint 1 opens.<br />
+                <b>You're in — for the whole season.</b> Your Sprint 1 kit — API credits, XP starter
+                pack, and both example apps — arrives when Sprint 1 opens.<br />
                 Your domain <b>{claimedDomain}</b> is reserved — complete the claim from the email
                 link.
                 <ul>
-                  <li>The Sprint 1 dev kit publishes when Sprint 1 opens: Wednesday 12 August, 4:00pm ET.</li>
+                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Wednesday 12 August, 4:00pm ET.</li>
                   <li>Sprint 1 runs Wednesday 12 – Friday 14 August, opening at 4:00pm ET.</li>
                   <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
