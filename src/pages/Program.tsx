@@ -4,13 +4,22 @@
 // Style: mirrors /speakers — hero → day filter chips + search → session
 // cards grouped by day. Cards show time badge, title, speakers, and room.
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Clock, MapPin, Users } from "lucide-react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
 import { SCHEDULE, ScheduleSession } from "@/data/schedule";
+
+// Same endpoint the Speakers page uses. Cache-Control: max-age=117
+// means most page loads share this fetch with /speakers.
+const SESSIONIZE_URL = "https://sessionize.com/api/v2/x65weaqz/view/All";
+
+interface AvatarInfo {
+  url: string;
+  displayName: string; // canonical Sessionize fullName (for the deep-link)
+}
 
 const DAY_LABELS: Record<string, { short: string; full: string; date: string; color: string }> = {
   Tue: { short: "Tue", full: "Tuesday",  date: "Sept 1", color: "#8B5CF6" },
@@ -27,6 +36,62 @@ export default function Program() {
   const stage = useMemo(() => Number(localStorage.getItem("nftnyc-stage") ?? 0), []);
   const [search, setSearch] = useState("");
   const [activeDay, setActiveDay] = useState<string>("all");
+  const [avatarPool, setAvatarPool] = useState<AvatarInfo[]>([]);
+
+  // Fetch Sessionize once. We keep the full pool of accepted speakers
+  // (name + avatar URL) and match schedule names against it fuzzily —
+  // the schedule sometimes has more of the legal name than Sessionize
+  // (e.g. "Jenifer Pepen Aquino" vs "Jenifer Pepen"), so we accept
+  // either side being a substring of the other.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(SESSIONIZE_URL);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        // No acceptance filter here: the schedule itself is our approval
+        // gate — anyone who appears on it is already confirmed. We just
+        // want the avatar/name mapping for everyone Sessionize knows.
+        const pool: AvatarInfo[] = [];
+        (data.speakers ?? []).forEach((s: any) => {
+          const name = String(s.fullName ?? "").trim();
+          const pic = String(s.profilePicture ?? "").trim();
+          if (!name || !pic) return;
+          pool.push({ url: pic, displayName: name });
+        });
+        setAvatarPool(pool);
+      } catch {
+        // silent — no avatars is a fine fallback
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Precompute exact + substring lookup. Exact wins over substring.
+  const avatarLookup = useMemo(() => {
+    const exact = new Map<string, AvatarInfo>();
+    for (const a of avatarPool) exact.set(a.displayName.toLowerCase(), a);
+    return (rawName: string): AvatarInfo | undefined => {
+      const q = rawName.trim().toLowerCase();
+      if (!q) return undefined;
+      const hit = exact.get(q);
+      if (hit) return hit;
+      // Fuzzy: either the schedule name contains the Sessionize name,
+      // or the Sessionize name contains the schedule name (matches on
+      // word boundary to avoid "Al" matching "Alexandra").
+      for (const a of avatarPool) {
+        const s = a.displayName.toLowerCase();
+        if (s === q) return a;
+        if (q.startsWith(s + " ") || q.endsWith(" " + s) || q.includes(" " + s + " ")) return a;
+        if (s.startsWith(q + " ") || s.endsWith(" " + q) || s.includes(" " + q + " ")) return a;
+      }
+      return undefined;
+    };
+  }, [avatarPool]);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
@@ -233,7 +298,7 @@ export default function Program() {
               {/* Session cards */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {sessions.map((s, i) => (
-                  <SessionCard key={`${day}-${i}`} session={s} accent={color} />
+                  <SessionCard key={`${day}-${i}`} session={s} accent={color} lookupAvatar={avatarLookup} />
                 ))}
               </div>
             </div>
@@ -247,7 +312,15 @@ export default function Program() {
 }
 
 // ─── Session card ────────────────────────────────────────────────────────
-function SessionCard({ session, accent }: { session: ScheduleSession; accent: string }) {
+function SessionCard({
+  session,
+  accent,
+  lookupAvatar,
+}: {
+  session: ScheduleSession;
+  accent: string;
+  lookupAvatar: (name: string) => AvatarInfo | undefined;
+}) {
   return (
     <article
       style={{
@@ -310,42 +383,82 @@ function SessionCard({ session, accent }: { session: ScheduleSession; accent: st
           <div
             style={{
               display: "flex",
-              alignItems: "flex-start",
-              gap: "0.45rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: "0.5rem 0.75rem",
               fontFamily: "var(--font-body)",
               fontSize: "13px",
               color: "var(--color-text-muted)",
-              marginBottom: "0.5rem",
+              marginBottom: "0.6rem",
               lineHeight: 1.5,
             }}
           >
-            <Users size={13} style={{ marginTop: 3, flexShrink: 0 }} />
-            <span>
-              {session.speakers.map((name, i) => (
-                <span key={name + i}>
-                  <Link
-                    to={`/speakers?speaker=${encodeURIComponent(name)}`}
-                    style={{
-                      color: "var(--color-text)",
-                      textDecoration: "none",
-                      borderBottom: "1px dotted var(--color-text-faint)",
-                      transition: "color 150ms ease, border-color 150ms ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = accent;
-                      (e.currentTarget as HTMLElement).style.borderBottomColor = accent;
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = "var(--color-text)";
-                      (e.currentTarget as HTMLElement).style.borderBottomColor = "var(--color-text-faint)";
-                    }}
-                  >
-                    {name}
-                  </Link>
-                  {i < session.speakers.length - 1 && ", "}
-                </span>
-              ))}
-            </span>
+            {session.speakers.map((name) => {
+              const info = lookupAvatar(name);
+              const linkTarget = info?.displayName ?? name;
+              return (
+                <Link
+                  key={name}
+                  to={`/speakers?speaker=${encodeURIComponent(linkTarget)}`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    color: "var(--color-text)",
+                    textDecoration: "none",
+                    padding: "3px 10px 3px 3px",
+                    borderRadius: 999,
+                    border: "1px solid var(--color-border)",
+                    background: "rgba(255,255,255,0.03)",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = accent;
+                    (e.currentTarget as HTMLElement).style.color = accent;
+                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--color-text)";
+                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
+                  }}
+                >
+                  {info?.url ? (
+                    <img
+                      src={info.url}
+                      alt=""
+                      loading="lazy"
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        flexShrink: 0,
+                        display: "block",
+                      }}
+                    />
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.08)",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "var(--color-text-muted)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Users size={12} />
+                    </span>
+                  )}
+                  <span style={{ fontSize: "12.5px", fontWeight: 500, whiteSpace: "nowrap" }}>{name}</span>
+                </Link>
+              );
+            })}
           </div>
         )}
 
