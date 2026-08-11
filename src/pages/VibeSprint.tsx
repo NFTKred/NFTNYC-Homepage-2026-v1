@@ -321,7 +321,7 @@ export default function VibeSprint() {
                   The customer flips to agents: they discover, price, register, and enroll their
                   own .Kred agentic identity — AID, ANS, MCP-I, DNSid — end to end.
                 </p>
-                <span className="chip">Brief publishes Fri 14 Aug</span>
+                <span className="chip">Brief arrives Fri 14 Aug</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
@@ -331,7 +331,7 @@ export default function VibeSprint() {
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
                   and score — one week before NFT.NYC.
                 </p>
-                <span className="chip">Brief publishes Fri 21 Aug</span>
+                <span className="chip">Brief arrives Fri 21 Aug</span>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
