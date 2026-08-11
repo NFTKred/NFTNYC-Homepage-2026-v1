@@ -501,7 +501,7 @@ export default function Sprint1() {
             <h2>Read More</h2>
             <div className="links">
               <a className="lk" href="/vibesprint" style={tone("var(--color-primary)")}>
-                <small>The three-sprint series</small>Kred Flash Sprints — the season
+                <small>The three-sprint series</small>Kred Flash Sprints — the series
               </a>
               <a className="lk" href="/blog">
                 <small>About the series</small>The Kred Flash Sprints
