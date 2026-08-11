@@ -1,5 +1,5 @@
 // Auto-generated from the Sessionize Schedule export.
-// Source: nft-nyc-2026 everything - exported 2026-08-03.xlsx (Schedule tab)
+// Source: NFT.NYC 2026 Approved Speakers 11 Aug 2026 - YAMM - Schedule.csv
 
 export interface ScheduleSession {
   day: string;
@@ -240,7 +240,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "day": "Wed",
     "time": "02:30pm - 02:40pm",
     "room": "Main Stage - Main Ballroom",
-    "title": "Meta Guardianz: Token-Gated NFT Comics, Music, and Immersive VR Experiences",
+    "title": "Guardianz Realm: Token-Gated NFT Comics, Music, and Immersive VR Experiences",
     "speakers": [
       "Anthony Torio"
     ]
@@ -275,7 +275,14 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "03:25pm - 03:35pm",
+    "time": "03:25pm - 03:30pm",
+    "room": "Main Stage - Main Ballroom",
+    "title": "ABFinance",
+    "speakers": []
+  },
+  {
+    "day": "Wed",
+    "time": "03:30pm - 03:40pm",
     "room": "Main Stage - Main Ballroom",
     "title": "You Don\u2019t Have to Have a VeeFriends to be a VeeFriend",
     "speakers": [
@@ -284,7 +291,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "03:35pm - 03:45pm",
+    "time": "03:40pm - 03:50pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Reviving Dead Communities With Character-Driven AI: The Warburton Experiment",
     "speakers": [
@@ -293,7 +300,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "03:45pm - 04:10pm",
+    "time": "03:50pm - 04:15pm",
     "room": "Main Stage - Main Ballroom",
     "title": "What Survived the NFT Crash? The Real Value Was Never the Token",
     "speakers": [
@@ -304,7 +311,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "04:10pm - 04:35pm",
+    "time": "04:15pm - 04:40pm",
     "room": "Main Stage - Main Ballroom",
     "title": "The New Creator Economy",
     "speakers": [
@@ -317,7 +324,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "04:35pm - 04:45pm",
+    "time": "04:40pm - 04:50pm",
     "room": "Main Stage - Main Ballroom",
     "title": "AI Artists: Giving Digital Souls a Passport",
     "speakers": [
@@ -326,7 +333,16 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "04:45pm - 04:55pm",
+    "time": "04:50pm - 05:00pm",
+    "room": "Main Stage - Main Ballroom",
+    "title": "The State of Art",
+    "speakers": [
+      "Roger Dickerman"
+    ]
+  },
+  {
+    "day": "Wed",
+    "time": "05:00pm - 05:10pm",
     "room": "Main Stage - Main Ballroom",
     "title": "The Tokenization of the Body in the Age of Platform Censorship",
     "speakers": [
@@ -335,7 +351,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "04:55pm - 05:20pm",
+    "time": "05:10pm - 05:35pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Beyond the Mint",
     "speakers": [
@@ -346,7 +362,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "05:20pm - 05:30pm",
+    "time": "05:35pm - 05:45pm",
     "room": "Main Stage - Main Ballroom",
     "title": "AI Broke Content Economics. The New Value Stack Is Audience-Driven",
     "speakers": [
@@ -355,7 +371,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "05:30pm - 05:40pm",
+    "time": "05:45pm - 05:55pm",
     "room": "Main Stage - Main Ballroom",
     "title": "NFT in Sports",
     "speakers": [
@@ -364,7 +380,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "05:40pm - 05:50pm",
+    "time": "05:55pm - 06:05pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Blockchain Basics",
     "speakers": [
@@ -373,7 +389,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Wed",
-    "time": "05:50pm - 06:00pm",
+    "time": "06:05pm - 06:15pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Beyond the Token: What Does NFT Ownership Really Mean",
     "speakers": [
@@ -498,34 +514,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Thu",
-    "time": "11:40am - 11:50am",
-    "room": "Main Stage - Main Ballroom",
-    "title": "NFTs and Privacy",
-    "speakers": [
-      "John Greene"
-    ]
-  },
-  {
-    "day": "Thu",
-    "time": "11:50am - 12:00pm",
-    "room": "Main Stage - Main Ballroom",
-    "title": "From NFT Holders to Stakeholders",
-    "speakers": [
-      "Brandon Street"
-    ]
-  },
-  {
-    "day": "Thu",
-    "time": "12:00pm - 12:10pm",
-    "room": "Main Stage - Main Ballroom",
-    "title": "When Reality Is Fake: How Deepfakes Are Manipulating Crypto Markets and How to Fix It",
-    "speakers": [
-      "Sandra Cai"
-    ]
-  },
-  {
-    "day": "Thu",
-    "time": "12:10pm - 12:35pm",
+    "time": "11:40am - 12:05pm",
     "room": "Main Stage - Main Ballroom",
     "title": "RWAs and Capital Markets",
     "speakers": [
@@ -537,7 +526,16 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Thu",
-    "time": "12:35pm - 12:45pm",
+    "time": "12:05pm - 12:15pm",
+    "room": "Main Stage - Main Ballroom",
+    "title": "When Reality Is Fake: How Deepfakes Are Manipulating Crypto Markets and How to Fix It",
+    "speakers": [
+      "Sandra Cai"
+    ]
+  },
+  {
+    "day": "Thu",
+    "time": "12:15pm - 12:25pm",
     "room": "Main Stage - Main Ballroom",
     "title": "NFTs in the Age of AI Agents and Autonomous Commerce",
     "speakers": [
@@ -546,7 +544,7 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Thu",
-    "time": "12:45pm - 12:55pm",
+    "time": "12:25pm - 12:35pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Proof of Presence: How 10,000 Bob Ross Variants Become a Living Ledger for Public Media",
     "speakers": [
@@ -555,7 +553,19 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Thu",
-    "time": "12:55pm - 01:05pm",
+    "time": "12:35pm - 01:00pm",
+    "room": "Main Stage - Main Ballroom",
+    "title": "Generational Perspectives",
+    "speakers": [
+      "Bryan Brinkman",
+      "Pindar Van Arman",
+      "Bard Ionson",
+      "Rebecca Rose"
+    ]
+  },
+  {
+    "day": "Thu",
+    "time": "01:00pm - 01:10pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Patenting the Unpatentable: Building IP for AI NFT Startups",
     "speakers": [
@@ -564,12 +574,11 @@ export const SCHEDULE: ScheduleSession[] = [
   },
   {
     "day": "Thu",
-    "time": "01:05pm - 01:20pm",
+    "time": "01:10pm - 01:20pm",
     "room": "Main Stage - Main Ballroom",
-    "title": "Fireside chat with Pindar Van Arman - The Art of Robots",
+    "title": "From NFT Holders to Stakeholders",
     "speakers": [
-      "Pindar Van Arman",
-      "Jodee Rich"
+      "Brandon Street"
     ]
   },
   {
@@ -731,7 +740,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "day": "Thu",
     "time": "05:00pm - 05:10pm",
     "room": "Main Stage - Main Ballroom",
-    "title": "SocialFi done right: tokenizing revenue, not attention",
+    "title": "Satire, Owned by Creators: Turning Political Comedy Into a Creator-Owned Economy",
     "speakers": [
       "Raj Menon"
     ]
