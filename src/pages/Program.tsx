@@ -4,24 +4,17 @@
 // Style: mirrors /speakers — hero → day filter chips + search → session
 // cards grouped by day. Cards show time badge, title, speakers, and room.
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Clock, MapPin, Users } from "lucide-react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
-import { SCHEDULE, ScheduleSession } from "@/data/schedule";
+import { SCHEDULE, ScheduleSession, ScheduleSpeaker } from "@/data/schedule";
 
-// Same endpoint the Speakers page uses. Cache-Control: max-age=117
-// means most page loads share this fetch with /speakers.
-const SESSIONIZE_URL = "https://sessionize.com/api/v2/x65weaqz/view/All";
-
-interface AvatarInfo {
-  url: string;
-  displayName: string; // canonical Sessionize fullName (for the deep-link)
-  bio: string;         // used as a secondary match target: Sessionize speakers who use a
-                       // pseudonym for fullName often mention their real name in the bio.
-}
+// This page makes NO runtime API calls. Avatar URLs are baked into
+// src/data/schedule.ts at CSV-import time (see the Python generator
+// in commit history). To refresh avatars, re-run the generator.
 
 const DAY_LABELS: Record<string, { short: string; full: string; date: string; color: string }> = {
   Tue: { short: "Tue", full: "Tuesday",  date: "Sept 1", color: "#8B5CF6" },
@@ -38,71 +31,6 @@ export default function Program() {
   const stage = useMemo(() => Number(localStorage.getItem("nftnyc-stage") ?? 0), []);
   const [search, setSearch] = useState("");
   const [activeDay, setActiveDay] = useState<string>("all");
-  const [avatarPool, setAvatarPool] = useState<AvatarInfo[]>([]);
-
-  // Fetch Sessionize once. We keep the full pool of accepted speakers
-  // (name + avatar URL) and match schedule names against it fuzzily —
-  // the schedule sometimes has more of the legal name than Sessionize
-  // (e.g. "Jenifer Pepen Aquino" vs "Jenifer Pepen"), so we accept
-  // either side being a substring of the other.
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch(SESSIONIZE_URL);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (cancelled) return;
-        // No acceptance filter here: the schedule itself is our approval
-        // gate — anyone who appears on it is already confirmed. We just
-        // want the avatar/name mapping for everyone Sessionize knows.
-        const pool: AvatarInfo[] = [];
-        (data.speakers ?? []).forEach((s: any) => {
-          const name = String(s.fullName ?? "").trim();
-          const pic = String(s.profilePicture ?? "").trim();
-          const bio = String(s.bio ?? "").trim();
-          if (!name || !pic) return;
-          pool.push({ url: pic, displayName: name, bio });
-        });
-        setAvatarPool(pool);
-      } catch {
-        // silent — no avatars is a fine fallback
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // Precompute exact + substring lookup. Priority:
-  //   1) Exact match on Sessionize fullName
-  //   2) Word-boundary substring — either side contains the other (handles
-  //      "Jenifer Pepen" ↔ "Jenifer Pepen Aquino")
-  //   3) Bio mention — speakers who use a pseudonym for fullName (e.g.
-  //      "Cryptoverlord") often introduce themselves by real name in bio.
-  //      Only match if EXACTLY ONE speaker's bio contains the schedule
-  //      name — ambiguous multi-hit lookups are skipped to avoid false
-  //      positives from third-party mentions.
-  const avatarLookup = useMemo(() => {
-    const exact = new Map<string, AvatarInfo>();
-    for (const a of avatarPool) exact.set(a.displayName.toLowerCase(), a);
-    return (rawName: string): AvatarInfo | undefined => {
-      const q = rawName.trim().toLowerCase();
-      if (!q) return undefined;
-      const hit = exact.get(q);
-      if (hit) return hit;
-      for (const a of avatarPool) {
-        const s = a.displayName.toLowerCase();
-        if (s === q) return a;
-        if (q.startsWith(s + " ") || q.endsWith(" " + s) || q.includes(" " + s + " ")) return a;
-        if (s.startsWith(q + " ") || s.endsWith(" " + q) || s.includes(" " + q + " ")) return a;
-      }
-      // Bio fallback — must be unique to avoid third-party name-drops.
-      const bioMatches = avatarPool.filter((a) => a.bio.toLowerCase().includes(q));
-      if (bioMatches.length === 1) return bioMatches[0];
-      return undefined;
-    };
-  }, [avatarPool]);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
@@ -120,7 +48,7 @@ export default function Program() {
     return SCHEDULE.filter((s) => {
       if (activeDay !== "all" && s.day !== activeDay) return false;
       if (!term) return true;
-      const hay = `${s.title} ${s.speakers.join(" ")} ${s.room}`.toLowerCase();
+      const hay = `${s.title} ${s.speakers.map((sp) => sp.name).join(" ")} ${s.room}`.toLowerCase();
       return hay.includes(term);
     });
   }, [search, activeDay]);
@@ -309,7 +237,7 @@ export default function Program() {
               {/* Session cards */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {sessions.map((s, i) => (
-                  <SessionCard key={`${day}-${i}`} session={s} accent={color} lookupAvatar={avatarLookup} />
+                  <SessionCard key={`${day}-${i}`} session={s} accent={color} />
                 ))}
               </div>
             </div>
@@ -326,11 +254,9 @@ export default function Program() {
 function SessionCard({
   session,
   accent,
-  lookupAvatar,
 }: {
   session: ScheduleSession;
   accent: string;
-  lookupAvatar: (name: string) => AvatarInfo | undefined;
 }) {
   return (
     <article
@@ -404,12 +330,11 @@ function SessionCard({
               lineHeight: 1.5,
             }}
           >
-            {session.speakers.map((name) => {
-              const info = lookupAvatar(name);
-              const linkTarget = info?.displayName ?? name;
+            {session.speakers.map((sp: ScheduleSpeaker) => {
+              const linkTarget = sp.sessionizeName ?? sp.name;
               return (
                 <Link
-                  key={name}
+                  key={sp.name}
                   to={`/speakers?speaker=${encodeURIComponent(linkTarget)}`}
                   style={{
                     display: "inline-flex",
@@ -434,9 +359,9 @@ function SessionCard({
                     (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
                   }}
                 >
-                  {info?.url ? (
+                  {sp.avatarUrl ? (
                     <img
-                      src={info.url}
+                      src={sp.avatarUrl}
                       alt=""
                       loading="lazy"
                       style={{
@@ -466,7 +391,7 @@ function SessionCard({
                       <Users size={12} />
                     </span>
                   )}
-                  <span style={{ fontSize: "12.5px", fontWeight: 500, whiteSpace: "nowrap" }}>{name}</span>
+                  <span style={{ fontSize: "12.5px", fontWeight: 500, whiteSpace: "nowrap" }}>{sp.name}</span>
                 </Link>
               );
             })}
