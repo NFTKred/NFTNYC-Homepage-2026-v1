@@ -343,7 +343,6 @@ export default function Sprint1() {
                 Names recently added to .Kred — creators, designers, and speakers.{" "}
                 <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-green)" }}>Visit the Gallery</a>
               </div>
-              <div className="ecard"><b>Your reach</b><span className="amt">180,000+</span>NFT.NYC alumni community members — where submissions are promoted.</div>
               <div className="ecard"><b>The standard</b><span className="amt">Golden Renders</span>What a Kred identity page looks like — the design reference in your kit.</div>
             </div>
           </section>
