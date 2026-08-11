@@ -337,17 +337,16 @@ export default function VibeSprint() {
             <p className="form-note" style={{ marginTop: 10 }}>
               One builder — selected by the review panel from the sprints' Spotlight and Featured
               submissions — presents the marquee demo at Demo Day, NFT.NYC 2026, 1 September.
-              Every submission appears in the Demo Day reel; up to 20 selected submissions per
-              sprint join the Times Square Showcase.
+              Up to 20 selected submissions per sprint join the Times Square Showcase.
             </p>
           </section>
 
           <section>
-            <h2>The Six Features of a Next Gen Domain Search App</h2>
+            <h2>The Five Features of a Next Gen Domain Search App</h2>
             <p className="lead">
               Domain search should be a <b>very visual experience</b>: every result arrives
               dressed — cover art, story, both prices, and proof — with 100% Clear data
-              underneath. These six features define "next generation", and the review rewards them.
+              underneath. These five features define "next generation", and the review rewards them.
             </p>
             <div className="kit">
               <div className="tile star">
@@ -356,12 +355,7 @@ export default function VibeSprint() {
                 the category claim every submission makes.
               </div>
               <div className="tile">
-                <b>2 · DNS ENS Tokenization</b>
-                Mint a domain as a token through the API, with an ENS bridge — ownership readable
-                the way this community expects. <code>POST /domains/{"{d}"}/token</code>
-              </div>
-              <div className="tile">
-                <b>3 · 100% Clear results</b>
+                <b>2 · 100% Clear results</b>
                 String results sorted by the best string results for the user — never a
                 TLD-sponsored search ladder — with the renewal price beside every first-year price
                 and a visible "why this result?" line on every card.{" "}
@@ -370,17 +364,17 @@ export default function VibeSprint() {
                 </a>
               </div>
               <div className="tile">
-                <b>4 · Visual AI results</b>
+                <b>3 · Visual AI results</b>
                 Produced with an AI assistant — <b>Wingman</b> — and associated with the domain
                 string. Results wear imagery, identity, and motion.
               </div>
               <div className="tile">
-                <b>5 · The Kredentials Lander on every name</b>
-                Every .Kred name your app sells ships with a page from the first minute — and it
-                grows into a full identity record. The section below has the whole story.
+                <b>4 · A companion Kredentials page</b>
+                Offer every domain buyer the optional Kredentials add-on: a page generated from
+                their links. The section below has the whole story.
               </div>
               <div className="tile">
-                <b>6 · Embedded in frontier models</b>
+                <b>5 · Embedded in frontier models</b>
                 Build on Lovable, publish publicly, enable Agent Integrations — your app works
                 inside ChatGPT and Claude. Other platforms offer comparable routes.
               </div>
@@ -597,7 +591,7 @@ export default function VibeSprint() {
               <div className="trow"><b>Tue 11 – Wed 12 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
               <div className="trow hot"><b>Wed 12 Aug · 4:00pm ET</b>Sprint 1 opens: dev kit published, 48-hour build window begins.</div>
               <div className="trow"><b>Wed 12 + Thu 13 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
-              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link, MCP link, API evidence.</div>
+              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
             </div>
           </section>
