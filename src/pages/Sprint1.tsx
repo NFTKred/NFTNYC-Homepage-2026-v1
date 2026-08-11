@@ -185,7 +185,8 @@ export default function Sprint1() {
               </div>
             </div>
             <div className="cta-row">
-              <a className="btn" href="#register">Register free</a>
+              <a className="btn" href="#submit">Submit your build</a>
+              <a className="btn ghost" href="/vibesprint#register">Register free</a>
               <span className="cta-note">
                 Registration covers all three sprints. Your kit — API credits, free .Kred domain
                 claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
