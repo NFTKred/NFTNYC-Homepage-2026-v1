@@ -4,17 +4,13 @@ import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/lib/supabase";
-import {
-  RegistrantContactFields,
-  EMPTY_CONTACT,
-  type RegistrantContact,
-} from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
 
 /**
  * Sprint 1 landing page (content v2) — "The Next Gen Domain Reseller".
- * Shares the .vibesprint stylesheet and the same registration flow as
- * /vibesprint (submit-vibesprint-registration edge function).
+ * Shares the .vibesprint stylesheet. The form on this page collects the
+ * close-out *submission* (submit-sprint-submission edge function) — season
+ * registration lives on /vibesprint.
  */
 
 /** Sprint 1 opens Wed 12 Aug 2026, 4:00pm ET (20:00 UTC). */
@@ -84,18 +80,26 @@ export default function Sprint1() {
     return () => window.clearInterval(id);
   }, []);
 
-  // Registration form state — same payload as /vibesprint.
-  const [name, setName] = useState("");
+  // Sprint 1 close-out submission form.
   const [email, setEmail] = useState("");
-  const [segment, setSegment] = useState("Designer or digital artist");
-  const [buildTool, setBuildTool] = useState("Lovable (primary — Agent Integrations)");
-  const [domain, setDomain] = useState("");
-  const [agree, setAgree] = useState(false);
-  const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
+  const [appUrl, setAppUrl] = useState("");
+  const [projectUrl, setProjectUrl] = useState("");
+  const [teamMembers, setTeamMembers] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
+  const [wasUpdate, setWasUpdate] = useState(false);
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  const isKredUrl = (raw: string) => {
+    const s = raw.trim();
+    if (!s) return false;
+    try {
+      const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
+      return /\.kred$/i.test(u.hostname);
+    } catch {
+      return false;
+    }
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -104,34 +108,36 @@ export default function Sprint1() {
       form.reportValidity();
       return;
     }
-    const d = domain.trim() || "yourname";
+    if (!isKredUrl(appUrl)) {
+      setFormError("Your app URL needs to be live on your .kred domain.");
+      return;
+    }
     setSending(true);
     setFormError(null);
     try {
-      const { data, error } = await supabase.functions.invoke(
-        "submit-vibesprint-registration",
-        {
-          body: {
-            name: name.trim(),
-            email: email.trim(),
-            segment,
-            domain: d,
-            build_tool: buildTool,
-            agreed_tos: agree,
-            ...contact,
-          },
-        }
-      );
+      const { data, error } = await supabase.functions.invoke("submit-sprint-submission", {
+        body: {
+          sprint: "sprint1",
+          email: email.trim(),
+          app_url: appUrl.trim(),
+          project_url: projectUrl.trim(),
+          team_members: teamMembers.trim(),
+        },
+      });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
+      setWasUpdate(Boolean(data?.updated));
     } catch (err) {
-      console.error("Sprint 1 registration failed:", err);
-      setFormError("We couldn't save your registration. Please try again, or email team@nft.nyc.");
+      console.error("Sprint 1 submission failed:", err);
+      setFormError(
+        err instanceof Error && err.message
+          ? err.message
+          : "We couldn't save your submission. Please try again, or email team@nft.nyc."
+      );
       setSending(false);
       return;
     }
     setSending(false);
-    setClaimedDomain(`${d}.Kred`);
     setSubmitted(true);
     window.setTimeout(() => {
       document.getElementById("successCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
