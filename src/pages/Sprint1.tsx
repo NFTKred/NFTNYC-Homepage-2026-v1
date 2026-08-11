@@ -291,7 +291,7 @@ export default function Sprint1() {
                 <div className="excap">
                   <b>The Domain Search App</b>
                   A clean, working domain search on the Domains.Kred Registrar API: availability,
-                  true first-year price, and renewal price on every card. The straightforward
+                  first-year price, and renewal price on every card. The straightforward
                   starting point — remix it and make it yours.
                   <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
