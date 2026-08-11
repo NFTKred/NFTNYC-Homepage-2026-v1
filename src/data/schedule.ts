@@ -1,6 +1,8 @@
-// Auto-generated from the Sessionize Schedule export.
-// Source: NFT.NYC 2026 Approved Speakers 11 Aug 2026 - YAMM - Schedule.csv
-// Avatar URLs resolved at generation time from the Sessionize public API.
+// Auto-generated from the Sessionize Schedule + Speaker exports.
+// Source: "NFT.NYC 2026 Approved Speakers 11 Aug 2026 - YAMM - Schedule.csv"
+//         "NFT.NYC 2026 Speaker Export 20 July 2026 - Accepted sessions and speakers.csv" (real name + pic)
+//         "NFT.NYC 2026 Rd3 Approved speakers - Rd3 Speakers.csv" (post-July-20 additions)
+// Avatar URLs come directly from the Profile Picture column of the speaker CSVs.
 // The page itself makes no API calls.
 
 export interface ScheduleSpeaker {
@@ -69,8 +71,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Vladi Lepi",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/4c93-400o400o1-DrAMXgEYQWp88yS2Mh3m7A.jpg",
+        "sessionizeName": "SurR.Ai"
       },
       {
         "name": "Kelvin Miles",
@@ -110,8 +112,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Chris Milliken",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/dfca-400o400o1-pGmKKZZrMCQKc9GEiu4HPc.jpg",
+        "sessionizeName": "PengWine"
       },
       {
         "name": "Komal Hussain",
@@ -161,8 +163,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Alexandru Saulean",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/c756-400o400o1-Jezeqac6bqTvBzZbkAEY4J.jpg",
+        "sessionizeName": "Alexandru Saulean"
       }
     ]
   },
@@ -197,13 +199,13 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Mason Taylor",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/cbf2-400o400o1-MCEntvZGgR53XT3nYWJGvZ.png",
+        "sessionizeName": "Maaaaahhhaaaaa"
       },
       {
         "name": "Bilal Imran",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/ffee-400o400o1-Hs7CgpHoQhjRaHDNMXfEEh.jpg",
+        "sessionizeName": "BMs"
       }
     ]
   },
@@ -233,8 +235,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Sierra Renee",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/e69e-400o400o1-fvvmYJ9ucR86zw76543BeW.png",
+        "sessionizeName": "JuuJuuMama"
       }
     ]
   },
@@ -274,8 +276,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Sean Duke",
-        "avatarUrl": "https://cdn.sessionize.com/image/ccd9-400o400o1-nECq9oyJC8gbPVNcDpnJsT.jpg",
-        "sessionizeName": "Cryptoverlord"
+        "avatarUrl": null,
+        "sessionizeName": null
       }
     ]
   },
@@ -318,7 +320,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Yat Siu",
-        "avatarUrl": "https://cdn.sessionize.com/image/d6a2-400o400o1-Gsa1myMC9xa4fY2DPG7Dwu.jpg",
+        "avatarUrl": "https://cdn.sessionize.com/image/3c39-400o400o1-MaGWEfynyiuXyzuCmhnCRP.jpg",
         "sessionizeName": "Yat Siu"
       }
     ]
@@ -331,8 +333,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Nick DePalma",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/9f78-400o400o1-QfBkFhxbpqyjECJJYXD5Fp.png",
+        "sessionizeName": "MetaDJ"
       }
     ]
   },
@@ -380,8 +382,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Ryan Garcia",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/7ead-400o400o1-fjEYsfYPK5vhabn3tcKx8h.jpg",
+        "sessionizeName": "derelict.eth"
       }
     ]
   },
@@ -393,8 +395,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Mary Josephine Generoso",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/ce0b-400o400o1-ER7hZEBnAroNdzqmrfjPbH.jpg",
+        "sessionizeName": "Realmj"
       }
     ]
   },
@@ -424,8 +426,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Anthony Torio",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/a13b-400o400o1-pFS7xBEhApYgh3nrtuPymF.jpg",
+        "sessionizeName": "GUARDIANZ REALM"
       }
     ]
   },
@@ -442,8 +444,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Yuseph Zapata",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/2e57-400o400o1-MPsJ8M6CUo7eCEUu261eyh.jpg",
+        "sessionizeName": "YuZapata"
       }
     ]
   },
@@ -455,8 +457,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "David Allan",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/03be-400o400o1-WVeodVbFaFEPabzjpVaKE.jpg",
+        "sessionizeName": "THENFTPHD"
       }
     ]
   },
@@ -514,18 +516,18 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Dylan Pedro",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/42e4-400o400o1-JdBr83josYpReZDqK3xTRR.png",
+        "sessionizeName": "ARoastedReptar"
       },
       {
         "name": "Kyle Stein",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/4e4f-400o400o1-RRvEwjfXjf5MWEx3e8iWWC.png",
+        "sessionizeName": "Kv"
       },
       {
         "name": "James Oakley",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/dc35-400o400o1-7kYJFxic998KosHooAGLrx.jpg",
+        "sessionizeName": "JC3"
       }
     ]
   },
@@ -537,8 +539,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Luis Huarcaya (LUI)",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/657c-400o400o1-XbLUj6wat9Qm99sR5X3gnn.jpg",
+        "sessionizeName": "LUI"
       },
       {
         "name": "Shah $",
@@ -552,13 +554,13 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Thao Dang",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/06c7-400o400o1-SM8NcegG6EExRhSCfByv5Q.png",
+        "sessionizeName": "Astrid Dang"
       },
       {
         "name": "Sydney Csuk The Bitcoin Barbie",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/cb73-400o400o1-wNF4oTaxQmk9iXWihrMqCu.jpg",
+        "sessionizeName": "Thebitcoinbarb1"
       }
     ]
   },
@@ -583,7 +585,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Roger Dickerman",
-        "avatarUrl": "https://cdn.sessionize.com/image/372b-400o400o1-EcV9JP2Q2LzHPShcj1ZykF.jpg",
+        "avatarUrl": "",
         "sessionizeName": "Roger Dickerman"
       }
     ]
@@ -632,8 +634,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Aris Creates",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/be3a-400o400o1-S523wAGWa7rnmkcJkAgzro.png",
+        "sessionizeName": "Aristeia"
       }
     ]
   },
@@ -728,8 +730,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Osher Frank",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/a671-400o400o1-VY6Zjg2SpN1pbYs6vJqrYX.jpg",
+        "sessionizeName": "Meta__Architect"
       }
     ]
   },
@@ -741,8 +743,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Andres Velasquez",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/7979-400o400o1-NV95gorbUHNJn95qmLruM6.png",
+        "sessionizeName": "SinfulMeatStick.eth"
       },
       {
         "name": "Henry Boyd",
@@ -795,8 +797,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "German Abal",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/67c5-400o400o1-hFvcE32GY2GfLoA3bfhX8n.jpg",
+        "sessionizeName": "ariutokintumi"
       }
     ]
   },
@@ -867,8 +869,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Michael Giatrakos",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/e1ee-400o400o1-N8UDD7C8B6K6iQaL8W6B8v.jpg",
+        "sessionizeName": "cainENABLE"
       }
     ]
   },
@@ -957,13 +959,13 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Bard Ionson",
-        "avatarUrl": "https://cdn.sessionize.com/image/2b9c-400o400o1-LeHz6M6c319hDftZZnYQhD.jpg",
-        "sessionizeName": "Bard Ionson"
+        "avatarUrl": null,
+        "sessionizeName": null
       },
       {
         "name": "Rebecca Rose",
-        "avatarUrl": "",
-        "sessionizeName": "Rebecca Rose"
+        "avatarUrl": null,
+        "sessionizeName": null
       }
     ]
   },
@@ -1001,8 +1003,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Thomas Friend",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/2de5-400o400o1-VGjQXLFUdb2rREmE5uCfnK.jpg",
+        "sessionizeName": "Tom Friend"
       }
     ]
   },
@@ -1014,8 +1016,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Ivan Mazi Markov",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/e5b8-400o400o1-hjrAfXuV9YBryUXNWeDNuC.jpg",
+        "sessionizeName": "Mazi"
       }
     ]
   },
@@ -1143,8 +1145,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Louise Jen Manalo",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/d9c2-400o400o1-sNnhG9V8rEaaPt1NcGVU9L.jpg",
+        "sessionizeName": "Khalewsi"
       }
     ]
   },
@@ -1197,8 +1199,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Destiny Kirby",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/39b5-400o400o1-pBaf2yhbx48yo8bQUSZ9Ko.png",
+        "sessionizeName": "Dee Dynasty"
       }
     ]
   },
@@ -1223,13 +1225,13 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Phillip Coleman",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/7b97-400o400o1-fub9bPFq8wpLCf3Bf8Z7cm.jpg",
+        "sessionizeName": "GodclouD"
       },
       {
         "name": "Darius Johnson",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/7981-400o400o1-D8nsd6p1ZvZEtDD8AYxt1p.jpg",
+        "sessionizeName": "MR. DARIUS"
       },
       {
         "name": "Adrian Swish",
@@ -1238,8 +1240,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Stephen DeGrazia",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/e7d1-400o400o1-UqxAo2kpYXztWSFYoghwu.jpg",
+        "sessionizeName": "Steviedefimusic"
       }
     ]
   },
@@ -1251,8 +1253,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Tristun Fife",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/0f20-400o400o1-nz4krXJd5Wbw1SKPaCMJoN.jpg",
+        "sessionizeName": "Fifi"
       }
     ]
   },
@@ -1264,7 +1266,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Raj Menon",
-        "avatarUrl": "https://cdn.sessionize.com/image/6ecc-400o400o1-n5MCvsBDWHBhJgVopnwHQN.png",
+        "avatarUrl": "https://cdn.sessionize.com/image/13fe-400o400o1-TmUvE8o8cGk3pifTLNmDvt.jpg",
         "sessionizeName": "Raj Menon"
       }
     ]
@@ -1290,8 +1292,8 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Josiah Brummett",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/3701-400o400o1-TQ2iDm4Yqhuo6cLSde45p7.png",
+        "sessionizeName": "MaRbLeMoNuMeNtDeSiGn"
       }
     ]
   },
