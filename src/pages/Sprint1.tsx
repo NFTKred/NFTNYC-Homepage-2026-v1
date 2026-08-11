@@ -202,7 +202,7 @@ export default function Sprint1() {
               <div className="tile">
                 <b>2 · 100% Clear results</b>
                 String results sorted by the best string results for the user — never a
-                TLD-sponsored search ladder. True first-year price, renewal price, and a visible
+                TLD-sponsored search ladder. First-year price, renewal price, and a visible
                 "why this result?" line on every card.{" "}
                 <a href="/blog" style={{ color: "var(--vs-cyan)" }}>The evidence: our registrar search exposé</a>
               </div>
@@ -261,7 +261,7 @@ export default function Sprint1() {
             <p className="form-note" style={{ marginTop: 12 }}>
               Achievements are objective bars, published before the sprint opens: Agent-Ready · Full
               Loop · Theatre · 100% Clear Card — 1,000 XP each. The Season Headliner, selected by the
-              review panel from the season's Spotlight and Featured submissions, presents at Demo
+              review panel from the sprints' Spotlight and Featured submissions, presents at Demo
               Day, NFT.NYC 2026, 1 September.
             </p>
           </section>
@@ -291,7 +291,7 @@ export default function Sprint1() {
                 <div className="excap">
                   <b>The Domain Search App</b>
                   A clean, working domain search on the Domains.Kred Registrar API: availability,
-                  true first-year price, and renewal price on every card. The straightforward
+                  first-year price, and renewal price on every card. The straightforward
                   starting point — remix it and make it yours.
                   <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
@@ -311,7 +311,7 @@ export default function Sprint1() {
                 <b>Built from their links</b>
                 A pasted Linktree (which stays live and untouched), a .com website, social profiles,
                 press links. Wingman, the agent behind every page, gathers the sources, writes the
-                page, verifies every fact, and watches for changes.
+                page, and verifies every fact.
               </div>
               <div className="tile">
                 <b>Made for answer engines</b>
@@ -343,7 +343,6 @@ export default function Sprint1() {
                 Names recently added to .Kred — creators, designers, and speakers.{" "}
                 <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-green)" }}>Visit the Gallery</a>
               </div>
-              <div className="ecard"><b>Your reach</b><span className="amt">180,000+</span>NFT.NYC alumni community members — where submissions are promoted.</div>
               <div className="ecard"><b>The standard</b><span className="amt">Golden Renders</span>What a Kred identity page looks like — the design reference in your kit.</div>
             </div>
           </section>
@@ -351,10 +350,10 @@ export default function Sprint1() {
           <section>
             <h2>Live Support, Both Evenings</h2>
             <div className="agent">
-              <h3>Our lead engineer is on the call</h3>
+              <h3>Andrew Horn is on the call</h3>
               <p>
-                Sprint 1 carries <b>two live Google Meet support sessions</b>, hosted by our lead
-                engineer: from <b>4:00pm ET on Wednesday 12 and Thursday 13 August</b>, each running{" "}
+                Sprint 1 carries <b>two live Google Meet support sessions</b>, hosted by Andrew Horn,
+                our lead engineer: from <b>4:00pm ET on Wednesday 12 and Thursday 13 August</b>, each running{" "}
                 <b>five to eight hours</b> into the evening.
               </p>
               <p>
@@ -406,8 +405,8 @@ export default function Sprint1() {
               <div className="trow"><b>Tue 11 Aug</b>Registration opens; the story publishes on the NFT.NYC blog.</div>
               <div className="trow"><b>Tue 11 – Wed 12 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
               <div className="trow hot"><b>Wed 12 Aug · 4:00pm ET</b>Sprint 1 opens: kit delivered, 48-hour build window begins.</div>
-              <div className="trow"><b>Wed 12 + Thu 13 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
-              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link, MCP link, API evidence.</div>
+              <div className="trow"><b>Wed 12 + Thu 13 Aug · From 4:00pm ET</b>Live Google Meet support: Andrew Horn, our lead engineer, on an open call, five to eight hours each evening.</div>
+              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
             </div>
           </section>
@@ -502,7 +501,7 @@ export default function Sprint1() {
             <h2>Read More</h2>
             <div className="links">
               <a className="lk" href="/vibesprint" style={tone("var(--color-primary)")}>
-                <small>The three-sprint series</small>Kred Flash Sprints — the season
+                <small>The three-sprint series</small>Kred Flash Sprints — the series
               </a>
               <a className="lk" href="/blog">
                 <small>About the series</small>The Kred Flash Sprints
