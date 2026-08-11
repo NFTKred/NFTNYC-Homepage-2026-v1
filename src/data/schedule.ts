@@ -1,8 +1,6 @@
-// Auto-generated from the Sessionize Schedule + Speaker exports.
-// Source: "NFT.NYC 2026 Approved Speakers 11 Aug 2026 - YAMM - Schedule.csv"
-//         "NFT.NYC 2026 Speaker Export 20 July 2026 - Accepted sessions and speakers.csv" (real name + pic)
-//         "NFT.NYC 2026 Rd3 Approved speakers - Rd3 Speakers.csv" (post-July-20 additions)
-// Avatar URLs come directly from the Profile Picture column of the speaker CSVs.
+// Auto-generated from the Sessionize xlsx export.
+// Source: nft-nyc-2026 everything - exported 2026-08-11.xlsx
+//         (Schedule tab for sessions, Speakers tab for FirstName/LastName + Profile Picture)
 // The page itself makes no API calls.
 
 export interface ScheduleSpeaker {
@@ -276,8 +274,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Sean Duke",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/ccd9-400o400o1-nECq9oyJC8gbPVNcDpnJsT.jpg",
+        "sessionizeName": "Cryptoverlord"
       }
     ]
   },
@@ -320,7 +318,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Yat Siu",
-        "avatarUrl": "https://cdn.sessionize.com/image/3c39-400o400o1-MaGWEfynyiuXyzuCmhnCRP.jpg",
+        "avatarUrl": "https://cdn.sessionize.com/image/d6a2-400o400o1-Gsa1myMC9xa4fY2DPG7Dwu.jpg",
         "sessionizeName": "Yat Siu"
       }
     ]
@@ -585,7 +583,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Roger Dickerman",
-        "avatarUrl": "",
+        "avatarUrl": "https://cdn.sessionize.com/image/372b-400o400o1-EcV9JP2Q2LzHPShcj1ZykF.jpg",
         "sessionizeName": "Roger Dickerman"
       }
     ]
@@ -945,7 +943,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "day": "Thu",
     "time": "12:35pm - 01:00pm",
     "room": "Main Stage - Main Ballroom",
-    "title": "Generational Perspectives",
+    "title": "Live with Bryan Brinkman",
     "speakers": [
       {
         "name": "Bryan Brinkman",
@@ -960,12 +958,12 @@ export const SCHEDULE: ScheduleSession[] = [
       {
         "name": "Bard Ionson",
         "avatarUrl": null,
-        "sessionizeName": null
+        "sessionizeName": "Bard Ionson"
       },
       {
         "name": "Rebecca Rose",
         "avatarUrl": null,
-        "sessionizeName": null
+        "sessionizeName": "Rebecca Rose"
       }
     ]
   },
@@ -1266,7 +1264,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Raj Menon",
-        "avatarUrl": "https://cdn.sessionize.com/image/13fe-400o400o1-TmUvE8o8cGk3pifTLNmDvt.jpg",
+        "avatarUrl": "https://cdn.sessionize.com/image/6ecc-400o400o1-n5MCvsBDWHBhJgVopnwHQN.png",
         "sessionizeName": "Raj Menon"
       }
     ]
