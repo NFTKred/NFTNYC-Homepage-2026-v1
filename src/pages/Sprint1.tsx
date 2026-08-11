@@ -202,7 +202,7 @@ export default function Sprint1() {
               <div className="tile">
                 <b>2 · 100% Clear results</b>
                 String results sorted by the best string results for the user — never a
-                TLD-sponsored search ladder. True first-year price, renewal price, and a visible
+                TLD-sponsored search ladder. First-year price, renewal price, and a visible
                 "why this result?" line on every card.{" "}
                 <a href="/blog" style={{ color: "var(--vs-cyan)" }}>The evidence: our registrar search exposé</a>
               </div>
