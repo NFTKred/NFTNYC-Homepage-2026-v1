@@ -10,6 +10,7 @@ import {
   type RegistrantContact,
 } from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
+import sketchlightAsset from "@/assets/sketchlight-dossier.jpg.asset.json";
 
 /**
  * Kred Flash Sprints landing page (content v14 — merged P30 + P31 consolidated 8 Aug).
@@ -22,8 +23,8 @@ import "@/styles/vibesprint.css";
 
 /** Registration opens Tue 11 Aug 2026, 9:00am ET (13:00 UTC). */
 const REG_OPEN_UTC = Date.UTC(2026, 7, 11, 13, 0, 0);
-/** Sprint 1 opens Wed 12 Aug 2026, 4:00pm ET (20:00 UTC). */
-const SPRINT1_UTC = Date.UTC(2026, 7, 12, 20, 0, 0);
+/** Sprint 1 Round 1 opens Mon 17 Aug 2026, 4:00pm ET (20:00 UTC). */
+const SPRINT1_UTC = Date.UTC(2026, 7, 17, 20, 0, 0);
 
 const EVENT_JSON_LD = {
   "@context": "https://schema.org",
@@ -31,8 +32,8 @@ const EVENT_JSON_LD = {
   name: "Kred Flash Sprint 1 — The Next Gen Domain Reseller",
   description:
     "Build a next generation Domain Reseller on the Domains.Kred Registrar API. A 48-hour vibe coding sprint — build in Lovable or the platform of your choice, publish an agent-ready app that ChatGPT and Claude can call. Sprint 1 of three, leading to Demo Day at NFT.NYC 2026.",
-  startDate: "2026-08-12T16:00:00-04:00",
-  endDate: "2026-08-14T16:00:00-04:00",
+  startDate: "2026-08-17T16:00:00-04:00",
+  endDate: "2026-08-19T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   location: {
