@@ -10,8 +10,7 @@ import {
   type RegistrantContact,
 } from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
-const SKETCHLIGHT_IMAGE_URL =
-  "https://api.grab.live/web/files/5c37fdb82f586d11f45a84b8/1786509005318_artist_submission_1786509005317_2v5rfyn82cx.jpeg";
+const SKETCHLIGHT_IMAGE_URL = "/vibesprint/sketchlight-example.jpg";
 
 /**
  * Kred Flash Sprints landing page (content v14 — merged P30 + P31 consolidated 8 Aug).
@@ -218,7 +217,7 @@ export default function VibeSprint() {
         <div className="wrap" style={{ paddingTop: 96 }}>
 
           <header className="hero">
-            <div className="eyebrow">PeopleBrowsr × NFT.NYC 2026 · https://NFT.NYC/vibesprint</div>
+            <div className="eyebrow">PeopleBrowsr × NFT.NYC 2026</div>
             <h1>
               Kred Flash Sprints<br />
               <span className="glow">Three Sprints to NFT.NYC</span>
@@ -371,11 +370,6 @@ export default function VibeSprint() {
 
           <section className="dividersec">
             <h2 className="divider">Inside Sprint 1</h2>
-            <p className="lead">
-              The three sections below are Sprint 1's brief: the features the review rewards, the
-              two example apps you can remix, and the Kredentials page your app can offer with
-              every name it sells.
-            </p>
           </section>
 
           <section>
@@ -439,17 +433,7 @@ export default function VibeSprint() {
             </p>
             <p className="lead" style={{ marginTop: 10 }}>
               <b>The whole remix is five steps and needs zero code.</b> Copy the project, paste in
-              two keys, and you are taking payments from day one on the shared Stripe account. The
-              step-by-step guide:{" "}
-              <a
-                href="https://kred-digitalcreator-demo.lovable.app/how-to-remix"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--vs-cyan)" }}
-              >
-                How to make this site your own
-              </a>
-              .
+              two keys, and you are taking payments from day one on the shared Stripe account.
             </p>
             <div className="examples">
               <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
@@ -555,20 +539,6 @@ export default function VibeSprint() {
                 from the moment of purchase.
               </div>
             </div>
-            <p className="form-note" style={{ marginTop: 12 }}>
-              Live pages:{" "}
-              <a href="https://Kredentials.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
-                Kredentials.Kred
-              </a>{" "}
-              · 1,100+ names recently added — see{" "}
-              <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
-                the Gallery
-              </a>{" "}
-              · the full story of the parking page's four eras, ending at the Lander:{" "}
-              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
-                Anatomy of a Parking Page
-              </a>
-            </p>
           </section>
 
           <section>
@@ -584,15 +554,6 @@ export default function VibeSprint() {
               <div className="ecard"><b>Times Square Showcase</b><span className="amt">Up to 20 per sprint</span>Up to 20 selected submissions per sprint are featured on the rotating Times Square billboard.</div>
               <div className="ecard"><b>Spotlight</b><span className="amt">$1,000 grant</span>One Spotlight submission per sprint earns a build grant and a deep-dive on the NFT.NYC blog; two Featured submissions earn recap coverage.</div>
             </div>
-            <p className="form-note" style={{ marginTop: 12 }}>
-              Achievements are objective bars, published before each sprint opens: Agent-Ready ·
-              Full Loop · Theatre · 100% Clear Card — 1,000 XP each. The full reward detail lives
-              in the About Pillar:{" "}
-              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
-                The Kred Flash Sprints (P14)
-              </a>
-              .
-            </p>
             <h3 style={{ marginTop: 30 }}>The top three designs</h3>
             <p className="lead">
               Above every submission's reward set sits one more:{" "}
@@ -623,7 +584,7 @@ export default function VibeSprint() {
             <p className="form-note" style={{ marginTop: 8 }}>
               Every submission publishes under an open license (CC BY 4.0): anyone may use it,
               always with credit to the designer — full detail in the{" "}
-              <a href="https://NFT.NYC/vibesprint/terms" style={{ color: "var(--vs-cyan)" }}>
+              <a href="https://f005.backblazeb2.com/file/PB-HubSpot/Kred_Flash_Sprints_Participation_Terms_v1.pdf" style={{ color: "var(--vs-cyan)" }}>
                 Participation Terms
               </a>
               .
@@ -692,7 +653,7 @@ export default function VibeSprint() {
               · Keys from{" "}
               <a href="https://console.Domains.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>console.Domains.Kred</a>{" "}
               · For registrars:{" "}
-              <a href="https://Nic.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>Nic.Kred</a>
+              <a href="https://www.nic.kred/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>Nic.Kred</a>
             </p>
           </section>
 
@@ -711,20 +672,12 @@ export default function VibeSprint() {
               the panel a full evidence pack. Every builder receives a Build Report after each
               close.
             </p>
-            <p className="form-note" style={{ marginTop: 12 }}>
-              The full review detail — the harness, the achievement bars, and agent entry rules —
-              lives in the About Pillar:{" "}
-              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
-                The Kred Flash Sprints (P14)
-              </a>
-              .
-            </p>
           </section>
 
           <section>
             <h2>Sprint 1 Week</h2>
             <div className="tl">
-              <div className="trow"><b>Tue 11 Aug</b>Sprint 1 announced; the story publishes on the NFT.NYC blog; registration opens. Sprint 1 brief publishes Thursday 13 August.</div>
+              <div className="trow"><b>Tue 11 Aug</b>Sprint 1 announced; the story publishes on the NFT.NYC blog; registration opens.</div>
               <div className="trow"><b>Tue 11 – Mon 17 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
               <div className="trow hot"><b>Mon 17 Aug · 4:00pm ET</b>Sprint 1 opens: Sprint 1 kit published, 48-hour build window begins.</div>
               <div className="trow"><b>Mon 17 + Tue 18 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
@@ -890,10 +843,6 @@ export default function VibeSprint() {
               </div>
             )}
             <p className="form-note" style={{ marginTop: 10 }}>
-              <a href="https://NFT.NYC/vibesprint/terms" style={{ color: "var(--color-text-muted)" }}>
-                Participation Terms
-              </a>{" "}
-              ·{" "}
               <a
                 href="https://www.peoplebrowsr.com/tos"
                 target="_blank"
@@ -935,7 +884,7 @@ export default function VibeSprint() {
               <a className="lk ext" href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer">
                 <small>1,100+ names recently added</small>The Gallery
               </a>
-              <a className="lk ext" href="https://Nic.Kred" target="_blank" rel="noopener noreferrer">
+              <a className="lk ext" href="https://www.nic.kred/" target="_blank" rel="noopener noreferrer">
                 <small>For registrars</small>Nic.Kred
               </a>
             </div>
