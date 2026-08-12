@@ -298,12 +298,17 @@ export default function SeeWhatsOnTheMap() {
         )}
 
         <div className="swotm-cta-row">
-          <a className="swotm-cta swotm-cta-secondary" href="/ts-challenge">
+          <a
+            className="swotm-cta swotm-cta-secondary"
+            href="https://collect.nft.nyc/TS"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Learn More
           </a>
           <a
             className="swotm-cta"
-            href="https://onehub.nft.nyc/activity"
+            href="https://collect.nft.nyc/activity"
             target="_blank"
             rel="noopener noreferrer"
           >
