@@ -843,6 +843,14 @@ export default function VibeSprint() {
                       rel="noopener noreferrer"
                     >
                       PeopleBrowsr Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="https://f005.backblazeb2.com/file/PB-HubSpot/Kred_Flash_Sprints_Participation_Terms_v1.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Kred Flash Sprint ToS
                     </a>
                     , and I understand XP carries a 60-day expiry with zero monetary value.
                   </label>
@@ -851,7 +859,7 @@ export default function VibeSprint() {
                   <button
                     className="btn"
                     type="submit"
-                    disabled={sending || domainCheck.state === "taken" || domainCheck.state === "checking"}
+                    disabled={sending || !agree || domainCheck.state === "taken" || domainCheck.state === "checking"}
                   >
                     {sending ? "Registering…" : "Claim my kit and register"}
                   </button>
