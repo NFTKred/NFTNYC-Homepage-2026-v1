@@ -1021,13 +1021,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "room": "Main Stage - Main Ballroom",
     "title": "From Campaign to Cause: How Brands Turn NFT Engagement Into Measurable Impact",
     "description": "This session walks through one of the clearest working models of 2025, the Electroneum x One Ocean Foundation (One of the largest European Foundation) \"Blue Forest\" initiative, and extracts the playbook any brand can use.\n\nOne Ocean Foundation sits at an unusual intersection. It's a conservation non-profit backed by global luxury and lifestyle brands including Rolex, Giorgio Armani, Prada, and Ferretti Group, which means its move into NFTs wasn't a Web3 experiment in isolation. It was a signal about where high-end brand engagement is heading. When heritage houses align behind tokenized giving, the question stops being \"should brands touch NFTs\" and becomes \"what's the playbook.\"\n\nBuilding on the coalition that debuted at the Blockchain Futurist Conference, this session brings the results to NFT.NYC: onboarding numbers, donor conversion rates, the wallet-less stack that got non-crypto audiences on-chain, and the engagement architecture any consumer or luxury brand can adapt.",
-    "speakers": [
-      {
-        "name": "Art Malkov",
-        "avatarUrl": "https://cdn.sessionize.com/image/c799-400o400o1-UwbY9CjnPH1xWs5tSPNWy1.png",
-        "sessionizeName": "Art Malkov"
-      }
-    ]
+    "speakers": []
   },
   {
     "day": "Thu",
