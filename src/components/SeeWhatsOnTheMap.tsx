@@ -53,20 +53,32 @@ interface RawMessage {
   action?: string;
   ago?: string;
   ftext?: string;
-  nft?: {
-    back?: string | null;
-    front?: string | null;
-    image?: string | null;
-    contributor_details?: { name?: string | null } | null;
-  } | null;
+  // `nft` is sometimes a full object and sometimes just a numeric id.
+  nft?: RawNft | number | null;
+  data?: { batch?: RawNft | null } | null;
 }
+
+interface RawNft {
+  face?: string | null;
+  meta?: { preview?: string | null } | null;
+  contributor_details?: { name?: string | null } | null;
+}
+
+const asObj = (v: unknown): RawNft =>
+  v && typeof v === 'object' ? (v as RawNft) : {};
 
 function normalizeMessages(raw: RawMessage[]): FeedItem[] {
   return raw
     .filter((m) => m && (m.ftext || m.action))
     .map((m, idx) => {
-      const nft = m.nft ?? {};
-      const image = nft.back ?? nft.front ?? nft.image ?? null;
+      const nft = asObj(m.nft);
+      const batch = asObj(m.data?.batch);
+      const image =
+        nft.meta?.preview ??
+        batch.meta?.preview ??
+        nft.face ??
+        batch.face ??
+        null;
       const action = (m.action ?? 'post').toLowerCase();
       return {
         id: m.id ?? `feed-${idx}`,
@@ -74,7 +86,8 @@ function normalizeMessages(raw: RawMessage[]): FeedItem[] {
         ago: m.ago ?? '',
         text: m.ftext ?? '',
         image,
-        contributor: nft.contributor_details?.name ?? null,
+        contributor:
+          nft.contributor_details?.name ?? batch.contributor_details?.name ?? null,
         color: ACTION_COLORS[action] ?? '#F06347',
       };
     });
