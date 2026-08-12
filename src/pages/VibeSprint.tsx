@@ -849,13 +849,27 @@ export default function VibeSprint() {
                 Your domain <b>{claimedDomain}</b> is reserved — complete the claim from the email
                 link.
                 <ul>
-                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Wednesday 12 August, 4:00pm ET.</li>
-                  <li>Sprint 1 runs Wednesday 12 – Friday 14 August, opening at 4:00pm ET.</li>
+                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Monday 17 August, 4:00pm ET.</li>
+                  <li>Sprint 1 Round 1 runs Monday 17 – Wednesday 19 August, opening at 4:00pm ET.</li>
                   <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
                 </ul>
               </div>
             )}
+            <p className="form-note" style={{ marginTop: 10 }}>
+              <a href="https://NFT.NYC/vibesprint/terms" style={{ color: "var(--color-text-muted)" }}>
+                Participation Terms
+              </a>{" "}
+              ·{" "}
+              <a
+                href="https://www.peoplebrowsr.com/tos"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                PeopleBrowsr Terms of Service
+              </a>
+            </p>
           </section>
 
           <section>
@@ -886,8 +900,8 @@ export default function VibeSprint() {
           </section>
 
           <div className="foot">
-            KRED FLASH SPRINTS · BUILD A BETTER DOMAIN IDENTITY SEARCH · PEOPLEBROWSR × NFT.NYC 2026 · DEMO DAY 1 SEPTEMBER, NEW YORK<br />
-            MOCKUP V14 · THE MERGED PAGE (P30 + P31 CONSOLIDATED 8 AUG) · DEPLOYS TO HTTPS://NFT.NYC/VIBESPRINT · REGISTRATION FLOW BUILT SEPARATELY IN LOVABLE · COUNTDOWN IS DEMO-ONLY
+            KRED FLASH SPRINTS · BUILD A BETTER DOMAIN IDENTITY SEARCH · PEOPLEBROWSR × NFT.NYC 2026 · NFT.NYC 2026 · 1 SEPTEMBER, NEW YORK<br />
+            V17 · THE MERGED PAGE · THE ROUNDS SCHEDULE · MONDAYS 4PM ET · SPRINT 3 RUNS THROUGH THE CONFERENCE BY DESIGN
           </div>
 
         </div>
