@@ -1179,8 +1179,8 @@ export default function VibeSprint() {
           <section>
             <h2>Read More</h2>
             <div className="links">
-              <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
-                <small>About the series (P14)</small>The Kred Flash Sprints — About Pillar
+              <a className="lk ext" href="https://www.nft.nyc/blog/the-kred-flash-sprints-from-first-prompt-to-the-nft-nyc-2026-stage" target="_blank" rel="noopener noreferrer">
+                <small>About the series</small>The Kred Flash Sprints
               </a>
               <a className="lk ext" href="https://www.nft.nyc/blog/navigating-the-domain-search-muddle" target="_blank" rel="noopener noreferrer">
                 <small>The market, documented</small>Navigating the Domain Search Muddle
