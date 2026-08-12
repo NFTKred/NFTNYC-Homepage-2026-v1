@@ -67,18 +67,28 @@ interface RawNft {
 const asObj = (v: unknown): RawNft =>
   v && typeof v === 'object' ? (v as RawNft) : {};
 
+function optimizeImageUrl(url: string | null): string | null {
+  if (!url) return null;
+  // The OneHub CDN can serve JPEG sources as WebP and resize them on the fly.
+  if (/\.jpe?g$/i.test(url)) {
+    return `${url}?format=webp&width=200`;
+  }
+  return url;
+}
+
 function normalizeMessages(raw: RawMessage[]): FeedItem[] {
   return raw
     .filter((m) => m && (m.ftext || m.action))
     .map((m, idx) => {
       const nft = asObj(m.nft);
       const batch = asObj(m.data?.batch);
-      const image =
+      const image = optimizeImageUrl(
         nft.meta?.preview ??
-        batch.meta?.preview ??
-        nft.face ??
-        batch.face ??
-        null;
+          batch.meta?.preview ??
+          nft.face ??
+          batch.face ??
+          null
+      );
       const action = (m.action ?? 'post').toLowerCase();
       return {
         id: m.id ?? `feed-${idx}`,
