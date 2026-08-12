@@ -64,6 +64,191 @@ function formatDuration(ms: number): string {
   return `${d}d ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
+/* ============================================================
+   Live Support session data + Add-to-Calendar helpers
+   ============================================================ */
+
+interface SupportSession {
+  title: string;
+  description: string;
+  location: string;
+  /** In UTC. Sprint 1 sessions run 4:00pm-9:00pm ET; ET is EDT (UTC-4)
+   *  in August 2026, so 20:00-01:00 UTC (end lands on the next day). */
+  startUtc: Date;
+  endUtc: Date;
+}
+
+const SUPPORT_SESSIONS: SupportSession[] = [
+  {
+    title: "Kred Flash Sprint 1 - Live Engineer Support (Mon)",
+    description:
+      "Live Google Meet support with the Kred Flash Sprint 1 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 1 kit. More: https://nft.nyc/vibesprint",
+    location: "Online - Google Meet (link in Sprint 1 kit)",
+    startUtc: new Date(Date.UTC(2026, 7, 17, 20, 0, 0)),
+    endUtc: new Date(Date.UTC(2026, 7, 18, 1, 0, 0)),
+  },
+  {
+    title: "Kred Flash Sprint 1 - Live Engineer Support (Tue)",
+    description:
+      "Live Google Meet support with the Kred Flash Sprint 1 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 1 kit. More: https://nft.nyc/vibesprint",
+    location: "Online - Google Meet (link in Sprint 1 kit)",
+    startUtc: new Date(Date.UTC(2026, 7, 18, 20, 0, 0)),
+    endUtc: new Date(Date.UTC(2026, 7, 19, 1, 0, 0)),
+  },
+];
+
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+/** Format Date as iCalendar UTC timestamp: YYYYMMDDTHHMMSSZ. */
+function toIcsDate(d: Date): string {
+  return (
+    `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}` +
+    `T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}${pad2(d.getUTCSeconds())}Z`
+  );
+}
+
+/** Google Calendar's URL template only supports one event at a time,
+ *  so we build one URL per session and open both in new tabs. */
+function googleCalendarUrl(s: SupportSession): string {
+  const url = new URL("https://calendar.google.com/calendar/render");
+  url.searchParams.set("action", "TEMPLATE");
+  url.searchParams.set("text", s.title);
+  url.searchParams.set("dates", `${toIcsDate(s.startUtc)}/${toIcsDate(s.endUtc)}`);
+  url.searchParams.set("details", s.description);
+  url.searchParams.set("location", s.location);
+  return url.toString();
+}
+
+/** Outlook.com deeplink - same one-event-at-a-time constraint. */
+function outlookCalendarUrl(s: SupportSession): string {
+  const url = new URL("https://outlook.live.com/calendar/0/deeplink/compose");
+  url.searchParams.set("path", "/calendar/action/compose");
+  url.searchParams.set("rru", "addevent");
+  url.searchParams.set("subject", s.title);
+  url.searchParams.set("startdt", s.startUtc.toISOString());
+  url.searchParams.set("enddt", s.endUtc.toISOString());
+  url.searchParams.set("body", s.description);
+  url.searchParams.set("location", s.location);
+  return url.toString();
+}
+
+/** Build a single .ics text carrying both sessions. Works with Apple
+ *  Calendar, Outlook desktop, and imports into Google / Outlook web. */
+function buildIcs(sessions: SupportSession[]): string {
+  const stamp = toIcsDate(new Date(Date.UTC(2026, 7, 12, 0, 0, 0))); // stable DTSTAMP so re-downloads are idempotent
+  const events = sessions.map((s, i) => {
+    const uid = `vibesprint-support-${i + 1}-${s.startUtc.getTime()}@nft.nyc`;
+    const desc = s.description.replace(/\n/g, "\\n").replace(/,/g, "\\,");
+    return [
+      "BEGIN:VEVENT",
+      `UID:${uid}`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART:${toIcsDate(s.startUtc)}`,
+      `DTEND:${toIcsDate(s.endUtc)}`,
+      `SUMMARY:${s.title.replace(/,/g, "\\,")}`,
+      `DESCRIPTION:${desc}`,
+      `LOCATION:${s.location.replace(/,/g, "\\,")}`,
+      "URL:https://nft.nyc/vibesprint",
+      "END:VEVENT",
+    ].join("\r\n");
+  });
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//NFT.NYC//VibeSprint//EN",
+    "METHOD:PUBLISH",
+    "CALSCALE:GREGORIAN",
+    ...events,
+    "END:VCALENDAR",
+    "",
+  ].join("\r\n");
+}
+
+function downloadCombinedIcs() {
+  const blob = new Blob([buildIcs(SUPPORT_SESSIONS)], {
+    type: "text/calendar;charset=utf-8",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "vibesprint-sprint1-support-sessions.ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function openBothInNewTabs(urls: string[]) {
+  urls.forEach((u) => window.open(u, "_blank", "noopener,noreferrer"));
+}
+
+function CalendarLinks() {
+  const btn: React.CSSProperties = {
+    display: "inline-block",
+    padding: "6px 12px",
+    borderRadius: 999,
+    border: "1px solid var(--card-border)",
+    background: "transparent",
+    color: "var(--vs-cyan)",
+    fontFamily: "var(--vs-mono)",
+    fontSize: 12,
+    letterSpacing: ".08em",
+    cursor: "pointer",
+    textDecoration: "none",
+  };
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div
+        style={{
+          fontFamily: "var(--vs-mono)",
+          fontSize: 11,
+          letterSpacing: ".16em",
+          textTransform: "uppercase",
+          color: "var(--color-text-muted)",
+          marginBottom: 8,
+        }}
+      >
+        Add both sessions to your calendar
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button
+          type="button"
+          style={btn}
+          onClick={() =>
+            openBothInNewTabs(SUPPORT_SESSIONS.map(googleCalendarUrl))
+          }
+        >
+          Google Calendar
+        </button>
+        <button
+          type="button"
+          style={btn}
+          onClick={() =>
+            openBothInNewTabs(SUPPORT_SESSIONS.map(outlookCalendarUrl))
+          }
+        >
+          Outlook
+        </button>
+        <button type="button" style={btn} onClick={downloadCombinedIcs}>
+          Apple / .ics
+        </button>
+      </div>
+      <div
+        style={{
+          fontFamily: "var(--vs-mono)",
+          fontSize: 11,
+          color: "var(--color-text-muted)",
+          marginTop: 8,
+        }}
+      >
+        Mon 17 Aug · 4:00-9:00pm ET · Tue 18 Aug · 4:00-9:00pm ET
+      </div>
+    </div>
+  );
+}
+
 function computeCountdown(): { value: string; label: string } {
   const now = Date.now();
   if (now < REG_OPEN_UTC) {
@@ -632,6 +817,7 @@ export default function VibeSprint() {
                 work through it live with the engineer. The Meet link arrives with your Sprint 1 kit,
                 and registration is the only ticket required.
               </p>
+              <CalendarLinks />
             </div>
           </section>
 
@@ -831,8 +1017,8 @@ export default function VibeSprint() {
               <div className="success" id="successCard" role="status">
                 <b>You're in — for the whole season.</b> Your Sprint 1 kit — API credits, XP starter
                 pack, and both example apps — arrives when Sprint 1 opens.<br />
-                Your domain <b>{claimedDomain}</b> is reserved — complete the claim from the email
-                link.
+                Your domain <b>{claimedDomain}</b> is reserved. You will receive an email from{" "}
+                noreply@emailverification.info requesting that you verify your email address.
                 <ul>
                   <li>The Sprint 1 kit arrives when Sprint 1 opens: Monday 17 August, 4:00pm ET.</li>
                   <li>Sprint 1 Round 1 runs Monday 17 – Wednesday 19 August, opening at 4:00pm ET.</li>
