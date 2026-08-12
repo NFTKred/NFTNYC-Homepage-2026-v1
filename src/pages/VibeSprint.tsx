@@ -256,7 +256,7 @@ export default function VibeSprint() {
               <span className="cta-note">
                 One free registration covers all three sprints. Your Sprint 1 kit — Kred API
                 credits, Lovable build credits in our sponsored workspace, a free .Kred domain
-                claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
+                claim, 1,000 XP, and both example apps — publishes when Sprint 1 opens.
               </span>
             </div>
           </header>
@@ -287,41 +287,9 @@ export default function VibeSprint() {
               coding, AI remixing, tokenization, visual images — are the skills this community
               already has.
             </p>
-          </section>
-
-          <section>
-            <h2>The Prize</h2>
-            <p className="lead">
-              <b>
-                The top three designs are acknowledged by the .Kred registry for the next two
-                years.
-              </b>
-            </p>
-            <div className="kit">
-              <div className="tile star">
-                <b>1 · Your credit, live</b>
-                A design credit on Kred's domain search surfaces, linked to your .Kred page.
-              </div>
-              <div className="tile">
-                <b>2 · Your design, deployed</b>
-                The three winning designs run as official Kred search experiences.
-              </div>
-              <div className="tile">
-                <b>3 · Your name, cited</b>
-                Across the .Kred gallery, the dev kit, and Kred marketing for the full two years.
-              </div>
-            </div>
-            <p className="form-note" style={{ marginTop: 12 }}>
-              Design once and be cited for two years — with your work promoted to the NFT.NYC
-              community of <b>180,000+ members</b>.
-            </p>
-            <p className="form-note" style={{ marginTop: 8 }}>
-              Every submission publishes under an open license (CC BY 4.0): anyone may use it,
-              always with credit to the designer — full detail in the{" "}
-              <a href="https://NFT.NYC/vibesprint/terms" style={{ color: "var(--vs-cyan)" }}>
-                Participation Terms
-              </a>
-              .
+            <p className="lead" style={{ marginTop: 14 }}>
+              <b>The top three designs are cited by the .Kred registry for two years.</b> Every
+              submission earns, and the full reward set is below.
             </p>
           </section>
 
