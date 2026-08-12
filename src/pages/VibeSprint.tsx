@@ -180,9 +180,7 @@ function downloadCombinedIcs() {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-function openBothInNewTabs(urls: string[]) {
-  urls.forEach((u) => window.open(u, "_blank", "noopener,noreferrer"));
-}
+const SESSION_LABELS = ["Mon 17 Aug", "Tue 18 Aug"] as const;
 
 function CalendarLinks() {
   const btn: React.CSSProperties = {
@@ -198,6 +196,16 @@ function CalendarLinks() {
     cursor: "pointer",
     textDecoration: "none",
   };
+  const rowLabel: React.CSSProperties = {
+    fontFamily: "var(--vs-mono)",
+    fontSize: 11,
+    letterSpacing: ".08em",
+    color: "var(--color-text-muted)",
+    minWidth: 200,
+  };
+  // Per-session rows so each button click opens exactly one tab -
+  // browsers block the second window.open in a rapid pair when
+  // triggered from a single user gesture.
   return (
     <div style={{ marginTop: 14 }}>
       <div
@@ -207,43 +215,56 @@ function CalendarLinks() {
           letterSpacing: ".16em",
           textTransform: "uppercase",
           color: "var(--color-text-muted)",
-          marginBottom: 8,
+          marginBottom: 10,
         }}
       >
-        Add both sessions to your calendar
+        Add to your calendar
       </div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button
-          type="button"
-          style={btn}
-          onClick={() =>
-            openBothInNewTabs(SUPPORT_SESSIONS.map(googleCalendarUrl))
-          }
+      {SUPPORT_SESSIONS.map((s, i) => (
+        <div
+          key={i}
+          style={{
+            display: "flex",
+            gap: 8,
+            flexWrap: "wrap",
+            alignItems: "center",
+            marginBottom: 8,
+          }}
         >
-          Google Calendar
-        </button>
-        <button
-          type="button"
-          style={btn}
-          onClick={() =>
-            openBothInNewTabs(SUPPORT_SESSIONS.map(outlookCalendarUrl))
-          }
-        >
-          Outlook
-        </button>
+          <span style={rowLabel}>
+            {SESSION_LABELS[i]} · 4:00-9:00pm ET:
+          </span>
+          <a
+            href={googleCalendarUrl(s)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={btn}
+          >
+            Google
+          </a>
+          <a
+            href={outlookCalendarUrl(s)}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={btn}
+          >
+            Outlook
+          </a>
+        </div>
+      ))}
+      <div
+        style={{
+          display: "flex",
+          gap: 8,
+          flexWrap: "wrap",
+          alignItems: "center",
+          marginTop: 6,
+        }}
+      >
+        <span style={rowLabel}>Both sessions:</span>
         <button type="button" style={btn} onClick={downloadCombinedIcs}>
           Apple / .ics
         </button>
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--vs-mono)",
-          fontSize: 11,
-          color: "var(--color-text-muted)",
-          marginTop: 8,
-        }}
-      >
-        Mon 17 Aug · 4:00-9:00pm ET · Tue 18 Aug · 4:00-9:00pm ET
       </div>
     </div>
   );
@@ -1025,6 +1046,7 @@ export default function VibeSprint() {
                   <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
                 </ul>
+                <CalendarLinks />
               </div>
             )}
             <p className="form-note" style={{ marginTop: 10 }}>
