@@ -30,6 +30,7 @@ import Visa from "./pages/Visa";
 import Media from "./pages/Media";
 import Volunteer from "./pages/Volunteer";
 import Events from "./pages/Events";
+import Program from "./pages/Program";
 import VibeSprint from "./pages/VibeSprint";
 import Sprint1 from "./pages/Sprint1";
 import ManageVolunteers from "./pages/ManageVolunteers";
@@ -75,6 +76,7 @@ const App = () => (
           <Route path="/media" element={<Media />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/program" element={<Program />} />
           <Route path="/vibesprint" element={<VibeSprint />} />
           <Route path="/sprint1" element={<Sprint1 />} />
           <Route path="/admin/login" element={<AdminLogin />} />

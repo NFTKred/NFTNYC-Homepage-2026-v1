@@ -12,6 +12,7 @@
 // configured priority is already honoured.
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -117,6 +118,40 @@ export default function Speakers() {
   const [search, setSearch] = useState('');
   const [activeTrack, setActiveTrack] = useState<string>('all');
   const [openSpeaker, setOpenSpeaker] = useState<SpeakerVM | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Deep-link into a specific speaker's modal via ?speaker=<name>.
+  // The Program page links speaker names into this. Matching is
+  // case-insensitive on displayName; unmatched names just show the
+  // page normally with no modal.
+  useEffect(() => {
+    if (loading || !speakers.length) return;
+    const target = searchParams.get('speaker');
+    if (!target) {
+      if (openSpeaker) setOpenSpeaker(null);
+      return;
+    }
+    const norm = target.trim().toLowerCase();
+    const match = speakers.find(s => s.displayName.toLowerCase() === norm);
+    setOpenSpeaker(match ?? null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, speakers, searchParams]);
+
+  // Reflect modal state back into the URL so users can share links.
+  const closeModal = () => {
+    setOpenSpeaker(null);
+    if (searchParams.has('speaker')) {
+      const next = new URLSearchParams(searchParams);
+      next.delete('speaker');
+      setSearchParams(next, { replace: true });
+    }
+  };
+  const openSpeakerAndSync = (s: SpeakerVM) => {
+    setOpenSpeaker(s);
+    const next = new URLSearchParams(searchParams);
+    next.set('speaker', s.displayName);
+    setSearchParams(next, { replace: true });
+  };
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -148,7 +183,7 @@ export default function Speakers() {
   // Body scroll lock + Escape close while the modal is open.
   useEffect(() => {
     if (!openSpeaker) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenSpeaker(null); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeModal(); };
     document.addEventListener('keydown', onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -378,7 +413,7 @@ export default function Speakers() {
                 key={s.id}
                 type="button"
                 className={`speaker-card${s.isFeatured ? ' is-featured' : ''}`}
-                onClick={() => setOpenSpeaker(s)}
+                onClick={() => openSpeakerAndSync(s)}
               >
                 {s.isFeatured && <span className="featured-label">Featured Speaker</span>}
                 <Avatar speaker={s} size={96} />
@@ -443,7 +478,7 @@ export default function Speakers() {
           role="dialog"
           aria-modal="true"
           aria-label={`${openSpeaker.displayName} bio`}
-          onClick={() => setOpenSpeaker(null)}
+          onClick={closeModal}
           style={{
             position: 'fixed', inset: 0, zIndex: 100,
             background: 'rgba(0,0,0,0.85)',
@@ -454,7 +489,7 @@ export default function Speakers() {
           <button
             type="button"
             aria-label="Close"
-            onClick={e => { e.stopPropagation(); setOpenSpeaker(null); }}
+            onClick={e => { e.stopPropagation(); closeModal(); }}
             style={{
               position: 'absolute', top: '1rem', right: '1rem',
               width: 40, height: 40, borderRadius: '50%',
