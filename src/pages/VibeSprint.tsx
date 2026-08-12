@@ -10,7 +10,8 @@ import {
   type RegistrantContact,
 } from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
-import sketchlightAsset from "@/assets/sketchlight-dossier.jpg.asset.json";
+const SKETCHLIGHT_IMAGE_URL =
+  "https://api.grab.live/web/files/5c37fdb82f586d11f45a84b8/1786509005318_artist_submission_1786509005317_2v5rfyn82cx.jpeg";
 
 /**
  * Kred Flash Sprints landing page (content v14 — merged P30 + P31 consolidated 8 Aug).
@@ -525,7 +526,7 @@ export default function VibeSprint() {
               }}
             >
               <img
-                src={sketchlightAsset.url}
+                src={SKETCHLIGHT_IMAGE_URL}
                 alt="Sketchlight.Kred live record — a Kredentials page for light-painting photographer Ray Vagner in the Dossier format, with sourced facts and Wingman answering questions"
                 loading="lazy"
                 style={{ display: "block", width: "100%", height: "auto" }}
