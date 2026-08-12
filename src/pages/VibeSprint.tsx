@@ -349,42 +349,53 @@ export default function VibeSprint() {
 
           <section>
             <h2>The Three Sprints</h2>
+            <p className="lead">
+              Each sprint runs in <b>audience rounds</b> — the same brief, run for a specific
+              community, with one submission per round.
+            </p>
             <div className="sprints">
               <div className="sp live" style={{ ["--tone" as string]: "var(--vs-pink)" } as React.CSSProperties}>
                 <span className="no">1</span>
-                <span className="date">Wed 12 – Fri 14 Aug · Opens 4:00pm ET</span>
+                <span className="date">
+                  R1 · Mon 17 – Wed 19 Aug · NFT.NYC creators
+                  <br />
+                  R2 · Mon 24 – Wed 26 Aug · NamePros
+                </span>
                 <h3>The Next Gen Domain Reseller</h3>
                 <p>
                   Build a next generation Domain Reseller on the Domains.Kred Registrar API — a
                   very visual experience, 100% Clear pricing on every card, every result explained.
                 </p>
-                <span className="chip">Registration opens Tue 11 Aug</span>
+                <span className="chip">Registration open now</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-cyan)" } as React.CSSProperties}>
                 <span className="no">2</span>
-                <span className="date">Wed 19 – Fri 21 Aug · Opens 4:00pm ET</span>
+                <span className="date">R1 · Mon 24 – Wed 26 Aug · NFT.NYC creators</span>
                 <h3>The Agentic Domain Registrar</h3>
                 <p>
                   The customer flips to agents: they discover, price, register, and enroll their
                   own .Kred agentic identity — AID, ANS, MCP-I, DNSid — end to end.
                 </p>
-                <span className="chip">Brief arrives Fri 14 Aug</span>
+                <span className="chip">Brief publishes Thu 20 Aug</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
-                <span className="date">Wed 26 – Fri 28 Aug · Opens 4:00pm ET</span>
+                <span className="date">
+                  R1 · Mon 31 Aug – Wed 2 Sep · Hugging Face + NFT.NYC creators
+                </span>
                 <h3>Agentic Debate on the Matrix</h3>
                 <p>
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
                   and score — one week before NFT.NYC.
                 </p>
-                <span className="chip">Brief arrives Fri 21 Aug</span>
+                <span className="chip">Brief publishes Thu 27 Aug</span>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
-              One builder — selected by the review panel from the sprints' Spotlight and Featured
-              submissions — presents the marquee demo at Demo Day, NFT.NYC 2026, 1 September.
-              Up to 20 selected submissions per sprint join the Times Square Showcase.
+              One builder — selected by the review panel from Sprint 1 and Sprint 2's Spotlight and
+              Featured submissions — presents live at NFT.NYC 2026, 1 September. Sprint 3 runs
+              right through the conference, built for the community building from anywhere. Up to
+              20 selected submissions per sprint join the Times Square Showcase.
             </p>
           </section>
 
