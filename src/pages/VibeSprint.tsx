@@ -577,7 +577,7 @@ export default function VibeSprint() {
               in decades. Out in the market today, names are sold as "available" when they are
               already owned, paid placement goes undisclosed, and renewal prices hide behind
               tooltips.{" "}
-              <a href="https://nft.nyc/blog" style={{ color: "var(--vs-cyan)" }}>
+              <a href="https://www.nft.nyc/blog/navigating-the-domain-search-muddle" style={{ color: "var(--vs-cyan)" }}>
                 We documented all three
               </a>
               . There is a unique opening to build a{" "}
@@ -697,7 +697,7 @@ export default function VibeSprint() {
                 String results sorted by the best string results for the user — never a
                 TLD-sponsored search ladder — with the renewal price beside every first-year price
                 and a visible "why this result?" line on every card.{" "}
-                <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
+                <a href="https://www.nft.nyc/blog/navigating-the-domain-search-muddle" style={{ color: "var(--vs-cyan)" }}>
                   The evidence: our registrar search exposé
                 </a>
               </div>
