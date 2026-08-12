@@ -180,90 +180,176 @@ function downloadCombinedIcs() {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-const SESSION_LABELS = ["Mon 17 Aug", "Tue 18 Aug"] as const;
+const SESSION_META: ReadonlyArray<{ ordinal: string; date: string; time: string }> = [
+  { ordinal: "Session 1", date: "Mon 17 Aug", time: "4:00 - 9:00pm ET" },
+  { ordinal: "Session 2", date: "Tue 18 Aug", time: "4:00 - 9:00pm ET" },
+];
+
+function CalendarIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={{ flexShrink: 0 }}
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
 
 function CalendarLinks() {
-  const btn: React.CSSProperties = {
-    display: "inline-block",
-    padding: "6px 12px",
+  const pill: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    padding: "5px 12px",
     borderRadius: 999,
     border: "1px solid var(--card-border)",
     background: "transparent",
     color: "var(--vs-cyan)",
     fontFamily: "var(--vs-mono)",
     fontSize: 12,
-    letterSpacing: ".08em",
+    letterSpacing: ".04em",
     cursor: "pointer",
     textDecoration: "none",
+    transition: "border-color 120ms ease, background 120ms ease",
   };
-  const rowLabel: React.CSSProperties = {
-    fontFamily: "var(--vs-mono)",
-    fontSize: 11,
-    letterSpacing: ".08em",
-    color: "var(--color-text-muted)",
-    minWidth: 200,
-  };
-  // Per-session rows so each button click opens exactly one tab -
+  // Per-session rows so each anchor click opens exactly one tab -
   // browsers block the second window.open in a rapid pair when
   // triggered from a single user gesture.
   return (
-    <div style={{ marginTop: 14 }}>
-      <div
-        style={{
-          fontFamily: "var(--vs-mono)",
-          fontSize: 11,
-          letterSpacing: ".16em",
-          textTransform: "uppercase",
-          color: "var(--color-text-muted)",
-          marginBottom: 10,
-        }}
-      >
-        Add to your calendar
-      </div>
-      {SUPPORT_SESSIONS.map((s, i) => (
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            gap: 8,
-            flexWrap: "wrap",
-            alignItems: "center",
-            marginBottom: 8,
-          }}
-        >
-          <span style={rowLabel}>
-            {SESSION_LABELS[i]} · 4:00-9:00pm ET:
-          </span>
-          <a
-            href={googleCalendarUrl(s)}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={btn}
-          >
-            Google
-          </a>
-          <a
-            href={outlookCalendarUrl(s)}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={btn}
-          >
-            Outlook
-          </a>
-        </div>
-      ))}
+    <div
+      style={{
+        marginTop: 18,
+        padding: "16px 18px",
+        border: "1px solid var(--card-border)",
+        borderRadius: 12,
+        background: "rgba(255, 255, 255, 0.02)",
+      }}
+    >
       <div
         style={{
           display: "flex",
-          gap: 8,
-          flexWrap: "wrap",
           alignItems: "center",
-          marginTop: 6,
+          gap: 8,
+          fontFamily: "var(--vs-mono)",
+          fontSize: 11,
+          letterSpacing: ".18em",
+          textTransform: "uppercase",
+          color: "var(--color-text-muted)",
+          marginBottom: 14,
         }}
       >
-        <span style={rowLabel}>Both sessions:</span>
-        <button type="button" style={btn} onClick={downloadCombinedIcs}>
-          Apple / .ics
+        <CalendarIcon />
+        Add to your calendar
+      </div>
+
+      {SUPPORT_SESSIONS.map((s, i) => {
+        const meta = SESSION_META[i];
+        return (
+          <div
+            key={i}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              alignItems: "center",
+              gap: 12,
+              padding: "10px 0",
+              borderBottom:
+                i < SUPPORT_SESSIONS.length - 1
+                  ? "1px solid var(--card-border)"
+                  : "none",
+            }}
+          >
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontFamily: "var(--vs-mono)",
+                  fontSize: 10,
+                  letterSpacing: ".18em",
+                  textTransform: "uppercase",
+                  color: "var(--color-text-muted)",
+                }}
+              >
+                {meta.ordinal}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "var(--color-text)",
+                  marginTop: 2,
+                }}
+              >
+                {meta.date}{" "}
+                <span style={{ fontWeight: 400, color: "var(--color-text-muted)" }}>
+                  · {meta.time}
+                </span>
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+              <a
+                href={googleCalendarUrl(s)}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={pill}
+                title={`Add ${meta.date} to Google Calendar`}
+              >
+                Google
+              </a>
+              <a
+                href={outlookCalendarUrl(s)}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={pill}
+                title={`Add ${meta.date} to Outlook`}
+              >
+                Outlook
+              </a>
+            </div>
+          </div>
+        );
+      })}
+
+      <div
+        style={{
+          marginTop: 14,
+          paddingTop: 14,
+          borderTop: "1px solid var(--card-border)",
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        <div
+          style={{
+            fontFamily: "var(--vs-mono)",
+            fontSize: 12,
+            color: "var(--color-text-muted)",
+          }}
+        >
+          Both sessions in one file · works with Apple Calendar, Outlook desktop,
+          and imports into Google
+        </div>
+        <button
+          type="button"
+          style={pill}
+          onClick={downloadCombinedIcs}
+          title="Download an .ics with both sessions"
+        >
+          Download .ics
         </button>
       </div>
     </div>
