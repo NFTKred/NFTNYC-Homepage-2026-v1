@@ -711,9 +711,10 @@ export default function VibeSprint() {
           <section id="register">
             <h2>Register</h2>
             <p className="lead">
-              One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits, a
-              free .Kred domain claim, 1,000 XP, and both example app links — arrives when
-              Sprint 1 opens, Wednesday 12 August at 4:00pm ET.
+              One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits,
+              Lovable build credits in our sponsored workspace, a free .Kred domain claim, 1,000
+              XP, and both example app links — arrives when Sprint 1 opens, Monday 17 August at
+              4:00pm ET.
             </p>
             {!submitted && (
               <form onSubmit={onSubmit} noValidate>
