@@ -51,6 +51,25 @@
   margin-bottom: 16px;
 }
 .vibesprint section { margin-top: 56px; }
+.vibesprint h3.sub-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 16px;
+}
+.vibesprint h2.divider {
+  font-size: 34px;
+  letter-spacing: .04em;
+  color: var(--color-primary);
+}
+.vibesprint h2.divider + .lead { color: var(--color-text); }
+.vibesprint section.dividersec {
+  border-top: 1px solid var(--card-border);
+  padding-top: 26px;
+  margin-top: 8px;
+}
 .vibesprint .lead {
   color: var(--color-text-muted);
   font-size: 15px;
