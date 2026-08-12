@@ -13,7 +13,7 @@ Contributor names have the same gap: they are read only from `nft.contributor_de
 In `src/components/SeeWhatsOnTheMap.tsx`, in `normalizeMessages`:
 
 - Only treat `nft` as an object when it actually is one (guard against the numeric-ID form).
-- Resolve the image with a fallback chain: `nft.back -> nft.front -> nft.image -> data.batch.back -> data.batch.face`.
+- Resolve the image with this fallback chain: `nft.meta.preview -> data.batch.meta.preview -> nft.face -> data.batch.face`.
 - Resolve the contributor from `nft.contributor_details.name`, falling back to the batch data when absent, then null.
 - Extend the `RawMessage` type to describe `data.batch` and the numeric `nft` case.
 
