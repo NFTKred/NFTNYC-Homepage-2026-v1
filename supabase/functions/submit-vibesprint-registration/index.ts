@@ -1,8 +1,9 @@
 /**
  * submit-vibesprint-registration — receives a /vibesprint season registration,
  * stores it in vibesprint_registrations, attempts the free .kred domain
- * registration via api.domains.kred, and emails the details to
- * contact@peoplebrowsr.com.
+ * registration via api.domains.kred, emails the internal team, and sends the
+ * registrant a confirmation email with an .ics of the two live support
+ * sessions attached.
  *
  * Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (auto-injected),
  *      RESEND_API_KEY, VIBESPRINT_ALERT_EMAIL, ALERT_FROM_EMAIL,
@@ -11,6 +12,171 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { ensureDnsZone } from "../_shared/dns.ts";
+
+/* ============================================================
+   Live Support session data + calendar helpers.
+   Kept in sync with src/pages/VibeSprint.tsx SUPPORT_SESSIONS.
+   ============================================================ */
+
+interface SupportSession {
+  title: string;
+  description: string;
+  location: string;
+  /** In UTC. Sprint 1 sessions run 4:00pm-9:00pm ET; ET is EDT (UTC-4)
+   *  in August 2026, so 20:00-01:00 UTC (end lands on the next day). */
+  startUtc: Date;
+  endUtc: Date;
+  /** Human-friendly display strings for the email body. */
+  displayDate: string;
+  displayTime: string;
+}
+
+const SUPPORT_SESSIONS: SupportSession[] = [
+  {
+    title: "Kred Flash Sprint 1 - Live Engineer Support (Mon)",
+    description:
+      "Live Google Meet support with the Kred Flash Sprint 1 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 1 kit. More: https://nft.nyc/vibesprint",
+    location: "Online - Google Meet (link in Sprint 1 kit)",
+    startUtc: new Date(Date.UTC(2026, 7, 17, 20, 0, 0)),
+    endUtc: new Date(Date.UTC(2026, 7, 18, 1, 0, 0)),
+    displayDate: "Mon 17 Aug 2026",
+    displayTime: "4:00 - 9:00pm ET",
+  },
+  {
+    title: "Kred Flash Sprint 1 - Live Engineer Support (Tue)",
+    description:
+      "Live Google Meet support with the Kred Flash Sprint 1 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 1 kit. More: https://nft.nyc/vibesprint",
+    location: "Online - Google Meet (link in Sprint 1 kit)",
+    startUtc: new Date(Date.UTC(2026, 7, 18, 20, 0, 0)),
+    endUtc: new Date(Date.UTC(2026, 7, 19, 1, 0, 0)),
+    displayDate: "Tue 18 Aug 2026",
+    displayTime: "4:00 - 9:00pm ET",
+  },
+];
+
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+/** iCalendar UTC timestamp: YYYYMMDDTHHMMSSZ. */
+function toIcsDate(d: Date): string {
+  return (
+    `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}` +
+    `T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}${pad2(d.getUTCSeconds())}Z`
+  );
+}
+
+function googleCalendarUrl(s: SupportSession): string {
+  const url = new URL("https://calendar.google.com/calendar/render");
+  url.searchParams.set("action", "TEMPLATE");
+  url.searchParams.set("text", s.title);
+  url.searchParams.set("dates", `${toIcsDate(s.startUtc)}/${toIcsDate(s.endUtc)}`);
+  url.searchParams.set("details", s.description);
+  url.searchParams.set("location", s.location);
+  return url.toString();
+}
+
+function outlookCalendarUrl(s: SupportSession): string {
+  const url = new URL("https://outlook.live.com/calendar/0/deeplink/compose");
+  url.searchParams.set("path", "/calendar/action/compose");
+  url.searchParams.set("rru", "addevent");
+  url.searchParams.set("subject", s.title);
+  url.searchParams.set("startdt", s.startUtc.toISOString());
+  url.searchParams.set("enddt", s.endUtc.toISOString());
+  url.searchParams.set("body", s.description);
+  url.searchParams.set("location", s.location);
+  return url.toString();
+}
+
+/** Build a single .ics text carrying both sessions. Works with Apple
+ *  Calendar, Outlook desktop, and imports into Google / Outlook web. */
+function buildIcs(sessions: SupportSession[]): string {
+  const stamp = toIcsDate(new Date(Date.UTC(2026, 7, 12, 0, 0, 0))); // stable DTSTAMP so re-imports are idempotent
+  const events = sessions.map((s, i) => {
+    const uid = `vibesprint-support-${i + 1}-${s.startUtc.getTime()}@nft.nyc`;
+    const desc = s.description.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,");
+    return [
+      "BEGIN:VEVENT",
+      `UID:${uid}`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART:${toIcsDate(s.startUtc)}`,
+      `DTEND:${toIcsDate(s.endUtc)}`,
+      `SUMMARY:${s.title.replace(/,/g, "\\,")}`,
+      `DESCRIPTION:${desc}`,
+      `LOCATION:${s.location.replace(/,/g, "\\,")}`,
+      "URL:https://nft.nyc/vibesprint",
+      "END:VEVENT",
+    ].join("\r\n");
+  });
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//NFT.NYC//VibeSprint//EN",
+    "METHOD:PUBLISH",
+    "CALSCALE:GREGORIAN",
+    ...events,
+    "END:VCALENDAR",
+    "",
+  ].join("\r\n");
+}
+
+/** Base64-encode a UTF-8 string for the Resend attachment payload. */
+function base64Encode(str: string): string {
+  const bytes = new TextEncoder().encode(str);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+
+function buildRegistrantEmailHtml(name: string, fqdn: string): string {
+  const firstName = (name.trim().split(/\s+/)[0] || "there");
+  const rows = SUPPORT_SESSIONS.map((s) => {
+    const g = googleCalendarUrl(s);
+    const o = outlookCalendarUrl(s);
+    return `
+      <tr>
+        <td style="padding:16px 0;border-top:1px solid #eee;">
+          <div style="font-family:'SF Mono',Menlo,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:4px;">${escape(s.displayDate)}</div>
+          <div style="font-size:16px;font-weight:600;color:#111;margin-bottom:10px;">${escape(s.displayTime)}</div>
+          <div>
+            <a href="${g}" style="display:inline-block;margin-right:8px;padding:6px 14px;border:1px solid #F15621;color:#F15621;border-radius:999px;text-decoration:none;font-family:'SF Mono',Menlo,monospace;font-size:12px;">Add to Google</a>
+            <a href="${o}" style="display:inline-block;padding:6px 14px;border:1px solid #F15621;color:#F15621;border-radius:999px;text-decoration:none;font-family:'SF Mono',Menlo,monospace;font-size:12px;">Add to Outlook</a>
+          </div>
+        </td>
+      </tr>`;
+  }).join("");
+
+  return `
+    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:640px;margin:0 auto;color:#111;padding:24px 20px;">
+      <div style="background:#F15621;color:#fff;border-radius:8px;padding:20px 24px;margin-bottom:20px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.25em;opacity:.9;margin-bottom:6px;">KRED FLASH SPRINT 1</div>
+        <div style="font-size:22px;font-weight:700;margin-bottom:4px;">You are in, ${escape(firstName)}.</div>
+        <div style="font-size:14px;opacity:.95;">Your Sprint 1 kit will land in your inbox before Mon 17 Aug.</div>
+      </div>
+
+      <p style="font-size:15px;line-height:1.5;color:#222;margin:0 0 16px;">
+        Your <b>${escape(fqdn)}</b> domain is reserved. You will shortly receive a separate email from
+        <b>noreply@emailverification.info</b> asking you to verify your email address - please complete that step so the registrar can finalise the domain in your name.
+      </p>
+
+      <div style="border:1px solid #eee;border-radius:12px;padding:18px 20px;background:#fafafa;margin:20px 0;">
+        <div style="font-family:'SF Mono',Menlo,monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#666;margin-bottom:4px;">Live Engineer Support</div>
+        <div style="font-size:16px;font-weight:600;color:#111;margin-bottom:8px;">Two evenings on Google Meet</div>
+        <div style="font-size:13px;line-height:1.5;color:#444;">
+          The lead engineer for Sprint 1 will be live on Google Meet both evenings. Bring your specific error, work through it live, and ship.
+          The Meet link arrives with your Sprint 1 kit.
+        </div>
+        <table style="width:100%;border-collapse:collapse;margin-top:10px;">${rows}</table>
+        <div style="border-top:1px solid #eee;padding-top:14px;margin-top:6px;font-size:12px;color:#666;">
+          Prefer to import both at once? A <b>vibesprint-sprint1-support-sessions.ics</b> file is attached to this email - open it on any device to add both sessions to Apple Calendar, Outlook desktop, or Google.
+        </div>
+      </div>
+
+      <p style="font-size:13px;line-height:1.5;color:#555;margin:16px 0 0;">
+        Questions? Reply to this email and it will reach the NFT.NYC team directly.<br/>
+        <a href="https://nft.nyc/vibesprint" style="color:#F15621;">nft.nyc/vibesprint</a>
+      </p>
+    </div>
+  `.trim();
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -387,6 +553,33 @@ Deno.serve(async (req) => {
       if (!resp.ok) console.error("Resend notify error:", resp.status, await resp.text());
     } catch (err) {
       console.error("Resend notify failed:", err);
+    }
+
+    // Registrant confirmation email — separate Resend call so a failure
+    // here doesn't affect the internal notification above, and vice versa.
+    try {
+      const icsText = buildIcs(SUPPORT_SESSIONS);
+      const registrantResp = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: `NFT.NYC Kred Flash Sprints <${ALERT_FROM_EMAIL}>`,
+          to: [email],
+          reply_to: ALERT_EMAIL,
+          subject: `You are in — Kred Flash Sprint 1 (${domain}.Kred)`,
+          html: buildRegistrantEmailHtml(name, `${domain}.Kred`),
+          attachments: [{
+            filename: "vibesprint-sprint1-support-sessions.ics",
+            content: base64Encode(icsText),
+            content_type: "text/calendar; charset=utf-8; method=PUBLISH",
+          }],
+        }),
+      });
+      if (!registrantResp.ok) {
+        console.error("Resend registrant confirmation error:", registrantResp.status, await registrantResp.text());
+      }
+    } catch (err) {
+      console.error("Resend registrant confirmation failed:", err);
     }
   } else {
     console.warn("RESEND_API_KEY not set — skipping registration notification");
