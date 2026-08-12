@@ -80,12 +80,12 @@ function normalizeMessages(raw: RawMessage[]): FeedItem[] {
   return raw
     .filter((m) => m && (m.ftext || m.action))
     .map((m, idx) => {
-      const nft = asObj(m.nft);
+      const dataNft = asObj(m.data?.nft);
       const batch = asObj(m.data?.batch);
       const image = optimizeImageUrl(
-        nft.meta?.preview ??
+        dataNft.meta?.preview ??
           batch.meta?.preview ??
-          nft.face ??
+          dataNft.face ??
           batch.face ??
           null
       );
@@ -97,7 +97,7 @@ function normalizeMessages(raw: RawMessage[]): FeedItem[] {
         text: m.ftext ?? '',
         image,
         contributor:
-          nft.contributor_details?.name ?? batch.contributor_details?.name ?? null,
+          dataNft.contributor_details?.name ?? batch.contributor_details?.name ?? null,
         color: ACTION_COLORS[action] ?? '#F06347',
       };
     });
