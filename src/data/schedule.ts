@@ -526,11 +526,6 @@ export const SCHEDULE: ScheduleSession[] = [
         "sessionizeName": "SHAH"
       },
       {
-        "name": "Erich Kottke",
-        "avatarUrl": "https://cdn.sessionize.com/image/0bef-400o400o1-GU4NZ68UEbCw2aT4eqPTTB.png",
-        "sessionizeName": "Erich Kottke"
-      },
-      {
         "name": "Thao Dang",
         "avatarUrl": "https://cdn.sessionize.com/image/06c7-400o400o1-SM8NcegG6EExRhSCfByv5Q.png",
         "sessionizeName": "Astrid Dang"
