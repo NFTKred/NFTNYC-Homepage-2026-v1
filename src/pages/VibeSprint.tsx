@@ -493,11 +493,15 @@ export default function VibeSprint() {
           </section>
 
           <section>
-            <h2>The Kredentials Add-On</h2>
+            <h3 className="sub-h2">The Kredentials Lander</h3>
             <p className="lead">
-              Every Kred domain can carry a companion <b>Kredentials page</b> — a supplemental add-on
-              for anyone who receives a Kred domain, and the identity layer your search app can
-              offer with every name it sells.
+              The page every .Kred name ships with — built by{" "}
+              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
+                <b>Wingman AI</b>
+              </a>{" "}
+              in the minutes after registration, anchored on-chain by a <b>Domain Token</b>. Your
+              search app sells names that arrive with a working page from the first minute, and the
+              page grows with its owner.
             </p>
             <div
               style={{
@@ -510,7 +514,7 @@ export default function VibeSprint() {
             >
               <img
                 src={SKETCHLIGHT_IMAGE_URL}
-                alt="Sketchlight.Kred live record — a Kredentials page for light-painting photographer Ray Vagner in the Dossier format, with sourced facts and Wingman answering questions"
+                alt="The live Kredentials record at Sketchlight.Kred — the Bio banner, name, and verified links"
                 loading="lazy"
                 style={{ display: "block", width: "100%", height: "auto" }}
               />
@@ -520,12 +524,12 @@ export default function VibeSprint() {
               <a href="https://Sketchlight.Kred" style={{ color: "var(--vs-cyan)" }}>
                 Sketchlight.Kred
               </a>{" "}
-              - light-painting photographer Ray Vagner, worn in the <b>Dossier format</b>: the
-              story in prose, every fact with a source and a date, and Wingman answering questions
-              live on the page.
+              — light-painting photographer Ray Vagner: the banner from her own work, verified
+              links, and Wingman AI live on the page. The Lander is where every new name starts;
+              this is where it grows.
             </p>
             <div className="kit">
-              <div className="tile">
+              <div className="tile star">
                 <b>Ships at registration</b>
                 One AI-generated illustration from the name itself, the name displayed in large
                 type, one line of story, a Make an Offer button, and an email collector — with
@@ -535,20 +539,20 @@ export default function VibeSprint() {
               <div className="tile">
                 <b>Grows into Kredentials</b>
                 The Lander is the floor. The owner adds their links — a Linktree (it stays live and
-                untouched), a .com website, socials, press — and Wingman writes the full verified
+                untouched), a .com website, socials, press — and Wingman AI writes the full verified
                 record: every fact with a source and a date, worn in one of three formats.
               </div>
               <div className="tile">
                 <b>Beyond the Lander</b>
                 The same name can become a personal profile, a business page, an ENS-bridged wallet
-                address, an agent with a Kred Score, or a full website — with Wingman attached to
-                every path.
+                address, an agent with a Kred Score, or a full website — with Wingman AI attached to
+                every path, refreshing the record and watching AI-crawler visibility.
               </div>
               <div className="tile">
                 <b>In your app</b>
                 The Kredentials API generates Landers and pages from a set of links — the spec
-                arrives with your Sprint 1 kit. Offer it as the add-on on every domain your app
-                sells.
+                arrives with your Sprint 1 kit. Every domain your app sells can carry its identity
+                from the moment of purchase.
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
@@ -560,8 +564,10 @@ export default function VibeSprint() {
               <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
                 the Gallery
               </a>{" "}
-              · how pages are built: the Wingman Pipeline Explainer on the{" "}
-              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>NFT.NYC blog</a>.
+              · the full story of the parking page's four eras, ending at the Lander:{" "}
+              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
+                Anatomy of a Parking Page
+              </a>
             </p>
           </section>
 
