@@ -223,16 +223,20 @@ export default function VibeSprint() {
               <span className="glow">Three Sprints to NFT.NYC</span>
             </h1>
             <p className="sub">
-              Help us build a better domain identity search experience — customized,{" "}
-              <b>very visual</b>, AI driven, and made for the <b>creator community</b>. Three{" "}
-              <b>48-hour vibe coding sprints</b>, each opening Wednesday at <b>4:00pm ET</b>,
-              starting <b>12 August</b>. Build in <b>Lovable or the platform of your choice</b> —
-              publish a Lovable app with Agent Integrations and it works inside{" "}
-              <b>ChatGPT and Claude</b>.
+              <b>
+                Kred is requesting our digital creators design the next generation of domain search
+              </b>{" "}
+              — customized, <b>very visual</b>, AI driven, and made for the{" "}
+              <b>creator community</b>. Three <b>48-hour vibe coding sprints</b> run in{" "}
+              <b>audience rounds</b>, each round opening Monday at <b>4:00pm ET</b>, starting{" "}
+              <b>17 August</b>. Build in <b>Lovable or the platform of your choice</b> — publish a
+              Lovable app with Agent Integrations and it works inside <b>ChatGPT and Claude</b>.
             </p>
             <div className="badges">
-              <span className="badge hot">Registration opens Tue 11 Aug</span>
-              <span className="badge hot">Sprint 1 · Wed 12 – Fri 14 Aug · Opens 4:00pm ET</span>
+              <span className="badge hot">Registration open now</span>
+              <span className="badge hot">
+                Sprint 1 Round 1 · Mon 17 – Wed 19 Aug · Opens 4:00pm ET
+              </span>
               <span className="badge tool">Lovable primary · any platform welcome</span>
               <span className="badge api">Live engineer support · Both evenings</span>
             </div>
@@ -249,8 +253,9 @@ export default function VibeSprint() {
             <div className="cta-row">
               <a className="btn" href="#register">Register free</a>
               <span className="cta-note">
-                One free registration covers all three sprints. Your Sprint 1 kit — API credits, free
-                .Kred domain claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
+                One free registration covers all three sprints. Your Sprint 1 kit — Kred API
+                credits, Lovable build credits in our sponsored workspace, a free .Kred domain
+                claim, 1,000 XP, and both example apps — arrives when Sprint 1 opens.
               </span>
             </div>
           </header>
