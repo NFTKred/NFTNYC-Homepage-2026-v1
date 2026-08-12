@@ -446,6 +446,27 @@ export default function VibeSprint() {
               submission starts already talking to the API. Design references arrive at
               registration; the live app links arrive when Sprint 1 opens.
             </p>
+            <p className="lead" style={{ marginTop: 10 }}>
+              <b>Your Lovable credits are covered.</b> Your Sprint 1 kit carries an invite to our
+              sponsored Vibe Sprint Workspace: join and receive <b>100 free credits</b> to build
+              with. All remixes are visible to the workspace, so you build in the open, alongside
+              your peers. To build outside the workspace instead, the referral link in your kit
+              starts you with 15 credits.
+            </p>
+            <p className="lead" style={{ marginTop: 10 }}>
+              <b>The whole remix is five steps and needs zero code.</b> Copy the project, paste in
+              two keys, and you are taking payments from day one on the shared Stripe account. The
+              step-by-step guide:{" "}
+              <a
+                href="https://kred-digitalcreator-demo.lovable.app/how-to-remix"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--vs-cyan)" }}
+              >
+                How to make this site your own
+              </a>
+              .
+            </p>
             <div className="examples">
               <div className="excard" style={{ background: "var(--color-surface)", border: "1px solid var(--card-border)", borderRadius: 8, overflow: "hidden" }}>
                 <img
@@ -454,9 +475,20 @@ export default function VibeSprint() {
                 />
                 <div className="excap">
                   <b>The Visual Domain Search</b>
-                  Built for digital creators: type your artist name and meet YourName.Kred already
-                  dressed — your cover art, your origin story, and a live AI greeter — plus a
-                  gallery where every creator name arrives with matching Kredentials imagery.
+                  Built for digital creators: type your artist name and three Kredentials Lander
+                  previews come back already dressed — an illustration from the name, the name in
+                  large type, one sentence introducing you, Make an Offer, and email capture. Pick
+                  your discipline, compare six image generators, and browse the creative gallery
+                  live at{" "}
+                  <a
+                    href="https://Kredentials.Kred/gallery"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "var(--vs-cyan)" }}
+                  >
+                    Kredentials.Kred/gallery
+                  </a>
+                  .
                   <span className="exlink">Live app link arrives with your Sprint 1 kit</span>
                 </div>
               </div>
