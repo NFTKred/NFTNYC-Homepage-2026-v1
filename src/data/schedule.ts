@@ -720,7 +720,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "day": "Thu",
     "time": "09:30am - 09:45am",
     "room": "Main Stage - Main Ballroom",
-    "title": "Fireside Chat with Jason Tadros and Jodee Rick - The Future of Digital Collectibles",
+    "title": "Fireside Chat with Jason Tadros and Jodee Rich - The Future of Digital Collectibles",
     "description": "Jason Tadros joins Jodee Rich to discuss the future of digital collectibles.",
     "speakers": [
       {
