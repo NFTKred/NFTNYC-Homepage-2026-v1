@@ -67,6 +67,18 @@ interface RawNft {
 const asObj = (v: unknown): RawNft =>
   v && typeof v === 'object' ? (v as RawNft) : {};
 
+// The API sometimes returns empty strings instead of null for missing image
+// fields, so a plain `??` chain gets stuck on the first empty preview. Treat
+// empty/whitespace strings as "no value" and keep looking.
+const firstNonEmpty = (
+  ...vals: Array<string | null | undefined>
+): string | null => {
+  for (const v of vals) {
+    if (typeof v === 'string' && v.trim()) return v;
+  }
+  return null;
+};
+
 function optimizeImageUrl(url: string | null): string | null {
   if (!url) return null;
   // The OneHub CDN can serve JPEG sources as WebP and resize them on the fly.
@@ -83,11 +95,12 @@ function normalizeMessages(raw: RawMessage[]): FeedItem[] {
       const dataNft = asObj(m.data?.nft);
       const batch = asObj(m.data?.batch);
       const image = optimizeImageUrl(
-        dataNft.meta?.preview ??
-          batch.meta?.preview ??
-          dataNft.face ??
-          batch.face ??
-          null
+        firstNonEmpty(
+          dataNft.meta?.preview,
+          batch.meta?.preview,
+          dataNft.face,
+          batch.face
+        )
       );
       const action = (m.action ?? 'post').toLowerCase();
       return {
@@ -285,12 +298,17 @@ export default function SeeWhatsOnTheMap() {
         )}
 
         <div className="swotm-cta-row">
-          <a className="swotm-cta swotm-cta-secondary" href="/ts-challenge">
+          <a
+            className="swotm-cta swotm-cta-secondary"
+            href="https://collect.nft.nyc/TS"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Learn More
           </a>
           <a
             className="swotm-cta"
-            href="https://onehub.nft.nyc/activity"
+            href="https://collect.nft.nyc/activity"
             target="_blank"
             rel="noopener noreferrer"
           >
