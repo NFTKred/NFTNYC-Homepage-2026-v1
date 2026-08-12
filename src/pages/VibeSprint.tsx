@@ -109,7 +109,7 @@ export default function VibeSprint() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [segment, setSegment] = useState("Designer or digital artist");
-  const [buildTool, setBuildTool] = useState("Lovable (primary — Agent Integrations)");
+  const [buildTool, setBuildTool] = useState("Lovable (primary, Agent Integrations)");
   const [domain, setDomain] = useState("");
   const [agree, setAgree] = useState(false);
   const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
@@ -788,7 +788,7 @@ export default function VibeSprint() {
                     value={buildTool}
                     onChange={(e) => setBuildTool(e.target.value)}
                   >
-                    <option>Lovable (primary — Agent Integrations)</option>
+                    <option>Lovable (primary, Agent Integrations)</option>
                     <option>Replit</option>
                     <option>Vercel + GitHub</option>
                     <option>Base44</option>
