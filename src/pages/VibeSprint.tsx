@@ -593,6 +593,41 @@ export default function VibeSprint() {
               </a>
               .
             </p>
+            <h3 style={{ marginTop: 30 }}>The top three designs</h3>
+            <p className="lead">
+              Above every submission's reward set sits one more:{" "}
+              <b>
+                the top three designs are acknowledged by the .Kred registry for the next two
+                years.
+              </b>
+            </p>
+            <div className="kit">
+              <div className="tile star">
+                <b>1 · Your credit, live</b>
+                A design credit on Kred's domain search surfaces, linked to your .Kred page.
+              </div>
+              <div className="tile">
+                <b>2 · Your design, deployed</b>
+                The three winning designs run as official Kred search experiences.
+              </div>
+              <div className="tile">
+                <b>3 · Your name, cited</b>
+                Across the .Kred gallery, the Sprint 1 kit, and Kred marketing for the full two
+                years.
+              </div>
+            </div>
+            <p className="form-note" style={{ marginTop: 12 }}>
+              Design once and be cited for two years — with your work promoted to the NFT.NYC
+              community of <b>180,000+ members</b>.
+            </p>
+            <p className="form-note" style={{ marginTop: 8 }}>
+              Every submission publishes under an open license (CC BY 4.0): anyone may use it,
+              always with credit to the designer — full detail in the{" "}
+              <a href="https://NFT.NYC/vibesprint/terms" style={{ color: "var(--vs-cyan)" }}>
+                Participation Terms
+              </a>
+              .
+            </p>
           </section>
 
           <section>
@@ -649,7 +684,7 @@ export default function VibeSprint() {
               <div className="tile"><b>Register</b><code>POST /domains/{"{d}"}/register</code><br />Real registrations funded by your Sprint 1 kit's API credits. Live demos earn.</div>
               <div className="tile"><b>Tokenize</b><code>POST /domains/{"{d}"}/token</code><br />Mint a domain token; ENS bridge; DNS zones; SSL.</div>
               <div className="tile"><b>Agent identity</b><code>POST /domains/{"{d}"}/agent</code><br />AID, ANS, MCP-I, DNSid — the AgenticID.Kred enrollment stack. Sprint 2's core.</div>
-              <div className="tile"><b>Kredentials page</b><code>Spec pending</code><br />Generate a Lander or a full Kredentials page for a set of links. Endpoint spec arrives with the Sprint 1 kit.</div>
+              <div className="tile"><b>Kredentials page</b><code>Spec pending</code><br />Generate a Lander or a full Kredentials page for a set of links. Endpoint spec publishes with the Sprint 1 kit.</div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
               Full interactive docs:{" "}
@@ -693,7 +728,7 @@ export default function VibeSprint() {
               <div className="trow"><b>Tue 11 – Mon 17 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
               <div className="trow hot"><b>Mon 17 Aug · 4:00pm ET</b>Sprint 1 opens: Sprint 1 kit published, 48-hour build window begins.</div>
               <div className="trow"><b>Mon 17 + Tue 18 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
-              <div className="trow"><b>Wed 19 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
+              <div className="trow"><b>Wed 19 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link, MCP link, API evidence.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
             </div>
           </section>
@@ -703,7 +738,7 @@ export default function VibeSprint() {
             <p className="lead">
               One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits,
               Lovable build credits in our sponsored workspace, a free .Kred domain claim, 1,000
-              XP, and both example app links — arrives when Sprint 1 opens, Monday 17 August at
+              XP, and both example app links — publishes when Sprint 1 opens, Monday 17 August at
               4:00pm ET.
             </p>
             {!submitted && (
