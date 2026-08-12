@@ -55,7 +55,7 @@ interface RawMessage {
   ftext?: string;
   // `nft` is sometimes a full object and sometimes just a numeric id.
   nft?: RawNft | number | null;
-  data?: { nft?: RawNft | null; batch?: RawNft | null } | null;
+  data?: { batch?: RawNft | null } | null;
 }
 
 interface RawNft {
@@ -81,12 +81,11 @@ function normalizeMessages(raw: RawMessage[]): FeedItem[] {
     .filter((m) => m && (m.ftext || m.action))
     .map((m, idx) => {
       const nft = asObj(m.nft);
-      const dataNft = asObj(m.data?.nft);
       const batch = asObj(m.data?.batch);
       const image = optimizeImageUrl(
-        dataNft.meta?.preview ??
+        nft.meta?.preview ??
           batch.meta?.preview ??
-          dataNft.face ??
+          nft.face ??
           batch.face ??
           null
       );
@@ -98,7 +97,7 @@ function normalizeMessages(raw: RawMessage[]): FeedItem[] {
         text: m.ftext ?? '',
         image,
         contributor:
-          dataNft.contributor_details?.name ?? batch.contributor_details?.name ?? null,
+          nft.contributor_details?.name ?? batch.contributor_details?.name ?? null,
         color: ACTION_COLORS[action] ?? '#F06347',
       };
     });
