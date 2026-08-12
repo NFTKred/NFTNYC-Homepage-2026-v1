@@ -901,6 +901,15 @@ export default function VibeSprint() {
                 style={{ color: "var(--color-text-muted)" }}
               >
                 PeopleBrowsr Terms of Service
+              </a>{" "}
+              ·{" "}
+              <a
+                href="https://f005.backblazeb2.com/file/PB-HubSpot/Kred_Flash_Sprints_Participation_Terms_v1.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--color-text-muted)" }}
+              >
+                Kred Flash Sprint ToS
               </a>
             </p>
           </section>
