@@ -7,25 +7,25 @@ import { supabase } from "@/lib/supabase";
 import "@/styles/vibesprint.css";
 
 /**
- * Sprint 1 landing page (content v2) — "The Next Gen Domain Reseller".
+ * Sprint 1 landing page (content v3) — "The Next Gen Domain Reseller".
  * Shares the .vibesprint stylesheet. The form on this page collects the
  * close-out *submission* (submit-sprint-submission edge function) — season
  * registration lives on /vibesprint.
  */
 
-/** Sprint 1 opens Wed 12 Aug 2026, 4:00pm ET (20:00 UTC). */
-const SPRINT1_OPEN_UTC = Date.UTC(2026, 7, 12, 20, 0, 0);
-/** Submissions close Fri 14 Aug 2026, 4:00pm ET (20:00 UTC). */
-const SPRINT1_CLOSE_UTC = Date.UTC(2026, 7, 14, 20, 0, 0);
+/** Sprint 1 opens Mon 17 Aug 2026, 4:00pm ET (20:00 UTC). */
+const SPRINT1_OPEN_UTC = Date.UTC(2026, 7, 17, 20, 0, 0);
+/** Submissions close Wed 19 Aug 2026, 4:00pm ET (20:00 UTC). */
+const SPRINT1_CLOSE_UTC = Date.UTC(2026, 7, 19, 20, 0, 0);
 
 const EVENT_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Event",
   name: "Kred Flash Sprint 1 — The Next Gen Domain Reseller",
   description:
-    "A 48-hour build sprint: build a next generation Domain Reseller on the Domains.Kred Registrar API. Opens Wednesday 12 August 4:00pm ET, closes Friday 14 August 4:00pm ET.",
-  startDate: "2026-08-12T16:00:00-04:00",
-  endDate: "2026-08-14T16:00:00-04:00",
+    "A 48-hour build sprint: build a next generation Domain Reseller on the Domains.Kred Registrar API. Opens Monday 17 August 4:00pm ET, closes Wednesday 19 August 4:00pm ET.",
+  startDate: "2026-08-17T16:00:00-04:00",
+  endDate: "2026-08-19T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   location: { "@type": "VirtualLocation", url: "https://nft.nyc/sprint1" },
@@ -159,7 +159,7 @@ export default function Sprint1() {
         <div className="wrap" style={{ paddingTop: 96 }}>
 
           <header className="hero">
-            <div className="eyebrow">Kred Flash Sprints · Sprint 1 · Wed 12 – Fri 14 August</div>
+            <div className="eyebrow">Kred Flash Sprints · Sprint 1 · Round 1 · Mon 17 – Wed 19 August</div>
             <h1>
               Sprint 1<br />
               <span className="glow">The Next Gen Domain Reseller</span>
@@ -167,14 +167,14 @@ export default function Sprint1() {
             <p className="sub">
               One ask: <b>build a next generation Domain Reseller using the features of the Kred TLD</b> —
               the TLD synonymous with identity: human, agentic, and agentic discoverability via
-              Kredentials. A <b>48-hour build window</b>, opening <b>Wednesday 12 August at 4:00pm ET</b>{" "}
-              and closing Friday 14 August at 4:00pm ET. Build in{" "}
+              Kredentials. A <b>48-hour build window</b>, opening <b>Monday 17 August at 4:00pm ET</b>{" "}
+              and closing Wednesday 19 August at 4:00pm ET. Build in{" "}
               <b>Lovable or the platform of your choice</b> — publish a Lovable app with Agent
               Integrations and it works inside <b>ChatGPT and Claude</b>. Up to 20 selected
               submissions per sprint join the <b>Times Square Showcase</b>.
             </p>
             <div className="badges">
-              <span className="badge hot">Wed 12 – Fri 14 Aug · Opens 4:00pm ET</span>
+              <span className="badge hot">Sprint 1 Round 1 · Mon 17 – Wed 19 Aug · Opens 4:00pm ET</span>
               <span className="badge tool">Lovable primary · any platform welcome</span>
               <span className="badge api">Live engineer support · Both evenings</span>
             </div>
@@ -215,7 +215,7 @@ export default function Sprint1() {
               </div>
               <div className="tile">
                 <b>3 · Visual AI results</b>
-                Produced with an AI assistant — <b>Wingman</b> — and associated with the domain
+                Produced with an AI assistant — <b>Wingman AI</b> — and associated with the domain
                 string. Results wear imagery, identity, and motion.
               </div>
               <div className="tile">
@@ -267,9 +267,9 @@ export default function Sprint1() {
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
               Achievements are objective bars, published before the sprint opens: Agent-Ready · Full
-              Loop · Theatre · 100% Clear Card — 1,000 XP each. The Season Headliner, selected by the
-              review panel from the sprints' Spotlight and Featured submissions, presents at Demo
-              Day, NFT.NYC 2026, 1 September.
+              Loop · Theatre · 100% Clear Card — 1,000 XP each. One builder, selected by the review
+              panel from the sprints' Spotlight and Featured submissions, presents live at NFT.NYC
+              2026, 1 September.
             </p>
           </section>
 
@@ -317,8 +317,8 @@ export default function Sprint1() {
               <div className="tile">
                 <b>Built from their links</b>
                 A pasted Linktree (which stays live and untouched), a .com website, social profiles,
-                press links. Wingman, the agent behind every page, gathers the sources, writes the
-                page, and verifies every fact.
+                press links. Wingman AI, the agent behind every page, gathers the sources, writes
+                the page, and verifies every fact.
               </div>
               <div className="tile">
                 <b>Made for answer engines</b>
@@ -355,12 +355,12 @@ export default function Sprint1() {
           </section>
 
           <section>
-            <h2>Live Support, Both Evenings</h2>
+            <h2>Live Support Both Evenings</h2>
             <div className="agent">
-              <h3>Andrew Horn is on the call</h3>
+              <h3>Our lead engineer is on the call</h3>
               <p>
-                Sprint 1 carries <b>two live Google Meet support sessions</b>, hosted by Andrew Horn,
-                our lead engineer: from <b>4:00pm ET on Wednesday 12 and Thursday 13 August</b>, each running{" "}
+                Sprint 1 carries <b>two live Google Meet support sessions</b>, hosted by our lead
+                engineer: from <b>4:00pm ET on Monday 17 and Tuesday 18 August</b>, each running{" "}
                 <b>five to eight hours</b> into the evening.
               </p>
               <p>
@@ -410,10 +410,10 @@ export default function Sprint1() {
             <h2>Sprint 1 Week</h2>
             <div className="tl">
               <div className="trow"><b>Tue 11 Aug</b>Registration opens; the story publishes on the NFT.NYC blog.</div>
-              <div className="trow"><b>Tue 11 – Wed 12 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
-              <div className="trow hot"><b>Wed 12 Aug · 4:00pm ET</b>Sprint 1 opens: kit delivered, 48-hour build window begins.</div>
-              <div className="trow"><b>Wed 12 + Thu 13 Aug · From 4:00pm ET</b>Live Google Meet support: Andrew Horn, our lead engineer, on an open call, five to eight hours each evening.</div>
-              <div className="trow"><b>Fri 14 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
+              <div className="trow"><b>Tue 11 – Mon 17 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
+              <div className="trow hot"><b>Mon 17 Aug · 4:00pm ET</b>Sprint 1 opens: kit delivered, 48-hour build window begins.</div>
+              <div className="trow"><b>Mon 17 + Tue 18 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
+              <div className="trow"><b>Wed 19 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
             </div>
           </section>
@@ -421,8 +421,8 @@ export default function Sprint1() {
           <section id="submit">
             <h2>Submit Your Build</h2>
             <p className="lead">
-              Submissions open with Sprint 1 — Wednesday 12 August, 4:00pm ET — and hard close
-              Friday 14 August, 4:00pm ET. You can edit or resubmit any time before close. Not
+              Submissions open with Sprint 1 — Monday 17 August, 4:00pm ET — and hard close
+              Wednesday 19 August, 4:00pm ET. You can edit or resubmit any time before close. Not
               registered yet? <a href="/vibesprint#register" style={{ color: "var(--vs-cyan)" }}>Register free first</a>.
             </p>
             {!submitted && (
@@ -476,7 +476,7 @@ export default function Sprint1() {
                     {sending ? "Submitting…" : "Submit my build"}
                   </button>
                   <span className="form-note">
-                    Edit or resubmit any time before Friday 14 August, 4:00pm ET
+                    Edit or resubmit any time before Wednesday 19 August, 4:00pm ET
                   </span>
                 </div>
                 {formError && (
@@ -491,7 +491,7 @@ export default function Sprint1() {
                 <b>{wasUpdate ? "Submission updated — you're in." : "You're in — submission received."}</b>{" "}
                 We have your app URL and project link on file for Sprint 1.
                 <ul>
-                  <li>Keep building — you can resubmit with the same email any time before Friday 14 August, 4:00pm ET.</li>
+                  <li>Keep building — you can resubmit with the same email any time before Wednesday 19 August, 4:00pm ET.</li>
                   <li>The review harness checks your live app directly: liveness, the primary flow, mobile at 375px, and result-card clarity.</li>
                   <li>Every valid submission earns Finisher XP, a Finisher Certificate, and a Build Report.</li>
                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
@@ -534,7 +534,6 @@ export default function Sprint1() {
 
           <div className="foot">
             KRED FLASH SPRINTS · SPRINT 1 — THE NEXT GEN DOMAIN RESELLER · PEOPLEBROWSR × NFT.NYC 2026
-            · DEMO DAY 1 SEPTEMBER, NEW YORK
           </div>
 
         </div>

@@ -32,7 +32,7 @@ const EVENT_JSON_LD = {
   "@type": "Event",
   name: "Kred Flash Sprint 1 — The Next Gen Domain Reseller",
   description:
-    "Build a next generation Domain Reseller on the Domains.Kred Registrar API. A 48-hour vibe coding sprint — build in Lovable or the platform of your choice, publish an agent-ready app that ChatGPT and Claude can call. Sprint 1 of three, leading to Demo Day at NFT.NYC 2026.",
+    "Build a next generation Domain Reseller on the Domains.Kred Registrar API. A 48-hour vibe coding sprint — build in Lovable or the platform of your choice, publish an agent-ready app that ChatGPT and Claude can call. Sprint 1 of three.",
   startDate: "2026-08-17T16:00:00-04:00",
   endDate: "2026-08-19T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
