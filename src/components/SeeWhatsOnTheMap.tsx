@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
  * list of "featured" mission tiles. It has been replaced with a real
  * activity feed sourced from the OneHub NFT platform API — each row
  * is a genuine event (buy / sell / claim / mint / like / send) that
- * happened on onehub.nft.nyc, tagged `tsbillboard`.
+ * happened on collect.nft.nyc, tagged `tsbillboard`.
  *
  * All CSS is scoped via .swotm-* class prefixes so it can't collide
  * with other components on the page. Brand colors match the project
@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from 'react';
  */
 
 const FEED_URL =
-  'https://api.nftplatform.tech/nft/messages/?page=1&count=40&grab=onehub.nft.nyc&channel=onehub.nft.nyc&actions=send,claim,buy,like,sell,mint,ending_soon,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&sort=-created&tags=tsbillboard&token=734d4bf5-e766-46a9-be21-94035c1343d6';
+  'https://api.nftplatform.tech/nft/messages/?page=1&count=40&grab=collect.nft.nyc&channel=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,ending_soon,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&sort=-created&tags=tsbillboard&token=734d4bf5-e766-46a9-be21-94035c1343d6';
 
 const DECOR: { x: number; y: number }[] = [
   { x: 12, y: 18 }, { x: 72, y: 8 },  { x: 88, y: 32 }, { x: 25, y: 55 },
