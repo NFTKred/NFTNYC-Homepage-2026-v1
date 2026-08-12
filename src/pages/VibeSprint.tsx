@@ -899,10 +899,6 @@ export default function VibeSprint() {
             </div>
           </section>
 
-          <div className="foot">
-            KRED FLASH SPRINTS · BUILD A BETTER DOMAIN IDENTITY SEARCH · PEOPLEBROWSR × NFT.NYC 2026 · NFT.NYC 2026 · 1 SEPTEMBER, NEW YORK<br />
-            V17 · THE MERGED PAGE · THE ROUNDS SCHEDULE · MONDAYS 4PM ET · SPRINT 3 RUNS THROUGH THE CONFERENCE BY DESIGN
-          </div>
 
         </div>
       </div>
