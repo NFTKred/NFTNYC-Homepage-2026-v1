@@ -596,7 +596,12 @@ export default function VibeSprint() {
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
               Achievements are objective bars, published before each sprint opens: Agent-Ready ·
-              Full Loop · Theatre · 100% Clear Card — 1,000 XP each.
+              Full Loop · Theatre · 100% Clear Card — 1,000 XP each. The full reward detail lives
+              in the About Pillar:{" "}
+              <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>
+                The Kred Flash Sprints (P14)
+              </a>
+              .
             </p>
           </section>
 
@@ -620,10 +625,10 @@ export default function VibeSprint() {
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
-              <b style={{ color: "var(--color-text)" }}>Who your app serves:</b> Linktree users who
-              want to control their own domain and care about their identity and AI
-              discoverability, people tired of misleading mainstream search, and anyone who wants
-              to be found by LLMs.
+              <b style={{ color: "var(--color-text)" }}>Who your app serves:</b> creators above all
+              — digital artists, designers, and speakers who need their name findable by humans and
+              AI alike — then Linktree users who want to control their own domain, people tired of
+              misleading mainstream search, and anyone who wants to be found by LLMs.
             </p>
           </section>
 
@@ -634,8 +639,8 @@ export default function VibeSprint() {
               <p>
                 Every sprint carries <b>two live Google Meet support sessions</b>, hosted by our
                 lead engineer: from <b>4:00pm ET on the first two evenings</b> of the build
-                window, each running <b>five to eight hours</b>. Sprint 1 sessions: Wednesday 12
-                and Thursday 13 August.
+                window, each running <b>five to eight hours</b>. Sprint 1 sessions: Monday 17 and
+                Tuesday 18 August.
               </p>
               <p>
                 Authentication, API questions, publishing problems: bring the specific error and
