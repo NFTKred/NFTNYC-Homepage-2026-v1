@@ -515,31 +515,56 @@ export default function VibeSprint() {
               for anyone who receives a Kred domain, and the identity layer your search app can
               offer with every name it sells.
             </p>
+            <div
+              style={{
+                maxWidth: 440,
+                margin: "20px auto 22px",
+                border: "1px solid var(--card-border)",
+                borderRadius: 14,
+                overflow: "hidden",
+              }}
+            >
+              <img
+                src={sketchlightAsset.url}
+                alt="Sketchlight.Kred live record — a Kredentials page for light-painting photographer Ray Vagner in the Dossier format, with sourced facts and Wingman answering questions"
+                loading="lazy"
+                style={{ display: "block", width: "100%", height: "auto" }}
+              />
+            </div>
             <p className="form-note" style={{ maxWidth: 440, margin: "0 auto 18px", textAlign: "center" }}>
               A live record at its own name:{" "}
               <a href="https://Sketchlight.Kred" style={{ color: "var(--vs-cyan)" }}>
                 Sketchlight.Kred
               </a>{" "}
-              - light-painting photographer Ray Vagner, with Wingman-verified links,
-              machine-readable identity, worn in the Bio format.
+              - light-painting photographer Ray Vagner, worn in the <b>Dossier format</b>: the
+              story in prose, every fact with a source and a date, and Wingman answering questions
+              live on the page.
             </p>
             <div className="kit">
               <div className="tile">
-                <b>Built from their links</b>
-                A pasted Linktree (which stays live and untouched), a .com website, social profiles,
-                press links. Wingman, the agent behind every page, gathers the sources, writes the
-                page, and verifies every fact.
+                <b>Ships at registration</b>
+                One AI-generated illustration from the name itself, the name displayed in large
+                type, one line of story, a Make an Offer button, and an email collector — with
+                JSON-LD and /llms.txt underneath so AI assistants can read it. Minimal on the
+                surface, complete underneath.
               </div>
               <div className="tile">
-                <b>Made for answer engines</b>
-                A verified, machine-readable identity record — on the golden renders: 38 verified
-                facts, 21 full-text answers, 21 cited sources. Editorial for humans, readable by
-                LLMs.
+                <b>Grows into Kredentials</b>
+                The Lander is the floor. The owner adds their links — a Linktree (it stays live and
+                untouched), a .com website, socials, press — and Wingman writes the full verified
+                record: every fact with a source and a date, worn in one of three formats.
+              </div>
+              <div className="tile">
+                <b>Beyond the Lander</b>
+                The same name can become a personal profile, a business page, an ENS-bridged wallet
+                address, an agent with a Kred Score, or a full website — with Wingman attached to
+                every path.
               </div>
               <div className="tile">
                 <b>In your app</b>
-                The Kredentials API generates a page from a set of links — spec arrives with your
-                Sprint 1 kit. Offer it as the add-on on every domain your app sells.
+                The Kredentials API generates Landers and pages from a set of links — the spec
+                arrives with your Sprint 1 kit. Offer it as the add-on on every domain your app
+                sells.
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
@@ -547,9 +572,9 @@ export default function VibeSprint() {
               <a href="https://Kredentials.Kred" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
                 Kredentials.Kred
               </a>{" "}
-              · the Gallery:{" "}
+              · 1,100+ names recently added — see{" "}
               <a href="https://Kredentials.Kred/gallery" target="_blank" rel="noopener noreferrer" style={{ color: "var(--vs-cyan)" }}>
-                Kredentials.Kred/gallery
+                the Gallery
               </a>{" "}
               · how pages are built: the Wingman Pipeline Explainer on the{" "}
               <a href="https://NFT.NYC/blog" style={{ color: "var(--vs-cyan)" }}>NFT.NYC blog</a>.
