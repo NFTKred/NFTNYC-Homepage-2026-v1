@@ -55,7 +55,7 @@ interface RawMessage {
   ftext?: string;
   // `nft` is sometimes a full object and sometimes just a numeric id.
   nft?: RawNft | number | null;
-  data?: { batch?: RawNft | null } | null;
+  data?: { nft?: RawNft | null; batch?: RawNft | null } | null;
 }
 
 interface RawNft {
