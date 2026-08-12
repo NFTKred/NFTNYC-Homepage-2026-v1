@@ -489,7 +489,6 @@ export default function VibeSprint() {
             </p>
             <div
               style={{
-                maxWidth: 440,
                 margin: "20px auto 22px",
                 border: "1px solid var(--card-border)",
                 borderRadius: 14,
