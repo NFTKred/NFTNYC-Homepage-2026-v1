@@ -1188,8 +1188,8 @@ export default function VibeSprint() {
               <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
                 <small>Four eras ending at the Lander (P3)</small>Anatomy of a Parking Page
               </a>
-              <a className="lk ext" href="https://NFT.NYC/blog" target="_blank" rel="noopener noreferrer">
-                <small>How Kredentials pages are built (P22)</small>The Wingman Pipeline Explainer
+              <a className="lk ext" href="https://kredentials.kred/guides/how-wingman-builds-your-page" target="_blank" rel="noopener noreferrer">
+                <small>How Kredentials pages are built</small>The Wingman Pipeline Explainer
               </a>
               <a className="lk ext" href="https://Kredentials.Kred" target="_blank" rel="noopener noreferrer">
                 <small>The identity layer</small>Kredentials.Kred
