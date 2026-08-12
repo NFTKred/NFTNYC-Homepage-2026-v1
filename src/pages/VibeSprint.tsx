@@ -547,7 +547,8 @@ export default function VibeSprint() {
               <span className="cta-note">
                 One free registration covers all three sprints. Your Sprint 1 kit — Kred API
                 credits, Lovable build credits in our sponsored workspace, a free .Kred domain
-                claim, 1,000 XP, and both example apps — publishes when Sprint 1 opens.
+                claim, 1,000 XP, both example apps, the Kredentials API spec, and the "Connect
+                your Kred app to ChatGPT and Claude" one-pager, publishes when Sprint 1 opens.
               </span>
             </div>
           </header>
@@ -573,10 +574,16 @@ export default function VibeSprint() {
               </a>
               . Over the next 18 months, hundreds of new TLDs will arrive for domain registrars
               like GoDaddy and others to sell — through a search experience that has barely changed
-              in decades. There is a unique opening to build a{" "}
-              <b>better, visual, AI driven domain search</b>, and the skills it needs — vibe
-              coding, AI remixing, tokenization, visual images — are the skills this community
-              already has.
+              in decades. Out in the market today, names are sold as "available" when they are
+              already owned, paid placement goes undisclosed, and renewal prices hide behind
+              tooltips.{" "}
+              <a href="https://nft.nyc/blog" style={{ color: "var(--vs-cyan)" }}>
+                We documented all three
+              </a>
+              . There is a unique opening to build a{" "}
+              <b>better, visual, AI driven domain search</b>, and the skills it needs are vibe
+              coding, AI remixing, tokenization and visual images.{" "}
+              <b>These are your skills, and they are exactly what domain search needs.</b>
             </p>
             <p className="lead" style={{ marginTop: 14 }}>
               <b>The top three designs are cited by the .Kred registry for two years.</b> Every
@@ -622,6 +629,7 @@ export default function VibeSprint() {
                   R2 · Mon 24 – Wed 26 Aug · NamePros
                 </span>
                 <h3>The Next Gen Domain Reseller</h3>
+                <p className="oneline"><b>Humans buying identity.</b></p>
                 <p>
                   Build a next generation Domain Reseller on the Domains.Kred Registrar API — a
                   very visual experience, 100% Clear pricing on every card, every result explained.
@@ -632,6 +640,7 @@ export default function VibeSprint() {
                 <span className="no">2</span>
                 <span className="date">R1 · Mon 24 – Wed 26 Aug · NFT.NYC creators</span>
                 <h3>The Agentic Domain Registrar</h3>
+                <p className="oneline"><b>Agents buying identity.</b></p>
                 <p>
                   The customer flips to agents: they discover, price, register, and enroll their
                   own .Kred agentic identity — AID, ANS, MCP-I, DNSid — end to end.
@@ -644,6 +653,7 @@ export default function VibeSprint() {
                   R1 · Mon 31 Aug – Wed 2 Sep · Hugging Face + NFT.NYC creators
                 </span>
                 <h3>Agentic Debate on the Matrix</h3>
+                <p className="oneline"><b>Agents in conversation.</b></p>
                 <p>
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
                   and score — one week before NFT.NYC.
@@ -845,6 +855,15 @@ export default function VibeSprint() {
               <div className="ecard"><b>Times Square Showcase</b><span className="amt">Up to 20 per sprint</span>Up to 20 selected submissions per sprint are featured on the rotating Times Square billboard.</div>
               <div className="ecard"><b>Spotlight</b><span className="amt">$1,000 grant</span>One Spotlight submission per sprint earns a build grant and a deep-dive on the NFT.NYC blog; two Featured submissions earn recap coverage.</div>
             </div>
+            <p className="form-note" style={{ marginTop: 12 }}>
+              Achievements are objective bars, published before each sprint opens: Agent-Ready
+              &middot; Full Loop &middot; Theatre &middot; 100% Clear Card, 1,000 XP each. The full
+              reward detail lives in the About Pillar:{" "}
+              <a href="https://nft.nyc/blog" style={{ color: "var(--vs-cyan)" }}>
+                The Kred Flash Sprints (P14)
+              </a>
+              .
+            </p>
             <h3 style={{ marginTop: 30 }}>The top three designs</h3>
             <p className="lead">
               Above every submission's reward set sits one more:{" "}
@@ -983,7 +1002,8 @@ export default function VibeSprint() {
             <p className="lead">
               One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits,
               Lovable build credits in our sponsored workspace, a free .Kred domain claim, 1,000
-              XP, and both example app links — publishes when Sprint 1 opens, Monday 17 August at
+              XP, both example app links, the Kredentials API spec, and the "Connect your Kred app
+              to ChatGPT and Claude" one-pager, publishes when Sprint 1 opens, Monday 17 August at
               4:00pm ET.
             </p>
             {!submitted && (
