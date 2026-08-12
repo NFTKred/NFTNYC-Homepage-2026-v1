@@ -859,8 +859,8 @@ export default function VibeSprint() {
               Achievements are objective bars, published before each sprint opens: Agent-Ready
               &middot; Full Loop &middot; Theatre &middot; 100% Clear Card, 1,000 XP each. The full
               reward detail lives in the About Pillar:{" "}
-              <a href="https://nft.nyc/blog" style={{ color: "var(--vs-cyan)" }}>
-                The Kred Flash Sprints (P14)
+              <a href="https://www.nft.nyc/blog/the-kred-flash-sprints-from-first-prompt-to-the-nft-nyc-2026-stage" style={{ color: "var(--vs-cyan)" }}>
+                The Kred Flash Sprints
               </a>
               .
             </p>
