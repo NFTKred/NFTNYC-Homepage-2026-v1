@@ -267,7 +267,9 @@ export default function VibeSprint() {
               accelerating it: AI agents now need names they can verify and act on. This community
               saw it first. A domain name can be <b>tokenized on the blockchain</b>, it can{" "}
               <b>address a wallet</b>, and for a creator it is becoming the one name that carries
-              your gallery, your payments, and your brand.
+              your gallery, your payments, and your brand.{" "}
+              <b>Every digital creator should have a .Kred name</b>, and every .Kred domain
+              becomes its owner's AI-optimized story.
             </p>
             <p className="lead">
               The timing is real. ICANN has just closed its{" "}
@@ -287,21 +289,60 @@ export default function VibeSprint() {
           </section>
 
           <section>
+            <h2>The Prize</h2>
+            <p className="lead">
+              <b>
+                The top three designs are acknowledged by the .Kred registry for the next two
+                years.
+              </b>
+            </p>
+            <div className="kit">
+              <div className="tile star">
+                <b>1 · Your credit, live</b>
+                A design credit on Kred's domain search surfaces, linked to your .Kred page.
+              </div>
+              <div className="tile">
+                <b>2 · Your design, deployed</b>
+                The three winning designs run as official Kred search experiences.
+              </div>
+              <div className="tile">
+                <b>3 · Your name, cited</b>
+                Across the .Kred gallery, the dev kit, and Kred marketing for the full two years.
+              </div>
+            </div>
+            <p className="form-note" style={{ marginTop: 12 }}>
+              Design once and be cited for two years — with your work promoted to the NFT.NYC
+              community of <b>180,000+ members</b>.
+            </p>
+            <p className="form-note" style={{ marginTop: 8 }}>
+              Every submission publishes under an open license (CC BY 4.0): anyone may use it,
+              always with credit to the designer — full detail in the{" "}
+              <a href="https://NFT.NYC/vibesprint/terms" style={{ color: "var(--vs-cyan)" }}>
+                Participation Terms
+              </a>
+              .
+            </p>
+          </section>
+
+          <section>
             <h2>Meet Kred</h2>
             <div className="agent">
               <h3>Our sister company's APIs</h3>
               <p>
                 As many of you know, <b>Kred is a sister company of NFT.NYC</b> and owns the{" "}
-                <b>.Kred top-level domain</b>. Kred has built a series of domain and identity
-                APIs, packaged as <b>MCP</b> (the open protocol AI assistants use to call tools),
-                ready to use from vibe coding platforms like Lovable.
+                <b>.Kred top-level domain</b>. Kred has built a series of{" "}
+                <a href="https://api.Domains.Kred/docs" style={{ color: "var(--vs-cyan)" }}>
+                  domain and identity APIs
+                </a>
+                , packaged as <b>MCP</b> (the open protocol AI assistants use to call tools), ready
+                to use from vibe coding platforms like Lovable.
               </p>
               <p>
-                One ask: <b>build a next generation Domain Reseller using the features of the Kred
-                TLD</b> — the TLD synonymous with identity. Describe the app you want to an AI
-                coding agent and it builds with you. Design sense counts for more than syntax, and
-                digital designers think out of the box and think deeply — that is exactly who this
-                build needs.
+                One ask: <b>design the next generation of domain search</b> — a next generation
+                Domain Reseller built on the features of the Kred TLD, the TLD synonymous with
+                identity. Describe the app you want to an AI coding agent and it builds with you.
+                Design sense counts for more than syntax, and digital designers think out of the
+                box and think deeply — that is exactly who this build needs.
               </p>
             </div>
           </section>
