@@ -260,10 +260,35 @@ function clean(v: unknown, max: number) {
 }
 
 /** Registers <domain>.kred with the registrar. Returns an error string on failure. */
+async function provisionUserId(email: string): Promise<{ id: string | null; error: string | null }> {
+  const secret = Deno.env.get("PB_PROVISION_SECRET");
+  if (!secret) return { id: null, error: "PB_PROVISION_SECRET is not configured" };
+  try {
+    const form = new URLSearchParams({ email, secret });
+    const res = await fetch("https://claim.peoplebrowsr.com/provision_user/dotceo", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: form.toString(),
+    });
+    const text = await res.text();
+    console.log("[provision] response", { status: res.status, body: text.slice(0, 500) });
+    if (!res.ok) return { id: null, error: `Provision user failed (${res.status}): ${text.slice(0, 200)}` };
+    let data: Record<string, any> = {};
+    try { data = JSON.parse(text); } catch { /* non-JSON */ }
+    const id =
+      data?.user_id ?? data?.id ?? data?.data?.user_id ?? data?.data?.id ??
+      data?.user?.id ?? (/^[\w.-]+$/.test(text.trim()) ? text.trim() : null);
+    if (!id) return { id: null, error: "Provision response missing user_id" };
+    return { id: String(id), error: null };
+  } catch (err) {
+    return { id: null, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
 async function registerKredDomain(fqdn: string, reg: {
   fullName: string; email: string; phone: string; address1: string;
   city: string; state: string; postalCode: string; country: string;
-  profileLinks: string[];
+  profileLinks: string[]; onBehalfOf?: string | null;
 }): Promise<{ ok: true; registration: unknown; dns: unknown } | { ok: false; error: string }> {
   const adminToken = Deno.env.get("KRED_DOMAINS_ADMIN_TOKEN");
   const userToken = Deno.env.get("KRED_DOMAINS_USER_TOKEN") || adminToken;
@@ -282,6 +307,7 @@ async function registerKredDomain(fqdn: string, reg: {
     "Content-Type": "application/json",
     "X-Admin-Token": adminToken,
   };
+  if (reg.onBehalfOf) headers["X-On-Behalf-Of"] = reg.onBehalfOf;
 
   const { first, last } = splitName(reg.fullName);
   const contactPayload = {
@@ -484,20 +510,33 @@ Deno.serve(async (req) => {
   const fqdn = `${domain.toLowerCase()}.kred`;
   let domainStatus = "pending";
   let domainError: string | null = null;
+
+  // Resolve (or create) the sprinter's PeopleBrowsr user id for X-On-Behalf-Of.
+  const provisioned = await provisionUserId(email);
+  const kredUserId = provisioned.id;
+  if (provisioned.error) {
+    console.error("[provision] failed:", provisioned.error);
+    domainError = `Provision user: ${provisioned.error}`;
+  }
+  if (kredUserId) {
+    await supabase.from("vibesprint_registrations").update({ kred_user_id: kredUserId }).eq("id", row.id);
+  }
+
   try {
     const result = await registerKredDomain(fqdn, {
       fullName: name, email, phone, address1, city, state, postalCode, country,
       profileLinks: profileLinks.length ? profileLinks : (profileLink ? [profileLink] : []),
+      onBehalfOf: kredUserId,
     });
     if (result.ok) {
       domainStatus = "registered";
     } else {
       domainStatus = "failed";
-      domainError = result.error;
+      domainError = [domainError, result.error].filter(Boolean).join(" | ");
     }
   } catch (err) {
     domainStatus = "failed";
-    domainError = err instanceof Error ? err.message : String(err);
+    domainError = [domainError, err instanceof Error ? err.message : String(err)].filter(Boolean).join(" | ");
     console.error("kred registration threw:", err);
   }
 
@@ -526,6 +565,7 @@ Deno.serve(async (req) => {
           <tr><td style="padding:6px 0;color:#666;width:180px;">Email</td><td style="padding:6px 0;"><a href="mailto:${escape(email)}">${escape(email)}</a></td></tr>
           <tr><td style="padding:6px 0;color:#666;">Segment</td><td style="padding:6px 0;">${escape(segment)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Kred domain requested</td><td style="padding:6px 0;"><b>${escape(domain)}.Kred</b></td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Kred user ID</td><td style="padding:6px 0;">${escape(kredUserId ?? "—")}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Domain registration</td><td style="padding:6px 0;">${domainLine}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Build platform</td><td style="padding:6px 0;">${escape(buildTool)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Phone</td><td style="padding:6px 0;">${escape(phone)}</td></tr>
