@@ -105,7 +105,7 @@ export default function BlogXpKred() {
       </Helmet>
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
-      <article style={{ padding: 'calc(4rem + 56px) 1.5rem 4rem' }}>
+      <article style={{ padding: 'calc(4rem + 56px + 50px) 1.5rem 4rem' }}>
         <div className="max-w-[720px] mx-auto">
 
           {/* Back link */}

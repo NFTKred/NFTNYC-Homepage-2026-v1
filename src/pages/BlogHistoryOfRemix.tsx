@@ -162,7 +162,7 @@ export default function BlogHistoryOfRemix() {
       <article
         ref={articleRef}
         className="blog-remix"
-        style={{ padding: "calc(4rem + 56px) 1.5rem 4rem" }}
+        style={{ padding: "calc(4rem + 56px + 50px) 1.5rem 4rem" }}
       >
         <div className="max-w-[820px] mx-auto">
           {/* Back link */}

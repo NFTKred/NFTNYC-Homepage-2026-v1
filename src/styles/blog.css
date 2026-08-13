@@ -14,7 +14,7 @@
 
 /* Hero */
 .blog-post {
-  padding: calc(4rem + 56px) 1.5rem 4rem;
+  padding: calc(4rem + 56px + 50px) 1.5rem 4rem;
 }
 .blog-post-inner {
   max-width: 760px;
