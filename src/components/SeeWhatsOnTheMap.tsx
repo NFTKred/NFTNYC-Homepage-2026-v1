@@ -14,8 +14,12 @@ import { useEffect, useRef, useState } from 'react';
  * palette (--primary-rgb is brand coral #f06347).
  */
 
+// Same endpoint the live https://collect.nft.nyc/activity page uses.
+// The previous URL filtered by `tags=tsbillboard`, which excluded almost
+// all recent activity and made the widget stop at ~11 days old. Matching
+// the live page: no tag filter, no `ending_soon`, `onsale=true`.
 const FEED_URL =
-  'https://api.nftplatform.tech/nft/messages/?page=1&count=40&grab=collect.nft.nyc&channel=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,ending_soon,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&sort=-created&tags=tsbillboard&token=734d4bf5-e766-46a9-be21-94035c1343d6';
+  'https://api.nftplatform.tech/nft/messages/?token=734d4bf5-e766-46a9-be21-94035c1343d6&count=40&page=1&grab=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&channel=collect.nft.nyc&onsale=true';
 
 const DECOR: { x: number; y: number }[] = [
   { x: 12, y: 18 }, { x: 72, y: 8 },  { x: 88, y: 32 }, { x: 25, y: 55 },
