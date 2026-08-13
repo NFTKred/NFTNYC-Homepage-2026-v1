@@ -278,7 +278,12 @@ async function provisionUserId(email: string): Promise<{ id: string | null; erro
     const id =
       data?.user_id ?? data?.id ?? data?.data?.user_id ?? data?.data?.id ??
       data?.user?.id ?? (/^[\w.-]+$/.test(text.trim()) ? text.trim() : null);
-    if (!id) return { id: null, error: "Provision response missing user_id" };
+    if (!id) {
+      const apiMsg = data?.message ?? data?.error_description ??
+        (typeof data?.error === "string" ? data.error : null);
+      if (apiMsg) return { id: null, error: `Provision user failed: ${apiMsg}` };
+      return { id: null, error: `Provision response missing user_id: ${text.slice(0, 200)}` };
+    }
     return { id: String(id), error: null };
   } catch (err) {
     return { id: null, error: err instanceof Error ? err.message : String(err) };
