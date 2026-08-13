@@ -510,20 +510,33 @@ Deno.serve(async (req) => {
   const fqdn = `${domain.toLowerCase()}.kred`;
   let domainStatus = "pending";
   let domainError: string | null = null;
+
+  // Resolve (or create) the sprinter's PeopleBrowsr user id for X-On-Behalf-Of.
+  const provisioned = await provisionUserId(email);
+  const kredUserId = provisioned.id;
+  if (provisioned.error) {
+    console.error("[provision] failed:", provisioned.error);
+    domainError = `Provision user: ${provisioned.error}`;
+  }
+  if (kredUserId) {
+    await supabase.from("vibesprint_registrations").update({ kred_user_id: kredUserId }).eq("id", row.id);
+  }
+
   try {
     const result = await registerKredDomain(fqdn, {
       fullName: name, email, phone, address1, city, state, postalCode, country,
       profileLinks: profileLinks.length ? profileLinks : (profileLink ? [profileLink] : []),
+      onBehalfOf: kredUserId,
     });
     if (result.ok) {
       domainStatus = "registered";
     } else {
       domainStatus = "failed";
-      domainError = result.error;
+      domainError = [domainError, result.error].filter(Boolean).join(" | ");
     }
   } catch (err) {
     domainStatus = "failed";
-    domainError = err instanceof Error ? err.message : String(err);
+    domainError = [domainError, err instanceof Error ? err.message : String(err)].filter(Boolean).join(" | ");
     console.error("kred registration threw:", err);
   }
 
@@ -552,6 +565,7 @@ Deno.serve(async (req) => {
           <tr><td style="padding:6px 0;color:#666;width:180px;">Email</td><td style="padding:6px 0;"><a href="mailto:${escape(email)}">${escape(email)}</a></td></tr>
           <tr><td style="padding:6px 0;color:#666;">Segment</td><td style="padding:6px 0;">${escape(segment)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Kred domain requested</td><td style="padding:6px 0;"><b>${escape(domain)}.Kred</b></td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Kred user ID</td><td style="padding:6px 0;">${escape(kredUserId ?? "—")}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Domain registration</td><td style="padding:6px 0;">${domainLine}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Build platform</td><td style="padding:6px 0;">${escape(buildTool)}</td></tr>
           <tr><td style="padding:6px 0;color:#666;">Phone</td><td style="padding:6px 0;">${escape(phone)}</td></tr>
