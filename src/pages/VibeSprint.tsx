@@ -25,6 +25,8 @@ const SKETCHLIGHT_IMAGE_URL = "/vibesprint/sketchlight-example.jpg";
 const REG_OPEN_UTC = Date.UTC(2026, 7, 11, 13, 0, 0);
 /** Sprint 1 Round 1 opens Mon 17 Aug 2026, 4:00pm ET (20:00 UTC). */
 const SPRINT1_UTC = Date.UTC(2026, 7, 17, 20, 0, 0);
+/** Sprint 1 Round 1 submissions close Wed 19 Aug 2026, 4:00pm ET (20:00 UTC). */
+const SPRINT1_CLOSE_UTC = Date.UTC(2026, 7, 19, 20, 0, 0);
 
 const EVENT_JSON_LD = {
   "@context": "https://schema.org",
@@ -367,6 +369,17 @@ function computeCountdown(): { value: string; label: string } {
   return { value: "LIVE", label: "Sprint 1 is open" };
 }
 
+function computeSubmitCountdown(): { value: string; label: string } {
+  const now = Date.now();
+  if (now < SPRINT1_UTC) {
+    return { value: formatDuration(SPRINT1_UTC - now), label: "until submissions open" };
+  }
+  if (now < SPRINT1_CLOSE_UTC) {
+    return { value: formatDuration(SPRINT1_CLOSE_UTC - now), label: "until submissions close" };
+  }
+  return { value: "CLOSED", label: "Sprint 1 submissions have closed" };
+}
+
 export default function VibeSprint() {
   const [theme, setTheme] = useState<"dark" | "light">(
     () => (document.documentElement.getAttribute("data-theme") as "dark" | "light") || "dark"
@@ -383,6 +396,13 @@ export default function VibeSprint() {
   const [countdown, setCountdown] = useState(computeCountdown);
   useEffect(() => {
     const id = window.setInterval(() => setCountdown(computeCountdown()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  // Submissions countdown for the Submit Your Build section.
+  const [submitCountdown, setSubmitCountdown] = useState(computeSubmitCountdown);
+  useEffect(() => {
+    const id = window.setInterval(() => setSubmitCountdown(computeSubmitCountdown()), 1000);
     return () => window.clearInterval(id);
   }, []);
 
@@ -1174,6 +1194,63 @@ export default function VibeSprint() {
                 Kred Flash Sprint ToS
               </a>
             </p>
+          </section>
+
+          <section id="submit">
+            <h2>Submit Your Build</h2>
+            <p className="lead">
+              Submissions open with Sprint 1, <b>Monday 17 August at 4:00pm ET</b>, and hard close{" "}
+              <b>Wednesday 19 August at 4:00pm ET</b>. You can edit or resubmit any time before
+              close.
+            </p>
+            <div className="meters" style={{ margin: "18px 0 22px" }}>
+              <div className="meter" aria-live="polite">
+                <b>{submitCountdown.value}</b>
+                <span>{submitCountdown.label}</span>
+              </div>
+            </div>
+            <h3 className="sub-h2" style={{ fontSize: 20 }}>
+              What you will need
+            </h3>
+            <p className="lead">
+              Worth reading before you build rather than on the day, because the second one shapes
+              where you publish.
+            </p>
+            <ol className="req-list">
+              <li>
+                <b>The email you registered with.</b> It ties your submission to your registration.
+              </li>
+              <li>
+                <b>Your app URL, live on your .Kred domain.</b> The build has to be published on
+                the .Kred name that came with your Sprint 1 kit. Building somewhere else and
+                moving it later is the one avoidable way to miss the close.
+              </li>
+              <li>
+                <b>Your project link.</b> Lovable, Replit, Vercel, Base44, Bolt, or wherever you
+                built.
+              </li>
+              <li>
+                <b>Team members, optional.</b> Anyone else who worked on it, named for the reward
+                set only. Team size plays no part in judging.
+              </li>
+            </ol>
+            <div className="form-actions" style={{ marginTop: 20 }}>
+              <button
+                className="btn"
+                type="button"
+                disabled
+                style={{ opacity: 0.55, cursor: "not-allowed" }}
+              >
+                Submissions open Monday 17 August, 4:00pm ET
+              </button>
+              <span className="form-note">
+                Not registered yet?{" "}
+                <a href="#register" style={{ color: "var(--vs-cyan)" }}>
+                  Register free first
+                </a>
+                , it takes a minute and covers all three sprints.
+              </span>
+            </div>
           </section>
 
           <section>
