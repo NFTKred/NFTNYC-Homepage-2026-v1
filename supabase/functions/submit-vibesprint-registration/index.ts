@@ -275,9 +275,11 @@ async function provisionUserId(email: string): Promise<{ id: string | null; erro
     if (!res.ok) return { id: null, error: `Provision user failed (${res.status}): ${text.slice(0, 200)}` };
     let data: Record<string, any> = {};
     try { data = JSON.parse(text); } catch { /* non-JSON */ }
+    const pick = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
     const id =
-      data?.user_id ?? data?.id ?? data?.data?.user_id ?? data?.data?.id ??
-      data?.user?.id ?? (/^[\w.-]+$/.test(text.trim()) ? text.trim() : null);
+      pick(data?.user_id) ?? pick(data?.id) ?? pick(data?.user) ??
+      pick(data?.data?.user_id) ?? pick(data?.data?.id) ?? pick(data?.data?.user) ??
+      pick(data?.user?.id) ?? (/^[\w.-]+$/.test(text.trim()) ? text.trim() : null);
     if (!id) {
       const apiMsg = data?.message ?? data?.error_description ??
         (typeof data?.error === "string" ? data.error : null);
