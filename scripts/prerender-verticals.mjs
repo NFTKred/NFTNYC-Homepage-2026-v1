@@ -69,6 +69,18 @@ const PAGES = [
 
 const ORIGIN = "https://www.nft.nyc";
 
+// Supabase read-only access for pulling the published blog_posts at build
+// time so we can prerender per-post OG tags. Public anon key — same one
+// shipped in the client bundle.
+const SUPABASE_URL = "https://zgryfbuoarrlmocavodo.supabase.co";
+const SUPABASE_ANON =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncnlmYnVvYXJybG1vY2F2b2RvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNjA4MzEsImV4cCI6MjA5MDczNjgzMX0.xDGlhaIKm_6sArOQnU8mUIDdpeVbX3Iwh5rVDRkvD_g";
+
+// Slugs already rendered by hand-authored PAGES entries above — the
+// Supabase-backed prerender pass skips them to avoid overwriting the
+// carefully-authored copy with the DB row.
+const LEGACY_BLOG_SLUGS = new Set(["xp-and-kredits", "ts-challenge", "history-of-remix"]);
+
 // Content date constants — update when meaningful body copy changes.
 // Used in both Article JSON-LD dateModified and sitemap <lastmod> so they stay in sync.
 const DATE_MODIFIED = {
@@ -300,6 +312,67 @@ async function main() {
   }
   console.log(`✔ prerendered ${written} pages (${VERTICALS.length} verticals + ${PAGES.length} site pages)`);
 
+  // ── Supabase-backed blog posts ──────────────────────────────────
+  // Fetches every published blog_posts row and writes
+  // dist/blog/<slug>/index.html so that social crawlers (Twitter/X,
+  // Facebook, LinkedIn, Slack, Discord) unfurl per-post title +
+  // subtitle + hero image instead of the site-default homepage card.
+  // Non-fatal on failure — the site still ships, dynamic posts just
+  // fall back to the generic /blog OG until the next build.
+  let dynamicBlogs = [];
+  try {
+    const params = new URLSearchParams({
+      select: "slug,title,subtitle,description,hero_image_url,hero_image_alt,og_image_url,author,published_at,updated_at,read_minutes",
+      status: "eq.published",
+    });
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/blog_posts?${params}`, {
+      headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+    });
+    if (!res.ok) throw new Error(`Supabase ${res.status}: ${await res.text()}`);
+    const rows = await res.json();
+    dynamicBlogs = rows.filter((r) => r.slug && !LEGACY_BLOG_SLUGS.has(r.slug));
+  } catch (err) {
+    console.warn(`⚠ blog prerender skipped: ${err.message} (non-fatal)`);
+  }
+
+  let blogWritten = 0;
+  for (const post of dynamicBlogs) {
+    const title = `${post.title} - NFT.NYC Blog`;
+    const desc = post.subtitle || post.description || "";
+    const ogImage = post.og_image_url || post.hero_image_url || `${ORIGIN}/og/blog.png`;
+    const alt = post.hero_image_alt || post.title;
+    const url = `${ORIGIN}/blog/${post.slug}`;
+    const head = buildHead({ title, desc, url, ogImage, alt });
+    const outDir = join(DIST, "blog", post.slug);
+    mkdirSync(outDir, { recursive: true });
+    let postHtml = injectMeta(base, head);
+
+    // Article JSON-LD so Google, Twitter card summary, and LinkedIn all
+    // get structured data alongside the OG tags.
+    const article = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": `${url}#article`,
+      "headline": post.title,
+      "description": desc,
+      "image": ogImage,
+      "datePublished": post.published_at || undefined,
+      "dateModified": post.updated_at || post.published_at || undefined,
+      "author": post.author
+        ? { "@type": "Person", "name": post.author }
+        : { "@type": "Organization", "name": "NFT.NYC" },
+      "publisher": { "@id": `${ORIGIN}/#organization` },
+      "url": url,
+      "mainEntityOfPage": { "@type": "WebPage", "@id": url },
+      "inLanguage": "en",
+    };
+    postHtml = injectJsonLd(postHtml, article);
+
+    writeFileSync(join(outDir, "index.html"), postHtml);
+    blogWritten++;
+  }
+  if (blogWritten) console.log(`✔ prerendered ${blogWritten} Supabase blog posts`);
+
   // ── Sitemap.xml ─────────────────────────────────────────────────
   // Generated alongside the prerender so the URL list stays in sync.
   // Homepage gets priority 1.0; high-traffic pages 0.9; verticals 0.8;
@@ -316,6 +389,12 @@ async function main() {
     { loc: `${ORIGIN}/blog`,                 priority: "0.7", changefreq: "weekly" },
     { loc: `${ORIGIN}/blog/xp-and-kredits`,  priority: "0.5", changefreq: "monthly" },
     { loc: `${ORIGIN}/blog/ts-challenge`,    priority: "0.5", changefreq: "monthly" },
+    ...dynamicBlogs.map((p) => ({
+      loc: `${ORIGIN}/blog/${p.slug}`,
+      priority: "0.5",
+      changefreq: "monthly",
+      lastmod: (p.updated_at || p.published_at || today).slice(0, 10),
+    })),
     ...VERTICALS.map(v => ({
       loc: `${ORIGIN}/${v.id}`,
       priority: "0.8",
@@ -325,7 +404,7 @@ async function main() {
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${DATE_MODIFIED[u.loc.replace(ORIGIN, '')] || today}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`),
+    ...urls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod || DATE_MODIFIED[u.loc.replace(ORIGIN, '')] || today}</lastmod>\n    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`),
     '</urlset>',
     '',
   ].join("\n");
