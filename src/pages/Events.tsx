@@ -15,9 +15,24 @@ interface SatelliteEvent {
   sourceUrl?: string;
   tag?: 'Official' | 'Community';
   image?: string;
+  /** Pin to the top of the list, above the date-sorted entries. */
+  pinned?: boolean;
 }
 
 const EVENTS: SatelliteEvent[] = [
+  {
+    name: 'New York GoClub event by GoMining',
+    host: 'GoMining',
+    date: '2026-09-02',
+    dateLabel: 'Tuesday, Sept 2, 2026 · 6:00 PM arrival · 7:00–11:00 PM event',
+    venue: 'Hudson VU · 653 Eleventh Avenue, New York, NY · 5 min from Times Square',
+    description:
+      'Private night · limited seats · application only. A closed, invite-only evening bringing together a curated group of builders, partners, and ecosystem leaders. Premium food and beverages, a breathtaking nighttime view of NYC, a presentation by the CEO of GoMining, and open dialogue on current trends and challenges. All applications reviewed; selected guests receive a confirmation.',
+    registrationUrl: 'https://luma.com/ej07hnvx',
+    tag: 'Community',
+    image: '/events/goclub-gomining.png',
+    pinned: true,
+  },
   {
     name: 'BMAG presents Remains — a solo exhibition by Rupture',
     host: 'Bitcoin Magazine Art Gallery & Museum (BMAG)',
@@ -92,7 +107,13 @@ export default function Events() {
   };
 
   const sorted = useMemo(
-    () => [...EVENTS].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+    () => {
+      const pinned = EVENTS.filter((e) => e.pinned);
+      const rest = EVENTS.filter((e) => !e.pinned).sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+      return [...pinned, ...rest];
+    },
     []
   );
 
