@@ -33,6 +33,7 @@ import Events from "./pages/Events";
 import Program from "./pages/Program";
 import VibeSprint from "./pages/VibeSprint";
 import Sprint1 from "./pages/Sprint1";
+import Beta from "./pages/Beta";
 import ManageVolunteers from "./pages/ManageVolunteers";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import TicketingModal from "./components/TicketingModal";
@@ -79,6 +80,7 @@ const App = () => (
           <Route path="/program" element={<Program />} />
           <Route path="/vibesprint" element={<VibeSprint />} />
           <Route path="/sprint1" element={<Sprint1 />} />
+          <Route path="/beta" element={<Beta />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/admin/blog" element={<ProtectedRoute><BlogList /></ProtectedRoute>} />
