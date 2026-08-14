@@ -91,13 +91,15 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  /* Radial DARKENS the centre where the wordmark sits, and fades to
-     transparent at the edges so the surrounding art can be seen. The
-     linear layer adds a soft top/bottom haze so the header and the
-     scroll-transition below the fold don't look like a hard cut. */
+  /* Radial DARKENS the centre where the wordmark sits, and fades to a
+     modest tint at the edges. Linear layer now carries a stronger
+     uniform veil so the whole gallery reads as muted background - the
+     foreground marquee and CTAs sit against a darker canvas than
+     before. Art is still recognisable, but no longer competes with the
+     text for attention. */
   background:
-    radial-gradient(50% 42% at 50% 54%, rgba(10, 10, 15, 0.78), rgba(10, 10, 15, 0.0) 78%),
-    linear-gradient(180deg, rgba(10, 10, 15, 0.42), rgba(10, 10, 15, 0.12) 45%, rgba(10, 10, 15, 0.48));
+    radial-gradient(58% 48% at 50% 52%, rgba(10, 10, 15, 0.88), rgba(10, 10, 15, 0.28) 82%),
+    linear-gradient(180deg, rgba(10, 10, 15, 0.58), rgba(10, 10, 15, 0.38) 45%, rgba(10, 10, 15, 0.62));
 }
 
 .lgh-body {
@@ -216,14 +218,23 @@
 
 /* Foreground marquee - drift of live collections with .kred handles.
    Sits above the atmospheric background gallery; the background is
-   "the room", the marquee is "what's on stage right now". */
+   "the room", the marquee is "what's on stage right now".
+
+   Breaks out of the 880px .lgh-body max-width so the track spans the
+   full viewport. `width: 100vw` + a symmetric negative margin pulls
+   it edge-to-edge; .lgh's overflow: hidden and the section's own
+   1.5rem side padding both stay respected because we deliberately
+   clip past them here. */
 .lgh-marquee {
-  width: 100%;
-  max-width: 100%;
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: 1.8rem;
   overflow: hidden;
-  margin: 0 auto 1.8rem;
-  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
 }
 .lgh-marquee-track {
   display: flex;
