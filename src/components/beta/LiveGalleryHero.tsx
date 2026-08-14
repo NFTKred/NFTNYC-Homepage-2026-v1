@@ -30,9 +30,27 @@ const FEED_URL =
  *  images than this, the source list is cycled so every cell is filled. */
 const TILE_COUNT = 72;
 
-/** How often the rotator swaps one tile for a fresh one (ms). Slow enough
- *  that the eye can catch each change; fast enough to feel alive. */
-const ROTATE_INTERVAL_MS = 3200;
+/** The rotator swaps 2 tiles per tick, at a randomised delay between
+ *  min and max. Randomised so the motion doesn't feel mechanical. */
+const ROTATE_MIN_MS = 2000;
+const ROTATE_MAX_MS = 6000;
+
+/** Every SPOTLIGHT_[MIN|MAX]_MS a random tile lights up for SPOTLIGHT_HOLD_MS,
+ *  as if someone just collected it. Reads as "a human, not a script". */
+const SPOTLIGHT_MIN_MS = 9500;
+const SPOTLIGHT_MAX_MS = 14000;
+const SPOTLIGHT_HOLD_MS = 1500;
+
+/** A tile carries two image slots and a marker for which is currently
+ *  visible. On swap, the new URL goes into the inactive slot and the
+ *  active marker flips - so the CSS opacity transition on .lgh-tile-img
+ *  produces a proper crossfade between the outgoing and incoming art
+ *  rather than an instant swap. */
+interface TileSlot {
+  a: string;
+  b: string;
+  active: "a" | "b";
+}
 
 interface RawNft {
   face?: string | null;
@@ -101,8 +119,8 @@ function fallbackTiles(count: number): string[] {
 }
 
 export default function LiveGalleryHero() {
-  const [images, setImages] = useState<string[] | null>(null);
-  const [freshIndex, setFreshIndex] = useState<number | null>(null);
+  const [tiles, setTiles] = useState<TileSlot[] | null>(null);
+  const [spotlightIndex, setSpotlightIndex] = useState<number | null>(null);
   const [collectCount, setCollectCount] = useState<number | null>(null);
   const rotationPool = useRef<string[]>([]);
   const rotationCursor = useRef(0);
@@ -122,17 +140,21 @@ export default function LiveGalleryHero() {
         const msgs = data.messages ?? [];
         const imgs = extractImages(msgs);
         if (imgs.length >= 6) {
-          // Cycle the source list to exactly TILE_COUNT so every cell
-          // in the grid always has an image, even when the feed returns
-          // fewer unique thumbnails than the grid needs. Extra images
-          // beyond TILE_COUNT feed the rotation pool for tile swaps.
-          const filled = Array.from(
+          // Seed each tile with two DIFFERENT images so the very first
+          // rotator swap already has something distinct to fade to.
+          // Extras beyond what the grid needs go into the rotation pool.
+          const offset = Math.floor(imgs.length / 2);
+          const filled: TileSlot[] = Array.from(
             { length: TILE_COUNT },
-            (_, i) => imgs[i % imgs.length],
+            (_, i) => ({
+              a: imgs[i % imgs.length],
+              b: imgs[(i + offset) % imgs.length],
+              active: "a" as const,
+            }),
           );
-          setImages(filled);
+          setTiles(filled);
           rotationPool.current =
-            imgs.length > TILE_COUNT ? imgs.slice(TILE_COUNT) : [];
+            imgs.length > TILE_COUNT * 2 ? imgs.slice(TILE_COUNT * 2) : [];
         }
         setCollectCount(countCollections(msgs));
       } catch {
@@ -144,38 +166,106 @@ export default function LiveGalleryHero() {
     };
   }, []);
 
-  // Rotator: every ROTATE_INTERVAL_MS, swap one random visible tile for
-  // one from the rotation pool. If the pool is exhausted, cycle back
-  // through it. Never runs when the visible set is fallback tiles.
-  useEffect(() => {
-    if (!images) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (rotationPool.current.length === 0) return;
+  const usingFallback = tiles === null;
 
-    const id = window.setInterval(() => {
-      setImages((prev) => {
-        if (!prev) return prev;
-        const idx = Math.floor(Math.random() * prev.length);
-        const pool = rotationPool.current;
-        const next = pool[rotationCursor.current % pool.length];
-        rotationCursor.current += 1;
-        // Move the outgoing image into the pool tail so it can return later.
-        pool.push(prev[idx]);
+  // Rotator: at a randomised interval, swap TWO random tiles at once.
+  // Each swap writes the incoming URL into the inactive slot and flips
+  // the active marker, so the CSS opacity transition produces a
+  // crossfade rather than a hard cut. Recursive setTimeout so each
+  // tick's delay is randomised individually - avoids the clockwork feel
+  // of a fixed setInterval.
+  useEffect(() => {
+    if (!tiles) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let cancelled = false;
+    let timeoutId = 0;
+
+    const tick = () => {
+      if (cancelled) return;
+      setTiles((prev) => {
+        if (!prev || prev.length < 2) return prev;
         const copy = prev.slice();
-        copy[idx] = next;
-        setFreshIndex(idx);
-        window.setTimeout(() => setFreshIndex(null), 900);
+        const pool = rotationPool.current;
+        const swapAt = (idx: number) => {
+          const t = copy[idx];
+          const outgoing = t.active === "a" ? t.a : t.b;
+          // Pick incoming: prefer the pool if any, else recycle by
+          // pulling the outgoing image of a *different* tile so the
+          // gallery churns even when the pool is empty.
+          let incoming: string;
+          if (pool.length > 0) {
+            incoming = pool[rotationCursor.current % pool.length];
+            rotationCursor.current += 1;
+          } else {
+            const donorIdx = (idx + 1 + Math.floor(Math.random() * (copy.length - 1))) % copy.length;
+            const donor = copy[donorIdx];
+            incoming = donor.active === "a" ? donor.a : donor.b;
+          }
+          pool.push(outgoing);
+          copy[idx] = {
+            ...t,
+            [t.active === "a" ? "b" : "a"]: incoming,
+            active: t.active === "a" ? "b" : "a",
+          };
+        };
+        const i1 = Math.floor(Math.random() * copy.length);
+        let i2 = Math.floor(Math.random() * copy.length);
+        if (i2 === i1) i2 = (i1 + 1) % copy.length;
+        swapAt(i1);
+        swapAt(i2);
         return copy;
       });
-    }, ROTATE_INTERVAL_MS);
-    return () => window.clearInterval(id);
-  }, [images]);
+      const delay = ROTATE_MIN_MS + Math.random() * (ROTATE_MAX_MS - ROTATE_MIN_MS);
+      timeoutId = window.setTimeout(tick, delay);
+    };
 
-  const tiles = useMemo(
-    () => images ?? fallbackTiles(TILE_COUNT),
-    [images],
+    timeoutId = window.setTimeout(tick, ROTATE_MIN_MS);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [tiles]);
+
+  // Spotlight: on a slower cadence than the rotator, pick a random
+  // tile and pop it forward for SPOTLIGHT_HOLD_MS. The tile scales
+  // up 8%, drops the atmospheric blur, brightens, and gains an orange
+  // halo matching the Register CTA - reads as "a human just collected
+  // that piece." Only one tile spotlit at a time.
+  useEffect(() => {
+    if (!tiles) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let cancelled = false;
+    let scheduleId = 0;
+    let clearId = 0;
+
+    const schedule = () => {
+      if (cancelled) return;
+      const delay = SPOTLIGHT_MIN_MS + Math.random() * (SPOTLIGHT_MAX_MS - SPOTLIGHT_MIN_MS);
+      scheduleId = window.setTimeout(() => {
+        if (cancelled) return;
+        setSpotlightIndex(Math.floor(Math.random() * TILE_COUNT));
+        clearId = window.setTimeout(() => {
+          if (cancelled) return;
+          setSpotlightIndex(null);
+          schedule();
+        }, SPOTLIGHT_HOLD_MS);
+      }, delay);
+    };
+
+    schedule();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(scheduleId);
+      window.clearTimeout(clearId);
+    };
+  }, [tiles]);
+
+  const fallback = useMemo(
+    () => (usingFallback ? fallbackTiles(TILE_COUNT) : []),
+    [usingFallback],
   );
-  const usingFallback = images === null;
 
   // Live-count label. Prefer the specific number when we have one; use a
   // discreet placeholder otherwise so the pill doesn't render as "undefined".
@@ -197,24 +287,44 @@ export default function LiveGalleryHero() {
       aria-label="NFT.NYC 2026 - attend in person or collect from anywhere"
     >
       <div className="lgh-gallery" aria-hidden="true">
-        {tiles.map((t, i) => {
-          const isFresh = freshIndex === i;
-          const cls = usingFallback
-            ? `lgh-tile lgh-tf ${t}${isFresh ? " lgh-tile-fresh" : ""}`
-            : `lgh-tile${isFresh ? " lgh-tile-fresh" : ""}`;
-          return (
-            <div key={`${i}-${t}`} className={cls}>
-              {usingFallback ? (
-                <div className={`lgh-tile-fallback`} />
-              ) : (
-                <img src={t} alt="" loading="lazy" decoding="async" />
-              )}
-            </div>
-          );
-        })}
+        {usingFallback
+          ? fallback.map((cls, i) => (
+              <div
+                key={i}
+                className={`lgh-tile ${cls}${spotlightIndex === i ? " lgh-tile-spotlight" : ""}`}
+              >
+                <div className="lgh-tile-fallback" />
+              </div>
+            ))
+          : (tiles ?? []).map((tile, i) => (
+              <div
+                key={i}
+                className={`lgh-tile${spotlightIndex === i ? " lgh-tile-spotlight" : ""}`}
+              >
+                {tile.a && (
+                  <img
+                    src={tile.a}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className={`lgh-tile-img${tile.active === "a" ? " active" : ""}`}
+                  />
+                )}
+                {tile.b && (
+                  <img
+                    src={tile.b}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className={`lgh-tile-img${tile.active === "b" ? " active" : ""}`}
+                  />
+                )}
+              </div>
+            ))}
       </div>
 
       <div className="lgh-scrim" aria-hidden="true" />
+      <div className="lgh-grain" aria-hidden="true" />
 
       <span className="lgh-beta" aria-hidden="true">Beta preview</span>
 

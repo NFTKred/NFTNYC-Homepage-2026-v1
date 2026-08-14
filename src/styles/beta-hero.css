@@ -28,12 +28,10 @@
   grid-template-columns: repeat(9, 1fr);
   gap: 4px;
   padding: 4px;
-  /* Was 0.34 with a 1.6px blur - the art was legible as atmosphere but
-     the individual works were hard to make out. Bumped to 0.72 with
-     minimal blur so each tile reads as a recognisable NFT while the
-     radial scrim keeps the wordmark legible over it. */
+  /* Base gallery opacity - individual tiles override this via z-index
+     when the spotlight class is applied. The soft blur+saturate sits
+     on `.lgh-tile-img` (not here) so the spotlight can strip it. */
   opacity: 0.72;
-  filter: blur(0.3px) saturate(1.02);
   z-index: 1;
   pointer-events: none;
 }
@@ -49,9 +47,9 @@
   border-radius: 2px;
   overflow: hidden;
   position: relative;
-  transition: opacity 800ms ease-out, filter 400ms ease-out;
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 500ms ease;
 }
-.lgh-tile img,
 .lgh-tile .lgh-tile-fallback {
   width: 100%;
   height: 100%;
@@ -61,6 +59,22 @@
 .lgh-tile-fallback {
   background: linear-gradient(135deg, #1a1a2e, #0f0f1e);
 }
+
+/* Stacked images per tile - two <img> children fade between each other
+   when the active slot flips. Both are absolute-positioned inside the
+   tile so they occupy the same space; only the .active one is visible. */
+.lgh-tile-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 700ms ease;
+  filter: blur(0.3px) saturate(1.02);
+}
+.lgh-tile-img.active { opacity: 1; }
 
 /* Fallback tile palette when the API is unavailable or an item has no image.
    Twelve distinct treatments so the mosaic still reads as a mosaic. */
@@ -77,13 +91,25 @@
 .lgh-tf-11 { background: radial-gradient(circle at 50% 50%, #FFFFFF, #F59E0B 30%, #78350F); }
 .lgh-tf-12 { background: repeating-conic-gradient(#111827 0deg 12deg, #1F2937 12deg 24deg); }
 
-/* When a tile has just been swapped in by the rotator, briefly highlight it
-   so the eye picks up the change without the whole gallery feeling nervous. */
-.lgh-tile.lgh-tile-fresh {
-  opacity: 1;
-  filter: none;
-  transform: scale(1.02);
-  z-index: 2;
+/* Spotlight - every 10-15s the rotator picks a random tile and briefly
+   pops it forward as if "someone just collected this one right now".
+   Scales up 8%, drops the blur, brightens the image, adds an orange
+   halo matching the Register CTA. Held ~1500ms then fades back. */
+.lgh-tile.lgh-tile-spotlight {
+  z-index: 4;
+  transform: scale(1.08);
+  box-shadow:
+    0 0 40px 4px rgba(241, 86, 33, 0.42),
+    0 0 12px rgba(241, 86, 33, 0.85);
+}
+.lgh-tile.lgh-tile-spotlight .lgh-tile-img {
+  filter: blur(0) saturate(1.15) brightness(1.3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lgh-tile.lgh-tile-spotlight {
+    transform: none;
+    transition: none;
+  }
 }
 
 .lgh-scrim {
@@ -91,15 +117,36 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  /* Radial DARKENS the centre where the wordmark sits, and fades to a
-     modest tint at the edges. Linear layer now carries a stronger
-     uniform veil so the whole gallery reads as muted background - the
-     foreground marquee and CTAs sit against a darker canvas than
-     before. Art is still recognisable, but no longer competes with the
-     text for attention. */
+  /* Proper vignette: transparent-ish through the centre where the eye
+     focuses, dark at the edges to imply distance. Text legibility on
+     the centre now comes from the layered text-shadow on .lgh-wordmark
+     rather than a centre-dark scrim. Adds the depth-of-field cue that
+     turns "wallpaper" into "we're peering into a wall of screens". */
   background:
-    radial-gradient(58% 48% at 50% 52%, rgba(10, 10, 15, 0.88), rgba(10, 10, 15, 0.28) 82%),
-    linear-gradient(180deg, rgba(10, 10, 15, 0.58), rgba(10, 10, 15, 0.38) 45%, rgba(10, 10, 15, 0.62));
+    radial-gradient(70% 60% at 50% 50%,
+      rgba(10, 10, 15, 0.10) 0%,
+      rgba(10, 10, 15, 0.25) 50%,
+      rgba(10, 10, 15, 0.75) 90%,
+      rgba(10, 10, 15, 0.92) 100%),
+    linear-gradient(180deg,
+      rgba(10, 10, 15, 0.42),
+      rgba(10, 10, 15, 0.18) 45%,
+      rgba(10, 10, 15, 0.50));
+}
+
+/* Phosphor grain - a fine SVG-feTurbulence noise laid over the gallery
+   to evoke CRT/OLED billboard texture. Sits above the scrim so it
+   integrates the whole layer rather than only the art. Kept extremely
+   low opacity - imperceptible up close but adds physical presence. */
+.lgh-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
 }
 
 .lgh-body {
