@@ -34,12 +34,18 @@ const ROTATE_INTERVAL_MS = 3200;
 interface RawNft {
   face?: string | null;
   meta?: { preview?: string | null } | null;
+  contributor_details?: { name?: string | null } | null;
 }
 interface RawMessage {
   id?: string;
   action?: string;
   nft?: RawNft | number | null;
   data?: { nft?: RawNft | number | null; batch?: RawNft | null } | null;
+}
+
+interface MarqueeCard {
+  image: string;
+  handle: string;
 }
 const asObj = (v: unknown): RawNft =>
   v && typeof v === "object" ? (v as RawNft) : {};
@@ -81,6 +87,33 @@ function extractImages(raw: RawMessage[]): string[] {
   return out;
 }
 
+/** Extract image + contributor pairs for the foreground marquee. Only
+ *  items with both a preview image AND a named contributor make the cut,
+ *  so we never render an anonymous card. */
+function extractMarqueeCards(raw: RawMessage[]): MarqueeCard[] {
+  const out: MarqueeCard[] = [];
+  const seen = new Set<string>();
+  for (const m of raw) {
+    const dataNft = asObj(m.data?.nft);
+    const batch = asObj(m.data?.batch);
+    const img = firstNonEmpty(
+      dataNft.meta?.preview,
+      batch.meta?.preview,
+      dataNft.face,
+      batch.face,
+    );
+    const name = firstNonEmpty(
+      dataNft.contributor_details?.name,
+      batch.contributor_details?.name,
+    );
+    if (!img || !name || seen.has(img)) continue;
+    seen.add(img);
+    const handle = `@${name.replace(/\s+/g, "").toLowerCase()}.kred`;
+    out.push({ image: optimizeImageUrl(img), handle });
+  }
+  return out;
+}
+
 /** Actions that count as "a collection happened" for the live count. */
 const COLLECT_ACTIONS = new Set(["buy", "claim", "collect", "mint", "gift"]);
 
@@ -97,8 +130,15 @@ function fallbackTiles(count: number): string[] {
   return Array.from({ length: count }, (_, i) => `lgh-tf-${(i % palette) + 1}`);
 }
 
+/** How many cards the marquee renders. The track is duplicated below
+ *  for a seamless loop, so the DOM ends up with 2x this. Anything under
+ *  6 makes the marquee too short to fill wide viewports; over 12 the
+ *  cycle gets long enough that late cards feel disconnected. */
+const MARQUEE_COUNT = 10;
+
 export default function LiveGalleryHero() {
   const [images, setImages] = useState<string[] | null>(null);
+  const [marquee, setMarquee] = useState<MarqueeCard[]>([]);
   const [freshIndex, setFreshIndex] = useState<number | null>(null);
   const [collectCount, setCollectCount] = useState<number | null>(null);
   const rotationPool = useRef<string[]>([]);
@@ -124,6 +164,7 @@ export default function LiveGalleryHero() {
           setImages(imgs.slice(0, TILE_COUNT));
           rotationPool.current = imgs.slice(TILE_COUNT);
         }
+        setMarquee(extractMarqueeCards(msgs).slice(0, MARQUEE_COUNT));
         setCollectCount(countCollections(msgs));
       } catch {
         // Silent; falls through to the gradient tiles.
@@ -231,6 +272,59 @@ export default function LiveGalleryHero() {
         </p>
 
         <p className="lgh-meta">Times Square, New York City · 1-3 Sep 2026</p>
+
+        {marquee.length >= 4 && (
+          <div
+            className="lgh-marquee"
+            aria-label="Recently collected on collect.nft.nyc"
+          >
+            <div className="lgh-marquee-track">
+              {/* Track duplicated below so the animation loops seamlessly.
+                  Duplicates are aria-hidden so screen readers only see the
+                  original set. */}
+              {marquee.map((c, i) => (
+                <a
+                  key={`m-${i}-${c.image}`}
+                  className="lgh-mcard"
+                  href="https://collect.nft.nyc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="lgh-mcard-tile">
+                    <img
+                      src={c.image}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <span className="lgh-mcard-handle">{c.handle}</span>
+                </a>
+              ))}
+              {marquee.map((c, i) => (
+                <a
+                  key={`m-dup-${i}-${c.image}`}
+                  className="lgh-mcard"
+                  href="https://collect.nft.nyc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  <div className="lgh-mcard-tile">
+                    <img
+                      src={c.image}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <span className="lgh-mcard-handle">{c.handle}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="lgh-ctas">
           <button
