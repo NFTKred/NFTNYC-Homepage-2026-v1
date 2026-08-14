@@ -12,7 +12,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  min-height: min(88vh, 780px);
+  min-height: 80vh;
   padding: calc(4rem + 56px) 1.5rem 3rem;
   background: #0A0A10;
   color: #F0F0F5;
@@ -206,79 +206,6 @@
   text-transform: uppercase;
   color: rgba(240, 240, 245, 0.5);
   margin: 1rem 0 2rem;
-}
-
-/* Foreground marquee - drift of live collections with .kred handles.
-   Sits above the atmospheric background gallery; the background is
-   "the room", the marquee is "what's on stage right now".
-
-   Breaks out of the 880px .lgh-body max-width so the track spans the
-   full viewport. `width: 100vw` + a symmetric negative margin pulls
-   it edge-to-edge; .lgh's overflow: hidden and the section's own
-   1.5rem side padding both stay respected because we deliberately
-   clip past them here. */
-.lgh-marquee {
-  position: relative;
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  margin-bottom: 1.8rem;
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-}
-.lgh-marquee-track {
-  display: flex;
-  gap: 1rem;
-  width: max-content;
-  animation: lgh-marquee 42s linear infinite;
-}
-.lgh-marquee:hover .lgh-marquee-track,
-.lgh-marquee:focus-within .lgh-marquee-track {
-  animation-play-state: paused;
-}
-@keyframes lgh-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .lgh-marquee-track { animation: none; }
-}
-
-.lgh-mcard {
-  flex-shrink: 0;
-  width: clamp(64px, 8vw, 96px);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  text-decoration: none;
-  color: inherit;
-}
-.lgh-mcard-tile {
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid rgba(240, 240, 245, 0.14);
-  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.6);
-}
-.lgh-mcard-tile img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.lgh-mcard-handle {
-  font-family: var(--vs-mono, ui-monospace, "SF Mono", Menlo, monospace);
-  font-size: 10.5px;
-  letter-spacing: 0.02em;
-  color: rgba(240, 240, 245, 0.72);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
 }
 
 .lgh-ctas {
