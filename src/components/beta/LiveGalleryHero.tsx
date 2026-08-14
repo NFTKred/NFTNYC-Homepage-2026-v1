@@ -18,14 +18,17 @@ import "@/styles/beta-hero.css";
 // Same endpoint the live https://collect.nft.nyc/activity page uses, and
 // what SeeWhatsOnTheMap already talks to. Kept in sync deliberately -
 // changing one without the other risks a divergent story below the fold.
+// count=90 is generous - we ask for a lot so the mosaic always has
+// enough unique art to fill an 8x9 grid on tall viewports.
 const FEED_URL =
-  "https://api.nftplatform.tech/nft/messages/?token=734d4bf5-e766-46a9-be21-94035c1343d6&count=40&page=1&grab=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&channel=collect.nft.nyc&onsale=true";
+  "https://api.nftplatform.tech/nft/messages/?token=734d4bf5-e766-46a9-be21-94035c1343d6&count=90&page=1&grab=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&channel=collect.nft.nyc&onsale=true";
 
-/** Number of tiles in the mosaic. 36 fills a 9x4 grid on wide viewports
- *  and a 6x6 on mid; feels like "a lot going on" without hammering the
- *  CDN. Fewer than this and the grid looks sparse; more and load time
- *  becomes noticeable. */
-const TILE_COUNT = 36;
+/** Number of tiles the mosaic renders. 72 gives up to 8 rows on the 9-col
+ *  desktop grid, 12 rows on the 6-col tablet, and 18 rows on the 4-col
+ *  mobile - enough to cover a 90vh hero on any reasonable viewport
+ *  (including 4K at 1440px tall). If the feed returns fewer unique
+ *  images than this, the source list is cycled so every cell is filled. */
+const TILE_COUNT = 72;
 
 /** How often the rotator swaps one tile for a fresh one (ms). Slow enough
  *  that the eye can catch each change; fast enough to feel alive. */
@@ -119,10 +122,17 @@ export default function LiveGalleryHero() {
         const msgs = data.messages ?? [];
         const imgs = extractImages(msgs);
         if (imgs.length >= 6) {
-          // Take TILE_COUNT for the initial mosaic; hold the rest (if any)
-          // in the rotation pool so the rotator has fresh material to swap in.
-          setImages(imgs.slice(0, TILE_COUNT));
-          rotationPool.current = imgs.slice(TILE_COUNT);
+          // Cycle the source list to exactly TILE_COUNT so every cell
+          // in the grid always has an image, even when the feed returns
+          // fewer unique thumbnails than the grid needs. Extra images
+          // beyond TILE_COUNT feed the rotation pool for tile swaps.
+          const filled = Array.from(
+            { length: TILE_COUNT },
+            (_, i) => imgs[i % imgs.length],
+          );
+          setImages(filled);
+          rotationPool.current =
+            imgs.length > TILE_COUNT ? imgs.slice(TILE_COUNT) : [];
         }
         setCollectCount(countCollections(msgs));
       } catch {
