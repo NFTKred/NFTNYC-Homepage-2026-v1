@@ -12,7 +12,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  min-height: 80vh;
+  min-height: 90vh;
   padding: calc(4rem + 56px) 1.5rem 3rem;
   background: #0A0A10;
   color: #F0F0F5;
