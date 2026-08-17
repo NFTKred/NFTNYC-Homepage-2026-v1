@@ -14,11 +14,12 @@ export const API_BASE = 'https://api.domains.kred';
 /** Front-end host that serves Kredentials pages (kredentials.kred A record). */
 export const KRED_SITE_IP = '173.231.58.170';
 
-function holderHeaders(userToken: string, adminToken?: string): Record<string, string> {
+function holderHeaders(userToken: string, adminToken?: string, onBehalfOf?: string): Record<string, string> {
   return {
     Authorization: `Bearer ${userToken}`,
     'Content-Type': 'application/json',
     ...(adminToken ? { 'X-Admin-Token': adminToken } : {}),
+    ...(onBehalfOf ? { 'X-On-Behalf-Of': onBehalfOf } : {}),
   };
 }
 
