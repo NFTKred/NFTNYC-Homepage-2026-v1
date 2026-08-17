@@ -128,11 +128,12 @@ export async function ensureDnsZone(
   userToken: string,
   adminToken?: string,
   address: string = KRED_SITE_IP,
+  onBehalfOf?: string,
 ): Promise<ProvisionResult> {
   const zone = domain.trim().toLowerCase();
-  const headers = holderHeaders(userToken, adminToken);
+  const headers = holderHeaders(userToken, adminToken, onBehalfOf);
 
-  const existing = await inspectZone(zone, userToken, adminToken);
+  const existing = await inspectZone(zone, userToken, adminToken, onBehalfOf);
   console.log(`[dns] pre-state for ${zone}`, JSON.stringify(existing));
   if (existing.ok) return { domain: zone, created: false, alreadyOk: true };
 
@@ -156,11 +157,11 @@ export async function ensureDnsZone(
   // `records` / `records/set` endpoints report success but do not persist for
   // pre-existing zones; `POST /dns/record` takes a relative name and does.
   const writes: unknown[] = [];
-  if (!existing.hasApex) writes.push(await createRecord(zone, '@', address, userToken, adminToken));
-  if (!existing.hasWww) writes.push(await createRecord(zone, 'www', address, userToken, adminToken));
+  if (!existing.hasApex) writes.push(await createRecord(zone, '@', address, userToken, adminToken, onBehalfOf));
+  if (!existing.hasWww) writes.push(await createRecord(zone, 'www', address, userToken, adminToken, onBehalfOf));
   console.log(`[dns] record writes for ${zone}`, JSON.stringify(writes));
 
-  const after = await inspectZone(zone, userToken, adminToken);
+  const after = await inspectZone(zone, userToken, adminToken, onBehalfOf);
   console.log(`[dns] post-write state for ${zone}`, JSON.stringify(after));
 
   return {
