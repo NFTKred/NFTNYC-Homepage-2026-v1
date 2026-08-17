@@ -682,8 +682,8 @@ export default function VibeSprint() {
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
-              One builder — selected by the review panel from Sprint 1 and Sprint 2's Spotlight and
-              Featured submissions — presents live at NFT.NYC 2026, 1 September. Sprint 3 runs
+              September 2 · Live presentations on the main stage at NFT.NYC 2026, The Edison, Times
+              Square. Sprint 3 runs
               right through the conference, built for the community building from anywhere. Every
               submission appears in the reel shown at NFT.NYC 2026; up to 20 selected submissions
               per sprint join the Times Square Showcase.
