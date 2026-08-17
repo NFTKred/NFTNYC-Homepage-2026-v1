@@ -41,7 +41,7 @@ const EVENTS: SatelliteEvent[] = [
     venue: '46 Hester Street · Lower East Side · Free admission',
     description:
       'BMAG presents the New York solo debut of Rupture, creator of one of the most widely collected artist-made releases on Bitcoin. At the center of the show: Remains, four paintings, each bound to a digital counterpart inscribed permanently on Bitcoin. At the 2028 halving, the digital half begins to die — to preserve one, the collector must sacrifice the other. The exhibition also includes a new body of paintings, works on paper, and a monumental ink drawing made over eight months.',
-    registrationUrl: 'https://museum.b.tc/exhibitions/rupture-x-bmag-nftnyc',
+    registrationUrl: 'https://luma.com/cckjg9kl',
     tag: 'Community',
     image: '/events/bmag-rupture.jpg',
   },
