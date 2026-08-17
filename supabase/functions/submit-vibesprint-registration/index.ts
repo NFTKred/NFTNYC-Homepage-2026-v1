@@ -379,7 +379,7 @@ async function registerKredDomain(fqdn: string, reg: {
   // apex + www A records so the Kredentials page actually resolves.
   let dns: unknown = null;
   try {
-    dns = await ensureDnsZone(fqdn, userToken, adminToken);
+    dns = await ensureDnsZone(fqdn, userToken, adminToken, undefined, reg.onBehalfOf ?? undefined);
     console.log("[kred] dns provisioned", JSON.stringify(dns));
   } catch (dnsErr) {
     console.error("[kred] dns provisioning failed", dnsErr);
