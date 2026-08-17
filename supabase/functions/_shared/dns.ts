@@ -98,10 +98,11 @@ async function createRecord(
   address: string,
   userToken: string,
   adminToken?: string,
+  onBehalfOf?: string,
 ): Promise<{ name: string; status: number; body: unknown }> {
   const res = await fetch(`${API_BASE}/dns/record`, {
     method: 'POST',
-    headers: holderHeaders(userToken, adminToken),
+    headers: holderHeaders(userToken, adminToken, onBehalfOf),
     body: JSON.stringify({ domain, type: 'A', name, content: address, ttl: 3600 }),
   });
   return { name, status: res.status, body: await readJson(res) };
