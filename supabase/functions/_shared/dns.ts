@@ -64,9 +64,10 @@ export async function inspectZone(
   domain: string,
   userToken: string,
   adminToken?: string,
+  onBehalfOf?: string,
 ): Promise<ZoneStatus> {
   const res = await fetch(`${API_BASE}/dns/zone/${encodeURIComponent(domain)}/records`, {
-    headers: holderHeaders(userToken, adminToken),
+    headers: holderHeaders(userToken, adminToken, onBehalfOf),
   });
   const records = await readJson(res);
   if (!res.ok) {
