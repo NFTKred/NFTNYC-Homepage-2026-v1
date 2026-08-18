@@ -442,17 +442,6 @@ export default function VibeSprint() {
   const [subSending, setSubSending] = useState(false);
   const [subError, setSubError] = useState<string | null>(null);
 
-  const isKredUrl = (raw: string) => {
-    const s = raw.trim();
-    if (!s) return false;
-    try {
-      const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
-      return /\.kred$/i.test(u.hostname);
-    } catch {
-      return false;
-    }
-  };
-
   const onSubmitBuild = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
