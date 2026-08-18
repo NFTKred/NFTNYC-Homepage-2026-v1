@@ -432,6 +432,72 @@ export default function VibeSprint() {
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
+  // ---- Sprint submission form (submit-sprint-submission) ----
+  const [subEmail, setSubEmail] = useState("");
+  const [subAppUrl, setSubAppUrl] = useState("");
+  const [subProjectUrl, setSubProjectUrl] = useState("");
+  const [subTeam, setSubTeam] = useState("");
+  const [subSent, setSubSent] = useState(false);
+  const [subWasUpdate, setSubWasUpdate] = useState(false);
+  const [subSending, setSubSending] = useState(false);
+  const [subError, setSubError] = useState<string | null>(null);
+
+  const isKredUrl = (raw: string) => {
+    const s = raw.trim();
+    if (!s) return false;
+    try {
+      const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
+      return /\.kred$/i.test(u.hostname);
+    } catch {
+      return false;
+    }
+  };
+
+  const onSubmitBuild = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (!isKredUrl(subAppUrl)) {
+      setSubError("Your app URL needs to be live on your .kred domain.");
+      return;
+    }
+    setSubSending(true);
+    setSubError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("submit-sprint-submission", {
+        body: {
+          sprint: "sprint1",
+          email: subEmail.trim(),
+          app_url: subAppUrl.trim(),
+          project_url: subProjectUrl.trim(),
+          team_members: subTeam.trim(),
+        },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      setSubWasUpdate(Boolean(data?.updated));
+    } catch (err) {
+      console.error("Sprint submission failed:", err);
+      setSubError(
+        err instanceof Error && err.message
+          ? err.message
+          : "We couldn't save your submission. Please try again, or email team@nft.nyc."
+      );
+      setSubSending(false);
+      return;
+    }
+    setSubSending(false);
+    setSubSent(true);
+    window.setTimeout(() => {
+      document
+        .getElementById("buildSuccessCard")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 0);
+  };
+
   // Debounced .Kred availability check.
   useEffect(() => {
     const d = domain.trim().toLowerCase().replace(/\.kred$/i, "");
@@ -1234,23 +1300,95 @@ export default function VibeSprint() {
                 set only. Team size plays no part in judging.
               </li>
             </ol>
-            <div className="form-actions" style={{ marginTop: 20 }}>
-              <button
-                className="btn"
-                type="button"
-                disabled
-                style={{ opacity: 0.55, cursor: "not-allowed" }}
-              >
-                Submissions open Monday 17 August, 4:00pm ET
-              </button>
-              <span className="form-note">
-                Not registered yet?{" "}
-                <a href="#register" style={{ color: "var(--vs-cyan)" }}>
-                  Register free first
-                </a>
-                , it takes a minute and covers all three sprints.
-              </span>
-            </div>
+            {!subSent && (
+              <form onSubmit={onSubmitBuild} noValidate style={{ marginTop: 20 }}>
+                <div className="field">
+                  <label htmlFor="sEmail">Registration email</label>
+                  <input
+                    id="sEmail"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={subEmail}
+                    onChange={(e) => setSubEmail(e.target.value)}
+                  />
+                </div>
+                <div className="field full">
+                  <label htmlFor="sAppUrl">App URL — live on your Kred domain</label>
+                  <input
+                    id="sAppUrl"
+                    name="app_url"
+                    type="url"
+                    required
+                    placeholder="https://yourname.kred"
+                    value={subAppUrl}
+                    onChange={(e) => { setSubAppUrl(e.target.value); setSubError(null); }}
+                  />
+                  <span className="form-note">Must be published on your .kred domain.</span>
+                </div>
+                <div className="field full">
+                  <label htmlFor="sProjectUrl">Project link</label>
+                  <input
+                    id="sProjectUrl"
+                    name="project_url"
+                    type="url"
+                    required
+                    placeholder="https://lovable.dev/projects/..."
+                    value={subProjectUrl}
+                    onChange={(e) => setSubProjectUrl(e.target.value)}
+                  />
+                  <span className="form-note">Lovable, Replit, Vercel, Base44, Bolt, or other.</span>
+                </div>
+                <div className="field full">
+                  <label htmlFor="sTeam">Team members (optional)</label>
+                  <textarea
+                    id="sTeam"
+                    name="team_members"
+                    rows={3}
+                    placeholder={"Name — email (one per line)"}
+                    value={subTeam}
+                    onChange={(e) => setSubTeam(e.target.value)}
+                  />
+                  <span className="form-note">
+                    Anyone else who worked on this — for reward credit only, not used in judging.
+                  </span>
+                </div>
+                <div className="form-actions">
+                  <button className="btn" type="submit" disabled={subSending}>
+                    {subSending ? "Submitting…" : "Submit my build"}
+                  </button>
+                  <span className="form-note">
+                    Not registered yet?{" "}
+                    <a href="#register" style={{ color: "var(--vs-cyan)" }}>
+                      Register free first
+                    </a>
+                    , it takes a minute and covers all three sprints.
+                  </span>
+                </div>
+                {subError && (
+                  <p className="form-note" role="alert" style={{ marginTop: 10, color: "#F15621" }}>
+                    {subError}
+                  </p>
+                )}
+              </form>
+            )}
+            {subSent && (
+              <div className="success" id="buildSuccessCard" role="status">
+                <b>{subWasUpdate ? "Submission updated — you're in." : "You're in — submission received."}</b>{" "}
+                We have your app URL and project link on file for Sprint 1.
+                <ul>
+                  <li>Keep building — you can resubmit with the same email any time before close.</li>
+                  <li>Every valid submission earns Finisher XP, a Finisher Certificate, and a Build Report.</li>
+                  <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
+                </ul>
+                <div className="form-actions" style={{ marginTop: 12 }}>
+                  <button className="btn ghost" type="button" onClick={() => setSubSent(false)}>
+                    Edit my submission
+                  </button>
+                </div>
+              </div>
+            )}
           </section>
 
           <section>
