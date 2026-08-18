@@ -68,11 +68,8 @@ Deno.serve(async (req) => {
     return json({ error: "A valid email is required." }, 400);
   }
 
-  const appUrl = parseUrl(String(body.app_url ?? ""));
-  if (!appUrl) return json({ error: "App URL must be a valid URL." }, 400);
-  if (!/\.kred$/i.test(appUrl.hostname)) {
-    return json({ error: "App URL must be live on your .kred domain." }, 400);
-  }
+  const appName = String(body.app_name ?? body.app_url ?? "").trim();
+  if (!appName) return json({ error: "App name is required." }, 400);
 
   const projectUrl = parseUrl(String(body.project_url ?? ""));
   if (!projectUrl) return json({ error: "Project link must be a valid URL." }, 400);
@@ -91,7 +88,7 @@ Deno.serve(async (req) => {
   const record = {
     sprint,
     email,
-    app_url: appUrl.toString(),
+    app_url: appName,
     project_url: projectUrl.toString(),
     team_members: teamMembers,
     user_agent: req.headers.get("user-agent") ?? null,
@@ -137,7 +134,7 @@ Deno.serve(async (req) => {
       <h2>${escape(sprint)} submission ${existing ? "(updated)" : "(new)"}</h2>
       <table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;">
         <tr><td><b>Email</b></td><td>${escape(email)}</td></tr>
-        <tr><td><b>App URL</b></td><td><a href="${escape(record.app_url)}">${escape(record.app_url)}</a></td></tr>
+        <tr><td><b>App name</b></td><td>${escape(record.app_url)}</td></tr>
         <tr><td><b>Project link</b></td><td><a href="${escape(record.project_url)}">${escape(record.project_url)}</a></td></tr>
         <tr><td><b>Team members</b></td><td>${escape(teamMembers ?? "—")}</td></tr>
         <tr><td><b>Submitted</b></td><td>${escape(record.updated_at)}</td></tr>
