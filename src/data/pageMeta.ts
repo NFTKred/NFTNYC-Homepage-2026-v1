@@ -135,6 +135,13 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/sprint1",
     ogImage: "/og/speak.png",
   },
+  sprint2: {
+    title: "Sprint 2 - Agents Buying Identity | Kred Flash Sprints",
+    description:
+      "A 48-hour build sprint, 24-26 August: agents that find, price, register, and set up .Kred identities on the Domains.Kred API. Free to enter, live engineer support.",
+    path: "/sprint2",
+    ogImage: "/og/speak.png",
+  },
 };
 
 export type PageMetaKey = keyof typeof PAGE_META;

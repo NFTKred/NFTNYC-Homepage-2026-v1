@@ -1,0 +1,325 @@
+/* ============================================================
+   Sprint 2 (Kred Flash Sprints) — page-specific additions.
+   Used alongside vibesprint.css: the page root carries
+   `class="vibesprint sprint2"`, so shared blocks (hero, kit,
+   tiles, weights, timeline, badges) come from vibesprint.css
+   and only the Sprint 2-only blocks live here. All rules are
+   scoped under `.sprint2` so they cannot leak out.
+   ============================================================ */
+
+.sprint2 {
+  --s2-mono: Menlo, Consolas, "Courier New", monospace;
+  --s2-amber: #FFB84D;
+  --s2-cyan: #37D3E8;
+  --s2-pink: #FF4FA3;
+  --s2-violet: #9D7BFF;
+  --s2-green: #5CE08A;
+}
+
+/* Sprint mark ------------------------------------------------ */
+.sprint2 .sprintmark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 14px 0 6px;
+}
+.sprint2 .sprintmark .num {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(24px, 4.2vw, 40px);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: #0C1020;
+  background: var(--s2-amber);
+  padding: 8px 16px 6px;
+  border-radius: 6px;
+}
+.sprint2 .sprintmark .rnd {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(18px, 3vw, 28px);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--s2-cyan);
+  border: 2px solid var(--s2-cyan);
+  padding: 8px 14px 6px;
+  border-radius: 6px;
+}
+.sprint2 .sprintmark .of {
+  font-family: var(--s2-mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+@media (max-width: 520px) { .sprint2 .sprintmark .of { flex-basis: 100%; } }
+
+/* Approach nav cards ----------------------------------------- */
+.sprint2 .tracks4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.sprint2 .tk {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-top: 4px solid var(--tone);
+  border-radius: 8px;
+  padding: 16px 18px;
+  text-decoration: none;
+  display: block;
+  color: var(--color-text);
+}
+.sprint2 .tk:hover { border-color: var(--tone); }
+.sprint2 .tk .who {
+  font-family: var(--s2-mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--tone);
+  margin-bottom: 6px;
+}
+.sprint2 .tk h3 {
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin-bottom: 6px;
+}
+.sprint2 .tk p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--color-text-muted); }
+
+/* Approach detail blocks ------------------------------------- */
+.sprint2 .track {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-left: 6px solid var(--tone);
+  border-radius: 8px;
+  padding: 24px 26px;
+  margin-top: 16px;
+}
+.sprint2 .track .tag {
+  font-family: var(--s2-mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--tone);
+}
+.sprint2 .track h3 {
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--tone);
+  margin: 6px 0 12px;
+}
+.sprint2 .track p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  max-width: 76ch;
+}
+.sprint2 .track p b { color: var(--color-text); }
+.sprint2 code { font-family: var(--s2-mono); font-size: 12.5px; color: var(--s2-amber); }
+
+.sprint2 .blist { margin: 0 0 12px; padding: 0; list-style: none; max-width: 76ch; }
+.sprint2 .blist li {
+  position: relative;
+  padding: 0 0 9px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.sprint2 .blist li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--tone);
+}
+.sprint2 .blist li b { color: var(--color-text); }
+
+.sprint2 .ideas { margin-top: 16px; }
+.sprint2 .ideas .lbl {
+  font-family: var(--s2-mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 9px;
+}
+.sprint2 .waysin {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.sprint2 .wi {
+  background: var(--color-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 13px 15px;
+}
+.sprint2 .wi .t {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+.sprint2 .wi .d { font-size: 12px; line-height: 1.5; color: var(--color-text-muted); }
+
+/* Agentic ID stack ------------------------------------------- */
+.sprint2 .stack {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-left: 6px solid var(--s2-violet);
+  border-radius: 8px;
+  padding: 24px;
+}
+.sprint2 .stack h3 { font-size: 22px; text-transform: uppercase; color: var(--s2-violet); margin: 0 0 10px; }
+.sprint2 .stack p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: var(--color-text-muted); max-width: 74ch; }
+.sprint2 .stack p b { color: var(--color-text); }
+.sprint2 .idgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.sprint2 .idc {
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 13px 15px;
+  background: var(--color-bg);
+}
+.sprint2 .idc .n {
+  font-family: var(--s2-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--s2-violet);
+  margin-bottom: 4px;
+}
+.sprint2 .idc p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--color-text-muted); }
+
+/* Tile pills -------------------------------------------------- */
+.sprint2 .tile .pub,
+.sprint2 .tile .key {
+  display: inline-block;
+  font-family: var(--s2-mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border-radius: 99px;
+  padding: 2px 7px;
+  margin-top: 6px;
+}
+.sprint2 .tile .pub { color: var(--s2-green); border: 1px solid #245c3a; }
+.sprint2 .tile .key { color: var(--color-text-muted); border: 1px solid var(--card-border); }
+
+/* Top three --------------------------------------------------- */
+.sprint2 .top3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.sprint2 .t3 {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--s2-amber);
+  border-radius: 6px;
+  padding: 13px 15px;
+}
+.sprint2 .t3 b {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--s2-amber);
+  margin-bottom: 5px;
+}
+.sprint2 .t3 p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--color-text-muted); }
+
+/* Review rows ------------------------------------------------- */
+.sprint2 .jrow {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--card-border);
+  font-size: 13.5px;
+}
+.sprint2 .jrow b { color: var(--color-text); }
+.sprint2 .jrow span { color: var(--color-text-muted); }
+@media (max-width: 640px) { .sprint2 .jrow { grid-template-columns: 1fr; gap: 2px; } }
+
+/* Engineer support -------------------------------------------- */
+.sprint2 .support {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-left: 6px solid var(--s2-green);
+  border-radius: 8px;
+  padding: 22px 24px;
+}
+.sprint2 .support h3 { font-size: 22px; text-transform: uppercase; color: var(--s2-green); margin: 0 0 10px; }
+.sprint2 .support p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: var(--color-text-muted); max-width: 74ch; }
+.sprint2 .sessions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.sprint2 .sess {
+  background: var(--color-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 11px 15px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+.sprint2 .sess b {
+  display: block;
+  font-family: var(--s2-mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 3px;
+}
+
+/* Register box ------------------------------------------------ */
+.sprint2 .regbox {
+  background: var(--color-surface);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 26px;
+}
+.sprint2 .regbox p { margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: var(--color-text-muted); max-width: 70ch; }
+.sprint2 .regbox p b { color: var(--color-text); }
+.sprint2 .licence {
+  background: var(--color-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin-top: 16px;
+}
+.sprint2 .licence b { color: var(--color-text); }
+
+/* Registration is not open yet — the CTA renders disabled. */
+.sprint2 .btn.disabled,
+.sprint2 button.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.sprint2 .cta-soon {
+  font-family: var(--s2-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
