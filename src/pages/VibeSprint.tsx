@@ -476,7 +476,17 @@ export default function VibeSprint() {
           team_members: subTeam.trim(),
         },
       });
-      if (error) throw error;
+      if (error) {
+        const ctx = (error as { context?: Response }).context;
+        let serverMsg = "";
+        try {
+          const body = await ctx?.clone().json();
+          serverMsg = body?.error ?? "";
+        } catch {
+          /* ignore */
+        }
+        throw new Error(serverMsg || error.message);
+      }
       if (data?.error) throw new Error(data.error);
       setSubWasUpdate(Boolean(data?.updated));
     } catch (err) {
