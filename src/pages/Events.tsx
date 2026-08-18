@@ -34,6 +34,18 @@ const EVENTS: SatelliteEvent[] = [
     pinned: true,
   },
   {
+    name: 'The Meta Beast Roaming Party — Live From NYC Decentraland Community Meet Up',
+    host: 'Decentraland',
+    date: '2026-09-03',
+    dateLabel: 'Thursday, Sept 3, 2026 · 7:00–10:00 PM',
+    venue: 'SPIN New York Flatiron',
+    description:
+      'A Decentraland community meet up during NFT.NYC week. If you haven’t downloaded Decentraland yet, jump in and meet the community before NFT.NYC.',
+    registrationUrl: 'https://luma.com/jrx3a8e4',
+    tag: 'Community',
+    image: '/events/decentraland-metabeast.png',
+  },
+  {
     name: 'BMAG presents Remains — a solo exhibition by Rupture',
     host: 'Bitcoin Magazine Art Gallery & Museum (BMAG)',
     date: '2026-09-02',
