@@ -75,13 +75,8 @@ Deno.serve(async (req) => {
   if (!projectUrl) return json({ error: "Project link must be a valid URL." }, 400);
 
   const now = Date.now();
-  if (sprint === "sprint1") {
-    if (now < SPRINT1_OPEN_UTC) {
-      return json({ error: "Submissions open Wednesday 12 August, 4:00pm ET." }, 400);
-    }
-    if (now > SPRINT1_CLOSE_UTC) {
-      return json({ error: "Submissions closed Friday 14 August, 4:00pm ET." }, 400);
-    }
+  if (sprint === "sprint1" && now < SPRINT1_OPEN_UTC) {
+    return json({ error: "Submissions open Wednesday 12 August, 4:00pm ET." }, 400);
   }
 
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
