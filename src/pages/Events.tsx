@@ -34,6 +34,30 @@ const EVENTS: SatelliteEvent[] = [
     pinned: true,
   },
   {
+    name: 'The Space Between Worlds',
+    host: 'One Love Art × NFT Aotearoa × Shalin Studios',
+    date: '2026-09-02',
+    dateLabel: 'Tuesday, Sept 2, 2026 · 6:00–9:00 PM',
+    venue: 'Jutta Gallery · New York',
+    description:
+      'An Official NFT.NYC 2026 Satellite Event. A group exhibition of original physical artworks exploring the unseen connections between cultures, identities, technologies, environments, and states of being. Exhibiting artists include Delta Sauce, Alyssa Stevens, Andres Del Vecchio, Jen Panepinto, Yuzapata, Goli, Judasaca, Dr Lemny, Carlos Aquino, Pollis, Dominique Baker, Zoe Louise, Koratoras, Wendy Hannah, Raymund A. Maravilla, Ronnie Peters, Tracey-Lea Morgan, Jordy Elise, Meghan Geliza Jackson, and Kate McLeod.',
+    registrationUrl: 'https://luma.com/r4xl402l',
+    tag: 'Official',
+    image: '/events/space-between-worlds.png',
+  },
+  {
+    name: 'The Canal Street Show Vol 6 — Beyond the Veil',
+    host: 'The Canal Street Show',
+    date: '2026-09-03',
+    dateLabel: 'Thursday, Sept 3, 2026 · 7:00 PM',
+    venue: 'Canal Street · New York',
+    description:
+      'A physical + digital art show under the theme Beyond the Veil. Live art battle: Kat Buglione × Leeaux vs. Judasaca × Alyssa Stevens. Live performances by Jeffy Waves and City the King. Full line-up to be announced.',
+    registrationUrl: 'https://partiful.com/e/6PXIBCWdkiJNUYC8t3lN',
+    tag: 'Community',
+    image: '/events/canal-street-show.jpg',
+  },
+  {
     name: 'The Meta Beast Roaming Party — Live From NYC Decentraland Community Meet Up',
     host: 'Decentraland',
     date: '2026-09-03',
