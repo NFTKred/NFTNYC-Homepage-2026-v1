@@ -90,17 +90,6 @@ export default function Sprint1() {
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const isKredUrl = (raw: string) => {
-    const s = raw.trim();
-    if (!s) return false;
-    try {
-      const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
-      return /\.kred$/i.test(u.hostname);
-    } catch {
-      return false;
-    }
-  };
-
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -108,8 +97,8 @@ export default function Sprint1() {
       form.reportValidity();
       return;
     }
-    if (!isKredUrl(appUrl)) {
-      setFormError("Your app URL needs to be live on your .kred domain.");
+    if (!appUrl.trim()) {
+      setFormError("Please enter your app name.");
       return;
     }
     setSending(true);
@@ -119,7 +108,7 @@ export default function Sprint1() {
         body: {
           sprint: "sprint1",
           email: email.trim(),
-          app_url: appUrl.trim(),
+          app_name: appUrl.trim(),
           project_url: projectUrl.trim(),
           team_members: teamMembers.trim(),
         },
@@ -432,17 +421,17 @@ export default function Sprint1() {
                   <input id="fEmail" name="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="field full">
-                  <label htmlFor="fAppUrl">App URL — live on your Kred domain</label>
+                  <label htmlFor="fAppUrl">App Name</label>
                   <input
                     id="fAppUrl"
-                    name="app_url"
-                    type="url"
+                    name="app_name"
+                    type="text"
                     required
-                    placeholder="https://yourname.kred"
+                    placeholder="e.g. My Kred App"
                     value={appUrl}
                     onChange={(e) => { setAppUrl(e.target.value); setFormError(null); }}
                   />
-                  <span className="form-note">Must be published on your .kred domain.</span>
+                  <span className="form-note">The name of your app as you'd like it shown on your submission.</span>
                 </div>
                 <div className="field full">
                   <label htmlFor="fProjectUrl">Project link</label>

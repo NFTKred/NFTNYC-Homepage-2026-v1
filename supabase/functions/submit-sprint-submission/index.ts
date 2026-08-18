@@ -68,6 +68,7 @@ Deno.serve(async (req) => {
     return json({ error: "A valid email is required." }, 400);
   }
 
+  // app_name is free text (repurposed from a .kred URL) — no URL validation.
   const appName = String(body.app_name ?? body.app_url ?? "").trim();
   if (!appName) return json({ error: "App name is required." }, 400);
 
