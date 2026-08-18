@@ -1158,11 +1158,6 @@ export default function VibeSprint() {
                 <b>The email you registered with.</b> It ties your submission to your registration.
               </li>
               <li>
-                <b>Your app URL, live on your .Kred domain.</b> The build has to be published on
-                the .Kred name that came with your Sprint 1 kit. Building somewhere else and
-                moving it later is the one avoidable way to miss the close.
-              </li>
-              <li>
                 <b>Your project link.</b> Lovable, Replit, Vercel, Base44, Bolt, or wherever you
                 built.
               </li>
