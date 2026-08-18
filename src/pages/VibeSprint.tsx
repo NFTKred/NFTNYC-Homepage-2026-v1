@@ -460,8 +460,8 @@ export default function VibeSprint() {
       form.reportValidity();
       return;
     }
-    if (!isKredUrl(subAppUrl)) {
-      setSubError("Your app URL needs to be live on your .kred domain.");
+    if (!subAppUrl.trim()) {
+      setSubError("Please enter your app name.");
       return;
     }
     setSubSending(true);
@@ -1315,17 +1315,17 @@ export default function VibeSprint() {
                   />
                 </div>
                 <div className="field full">
-                  <label htmlFor="sAppUrl">App URL — live on your Kred domain</label>
+                  <label htmlFor="sAppUrl">App Name</label>
                   <input
                     id="sAppUrl"
-                    name="app_url"
-                    type="url"
+                    name="app_name"
+                    type="text"
                     required
-                    placeholder="https://yourname.kred"
+                    placeholder="e.g. My Kred App"
                     value={subAppUrl}
                     onChange={(e) => { setSubAppUrl(e.target.value); setSubError(null); }}
                   />
-                  <span className="form-note">Must be published on your .kred domain.</span>
+                  <span className="form-note">The name of your app as you'd like it shown on your submission.</span>
                 </div>
                 <div className="field full">
                   <label htmlFor="sProjectUrl">Project link</label>
