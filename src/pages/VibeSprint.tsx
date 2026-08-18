@@ -471,7 +471,7 @@ export default function VibeSprint() {
         body: {
           sprint: "sprint1",
           email: subEmail.trim(),
-          app_url: subAppUrl.trim(),
+          app_name: subAppUrl.trim(),
           project_url: subProjectUrl.trim(),
           team_members: subTeam.trim(),
         },
