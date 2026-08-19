@@ -191,6 +191,11 @@
       "permanent": true
     },
     {
+      "source": "/beta",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/sessions",
       "destination": "/",
       "permanent": true
