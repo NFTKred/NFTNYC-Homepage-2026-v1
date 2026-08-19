@@ -51,13 +51,20 @@
   --tile-opacity: 0.92;
   --tile-blur: 0.3px;
   --tile-saturate: 1.02;
+  --tile-offset-x: 0px;
 
   aspect-ratio: 1 / 1;
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  transform: scale(var(--tile-scale));
+  /* translateX applied at the tile's natural size (before scale) so
+     the horizontal shift is consistent per-tile in cell units, then
+     the depth scale is applied on top. Combined with the z-index
+     rules below, offset near tiles slide over their neighbours and
+     offset far tiles slide under - so the grid reads as a set of
+     overlapping planes instead of a clean tessellation. */
+  transform: translateX(var(--tile-offset-x)) scale(var(--tile-scale));
   transform-origin: center center;
   transition:
     transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -88,6 +95,14 @@
 .lgh-tile[data-depth="hidden"] {
   visibility: hidden;
 }
+
+/* Layer order for the depth planes. When an offset tile slides over
+   its neighbour, the near tile should sit in front and the far tile
+   behind - as if the whole grid were three parallel planes stacked
+   at different distances from the camera. */
+.lgh-tile[data-depth="near"] { z-index: 3; }
+.lgh-tile[data-depth="mid"] { z-index: 2; }
+.lgh-tile[data-depth="far"] { z-index: 1; }
 
 .lgh-tile .lgh-tile-fallback {
   width: 100%;
@@ -219,7 +234,6 @@
 .lgh-live {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
   padding: 0.5rem 1rem;
   border: 1px solid rgba(240, 240, 245, 0.22);
   border-radius: 999px;
@@ -231,9 +245,19 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(240, 240, 245, 0.94);
-  margin-bottom: 1.6rem;
+  margin-top: 1.6rem;
+  text-align: center;
 }
-.lgh-live::before {
+
+/* The red dot travels with the "Live" label so on narrow viewports
+   they stay bonded on the same line and the body drops below. */
+.lgh-live-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+.lgh-live-label::before {
   content: "";
   width: 8px;
   height: 8px;
@@ -244,7 +268,29 @@
   flex-shrink: 0;
 }
 @media (prefers-reduced-motion: reduce) {
-  .lgh-live::before { animation: none; }
+  .lgh-live-label::before { animation: none; }
+}
+
+/* Middle-dot separator sits between the label and the body on wide
+   viewports. Hidden on narrow viewports where the two parts stack. */
+.lgh-live-body::before {
+  content: "·";
+  margin: 0 0.5em;
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .lgh-live {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    /* Slightly tighter padding since the pill now grows taller. */
+    padding: 0.55rem 1rem;
+  }
+  .lgh-live-body::before {
+    content: "";
+    margin: 0;
+  }
 }
 @keyframes lgh-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }

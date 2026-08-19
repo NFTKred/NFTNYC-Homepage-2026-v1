@@ -115,9 +115,7 @@ export default function Beta() {
           id="about"
           style={{
             padding: "clamp(3rem, 8vw, 8rem) 1.5rem",
-            background: "var(--color-surface)",
-            borderTop: "1px solid var(--card-border)",
-            borderBottom: "1px solid var(--card-border)",
+            background: "#0a0a0f",
           }}
         >
           <div className="max-w-[960px] mx-auto text-center">
@@ -194,22 +192,21 @@ export default function Beta() {
                 </a>
               </div>
             )}
-            <a
-              href="https://nftnyc2025.sessionize.com/schedule"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                marginTop: "1.25rem",
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--text-xs)",
-                color: "var(--color-text-faint)",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-              }}
-            >
-              View the Program
-            </a>
+            <div style={{ marginTop: "1.25rem", display: "flex", justifyContent: "center" }}>
+              <a
+                href="https://nftnyc2025.sessionize.com/schedule"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  ...btnBase,
+                  background: "transparent",
+                  color: "var(--color-text)",
+                  border: "1px solid var(--color-border)",
+                }}
+              >
+                View the Program
+              </a>
+            </div>
           </div>
         </section>
 

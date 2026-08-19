@@ -18,10 +18,11 @@ import "@/styles/beta-hero.css";
 // Same endpoint the live https://collect.nft.nyc/activity page uses, and
 // what SeeWhatsOnTheMap already talks to. Kept in sync deliberately -
 // changing one without the other risks a divergent story below the fold.
-// count=90 is generous - we ask for a lot so the mosaic always has
-// enough unique art to fill an 8x9 grid on tall viewports.
+// count=150 is generous - we ask for a lot so the mosaic always has
+// enough unique art to fill an 8x9 grid on tall viewports without
+// repeating any piece more than once in the visible area.
 const FEED_URL =
-  "https://api.nftplatform.tech/nft/messages/?token=734d4bf5-e766-46a9-be21-94035c1343d6&count=90&page=1&grab=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&channel=collect.nft.nyc&onsale=true";
+  "https://api.nftplatform.tech/nft/messages/?token=734d4bf5-e766-46a9-be21-94035c1343d6&count=150&page=1&grab=collect.nft.nyc&actions=send,claim,buy,like,sell,mint,collect,gift,post,comment&onehub=true&nsfw=false&crossfeed=auto&channel=collect.nft.nyc&onsale=true";
 
 /** Number of tiles the mosaic renders. 72 gives up to 8 rows on the 9-col
  *  desktop grid, 12 rows on the 6-col tablet, and 18 rows on the 4-col
@@ -118,6 +119,38 @@ function fallbackTiles(count: number): string[] {
   return Array.from({ length: count }, (_, i) => `lgh-tf-${(i % palette) + 1}`);
 }
 
+/** Depth plane for each grid slot. Deterministic prime-mix over the
+ *  slot index so the pattern is stable across renders / rotator ticks.
+ *  Hidden slots leave visible gaps that break up the tessellated grid. */
+const DEPTHS: Array<"near" | "mid" | "far" | "hidden"> = Array.from(
+  { length: TILE_COUNT },
+  (_, i) => {
+    const h = (i * 17 + i * i * 3) % 31;
+    if (h < 4) return "hidden"; // ~13%
+    if (h < 12) return "far";   // ~26%
+    if (h < 22) return "mid";   // ~32%
+    return "near";              // ~29%
+  },
+);
+
+/** Indices of the slots that actually render a tile - the fetch loop
+ *  fills these first with unique images and only wraps if the feed
+ *  returns fewer uniques than there are visible slots. */
+const VISIBLE_INDICES: number[] = DEPTHS
+  .map((d, i) => (d !== "hidden" ? i : -1))
+  .filter((i) => i >= 0);
+
+/** Horizontal offset per slot - breaks the tessellated-column look. */
+const OFFSETS: string[] = Array.from({ length: TILE_COUNT }, (_, i) => {
+  const h = (i * 13 + i * i * 5 + 7) % 17;
+  if (h < 2) return "-32%";
+  if (h < 4) return "34%";
+  if (h < 5) return "-18%";
+  if (h < 6) return "20%";
+  if (h < 7) return "-10%";
+  return "0px";
+});
+
 export default function LiveGalleryHero() {
   const [tiles, setTiles] = useState<TileSlot[] | null>(null);
   const [spotlightIndex, setSpotlightIndex] = useState<number | null>(null);
@@ -140,21 +173,35 @@ export default function LiveGalleryHero() {
         const msgs = data.messages ?? [];
         const imgs = extractImages(msgs);
         if (imgs.length >= 6) {
-          // Seed each tile with two DIFFERENT images so the very first
-          // rotator swap already has something distinct to fade to.
-          // Extras beyond what the grid needs go into the rotation pool.
-          const offset = Math.floor(imgs.length / 2);
+          // Fill visible slots with UNIQUE images first. Hidden slots
+          // get empty strings and never render an img. Only if the
+          // feed returns fewer uniques than there are visible slots
+          // do we start cycling - and even then only for the tail.
+          //
+          // Slot B (the crossfade partner) is offset by half so the
+          // very first rotator swap already has something distinct
+          // to fade to; if there aren't enough uniques to fill both
+          // A and B without any repeats, we let B cycle but tolerate
+          // the visible-only-A pattern which is what the user sees.
           const filled: TileSlot[] = Array.from(
             { length: TILE_COUNT },
-            (_, i) => ({
-              a: imgs[i % imgs.length],
-              b: imgs[(i + offset) % imgs.length],
-              active: "a" as const,
-            }),
+            () => ({ a: "", b: "", active: "a" as const }),
           );
+          const visibleCount = VISIBLE_INDICES.length;
+          const bOffset = Math.max(1, Math.floor(imgs.length / 2));
+          VISIBLE_INDICES.forEach((slotIdx, k) => {
+            filled[slotIdx] = {
+              a: imgs[k % imgs.length],
+              b: imgs[(k + bOffset) % imgs.length],
+              active: "a" as const,
+            };
+          });
           setTiles(filled);
+          // Any images beyond the visible-slot count go into the
+          // rotation pool as fresh material for later swaps.
           rotationPool.current =
-            imgs.length > TILE_COUNT * 2 ? imgs.slice(TILE_COUNT * 2) : [];
+            imgs.length > visibleCount ? imgs.slice(visibleCount) : [];
+          rotationCursor.current = 0;
         }
         setCollectCount(countCollections(msgs));
       } catch {
@@ -184,36 +231,55 @@ export default function LiveGalleryHero() {
     const tick = () => {
       if (cancelled) return;
       setTiles((prev) => {
-        if (!prev || prev.length < 2) return prev;
+        if (!prev || VISIBLE_INDICES.length < 2) return prev;
         const copy = prev.slice();
         const pool = rotationPool.current;
-        const swapAt = (idx: number) => {
-          const t = copy[idx];
-          const outgoing = t.active === "a" ? t.a : t.b;
-          // Pick incoming: prefer the pool if any, else recycle by
-          // pulling the outgoing image of a *different* tile so the
-          // gallery churns even when the pool is empty.
-          let incoming: string;
-          if (pool.length > 0) {
-            incoming = pool[rotationCursor.current % pool.length];
+        const pickVisible = () =>
+          VISIBLE_INDICES[Math.floor(Math.random() * VISIBLE_INDICES.length)];
+        const i1 = pickVisible();
+        let i2 = pickVisible();
+        if (i2 === i1) {
+          const at = VISIBLE_INDICES.indexOf(i1);
+          i2 = VISIBLE_INDICES[(at + 1) % VISIBLE_INDICES.length];
+        }
+        if (pool.length >= 2) {
+          // Fresh material available - rotate two new images in from
+          // the pool and push the outgoing ones back so they can return
+          // in a later tick.
+          const swapWithPool = (idx: number) => {
+            const t = copy[idx];
+            const outgoing = t.active === "a" ? t.a : t.b;
+            const incoming = pool[rotationCursor.current % pool.length];
             rotationCursor.current += 1;
-          } else {
-            const donorIdx = (idx + 1 + Math.floor(Math.random() * (copy.length - 1))) % copy.length;
-            const donor = copy[donorIdx];
-            incoming = donor.active === "a" ? donor.a : donor.b;
-          }
-          pool.push(outgoing);
-          copy[idx] = {
-            ...t,
-            [t.active === "a" ? "b" : "a"]: incoming,
-            active: t.active === "a" ? "b" : "a",
+            pool.push(outgoing);
+            copy[idx] = {
+              ...t,
+              [t.active === "a" ? "b" : "a"]: incoming,
+              active: t.active === "a" ? "b" : "a",
+            };
           };
-        };
-        const i1 = Math.floor(Math.random() * copy.length);
-        let i2 = Math.floor(Math.random() * copy.length);
-        if (i2 === i1) i2 = (i1 + 1) % copy.length;
-        swapAt(i1);
-        swapAt(i2);
+          swapWithPool(i1);
+          swapWithPool(i2);
+        } else {
+          // Pool empty - EXCHANGE the two tiles' currently-visible
+          // images so nothing duplicates. Tile A takes what tile B
+          // was showing, and vice versa. Then any remaining outgoing
+          // images go into the pool for future ticks.
+          const t1 = copy[i1];
+          const t2 = copy[i2];
+          const img1 = t1.active === "a" ? t1.a : t1.b;
+          const img2 = t2.active === "a" ? t2.a : t2.b;
+          copy[i1] = {
+            ...t1,
+            [t1.active === "a" ? "b" : "a"]: img2,
+            active: t1.active === "a" ? "b" : "a",
+          };
+          copy[i2] = {
+            ...t2,
+            [t2.active === "a" ? "b" : "a"]: img1,
+            active: t2.active === "a" ? "b" : "a",
+          };
+        }
         return copy;
       });
       const delay = ROTATE_MIN_MS + Math.random() * (ROTATE_MAX_MS - ROTATE_MIN_MS);
@@ -245,7 +311,11 @@ export default function LiveGalleryHero() {
       const delay = SPOTLIGHT_MIN_MS + Math.random() * (SPOTLIGHT_MAX_MS - SPOTLIGHT_MIN_MS);
       scheduleId = window.setTimeout(() => {
         if (cancelled) return;
-        setSpotlightIndex(Math.floor(Math.random() * TILE_COUNT));
+        // Only spotlight a visible slot - hidden slots have no art to
+        // pop forward, so lighting them up is a wasted animation cycle.
+        setSpotlightIndex(
+          VISIBLE_INDICES[Math.floor(Math.random() * VISIBLE_INDICES.length)],
+        );
         clearId = window.setTimeout(() => {
           if (cancelled) return;
           setSpotlightIndex(null);
@@ -267,33 +337,14 @@ export default function LiveGalleryHero() {
     [usingFallback],
   );
 
-  // Depth-of-field: each grid slot is deterministically assigned to a
-  // depth plane (near / mid / far) or hidden entirely. Combined with
-  // the CSS custom properties on .lgh-tile[data-depth=...] this gives
-  // the flat grid a sense of layered space and turns roughly 13% of
-  // cells into gaps so the mosaic no longer reads as a tessellated
-  // wall. Deterministic (not random) so it doesn't reshuffle on each
-  // render / rotator tick - the depth of a specific slot is stable.
-  const depths = useMemo<Array<"near" | "mid" | "far" | "hidden">>(() => {
-    return Array.from({ length: TILE_COUNT }, (_, i) => {
-      // Prime-mix hash - spreads the pattern so the depth groups don't
-      // land on obvious diagonals or columns of the underlying grid.
-      const h = (i * 17 + i * i * 3) % 31;
-      if (h < 4) return "hidden"; // ~13%
-      if (h < 12) return "far";   // ~26%
-      if (h < 22) return "mid";   // ~32%
-      return "near";              // ~29%
-    });
-  }, []);
+  // DEPTHS and OFFSETS are computed once at module scope - see above.
 
-  // Live-count label. Prefer the specific number when we have one; use a
-  // discreet placeholder otherwise so the pill doesn't render as "undefined".
-  const liveLabel = useMemo(() => {
-    if (collectCount && collectCount > 0) {
-      return `Live · ${collectCount} collected today · from around the world`;
-    }
-    return "Live · Times Square is on-chain right now";
-  }, [collectCount]);
+  // The live-count number that used to sit here was misleading - it
+  // was the number of collect-actions in the last N-message API window
+  // framed as "today", which was only accurate when the feed happened
+  // to move at a specific pace. Kept collectCount in state so any
+  // future variant can lean on it; the current pill copy is static.
+  void collectCount;
 
   const openTicketing = () => {
     window.dispatchEvent(new CustomEvent("nftnyc:open-ticketing"));
@@ -310,7 +361,8 @@ export default function LiveGalleryHero() {
           ? fallback.map((cls, i) => (
               <div
                 key={i}
-                data-depth={depths[i]}
+                data-depth={DEPTHS[i]}
+                style={{ ["--tile-offset-x" as string]: OFFSETS[i] } as React.CSSProperties}
                 className={`lgh-tile ${cls}${spotlightIndex === i ? " lgh-tile-spotlight" : ""}`}
               >
                 <div className="lgh-tile-fallback" />
@@ -319,7 +371,8 @@ export default function LiveGalleryHero() {
           : (tiles ?? []).map((tile, i) => (
               <div
                 key={i}
-                data-depth={depths[i]}
+                data-depth={DEPTHS[i]}
+                style={{ ["--tile-offset-x" as string]: OFFSETS[i] } as React.CSSProperties}
                 className={`lgh-tile${spotlightIndex === i ? " lgh-tile-spotlight" : ""}`}
               >
                 {tile.a && (
@@ -348,8 +401,6 @@ export default function LiveGalleryHero() {
       <div className="lgh-grain" aria-hidden="true" />
 
       <div className="lgh-body">
-        <span className="lgh-live">{liveLabel}</span>
-
         <p className="lgh-eyebrow">The 9th NFT industry event</p>
 
         <h1 className="lgh-wordmark">
@@ -388,6 +439,13 @@ export default function LiveGalleryHero() {
             Register to attend
           </button>
         </div>
+
+        <span className="lgh-live">
+          <span className="lgh-live-label">Live</span>
+          <span className="lgh-live-body">
+            Thousands of Collectors from around the world
+          </span>
+        </span>
       </div>
     </section>
   );
