@@ -194,9 +194,7 @@ export default function Beta() {
             )}
             <div style={{ marginTop: "1.25rem", display: "flex", justifyContent: "center" }}>
               <a
-                href="https://nftnyc2026.sessionize.com/schedule"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/program"
                 style={{
                   ...btnBase,
                   background: "transparent",
