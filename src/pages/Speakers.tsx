@@ -222,7 +222,7 @@ export default function Speakers() {
       <Header theme={theme} onToggleTheme={toggleTheme} stage={stage} />
 
       {/* ── Hero ───────────────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto" style={{ padding: '5rem 1.5rem 2rem' }}>
+      <section className="max-w-7xl mx-auto" style={{ padding: 'calc(5rem + 100px) 1.5rem 2rem' }}>
         <div style={{ textAlign: 'center' }}>
           <p style={{
             fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500,

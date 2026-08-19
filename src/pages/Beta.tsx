@@ -6,7 +6,6 @@ import StatsBar from "@/components/StatsBar";
 import NotableSpeakers from "@/components/NotableSpeakers";
 import SpeakersSection from "@/components/SpeakersSection";
 import EcosystemSection from "@/components/EcosystemSection";
-import SeeWhatsOnTheMap from "@/components/SeeWhatsOnTheMap";
 import BrandQuotes from "@/components/BrandQuotes";
 import WhyNFTs from "@/components/WhyNFTs";
 import AttendeeTestimonials from "@/components/AttendeeTestimonials";
@@ -109,18 +108,9 @@ export default function Beta() {
         {/* ======== HERO (BETA - LIVE GALLERY GROUND) ======== */}
         <LiveGalleryHero />
 
-        <WhyNYC stage={stage} />
-        <SeeWhatsOnTheMap />
-
-        <div className="flex justify-center w-full">
-          <NeuralMesh />
-        </div>
-
-        <StatsBar />
-
-        <NotableSpeakers />
-
-        {/* ======== STATEMENT ======== */}
+        {/* ======== TOKENIZATION LAYER STATEMENT ========
+            Sits above the diagram so the sentence is what the visitor
+            reads before they see it visualised in NeuralMesh below. */}
         <section
           id="about"
           style={{
@@ -218,12 +208,33 @@ export default function Beta() {
                 textUnderlineOffset: "3px",
               }}
             >
-              View Last Year's Program
+              View the Program
             </a>
+          </div>
+        </section>
 
+        <div className="flex justify-center w-full">
+          <NeuralMesh />
+        </div>
+
+        <StatsBar />
+
+        <NotableSpeakers />
+
+        {/* ======== OUR NORTH STAR ======== */}
+        <section
+          id="north-star"
+          style={{
+            padding: "clamp(3rem, 8vw, 8rem) 1.5rem",
+            background: "var(--color-surface)",
+            borderTop: "1px solid var(--card-border)",
+            borderBottom: "1px solid var(--card-border)",
+          }}
+        >
+          <div className="max-w-[960px] mx-auto text-center">
             <div
               className="flex flex-col items-center scroll-fade-up"
-              style={{ marginTop: "3.5rem", marginBottom: "1.5rem" }}
+              style={{ marginBottom: "1.5rem" }}
             >
               <h3
                 style={{
@@ -233,7 +244,6 @@ export default function Beta() {
                   color: "var(--color-text)",
                   textTransform: "uppercase",
                   letterSpacing: "-0.01em",
-                  marginTop: "0.5rem",
                 }}
               >
                 Our North Star
@@ -296,6 +306,8 @@ export default function Beta() {
             </div>
           </div>
         </section>
+
+        <WhyNYC stage={stage} />
 
         <NewsletterCapture />
 

@@ -267,6 +267,25 @@ export default function LiveGalleryHero() {
     [usingFallback],
   );
 
+  // Depth-of-field: each grid slot is deterministically assigned to a
+  // depth plane (near / mid / far) or hidden entirely. Combined with
+  // the CSS custom properties on .lgh-tile[data-depth=...] this gives
+  // the flat grid a sense of layered space and turns roughly 13% of
+  // cells into gaps so the mosaic no longer reads as a tessellated
+  // wall. Deterministic (not random) so it doesn't reshuffle on each
+  // render / rotator tick - the depth of a specific slot is stable.
+  const depths = useMemo<Array<"near" | "mid" | "far" | "hidden">>(() => {
+    return Array.from({ length: TILE_COUNT }, (_, i) => {
+      // Prime-mix hash - spreads the pattern so the depth groups don't
+      // land on obvious diagonals or columns of the underlying grid.
+      const h = (i * 17 + i * i * 3) % 31;
+      if (h < 4) return "hidden"; // ~13%
+      if (h < 12) return "far";   // ~26%
+      if (h < 22) return "mid";   // ~32%
+      return "near";              // ~29%
+    });
+  }, []);
+
   // Live-count label. Prefer the specific number when we have one; use a
   // discreet placeholder otherwise so the pill doesn't render as "undefined".
   const liveLabel = useMemo(() => {
@@ -291,6 +310,7 @@ export default function LiveGalleryHero() {
           ? fallback.map((cls, i) => (
               <div
                 key={i}
+                data-depth={depths[i]}
                 className={`lgh-tile ${cls}${spotlightIndex === i ? " lgh-tile-spotlight" : ""}`}
               >
                 <div className="lgh-tile-fallback" />
@@ -299,6 +319,7 @@ export default function LiveGalleryHero() {
           : (tiles ?? []).map((tile, i) => (
               <div
                 key={i}
+                data-depth={depths[i]}
                 className={`lgh-tile${spotlightIndex === i ? " lgh-tile-spotlight" : ""}`}
               >
                 {tile.a && (
@@ -346,8 +367,8 @@ export default function LiveGalleryHero() {
 
         <p className="lgh-strap">
           <b>1-3 September</b> in Times Square, New York - and{" "}
-          <b>streaming on-chain everywhere</b>. Register free to attend, or
-          start collecting from Times Square right now.
+          <b>live on-chain NOW</b>. Register to attend, or start collecting
+          Times Square Art from our global community of Artists now.
         </p>
 
         <p className="lgh-meta">Times Square, New York City · 1-3 Sep 2026</p>

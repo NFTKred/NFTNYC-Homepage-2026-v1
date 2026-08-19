@@ -26,30 +26,61 @@
   inset: 0;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 4px;
-  padding: 4px;
-  /* Base gallery opacity - individual tiles override this via z-index
-     when the spotlight class is applied. The soft blur+saturate sits
-     on `.lgh-tile-img` (not here) so the spotlight can strip it. */
-  opacity: 0.72;
+  /* Wide gap turns the gallery from a tessellated wall into a set of
+     independent floating tiles. Padding leaves breathing room at the
+     hero edges so tiles don't kiss the header or the fold. */
+  gap: 18px;
+  padding: 22px;
   z-index: 1;
   pointer-events: none;
 }
 @media (max-width: 960px) {
-  .lgh-gallery { grid-template-columns: repeat(6, 1fr); }
+  .lgh-gallery { grid-template-columns: repeat(6, 1fr); gap: 14px; padding: 16px; }
 }
 @media (max-width: 640px) {
-  .lgh-gallery { grid-template-columns: repeat(4, 1fr); opacity: 0.66; }
+  .lgh-gallery { grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 12px; }
 }
 
+/* Every tile gets a per-tile depth via CSS custom properties. The
+   defaults below are the "near" plane; the [data-depth] attribute
+   overrides them for mid / far / hidden. Tiles at different depths
+   read as being at different distances from the camera, giving the
+   flat grid a sense of layered space. */
 .lgh-tile {
+  --tile-scale: 1;
+  --tile-opacity: 0.92;
+  --tile-blur: 0.3px;
+  --tile-saturate: 1.02;
+
   aspect-ratio: 1 / 1;
-  border-radius: 2px;
+  border-radius: 8px;
   overflow: hidden;
   position: relative;
-  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 500ms ease;
+  transform: scale(var(--tile-scale));
+  transform-origin: center center;
+  transition:
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 500ms ease;
+  box-shadow:
+    0 6px 18px -8px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
+.lgh-tile[data-depth="mid"] {
+  --tile-scale: 0.86;
+  --tile-opacity: 0.72;
+  --tile-blur: 0.9px;
+  --tile-saturate: 0.96;
+}
+.lgh-tile[data-depth="far"] {
+  --tile-scale: 0.66;
+  --tile-opacity: 0.48;
+  --tile-blur: 2.2px;
+  --tile-saturate: 0.85;
+}
+.lgh-tile[data-depth="hidden"] {
+  visibility: hidden;
+}
+
 .lgh-tile .lgh-tile-fallback {
   width: 100%;
   height: 100%;
@@ -62,7 +93,10 @@
 
 /* Stacked images per tile - two <img> children fade between each other
    when the active slot flips. Both are absolute-positioned inside the
-   tile so they occupy the same space; only the .active one is visible. */
+   tile so they occupy the same space; only the .active one is visible.
+   The scale transform on the inactive img gives a subtle "settle into
+   place" motion when a swap happens - the incoming image relaxes from
+   1.06 down to 1.0 as it fades in. */
 .lgh-tile-img {
   position: absolute;
   inset: 0;
@@ -71,10 +105,20 @@
   object-fit: cover;
   display: block;
   opacity: 0;
-  transition: opacity 700ms ease;
-  filter: blur(0.3px) saturate(1.02);
+  transform: scale(1.06);
+  transition:
+    opacity 800ms ease,
+    transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+  filter: blur(var(--tile-blur)) saturate(var(--tile-saturate));
 }
-.lgh-tile-img.active { opacity: 1; }
+.lgh-tile-img.active {
+  opacity: var(--tile-opacity);
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lgh-tile-img { transition: opacity 0ms; transform: none; }
+  .lgh-tile-img.active { transform: none; }
+}
 
 /* Fallback tile palette when the API is unavailable or an item has no image.
    Twelve distinct treatments so the mosaic still reads as a mosaic. */
@@ -104,6 +148,9 @@
 }
 .lgh-tile.lgh-tile-spotlight .lgh-tile-img {
   filter: blur(0) saturate(1.15) brightness(1.3);
+}
+.lgh-tile.lgh-tile-spotlight .lgh-tile-img.active {
+  opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
   .lgh-tile.lgh-tile-spotlight {
