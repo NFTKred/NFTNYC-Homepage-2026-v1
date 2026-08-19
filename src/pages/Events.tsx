@@ -34,6 +34,18 @@ const EVENTS: SatelliteEvent[] = [
     pinned: true,
   },
   {
+    name: 'CertiK NYC Open House: NFT.NYC Edition',
+    host: 'CertiK × XDC',
+    date: '2026-09-02',
+    dateLabel: 'Tuesday, Sept 2, 2026 · 3:00–7:00 PM',
+    venue: 'CertiK New York Office',
+    description:
+      'An afternoon of Web3 insights, food, and networking at the CertiK New York office during NFT.NYC week. Featured panel with CertiK and XDC on the trends shaping Web3, followed by open Q&A. Meet Web3 founders, builders, and security professionals. Complimentary food and drinks, CertiK swag, and a look at the latest security initiatives including CertiK Hunt.',
+    registrationUrl: 'https://luma.com/certik-8q90',
+    tag: 'Community',
+    image: '/events/certik-openhouse.png',
+  },
+  {
     name: 'The Space Between Worlds',
     host: 'One Love Art × NFT Aotearoa × Shalin Studios',
     date: '2026-09-02',
