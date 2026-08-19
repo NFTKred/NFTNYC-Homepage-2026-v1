@@ -2,7 +2,6 @@ import { useState } from 'react';
 import nftLogo from '@/assets/nftnyc-logo.svg';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import Countdown from '@/components/Countdown';
-import { SHOW_SPEAK_PAGE } from '@/pages/Speak';
 
 interface HeaderProps {
   theme: 'dark' | 'light';
@@ -20,8 +19,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   const [menuOpen, setMenuOpen] = useState(false);
 
   const allNavLinks = [
-    { href: 'https://onehub.nft.nyc', label: 'Collect: Times Square', minStage: 0 },
-    { href: '/speak', label: 'Speak', minStage: 0 },
+    { href: 'https://onehub.nft.nyc', label: 'Collect', minStage: 0 },
     { href: '/speakers', label: 'Speakers', minStage: 0 },
     { href: '/program', label: 'Program', minStage: 0 },
     { href: '/sponsor', label: 'Partnerships', minStage: 0 },

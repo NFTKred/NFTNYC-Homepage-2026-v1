@@ -347,8 +347,6 @@ export default function LiveGalleryHero() {
       <div className="lgh-scrim" aria-hidden="true" />
       <div className="lgh-grain" aria-hidden="true" />
 
-      <span className="lgh-beta" aria-hidden="true">Beta preview</span>
-
       <div className="lgh-body">
         <span className="lgh-live">{liveLabel}</span>
 
@@ -374,21 +372,21 @@ export default function LiveGalleryHero() {
         <p className="lgh-meta">Times Square, New York City · 1-3 Sep 2026</p>
 
         <div className="lgh-ctas">
-          <button
-            type="button"
-            className="lgh-cta lgh-cta-primary"
-            onClick={openTicketing}
-          >
-            Register to attend
-          </button>
           <a
-            className="lgh-cta lgh-cta-ghost"
+            className="lgh-cta lgh-cta-primary"
             href="https://collect.nft.nyc"
             target="_blank"
             rel="noopener noreferrer"
           >
             Start collecting
           </a>
+          <button
+            type="button"
+            className="lgh-cta lgh-cta-ghost"
+            onClick={openTicketing}
+          >
+            Register to attend
+          </button>
         </div>
       </div>
     </section>

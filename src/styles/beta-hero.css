@@ -53,6 +53,7 @@
   --tile-saturate: 1.02;
 
   aspect-ratio: 1 / 1;
+  width: 100%;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
@@ -61,9 +62,16 @@
   transition:
     transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 500ms ease;
+  /* Give every tile a visible square outline. Without this, tiles that
+     happen to contain dark art dissolve into the hero background and
+     read as tall or wide rectangles - the media still covers the tile
+     correctly, but the eye reads the visible artwork shape instead of
+     the tile shape. A muted background fill plus a stronger inset ring
+     makes the 1:1 boundary unambiguous. */
+  background: rgba(20, 22, 32, 1);
   box-shadow:
     0 6px 18px -8px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 .lgh-tile[data-depth="mid"] {
   --tile-scale: 0.86;
