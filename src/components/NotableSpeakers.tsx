@@ -146,7 +146,6 @@ export default function NotableSpeakers() {
             <a
               key={s.id}
               href={`/speakers?speaker=${encodeURIComponent(s.name)}`}
-              className="scroll-fade-up"
               style={{
                 display: "flex",
                 alignItems: "center",
