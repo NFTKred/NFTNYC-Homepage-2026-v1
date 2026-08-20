@@ -69,6 +69,13 @@
 }
 .blog-post-hero {
   width: 100%;
+  /* Force the hero into a 2:1 landscape container. Portrait or tall
+     source images used to render at their natural aspect ratio and
+     came out long and skinny; object-fit: cover crops to the container
+     instead. */
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  object-position: center center;
   border-radius: 12px;
   border: 1px solid var(--card-border);
   margin-bottom: 2rem;
