@@ -148,12 +148,14 @@ export default function Blogs() {
                 onMouseEnter={e => (e.currentTarget.style.borderColor = hexToRgba(ACCENT, 0.25))}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}
               >
-                {/* Image or gradient header */}
+                {/* Image or gradient header — 2:1 landscape container
+                    so tall/portrait source images crop to the frame
+                    instead of driving the card sky-high. */}
                 {post.image ? (
                   <div style={{
                     position: 'relative',
                     width: '100%',
-                    height: '200px',
+                    aspectRatio: '2 / 1',
                     overflow: 'hidden',
                     background: `linear-gradient(135deg, ${hexToRgba(ACCENT, 0.08)}, ${hexToRgba(ACCENT, 0.02)})`,
                   }}>
