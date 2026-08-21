@@ -1083,33 +1083,162 @@ export default function VibeSprint() {
           </section>
 
           <section id="register">
-            <h2>Register</h2>
+            <h2>Register for Sprint 2</h2>
             <p className="lead">
-              One free registration covers all three sprints. Your Sprint 1 kit — Kred API credits,
-              Lovable build credits in our sponsored workspace, a free .Kred domain claim, 1,000
-              XP, both example app links, the Kredentials API spec, and the "Connect your Kred app
-              to ChatGPT and Claude" one-pager, publishes when Sprint 1 opens, Monday 17 August at
-              4:00pm ET.
+              One free registration covers all three sprints. If you registered for Sprint 1, you're
+              already in — no need to register again. New to the series? Register below to claim
+              your Sprint 2 kit: Kred API credits, Lovable build credits in our sponsored
+              workspace, a free .Kred domain claim, 1,000 XP, both example app links, the
+              Kredentials API spec, and the "Connect your Kred app to ChatGPT and Claude"
+              one-pager.
             </p>
-            <div className="success" role="status" style={{ marginBottom: 16 }}>
-              <b>Sprint 1 registrations are closed.</b>
-              <br />
-              Sprint 2 is coming soon — check back shortly to claim your kit.
-            </div>
+            {!submitted && (
+              <form onSubmit={onSubmit} noValidate>
+                <div className="field">
+                  <label htmlFor="fName">Name or agent name</label>
+                  <input
+                    id="fName"
+                    name="name"
+                    required
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="fEmail">Email</label>
+                  <input
+                    id="fEmail"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="fSegment">I am a</label>
+                  <select
+                    id="fSegment"
+                    name="segment"
+                    value={segment}
+                    onChange={(e) => setSegment(e.target.value)}
+                  >
+                    <option>Designer or digital artist</option>
+                    <option>Developer</option>
+                    <option>Domain investor or reseller</option>
+                    <option>AI agent (or agent owner)</option>
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="fTool">Build platform</label>
+                  <select
+                    id="fTool"
+                    name="tool"
+                    value={buildTool}
+                    onChange={(e) => setBuildTool(e.target.value)}
+                  >
+                    <option>Lovable (primary, Agent Integrations)</option>
+                    <option>Replit</option>
+                    <option>Vercel + GitHub</option>
+                    <option>Base44</option>
+                    <option>Bolt</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div className="field full">
+                  <label htmlFor="fDomain">Claim your free Kred domain</label>
+                  <div className="domain-row">
+                    <input
+                      id="fDomain"
+                      name="domain"
+                      placeholder="yourname"
+                      required
+                      value={domain}
+                      onChange={(e) => setDomain(e.target.value)}
+                    />
+                    <span className="tld">.Kred</span>
+                  </div>
+                  {domainCheck.state === "checking" && (
+                    <p className="form-note" style={{ marginTop: 6 }}>Checking availability…</p>
+                  )}
+                  {domainCheck.state === "available" && (
+                    <p className="form-note" style={{ marginTop: 6, color: "#12a150" }}>
+                      {domain.trim()}.Kred is available.
+                    </p>
+                  )}
+                  {domainCheck.state === "taken" && (
+                    <p className="form-note" style={{ marginTop: 6, color: "#F15621" }}>
+                      {domainCheck.message || `${domain.trim()}.Kred is already taken — try another name.`}
+                    </p>
+                  )}
+                  {domainCheck.state === "unknown" && domainCheck.message && (
+                    <p className="form-note" style={{ marginTop: 6 }}>{domainCheck.message}</p>
+                  )}
+                </div>
+                <RegistrantContactFields open={domain.trim().length > 0} onChange={setContact} />
+                <div className="agree">
+                  <input
+                    id="fAgree"
+                    type="checkbox"
+                    required
+                    checked={agree}
+                    onChange={(e) => setAgree(e.target.checked)}
+                  />
+                  <label htmlFor="fAgree">
+                    I accept the{" "}
+                    <a
+                      href="https://www.peoplebrowsr.com/tos"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      PeopleBrowsr Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="https://f005.backblazeb2.com/file/PB-HubSpot/Kred_Flash_Sprints_Participation_Terms_v1.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Kred Flash Sprint ToS
+                    </a>
+                    , and I understand XP carries a 60-day expiry with zero monetary value.
+                  </label>
+                </div>
+                <div className="form-actions">
+                  <button
+                    className="btn"
+                    type="submit"
+                    disabled={sending || !agree || domainCheck.state === "taken" || domainCheck.state === "checking"}
+                  >
+                    {sending ? "Registering…" : "Claim my kit and register"}
+                  </button>
+                  <span className="form-note">
+                    Free to enter. One registration covers all three sprints. Already registered for
+                    Sprint 1? You're all set — no need to register again.
+                  </span>
+                </div>
+                {formError && (
+                  <p className="form-note" role="alert" style={{ marginTop: 10, color: "#F15621" }}>
+                    {formError}
+                  </p>
+                )}
+              </form>
+            )}
             {submitted && (
-              <div className="success" id="successCard" role="status">
-                <b>You're in — for the whole season.</b> Your Sprint 1 kit — API credits, XP starter
-                pack, and both example apps — arrives when Sprint 1 opens.<br />
-                Your domain <b>{claimedDomain}</b> is reserved. You will receive an email from{" "}
-                noreply@emailverification.info requesting that you verify your email address.
-                <ul>
-                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Monday 17 August, 4:00pm ET.</li>
-                  <li>Sprint 1 Round 1 runs Monday 17 – Wednesday 19 August, opening at 4:00pm ET.</li>
-                  <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
-                  <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
-                </ul>
-                <CalendarLinks />
-              </div>
+               <div className="success" id="successCard" role="status">
+                 <b>You're in — for the whole season.</b> Your Sprint 2 kit — API credits, XP starter
+                 pack, and both example apps — arrives when Sprint 2 opens.<br />
+                 Your domain <b>{claimedDomain}</b> is reserved. You will receive an email from{" "}
+                 noreply@emailverification.info requesting that you verify your email address.
+                 <ul>
+                   <li>The Sprint 2 kit arrives when Sprint 2 opens — watch your email for the start announcement.</li>
+                   <li>Live engineer support runs each evening of the build window — the Google Meet link is in your kit.</li>
+                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
+                 </ul>
+                 <CalendarLinks />
+               </div>
             )}
             <p className="form-note" style={{ marginTop: 10 }}>
               <a
