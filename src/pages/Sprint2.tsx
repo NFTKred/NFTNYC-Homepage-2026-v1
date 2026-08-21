@@ -189,10 +189,9 @@ export default function Sprint2() {
               <span className="badge tool">Lovable primary · any platform welcome</span>
             </div>
             <div className="cta-row">
-              <button type="button" className="btn" disabled aria-disabled="true">
-                Count me in for Sprint 2
-              </button>
-              <span className="cta-soon">Registration opens shortly</span>
+              <a href="#register" className="btn">
+                Claim my kit and register
+              </a>
               <span className="cta-note">
                 One click if you built in Sprint 1, we know you already. New here? The same button
                 registers you free, and covers all three sprints.
