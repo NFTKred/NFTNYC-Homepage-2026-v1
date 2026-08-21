@@ -55,6 +55,104 @@ export default function Sprint2() {
     document.documentElement.setAttribute("data-theme", next);
   };
 
+  // Registration form state.
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [segment, setSegment] = useState("Designer or digital artist");
+  const [buildTool, setBuildTool] = useState("Lovable (primary, Agent Integrations)");
+  const [domain, setDomain] = useState("");
+  const [agree, setAgree] = useState(false);
+  const [contact, setContact] = useState<RegistrantContact>(EMPTY_CONTACT);
+  const [domainCheck, setDomainCheck] = useState<
+    { state: "idle" | "checking" | "available" | "taken" | "unknown"; message?: string }
+  >({ state: "idle" });
+  const [submitted, setSubmitted] = useState(false);
+  const [claimedDomain, setClaimedDomain] = useState("yourname.Kred");
+  const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  // Debounced .Kred availability check.
+  useEffect(() => {
+    const d = domain.trim().toLowerCase().replace(/\.kred$/i, "");
+    if (!d) {
+      setDomainCheck({ state: "idle" });
+      return;
+    }
+    if (!/^[a-z0-9-]+$/.test(d)) {
+      setDomainCheck({ state: "unknown", message: "Letters, numbers and hyphens only." });
+      return;
+    }
+    setDomainCheck({ state: "checking" });
+    const t = window.setTimeout(async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke(
+          "submit-vibesprint-registration",
+          { body: { action: "check_domain", domain: d } }
+        );
+        if (error) throw error;
+        if (data?.available === true) setDomainCheck({ state: "available" });
+        else if (data?.available === false)
+          setDomainCheck({ state: "taken", message: data?.error ?? undefined });
+        else setDomainCheck({ state: "unknown", message: "Couldn't check availability right now." });
+      } catch {
+        setDomainCheck({ state: "unknown", message: "Couldn't check availability right now." });
+      }
+    }, 500);
+    return () => window.clearTimeout(t);
+  }, [domain]);
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const d = domain.trim() || "yourname";
+    if (domainCheck.state === "taken") {
+      setFormError(`${d}.Kred is already taken — please choose another name.`);
+      return;
+    }
+    if (domainCheck.state === "checking") {
+      setFormError("Just checking that domain is available — try again in a moment.");
+      return;
+    }
+    setSending(true);
+    setFormError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "submit-vibesprint-registration",
+        {
+          body: {
+            name: name.trim(),
+            email: email.trim(),
+            segment,
+            domain: d,
+            build_tool: buildTool,
+            agreed_tos: agree,
+            ...contact,
+          },
+        }
+      );
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+    } catch (err) {
+      console.error("Sprint 2 registration failed:", err);
+      setFormError("We couldn't save your registration. Please try again, or email team@nft.nyc.");
+      setSending(false);
+      return;
+    }
+    setSending(false);
+    setClaimedDomain(`${d}.Kred`);
+    setSubmitted(true);
+    window.setTimeout(() => {
+      document.getElementById("successCard")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 0);
+  };
+
   return (
     <div
       data-theme={theme}
