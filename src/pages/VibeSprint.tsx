@@ -1083,7 +1083,7 @@ export default function VibeSprint() {
           </section>
 
           <section id="register">
-            <h2>Register</h2>
+            <h2>Register for Sprint 2</h2>
             <p className="lead">
               One free registration covers all three sprints. If you registered for Sprint 1, you're
               already in — no need to register again. New to the series? Register below to claim
