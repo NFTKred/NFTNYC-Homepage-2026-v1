@@ -1227,19 +1227,18 @@ export default function VibeSprint() {
               </form>
             )}
             {submitted && (
-              <div className="success" id="successCard" role="status">
-                <b>You're in — for the whole season.</b> Your Sprint 1 kit — API credits, XP starter
-                pack, and both example apps — arrives when Sprint 1 opens.<br />
-                Your domain <b>{claimedDomain}</b> is reserved. You will receive an email from{" "}
-                noreply@emailverification.info requesting that you verify your email address.
-                <ul>
-                  <li>The Sprint 1 kit arrives when Sprint 1 opens: Monday 17 August, 4:00pm ET.</li>
-                  <li>Sprint 1 Round 1 runs Monday 17 – Wednesday 19 August, opening at 4:00pm ET.</li>
-                  <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
-                  <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
-                </ul>
-                <CalendarLinks />
-              </div>
+               <div className="success" id="successCard" role="status">
+                 <b>You're in — for the whole season.</b> Your Sprint 2 kit — API credits, XP starter
+                 pack, and both example apps — arrives when Sprint 2 opens.<br />
+                 Your domain <b>{claimedDomain}</b> is reserved. You will receive an email from{" "}
+                 noreply@emailverification.info requesting that you verify your email address.
+                 <ul>
+                   <li>The Sprint 2 kit arrives when Sprint 2 opens — watch your email for the start announcement.</li>
+                   <li>Live engineer support runs each evening of the build window — the Google Meet link is in your kit.</li>
+                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
+                 </ul>
+                 <CalendarLinks />
+               </div>
             )}
             <p className="form-note" style={{ marginTop: 10 }}>
               <a
