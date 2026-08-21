@@ -142,6 +142,13 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     path: "/sprint2",
     ogImage: "/og/speak.png",
   },
+  sprintfeedback: {
+    title: "Sprint Feedback | Kred Flash Sprints",
+    description:
+      "Two minutes of feedback from Kred Flash Sprint builders: what worked, what got in the way, and what should change in the next sprint.",
+    path: "/sprintfeedback",
+    ogImage: "/og/speak.png",
+  },
 };
 
 export type PageMetaKey = keyof typeof PAGE_META;
