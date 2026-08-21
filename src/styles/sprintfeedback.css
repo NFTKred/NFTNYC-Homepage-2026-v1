@@ -1,0 +1,86 @@
+/* Sprint feedback survey (/sprintfeedback) — layout additions on top of
+   vibesprint.css. All rules scoped under `.sprintfeedback`. */
+
+.sprintfeedback .qcard {
+  border: 1px solid var(--color-border, rgba(128, 128, 128, .3));
+  border-radius: 10px;
+  padding: 18px 18px 14px;
+  margin: 0 0 16px;
+  background: var(--color-surface, transparent);
+}
+.sprintfeedback .qcard > .q {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.35;
+  margin: 0 0 4px;
+}
+.sprintfeedback .qcard > .hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0 0 12px;
+}
+
+/* Rating scale ------------------------------------------------ */
+.sprintfeedback .scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 6px;
+}
+.sprintfeedback .scale button {
+  min-width: 44px;
+  padding: 10px 0;
+  flex: 1 1 44px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, rgba(128, 128, 128, .4));
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.sprintfeedback .scale button:hover { border-color: #F15621; }
+.sprintfeedback .scale button[aria-pressed="true"] {
+  background: #F15621;
+  border-color: #F15621;
+  color: #fff;
+}
+.sprintfeedback .scale-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Options ----------------------------------------------------- */
+.sprintfeedback .opts { display: grid; gap: 8px; }
+.sprintfeedback .opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.sprintfeedback .opt input { margin-top: 3px; flex: none; }
+
+.sprintfeedback textarea,
+.sprintfeedback input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, rgba(128, 128, 128, .4));
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+}
+.sprintfeedback textarea { min-height: 84px; resize: vertical; }
+.sprintfeedback .sub {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-border, rgba(128, 128, 128, .3));
+}
+.sprintfeedback .sub .q { font-weight: 600; font-size: 14px; margin: 0 0 8px; }
