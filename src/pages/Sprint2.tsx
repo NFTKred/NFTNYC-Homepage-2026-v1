@@ -1,8 +1,14 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties, type FormEvent } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
+import { supabase } from "@/lib/supabase";
+import {
+  RegistrantContactFields,
+  EMPTY_CONTACT,
+  type RegistrantContact,
+} from "@/components/vibesprint/RegistrantContactFields";
 import "@/styles/vibesprint.css";
 import "@/styles/sprint2.css";
 
