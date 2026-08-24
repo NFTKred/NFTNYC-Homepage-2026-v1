@@ -723,14 +723,14 @@ export default function VibeSprint() {
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-cyan)" } as React.CSSProperties}>
                 <span className="no">2</span>
-                <span className="date">R1 · Mon 24 – Wed 26 Aug · NFT.NYC creators</span>
+                <span className="date">R1 · Wed 26 – Fri 28 Aug · NFT.NYC creators</span>
                 <h3>The Agentic Domain Registrar</h3>
                 <p className="oneline"><b>Agents buying identity.</b></p>
                 <p>
                   The customer flips to agents: they discover, price, register, and enroll their
                   own .Kred agentic identity — AID, ANS, MCP-I, DNSid — end to end.
                 </p>
-                <span className="chip">Brief publishes Thu 20 Aug</span>
+                <span className="chip">Brief publishes Sat 22 Aug</span>
               </div>
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
