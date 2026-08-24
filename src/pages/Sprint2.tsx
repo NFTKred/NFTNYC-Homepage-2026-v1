@@ -24,9 +24,9 @@ const EVENT_JSON_LD = {
   "@type": "Event",
   name: "Kred Flash Sprint 2 — Agents Buying Identity",
   description:
-    "A 48-hour build sprint: agents that find, price, register, and set up .Kred identities on the Domains.Kred API. Opens Monday 24 August 4:00pm ET, closes Wednesday 26 August 4:00pm ET.",
-  startDate: "2026-08-24T16:00:00-04:00",
-  endDate: "2026-08-26T16:00:00-04:00",
+    "A 48-hour build sprint: agents that find, price, register, and set up .Kred identities on the Domains.Kred API. Opens Wednesday 26 August 4:00pm ET, closes Friday 28 August 4:00pm ET.",
+  startDate: "2026-08-26T16:00:00-04:00",
+  endDate: "2026-08-28T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   location: { "@type": "VirtualLocation", url: "https://nft.nyc/sprint2" },
@@ -183,9 +183,9 @@ export default function Sprint2() {
               finish. <b>Four possible design approaches</b> sit below. Pick one.
             </p>
             <div className="badges">
-              <span className="badge hot">Brief publishes Thu 20 Aug</span>
-              <span className="badge hot">Opens Mon 24 Aug · 4:00pm ET</span>
-              <span className="badge">Closes Wed 26 Aug · 4:00pm ET</span>
+              <span className="badge hot">Brief publishes Sat 22 Aug</span>
+              <span className="badge hot">Opens Wed 26 Aug · 4:00pm ET</span>
+              <span className="badge">Closes Fri 28 Aug · 4:00pm ET</span>
               <span className="badge tool">Lovable primary · any platform welcome</span>
             </div>
             <div className="cta-row">
@@ -476,8 +476,8 @@ export default function Sprint2() {
               </p>
               <p>The Meet link arrives with your Sprint 2 kit. Registration is the only ticket required.</p>
               <div className="sessions">
-                <div className="sess"><b>Session 1</b>Mon 24 Aug · from 4:00pm ET</div>
-                <div className="sess"><b>Session 2</b>Tue 25 Aug · from 4:00pm ET</div>
+                <div className="sess"><b>Session 1</b>Wed 26 Aug · from 4:00pm ET</div>
+                <div className="sess"><b>Session 2</b>Thu 27 Aug · from 4:00pm ET</div>
               </div>
             </div>
           </section>
@@ -485,10 +485,10 @@ export default function Sprint2() {
           <section>
             <h2>The Road to Sprint 2 Round 1</h2>
             <div className="tl">
-              <div className="trow"><b>Thu 20 Aug</b>The Sprint 2 brief publishes.</div>
-              <div className="trow"><b>Mon 24 Aug · 4:00pm ET</b>Round 1 opens. Your kit publishes: API credits, Lovable credits in our sponsored Vibe Sprint Workspace, the MCP server, the reference builds, and the Meet link.</div>
-              <div className="trow"><b>Mon 24 and Tue 25 Aug · from 4:00pm ET</b>Live engineer support, five to eight hours each evening.</div>
-              <div className="trow"><b>Wed 26 Aug · 4:00pm ET</b>Submissions close. App URL on your .Kred domain, project link, MCP link, API evidence.</div>
+              <div className="trow"><b>Sat 22 Aug</b>The Sprint 2 brief publishes.</div>
+              <div className="trow"><b>Wed 26 Aug · 4:00pm ET</b>Round 1 opens. Your kit publishes: API credits, Lovable credits in our sponsored Vibe Sprint Workspace, the MCP server, the reference builds, and the Meet link.</div>
+              <div className="trow"><b>Wed 26 and Thu 27 Aug · from 4:00pm ET</b>Live engineer support, five to eight hours each evening.</div>
+              <div className="trow"><b>Fri 28 Aug · 4:00pm ET</b>Submissions close. App URL on your .Kred domain, project link, MCP link, API evidence.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized. Build Reports to every builder.</div>
               <div className="trow"><b>September 2</b>Live presentations on the main stage at NFT.NYC 2026, The Edison, Times Square.</div>
             </div>
@@ -645,7 +645,7 @@ export default function Sprint2() {
                 Your domain <b>{claimedDomain}</b> is reserved. You will receive an email from{" "}
                 noreply@emailverification.info requesting that you verify your email address.
                 <ul>
-                  <li>The Sprint 2 kit arrives when Round 1 opens: Monday 24 August, 4:00pm ET.</li>
+                  <li>The Sprint 2 kit arrives when Round 1 opens: Wednesday 26 August, 4:00pm ET.</li>
                   <li>Live engineer support runs both evenings, from 4:00pm ET — the Google Meet link is in your kit.</li>
                   <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
                 </ul>
