@@ -54,6 +54,8 @@ const SUPPORT_SESSIONS: SupportSession[] = [
   },
 ];
 
+const REGISTRANT_EMAIL_VERSION = "sprint2-2026-08-26";
+
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
 /** iCalendar UTC timestamp: YYYYMMDDTHHMMSSZ. */
@@ -613,8 +615,9 @@ Deno.serve(async (req) => {
           from: `NFT.NYC Kred Flash Sprints <${ALERT_FROM_EMAIL}>`,
           to: [email],
           reply_to: ALERT_EMAIL,
-          subject: `You are in — Kred Flash Sprint 2 (${domain}.Kred)`,
+          subject: `Sprint 2 registration confirmed — ${domain}.Kred`,
           html: buildRegistrantEmailHtml(name, `${domain}.Kred`),
+          headers: { "X-Template-Version": REGISTRANT_EMAIL_VERSION },
           attachments: [{
             filename: "vibesprint-sprint2-support-sessions.ics",
             content: base64Encode(icsText),
