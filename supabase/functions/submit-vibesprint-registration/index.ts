@@ -89,7 +89,7 @@ function outlookCalendarUrl(s: SupportSession): string {
 /** Build a single .ics text carrying both sessions. Works with Apple
  *  Calendar, Outlook desktop, and imports into Google / Outlook web. */
 function buildIcs(sessions: SupportSession[]): string {
-  const stamp = toIcsDate(new Date(Date.UTC(2026, 7, 12, 0, 0, 0))); // stable DTSTAMP so re-imports are idempotent
+  const stamp = toIcsDate(new Date(Date.UTC(2026, 7, 20, 0, 0, 0))); // stable DTSTAMP so re-imports are idempotent
   const events = sessions.map((s, i) => {
     const uid = `vibesprint-support-${i + 1}-${s.startUtc.getTime()}@nft.nyc`;
     const desc = s.description.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,");
