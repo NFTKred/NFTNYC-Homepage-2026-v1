@@ -34,6 +34,18 @@ const EVENTS: SatelliteEvent[] = [
     pinned: true,
   },
   {
+    name: 'Very Cool Video Art',
+    host: 'Transient Labs',
+    date: '2026-09-01',
+    dateLabel: 'Tuesday, Sept 1, 2026 · 2:00–4:00 PM',
+    venue: 'New York, NY',
+    description:
+      'An afternoon screening of video artworks from Ed Balloon, Yatreda, and Joe Pease. Program includes past works and never-before-seen pieces.',
+    registrationUrl: 'https://partiful.com/e/u4O0duknKcYq5Lb21Ljz',
+    tag: 'Community',
+    image: '/events/very-cool-video-art.jpg',
+  },
+  {
     name: 'Taco Tech Tuesday: NFT NYC Edition',
     host: 'Taco Tech Tuesday × Own The Doge × NY Life',
     date: '2026-09-01',
@@ -82,6 +94,42 @@ const EVENTS: SatelliteEvent[] = [
     image: '/events/canal-street-show.jpg',
   },
   {
+    name: './spiral: Public Opening',
+    host: 'SuperRare',
+    date: '2026-09-03',
+    dateLabel: 'Thursday, Sept 3, 2026 · 6:00–9:00 PM',
+    venue: 'New York, NY',
+    description:
+      'SuperRare\'s public opening of ./spiral — an exhibition featuring Anne Spalter, Atay İlgun, Bard Ionson, Kyle McDonald, Gene Kogan, Helena Sarin, Pindar Van Arman, Robbie Barrat, Rhea Myers, Artonomous Artifact, and Mario Klingemann.',
+    registrationUrl: 'https://superrare.itm.studio/m/spiral-public-opening',
+    tag: 'Community',
+    image: '/events/spiral-public-opening.png',
+  },
+  {
+    name: 'Honoring Our Pictures — A.R.T. N.Y.C. at Heft',
+    host: 'Heft Gallery',
+    date: '2026-09-04',
+    dateLabel: 'Friday, Sept 4, 2026 · 5:00–9:00 PM',
+    venue: 'Heft Gallery · New York',
+    description:
+      'An evening to celebrate ART in NYC with a conversation between Ruby Justice Thelot, Charlotte Kent, Quasimatt, and Auriea Harvey.',
+    registrationUrl: 'https://partiful.com/e/NDyCFYx8QBmlrfmTYTN5',
+    tag: 'Community',
+    image: '/events/honoring-our-pictures.jpg',
+  },
+  {
+    name: 'Cycol Gallery Presents: Biz Markie × Bisco Smith — Broome Street Gallery Night',
+    host: 'Cycol Gallery',
+    date: '2026-09-04',
+    dateLabel: 'Friday, Sept 4, 2026 · 6:00–10:00 PM',
+    venue: 'Cycol Gallery · Broome Street, NYC',
+    description:
+      'A special evening uniting and celebrating hip-hop icon Biz Markie, the artistic powerhouse Bisco Smith, and the Web3 community at Cycol Gallery.',
+    registrationUrl: 'https://luma.com/zpumthj0',
+    tag: 'Community',
+    image: '/events/biz-markie-cycol.png',
+  },
+  {
     name: 'The Meta Beast Roaming Party — Live From NYC Decentraland Community Meet Up',
     host: 'Decentraland',
     date: '2026-09-03',
@@ -92,6 +140,28 @@ const EVENTS: SatelliteEvent[] = [
     registrationUrl: 'https://luma.com/jrx3a8e4',
     tag: 'Community',
     image: '/events/decentraland-metabeast.png',
+  },
+  {
+    name: 'VIBE SCENE : : : Demos From the Underground',
+    host: 'Heft Gallery',
+    date: '2026-09-02',
+    dateLabel: 'Wednesday, Sept 2, 2026 · 6:00–8:30 PM',
+    venue: 'Heft Gallery · New York',
+    description:
+      'Come see artists and art-adjacent creators demo the hottest apps being built right now. Each is a fast 7-minute walk-through followed by conversation. Featured demos from quasimatt, clay devlin, auriea harvey, adam berninger, and more TBA.',
+    registrationUrl: 'https://partiful.com/e/wukUdfnp7CF7M35n5Ccq',
+    tag: 'Community',
+    image: '/events/vibe-scene-heft.jpg',
+  },
+  {
+    name: 'One Love Billboard',
+    host: 'One Love',
+    date: '2026-09-02',
+    dateLabel: 'Wednesday, Sept 2, 2026 · 10:30 PM',
+    venue: 'Meet at the corner of West 52nd Street & Broadway, NYC',
+    description:
+      'A Times Square billboard takeover featuring 70+ global artists. Meet at the corner of West 52nd Street and Broadway to watch it live.',
+    tag: 'Community',
   },
   {
     name: 'BMAG presents Remains — a solo exhibition by Rupture',
