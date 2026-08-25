@@ -569,7 +569,7 @@ export default function Sprint2() {
                     </svg>
                     <div>
                       <b>This registers a real .Kred domain for you.</b>{" "}
-                      <span>The name you type here is claimed on the Domains.Kred registry the moment you submit your registration — it's yours to keep, and ships with a Kredentials page.</span>
+                      <span>The name you type here is claimed on the Domains.Kred registry the moment you submit your registration — it's yours to keep.</span>
                     </div>
                   </div>
                   <div className="domain-row">
