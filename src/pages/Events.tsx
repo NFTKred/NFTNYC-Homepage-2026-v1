@@ -24,7 +24,7 @@ const EVENTS: SatelliteEvent[] = [
     name: 'New York GoClub event by GoMining',
     host: 'GoMining',
     date: '2026-09-02',
-    dateLabel: 'Tuesday, Sept 2, 2026 · 6:00 PM arrival · 7:00–11:00 PM event',
+    dateLabel: 'Wednesday, Sept 2, 2026 · 6:00 PM arrival · 7:00–11:00 PM event',
     venue: 'Hudson VU · 653 Eleventh Avenue, New York, NY · 5 min from Times Square',
     description:
       'Private night · limited seats · application only. A closed, invite-only evening bringing together a curated group of builders, partners, and ecosystem leaders. Premium food and beverages, a breathtaking nighttime view of NYC, a presentation by the CEO of GoMining, and open dialogue on current trends and challenges. All applications reviewed; selected guests receive a confirmation.',
@@ -49,7 +49,7 @@ const EVENTS: SatelliteEvent[] = [
     name: 'CertiK NYC Open House: NFT.NYC Edition',
     host: 'CertiK × XDC',
     date: '2026-09-02',
-    dateLabel: 'Tuesday, Sept 2, 2026 · 3:00–7:00 PM',
+    dateLabel: 'Wednesday, Sept 2, 2026 · 3:00–7:00 PM',
     venue: 'CertiK New York Office',
     description:
       'An afternoon of Web3 insights, food, and networking at the CertiK New York office during NFT.NYC week. Featured panel with CertiK and XDC on the trends shaping Web3, followed by open Q&A. Meet Web3 founders, builders, and security professionals. Complimentary food and drinks, CertiK swag, and a look at the latest security initiatives including CertiK Hunt.',
@@ -61,7 +61,7 @@ const EVENTS: SatelliteEvent[] = [
     name: 'The Space Between Worlds',
     host: 'One Love Art × NFT Aotearoa × Shalin Studios',
     date: '2026-09-02',
-    dateLabel: 'Tuesday, Sept 2, 2026 · 6:00–9:00 PM',
+    dateLabel: 'Wednesday, Sept 2, 2026 · 6:00–9:00 PM',
     venue: 'Jutta Gallery · New York',
     description:
       'An Official NFT.NYC 2026 Satellite Event. A group exhibition of original physical artworks exploring the unseen connections between cultures, identities, technologies, environments, and states of being. Exhibiting artists include Delta Sauce, Alyssa Stevens, Andres Del Vecchio, Jen Panepinto, Yuzapata, Goli, Judasaca, Dr Lemny, Carlos Aquino, Pollis, Dominique Baker, Zoe Louise, Koratoras, Wendy Hannah, Raymund A. Maravilla, Ronnie Peters, Tracey-Lea Morgan, Jordy Elise, Meghan Geliza Jackson, and Kate McLeod.',
@@ -97,7 +97,7 @@ const EVENTS: SatelliteEvent[] = [
     name: 'BMAG presents Remains — a solo exhibition by Rupture',
     host: 'Bitcoin Magazine Art Gallery & Museum (BMAG)',
     date: '2026-09-02',
-    dateLabel: 'Opening: Tuesday, Sept 2, 6–9 PM · Exhibition: Sept 3–8, daily 1–6 PM',
+    dateLabel: 'Opening: Wednesday, Sept 2, 6–9 PM · Exhibition: Sept 3–8, daily 1–6 PM',
     venue: '46 Hester Street · Lower East Side · Free admission',
     description:
       'BMAG presents the New York solo debut of Rupture, creator of one of the most widely collected artist-made releases on Bitcoin. At the center of the show: Remains, four paintings, each bound to a digital counterpart inscribed permanently on Bitcoin. At the 2028 halving, the digital half begins to die — to preserve one, the collector must sacrifice the other. The exhibition also includes a new body of paintings, works on paper, and a monumental ink drawing made over eight months.',
@@ -121,7 +121,7 @@ const EVENTS: SatelliteEvent[] = [
     name: 'NFT NYC: The Honey Bee Lounge',
     host: 'The Honey Bee Lounge × Digital Trvst',
     date: '2026-09-02',
-    dateLabel: 'Tuesday, Sept 2, 2026 · 7:00 PM – 11:30 PM',
+    dateLabel: 'Wednesday, Sept 2, 2026 · 7:00 PM – 11:30 PM',
     venue: 'Rooftop · New York, NY',
     description:
       'An exclusive speakeasy event and NFT.NYC networking rooftop: live music, open bar, food, games, and prizes. Community partners: Honey Bee Royale, High as Unicorn, RandyAI, LFGO.',
