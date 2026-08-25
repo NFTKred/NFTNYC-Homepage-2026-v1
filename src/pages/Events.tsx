@@ -34,6 +34,18 @@ const EVENTS: SatelliteEvent[] = [
     pinned: true,
   },
   {
+    name: 'Taco Tech Tuesday: NFT NYC Edition',
+    host: 'Taco Tech Tuesday × Own The Doge × NY Life',
+    date: '2026-09-01',
+    dateLabel: 'Tuesday, Sept 1, 2026 · 5:30–9:00 PM',
+    venue: '285 Fulton Street · World Trade Center, NYC',
+    description:
+      'A special NFT.NYC edition of Taco Tech Tuesday bringing together artists, founders, builders, investors, creators, collectors, and innovators shaping the next chapter of Web3. All-star panel featuring Mahaa (Good Company), Own The Doge (stewards of the original Doge NFT and IP), and The Visceral Glitch (Brooklyn-based AR glitch artist). Partners include NY Life and LOOQ. Government-issued photo ID required for entry — Luma registration name must match. Limited capacity, RSVP recommended.',
+    registrationUrl: 'https://luma.com/ws01yaks',
+    tag: 'Community',
+    image: '/events/taco-tech-tuesday.png',
+  },
+  {
     name: 'CertiK NYC Open House: NFT.NYC Edition',
     host: 'CertiK × XDC',
     date: '2026-09-02',
