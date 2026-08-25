@@ -22,8 +22,8 @@ interface SupportSession {
   title: string;
   description: string;
   location: string;
-  /** In UTC. Sprint 1 sessions run 4:00pm-9:00pm ET; ET is EDT (UTC-4)
-   *  in August 2026, so 20:00-01:00 UTC (end lands on the next day). */
+  /** In UTC. Sprint 2 sessions run 4:00pm-9:00pm ET; ET is EDT (UTC-4)
+    *  in August 2026, so 20:00-01:00 UTC (end lands on the next day). */
   startUtc: Date;
   endUtc: Date;
   /** Human-friendly display strings for the email body. */
@@ -33,23 +33,23 @@ interface SupportSession {
 
 const SUPPORT_SESSIONS: SupportSession[] = [
   {
-    title: "Kred Flash Sprint 1 - Live Engineer Support (Mon)",
+    title: "Kred Flash Sprint 2 - Live Engineer Support (Wed)",
     description:
-      "Live Google Meet support with the Kred Flash Sprint 1 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 1 kit. More: https://nft.nyc/vibesprint",
-    location: "Online - Google Meet (link in Sprint 1 kit)",
-    startUtc: new Date(Date.UTC(2026, 7, 17, 20, 0, 0)),
-    endUtc: new Date(Date.UTC(2026, 7, 18, 1, 0, 0)),
-    displayDate: "Mon 17 Aug 2026",
+      "Live Google Meet support with the Kred Flash Sprint 2 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 2 kit. More: https://nft.nyc/vibesprint",
+    location: "Online - Google Meet (link in Sprint 2 kit)",
+    startUtc: new Date(Date.UTC(2026, 7, 26, 20, 0, 0)),
+    endUtc: new Date(Date.UTC(2026, 7, 27, 1, 0, 0)),
+    displayDate: "Wed 26 Aug 2026",
     displayTime: "4:00 - 9:00pm ET",
   },
   {
-    title: "Kred Flash Sprint 1 - Live Engineer Support (Tue)",
+    title: "Kred Flash Sprint 2 - Live Engineer Support (Thu)",
     description:
-      "Live Google Meet support with the Kred Flash Sprint 1 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 1 kit. More: https://nft.nyc/vibesprint",
-    location: "Online - Google Meet (link in Sprint 1 kit)",
-    startUtc: new Date(Date.UTC(2026, 7, 18, 20, 0, 0)),
-    endUtc: new Date(Date.UTC(2026, 7, 19, 1, 0, 0)),
-    displayDate: "Tue 18 Aug 2026",
+      "Live Google Meet support with the Kred Flash Sprint 2 lead engineer. Bring your specific error and work through it live. The Meet link arrives with your Sprint 2 kit. More: https://nft.nyc/vibesprint",
+    location: "Online - Google Meet (link in Sprint 2 kit)",
+    startUtc: new Date(Date.UTC(2026, 7, 27, 20, 0, 0)),
+    endUtc: new Date(Date.UTC(2026, 7, 28, 1, 0, 0)),
+    displayDate: "Thu 27 Aug 2026",
     displayTime: "4:00 - 9:00pm ET",
   },
 ];
@@ -147,9 +147,9 @@ function buildRegistrantEmailHtml(name: string, fqdn: string): string {
   return `
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:640px;margin:0 auto;color:#111;padding:24px 20px;">
       <div style="background:#F15621;color:#fff;border-radius:8px;padding:20px 24px;margin-bottom:20px;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.25em;opacity:.9;margin-bottom:6px;">KRED FLASH SPRINT 1</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.25em;opacity:.9;margin-bottom:6px;">KRED FLASH SPRINT 2</div>
         <div style="font-size:22px;font-weight:700;margin-bottom:4px;">You are in, ${escape(firstName)}.</div>
-        <div style="font-size:14px;opacity:.95;">Your Sprint 1 kit will land in your inbox before Mon 17 Aug.</div>
+        <div style="font-size:14px;opacity:.95;">Your Sprint 2 kit will land in your inbox before Wed 26 Aug.</div>
       </div>
 
       <p style="font-size:15px;line-height:1.5;color:#222;margin:0 0 16px;">
@@ -161,12 +161,12 @@ function buildRegistrantEmailHtml(name: string, fqdn: string): string {
         <div style="font-family:'SF Mono',Menlo,monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#666;margin-bottom:4px;">Live Engineer Support</div>
         <div style="font-size:16px;font-weight:600;color:#111;margin-bottom:8px;">Two evenings on Google Meet</div>
         <div style="font-size:13px;line-height:1.5;color:#444;">
-          The lead engineer for Sprint 1 will be live on Google Meet both evenings. Bring your specific error, work through it live, and ship.
-          The Meet link arrives with your Sprint 1 kit.
+          The lead engineer for Sprint 2 will be live on Google Meet both evenings. Bring your specific error, work through it live, and ship.
+          The Meet link arrives with your Sprint 2 kit.
         </div>
         <table style="width:100%;border-collapse:collapse;margin-top:10px;">${rows}</table>
         <div style="border-top:1px solid #eee;padding-top:14px;margin-top:6px;font-size:12px;color:#666;">
-          Prefer to import both at once? A <b>vibesprint-sprint1-support-sessions.ics</b> file is attached to this email - open it on any device to add both sessions to Apple Calendar, Outlook desktop, or Google.
+          Prefer to import both at once? A <b>vibesprint-sprint2-support-sessions.ics</b> file is attached to this email - open it on any device to add both sessions to Apple Calendar, Outlook desktop, or Google.
         </div>
       </div>
 
@@ -613,10 +613,10 @@ Deno.serve(async (req) => {
           from: `NFT.NYC Kred Flash Sprints <${ALERT_FROM_EMAIL}>`,
           to: [email],
           reply_to: ALERT_EMAIL,
-          subject: `You are in — Kred Flash Sprint 1 (${domain}.Kred)`,
+          subject: `You are in — Kred Flash Sprint 2 (${domain}.Kred)`,
           html: buildRegistrantEmailHtml(name, `${domain}.Kred`),
           attachments: [{
-            filename: "vibesprint-sprint1-support-sessions.ics",
+            filename: "vibesprint-sprint2-support-sessions.ics",
             content: base64Encode(icsText),
             content_type: "text/calendar; charset=utf-8; method=PUBLISH",
           }],
