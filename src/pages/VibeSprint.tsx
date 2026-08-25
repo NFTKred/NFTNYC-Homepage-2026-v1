@@ -1071,14 +1071,14 @@ export default function VibeSprint() {
           </section>
 
           <section>
-            <h2>Sprint 1 Week</h2>
+            <h2>The Road to Sprint 2 Round 1</h2>
             <div className="tl">
-              <div className="trow"><b>Tue 11 Aug</b>Sprint 1 announced; the story publishes on the NFT.NYC blog; registration opens.</div>
-              <div className="trow"><b>Tue 11 – Mon 17 Aug</b>Register, claim your .Kred domain, study the example apps, explore the API with your credits.</div>
-              <div className="trow hot"><b>Mon 17 Aug · 4:00pm ET</b>Sprint 1 opens: Sprint 1 kit published, 48-hour build window begins.</div>
-              <div className="trow"><b>Mon 17 + Tue 18 Aug · From 4:00pm ET</b>Live Google Meet support: our lead engineer on an open call, five to eight hours each evening.</div>
-              <div className="trow"><b>Wed 19 Aug · 4:00pm ET</b>Submissions close: app URL on your Kred domain, project link, MCP link, API evidence.</div>
-              <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized; Build Reports sent to every builder.</div>
+              <div className="trow"><b>Sat 22 Aug</b>The Sprint 2 brief publishes.</div>
+              <div className="trow"><b>Wed 26 Aug · 4:00pm ET</b>Round 1 opens. Your kit publishes: API credits, Lovable credits in our sponsored Vibe Sprint Workspace, the MCP server, the reference builds, and the Meet link.</div>
+              <div className="trow"><b>Wed 26 and Thu 27 Aug · from 4:00pm ET</b>Live engineer support, five to eight hours each evening.</div>
+              <div className="trow"><b>Fri 28 Aug · 4:00pm ET</b>Submissions close. App URL on your .Kred domain, project link, MCP link, API evidence.</div>
+              <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized. Build Reports to every builder.</div>
+              <div className="trow"><b>September 2</b>Live presentations on the main stage at NFT.NYC 2026, The Edison, Times Square.</div>
             </div>
           </section>
 
