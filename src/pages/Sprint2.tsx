@@ -134,11 +134,25 @@ export default function Sprint2() {
           },
         }
       );
-      if (error) throw error;
+      if (error) {
+        const response = (error as { context?: Response }).context;
+        let serverMessage = "";
+        try {
+          const errorBody = await response?.clone().json();
+          serverMessage = errorBody?.details || errorBody?.error || "";
+        } catch {
+          /* The function did not return JSON; fall back to the client message. */
+        }
+        throw new Error(serverMessage || error.message);
+      }
       if (data?.error) throw new Error(data.error);
     } catch (err) {
       console.error("Sprint 2 registration failed:", err);
-      setFormError("We couldn't save your registration. Please try again, or email team@nft.nyc.");
+      setFormError(
+        err instanceof Error && err.message
+          ? err.message
+          : "We couldn't save your registration. Please try again, or email team@nft.nyc."
+      );
       setSending(false);
       return;
     }
