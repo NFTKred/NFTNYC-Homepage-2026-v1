@@ -1,24 +1,33 @@
 import { PRESS_COVERAGE } from '@/data/nftnyc';
 
-// PLACEHOLDER Community Media Partners.
-// Real partner list + logo URLs will replace these when supplied.
-// Format: { name, url, logo } — url is optional, logo can be an SVG data
-// URL, a /media-partners/*.svg local path, or (temporarily) null to render
-// a text placeholder tile.
+// Community Media Partners — assets live in /public/media-partners.
+// Prefer a proper logo file; fall back to X/IG avatar if that's all we
+// have. Names are the outlet's display name.
 interface MediaPartner {
   name: string;
   url?: string;
   logo?: string | null;
 }
 const COMMUNITY_MEDIA_PARTNERS: MediaPartner[] = [
-  { name: 'Partner 1' },
-  { name: 'Partner 2' },
-  { name: 'Partner 3' },
-  { name: 'Partner 4' },
-  { name: 'Partner 5' },
-  { name: 'Partner 6' },
-  { name: 'Partner 7' },
-  { name: 'Partner 8' },
+  { name: 'CoinGape',                   url: 'https://coingape.com',                             logo: '/media-partners/coingape_logo.png' },
+  { name: 'CryptoRank',                 url: 'https://cryptorank.io',                            logo: '/media-partners/cryptorank_logo.svg' },
+  { name: 'CoinNewsSpan',               url: 'https://coinnewsspan.com',                         logo: '/media-partners/coinnewsspan_logo.svg' },
+  { name: 'Crypto Jobs List',           url: 'https://cryptojobslist.com',                       logo: '/media-partners/cryptojobslist_logo.png' },
+  { name: 'BlockDelta',                 url: 'https://blockdelta.com',                           logo: '/media-partners/blockdelta_logo.png' },
+  { name: 'Crypto Live Leak',           url: 'https://www.cryptoliveleak.org/events/nft-nyc-2026', logo: '/media-partners/cryptoliveleak_logo.png' },
+  { name: 'CCM Web3',                   url: 'https://ccmweb3.com',                              logo: '/media-partners/ccmweb3_logo.svg' },
+  { name: 'KEY Difference',             url: 'https://keydifference.com',                        logo: '/media-partners/keydifference_logo.svg' },
+  { name: 'VTA TV',                     url: 'https://vtatv.io/',                                logo: '/media-partners/vtatv_logo.png' },
+  { name: 'Lookhu',                     url: 'https://lookhu.com/',                              logo: '/media-partners/lookhu_logo.jpg' },
+  { name: 'Not Another Media',          url: 'http://notanother.media',                          logo: '/media-partners/notanother_logo_wordmark.png' },
+  { name: 'Third Planet Studio',        url: 'https://www.thirdplanet.studio',                   logo: '/media-partners/thirdplanet_logo.png' },
+  { name: 'The Loudmouth Team',         url: 'https://theloudmouthteam.com/',                    logo: '/media-partners/theloudmouthteam_logo.jpeg' },
+  { name: 'The Beau Monde Magazine',    url: 'https://www.thebeaumondemagazine.com/',            logo: '/media-partners/thebeaumondemagazine_logo.png' },
+  { name: 'What Do You Collect Podcast', url: 'https://www.whatdoyoucollectpodcast.com',         logo: '/media-partners/whatdoyoucollect_logo.jpg' },
+  { name: 'Mona Salama',                url: 'https://www.monasalama.com/',                      logo: '/media-partners/monasalama_logo.jpg' },
+  { name: 'National Coalition Against Censorship', url: 'http://www.ncac.org/',                  logo: '/media-partners/ncac_logo.png' },
+  { name: 'TOP Bodyanych',              url: 'https://x.com/TOPBodyanych',                       logo: '/media-partners/topbodyanych_x.jpg' },
+  { name: 'NFT Community',              url: 'https://www.instagram.com/nft_community',          logo: '/media-partners/nft_community_instagram_avatar.jpg' },
 ];
 
 export default function MediaCoverage() {
