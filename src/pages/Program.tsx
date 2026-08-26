@@ -107,7 +107,7 @@ export default function Program() {
               marginBottom: 0,
             }}
           >
-            Preliminary Program v.1
+            Preliminary Program V2
           </p>
           <p
             style={{
