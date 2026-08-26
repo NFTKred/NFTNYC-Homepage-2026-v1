@@ -75,10 +75,10 @@ export default function MediaCoverage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'var(--color-bg)',
+                background: '#f5f5f7',
                 border: '1px solid var(--card-border)',
                 borderRadius: '0.75rem',
-                padding: '0.5rem',
+                padding: '0.75rem',
                 transition: 'border-color 200ms ease, transform 200ms ease',
               }}
               onMouseEnter={e => {
