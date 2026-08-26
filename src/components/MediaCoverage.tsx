@@ -96,19 +96,8 @@ export default function MediaCoverage() {
                     alt={partner.name}
                     style={{
                       maxWidth: '80%',
-                      maxHeight: '60%',
+                      maxHeight: '70%',
                       objectFit: 'contain',
-                      filter: 'grayscale(100%) brightness(1.3)',
-                      opacity: 0.75,
-                      transition: 'filter 200ms ease, opacity 200ms ease',
-                    }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLElement).style.filter = 'grayscale(0%)';
-                      (e.currentTarget as HTMLElement).style.opacity = '1';
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLElement).style.filter = 'grayscale(100%) brightness(1.3)';
-                      (e.currentTarget as HTMLElement).style.opacity = '0.75';
                     }}
                   />
                 ) : (
