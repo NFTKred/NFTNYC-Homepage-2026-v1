@@ -996,7 +996,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "speakers": [
       {
         "name": "Vini Kaul",
-        "avatarUrl": "https://cdn.sessionize.com/image/0148-400o400o1-nEckVwTYcmasG3osxMyX4e.jpg",
+        "avatarUrl": "/speakers/vini-kaul.png",
         "sessionizeName": "Vini Kaul"
       }
     ]
