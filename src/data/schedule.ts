@@ -1,7 +1,8 @@
 // Auto-generated from the Sessionize exports.
 // Schedule source: nft-nyc-2026 schedulelist - exported 2026-08-26 (1).xlsx
-// Speakers + descriptions carried over from: nft-nyc-2026 everything - exported 2026-08-12.xlsx
-// (Aug 26 export was schedule-only.)
+// Speakers + descriptions: nft-nyc-2026 everything - exported 2026-08-12.xlsx,
+// with newer sessions/speakers backfilled at generation time from the
+// Sessionize public API (view/All). Page itself makes no API calls.
 // Overrides: Opening Night Party 6-8pm; "From Campaign to Cause" removed;
 // speakers Erich Kottke + Art Malkov removed; "Jodee Rick" → "Jodee Rich".
 
@@ -281,7 +282,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "time": "01:00pm - 01:10pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Agents and the Metaverse",
-    "description": "",
+    "description": "Culture, Web3 & the Metaverse, 3 years later - An update from Animoca Brands",
     "speakers": [
       {
         "name": "Yat Siu",
@@ -991,7 +992,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "time": "02:15pm - 02:25pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Who Do You Trust When Your AI Has the Keys to the Enterprise?",
-    "description": "",
+    "description": "AI is no longer just answering questions. It is beginning to make decisions, take action, and operate across the enterprise. As organizations move from AI assistants to increasingly autonomous agents, we are approaching a defining question - what happens when the technology designed to support the business is given the power to run parts of it?\r\n\r\nThis session explores the rise of the autonomous enterprise at the intersection of Agentic AI, real-time data, cloud infrastructure, and cybersecurity. From unprecedented productivity to new risks around trust, control, accountability, and human oversight, the future will not be defined by how intelligent our AI becomes, but by how intelligently we choose to deploy it.",
     "speakers": [
       {
         "name": "Vini Kaul",
@@ -1086,8 +1087,8 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Vandana Taxali",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/6017-400o400o1-EvhW4M866VpQsBQ4MUXc7f.jpg",
+        "sessionizeName": "Vandana Taxali"
       }
     ]
   },
@@ -1152,7 +1153,7 @@ export const SCHEDULE: ScheduleSession[] = [
     "time": "04:15pm - 04:25pm",
     "room": "Main Stage - Main Ballroom",
     "title": "Beyond the Floor Price: Architecting High-Retention Web3 Ecosystems with the R.I.C.H. Method",
-    "description": "",
+    "description": "We spend a massive amount of energy in Web3 talking about floor prices, bonding curves, and token distribution models. But if we\u2019re honest with ourselves, we rarely talk about the foundational human architecture that determines whether a community actually survives when the speculation clears out.\r\n\u200bEvery protocol, NFT collection, or DAO isn't just a collection of smart contracts\u2014it is a socio-economic organism. When a project fails, it almost never fails because the code broke; it fails because the social contract collapsed. The incentive design was misaligned with human values.\r\n\u200bI want to present a framework built to solve that exact problem: RICH\r\n\u200bThe word \"RICH\" in Web3 has been bastardized into a cheap viral metric. IM HERE to reclaim it. R.I.C.H. isn't about short-term speculative wealth in your wallet. it stands for Respect. Integrity. Community. Honor.\r\nAn operational playbook designed to bridge human culture with system mechanics, tying values directly to Recognition and Reward.",
     "speakers": [
       {
         "name": "Josiah Brummett",
@@ -1166,12 +1167,12 @@ export const SCHEDULE: ScheduleSession[] = [
     "time": "04:25pm - 04:35pm",
     "room": "Main Stage - Main Ballroom",
     "title": "The Philosophy of Art Royalty and Digital Asset Collecting Strategies",
-    "description": "",
+    "description": "Exploring how ubiquity in art enhances the aura of the original work, and how philosophers such as Roland Barthes art theory still holds up on the blockchain innovations for a high minded art experience, specifically relating to Art Royalty and the Mona Stacy Art Index Collections. Institutional investing and the embrace by Wallstreet as bluechip financial markets adoption.",
     "speakers": [
       {
         "name": "Mona Stacy Stacy Engman",
-        "avatarUrl": null,
-        "sessionizeName": null
+        "avatarUrl": "https://cdn.sessionize.com/image/0932-400o400o1-W5oLUD3nAWbzu4Bz92w4A.jpg",
+        "sessionizeName": "Mona Stacy Stacy Engman"
       }
     ]
   },
