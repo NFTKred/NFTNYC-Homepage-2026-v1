@@ -854,7 +854,7 @@ export const SCHEDULE: ScheduleSession[] = [
       },
       {
         "name": "Rebecca Rose",
-        "avatarUrl": null,
+        "avatarUrl": "/speakers/rebecca-rose.jpg",
         "sessionizeName": "Rebecca Rose"
       },
       {
