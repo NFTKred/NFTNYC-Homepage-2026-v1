@@ -891,7 +891,7 @@ export default function Sprint3() {
                         }}
                       >
                         <b style={{ color: "var(--color-text)", fontSize: 14 }}>
-                          🌐 This registers a real .Kred domain for you.
+                          This registers a real .Kred domain for you.
                         </b>
                         <p className="form-note" style={{ marginTop: 6 }}>
                           The name you pick below is claimed live on Domains.Kred the moment you
