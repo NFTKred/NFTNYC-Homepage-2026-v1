@@ -30,6 +30,13 @@ const AVATAR_URL: Record<string, string> = {
   "scott spiegel": "/speakers/scott-spiegel.jpg",
 };
 
+// Per-speaker suppress-list for the X/Twitter link in the modal. Match
+// by lowercased displayName. Add a name here when the speaker asks to
+// hide their X handle from the /speakers page.
+const HIDE_X_HANDLE: Set<string> = new Set([
+  "shyan hussain",
+]);
+
 // Filter-chip colours per track. The actual track names come from the
 // API; this map is here to color-code them consistently with the
 // ECOSYSTEMS palette on /sponsor. Both the typo'd "Tokenizaton" and the
@@ -92,13 +99,14 @@ function processSessionizeData(api: any): SpeakerVM[] {
       .map((cid: number) => trackItemMap.get(cid))
       .find((name: string | undefined) => !!name) ?? null;
 
+    const displayName = String(s.fullName ?? '').trim() || '(unnamed)';
     return {
       id: String(s.id ?? ''),
-      displayName: String(s.fullName ?? '').trim() || '(unnamed)',
+      displayName,
       tagLine: String(s.tagLine ?? '').trim(),
       company: String(company ?? '').trim(),
       bio: String(s.bio ?? '').trim(),
-      xHandle: xHandleMatch?.[1] ?? '',
+      xHandle: HIDE_X_HANDLE.has(displayName.toLowerCase()) ? '' : (xHandleMatch?.[1] ?? ''),
       profilePictureUrl: String(s.profilePicture ?? ''),
       track,
       isFeatured: Boolean(s.isTopSpeaker),
