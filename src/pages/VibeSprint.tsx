@@ -1298,6 +1298,10 @@ export default function VibeSprint() {
                 <b>{submitCountdown.value}</b>
                 <span>{submitCountdown.label}</span>
               </div>
+              <div className="meter reg" aria-live="polite">
+                <b>OPEN</b>
+                <span>Sprint 2 submissions now open</span>
+              </div>
             </div>
             <h3 className="sub-h2" style={{ fontSize: 20 }}>
               What you will need
