@@ -71,6 +71,73 @@ export default function Sprint2() {
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
+  // ---- Sprint submission form (submit-sprint-submission) ----
+  const [subEmail, setSubEmail] = useState("");
+  const [subAppUrl, setSubAppUrl] = useState("");
+  const [subProjectUrl, setSubProjectUrl] = useState("");
+  const [subTeam, setSubTeam] = useState("");
+  const [subSent, setSubSent] = useState(false);
+  const [subWasUpdate, setSubWasUpdate] = useState(false);
+  const [subSending, setSubSending] = useState(false);
+  const [subError, setSubError] = useState<string | null>(null);
+
+  const onSubmitBuild = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (!subAppUrl.trim()) {
+      setSubError("Please enter your app name.");
+      return;
+    }
+    setSubSending(true);
+    setSubError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("submit-sprint-submission", {
+        body: {
+          sprint: "sprint2",
+          email: subEmail.trim(),
+          app_name: subAppUrl.trim(),
+          project_url: subProjectUrl.trim(),
+          team_members: subTeam.trim(),
+        },
+      });
+      if (error) {
+        const ctx = (error as { context?: Response }).context;
+        let serverMsg = "";
+        try {
+          const body = await ctx?.clone().json();
+          serverMsg = body?.error ?? "";
+        } catch {
+          /* ignore */
+        }
+        throw new Error(serverMsg || error.message);
+      }
+      if (data?.error) throw new Error(data.error);
+      setSubWasUpdate(Boolean(data?.updated));
+    } catch (err) {
+      console.error("Sprint 2 submission failed:", err);
+      setSubError(
+        err instanceof Error && err.message
+          ? err.message
+          : "We couldn't save your submission. Please try again, or email team@nft.nyc."
+      );
+      setSubSending(false);
+      return;
+    }
+    setSubSending(false);
+    setSubSent(true);
+    window.setTimeout(() => {
+      document
+        .getElementById("buildSuccessCard")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 0);
+  };
+
+
+
   // Debounced .Kred availability check.
   useEffect(() => {
     const d = domain.trim().toLowerCase().replace(/\.kred$/i, "");
