@@ -164,6 +164,17 @@ const EVENTS: SatelliteEvent[] = [
     registrationUrl: 'https://luma.com/vtzd0h88',
     tag: 'Community',
   },
+  {
+    name: 'Cycol Gallery Presents: Biz Markie × Bisco Smith',
+    host: 'Cycol Gallery × HEFT Gallery',
+    date: '2026-09-04',
+    dateLabel: 'Friday, Sept 4, 2026 · Cycol 6:00 PM – 10:00 PM · HEFT 5:00 PM – 9:00 PM',
+    venue: 'Cycol Gallery · 91 Allen Street, Lower East Side (HEFT Gallery · 300 Broome Street)',
+    description:
+      'Broome Street Gallery Night, run with HEFT Gallery straight after NFT.NYC wraps, celebrating hip hop icon Biz Markie, artist Bisco Smith, and the web3 community. The Biz Markie Experience × Bisco Smith places contemporary work by the New York artist alongside photography, personal artifacts, and archival material from Biz Markie’s life and career. At its centre is SELECT CUTS, a limited edition fine art photography series shot by George DuBose during the 1986 Make the Music With Your Mouth, Biz sessions, produced from the original archive with the authorization of the Biz Markie Estate. Sticker creation and swapping stations upstairs, so bring your sharpie and your tag. Tickets are checked at the door.',
+    registrationUrl: 'https://luma.com/zpumthj0',
+    tag: 'Community',
+  },
 ];
 
 const ACCENT = 'var(--nft-blue)';
