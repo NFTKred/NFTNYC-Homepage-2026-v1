@@ -458,7 +458,7 @@ export default function VibeSprint() {
     try {
       const { data, error } = await supabase.functions.invoke("submit-sprint-submission", {
         body: {
-          sprint: "sprint1",
+          sprint: "sprint2",
           email: subEmail.trim(),
           app_name: subAppUrl.trim(),
           project_url: subProjectUrl.trim(),
