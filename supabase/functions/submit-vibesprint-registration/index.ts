@@ -449,6 +449,49 @@ Deno.serve(async (req) => {
     }
   }
 
+  // ── Returning builder ("I'm in for the next sprint") — one line, no
+  //    domain claim. Records the intent and alerts the team; the original
+  //    registration still covers entry, kit, and the .Kred claim. ──
+  if (body.action === "returning") {
+    const rEmail = str(body.email, 255).toLowerCase();
+    const rSprint = str((body as Record<string, unknown>).sprint, 40) || "sprint3";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rEmail)) {
+      return json({ error: "A valid email is required." }, 422);
+    }
+    const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
+    const { error: rErr } = await supabase.from("vibesprint_registrations").insert({
+      name: "(returning builder)",
+      email: rEmail,
+      segment: `Returning builder — ${rSprint}`,
+      domain: `returning-${Date.now().toString(36)}`,
+      build_tool: "n/a",
+      agreed_tos: true,
+      registration_status: "returning",
+      user_agent: req.headers.get("user-agent"),
+    });
+    if (rErr) {
+      console.error("returning-builder insert failed:", rErr);
+      return json({ error: "Could not save that — please try again or email team@nft.nyc." }, 500);
+    }
+    if (RESEND_API_KEY) {
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: `NFT.NYC Flash Sprints <${ALERT_FROM_EMAIL}>`,
+            to: [ALERT_EMAIL],
+            subject: `${rSprint} returning builder — ${rEmail}`,
+            html: `<p><b>${rEmail}</b> confirmed they are in for <b>${rSprint}</b> (returning builder, no new domain claim).</p>`,
+          }),
+        });
+      } catch (err) {
+        console.error("Resend error (returning):", err);
+      }
+    }
+    return json({ ok: true });
+  }
+
   const name = str(body.name, 120);
   const email = str(body.email, 255).toLowerCase();
   const segment = str(body.segment, 120);
