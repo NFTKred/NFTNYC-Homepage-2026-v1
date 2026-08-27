@@ -142,6 +142,28 @@ const EVENTS: SatelliteEvent[] = [
     tag: 'Community',
     image: '/events/jeetsons.jpg',
   },
+  {
+    name: 'Free Pre-NFT.NYC Yacht Party',
+    host: 'Aziman Tribe × NYC Squirrels NFT',
+    date: '2026-08-29',
+    dateLabel: 'Saturday, Aug 29, 2026 · Boarding 10:30 PM · Sails 11:30 PM – 2:30 AM',
+    venue: 'Jewel Yacht · Skyport Marina · 2430 FDR Drive, New York, NY',
+    description:
+      'A free pre-NFT.NYC party aboard the Jewel, cruising past the New York skyline. DJs across house, progressive, melodic, and techno. Guest list registration required, and boarding closes before the 11:30 PM departure.',
+    registrationUrl: 'https://luma.com/k6xtqkej',
+    tag: 'Community',
+  },
+  {
+    name: "New Quirk City '26",
+    host: 'Quirkies',
+    date: '2026-08-31',
+    dateLabel: 'Monday, Aug 31, 2026 · 5:00 PM – 11:00 PM',
+    venue: '4 Berry Street · Greenpoint, Brooklyn',
+    description:
+      'A night for Quirkies, Quirklings, and INX holders on the eve of NFT.NYC Week, sponsored in part by OpenSea, BAYC, re:gens, Kabu, and 3D Frankenpunks. Registration requires a correct ETH address and is subject to host approval.',
+    registrationUrl: 'https://luma.com/vtzd0h88',
+    tag: 'Community',
+  },
 ];
 
 const ACCENT = 'var(--nft-blue)';
