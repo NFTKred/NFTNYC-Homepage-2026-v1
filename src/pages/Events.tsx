@@ -34,6 +34,18 @@ const EVENTS: SatelliteEvent[] = [
     pinned: true,
   },
   {
+    name: 'LAYERS WORLD @ NFT.NYC',
+    host: 'LAYERS WORLD',
+    date: '2026-08-31',
+    dateLabel: 'Aug 31 – Sept 4, 2026 · Runs all week',
+    venue: 'Throughout NYC',
+    description:
+      'Download LAYERS WORLD on the App Store and use it throughout NFT.NYC week — explore Layers near you, add spots to your Layer, and share your Layer with friends.',
+    registrationUrl: 'https://luma.com/lpgxiwo1',
+    tag: 'Community',
+    image: '/events/layers-world.png',
+  },
+  {
     name: 'Taco Tech Tuesday: NFT NYC Edition',
     host: 'Taco Tech Tuesday × Own The Doge × NY Life',
     date: '2026-09-01',
