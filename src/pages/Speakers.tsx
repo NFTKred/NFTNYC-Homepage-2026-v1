@@ -37,6 +37,14 @@ const HIDE_X_HANDLE: Set<string> = new Set([
   "shyan hussain",
 ]);
 
+// Per-speaker displayName override. Keyed on the lowercased Sessionize
+// fullName; value is what we show on the site instead. Use when a
+// speaker asks to be listed by their real name rather than the screen
+// name Sessionize returns.
+const DISPLAY_NAME_OVERRIDE: Record<string, string> = {
+  "ombruja": "Carolina Coto",
+};
+
 // Filter-chip colours per track. The actual track names come from the
 // API; this map is here to color-code them consistently with the
 // ECOSYSTEMS palette on /sponsor. Both the typo'd "Tokenizaton" and the
@@ -99,7 +107,8 @@ function processSessionizeData(api: any): SpeakerVM[] {
       .map((cid: number) => trackItemMap.get(cid))
       .find((name: string | undefined) => !!name) ?? null;
 
-    const displayName = String(s.fullName ?? '').trim() || '(unnamed)';
+    const rawDisplayName = String(s.fullName ?? '').trim() || '(unnamed)';
+    const displayName = DISPLAY_NAME_OVERRIDE[rawDisplayName.toLowerCase()] ?? rawDisplayName;
     return {
       id: String(s.id ?? ''),
       displayName,
