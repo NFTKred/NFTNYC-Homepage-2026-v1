@@ -62,6 +62,14 @@ const TAGLINE_OVERRIDE: Record<string, string> = {
   "rebecca rose": "Artist",
 };
 
+// Force-featured speakers — add here when we want a speaker to render
+// with the foil-bordered "Featured Speaker" treatment regardless of the
+// Sessionize isTopSpeaker flag. Keyed on the final displayName
+// (post-DISPLAY_NAME_OVERRIDE), lowercased.
+const FEATURED_OVERRIDE: Set<string> = new Set([
+  "rebecca rose",
+]);
+
 // Filter-chip colours per track. The actual track names come from the
 // API; this map is here to color-code them consistently with the
 // ECOSYSTEMS palette on /sponsor. Both the typo'd "Tokenizaton" and the
@@ -142,7 +150,7 @@ function processSessionizeData(api: any): SpeakerVM[] {
       xHandle: HIDE_X_HANDLE.has(displayName.toLowerCase()) ? '' : (xHandleMatch?.[1] ?? ''),
       profilePictureUrl: String(s.profilePicture ?? ''),
       track,
-      isFeatured: Boolean(s.isTopSpeaker),
+      isFeatured: Boolean(s.isTopSpeaker) || FEATURED_OVERRIDE.has(displayName.toLowerCase()),
     };
   });
 }
