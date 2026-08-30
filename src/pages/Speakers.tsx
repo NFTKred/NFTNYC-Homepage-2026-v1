@@ -45,6 +45,13 @@ const DISPLAY_NAME_OVERRIDE: Record<string, string> = {
   "ombruja": "Carolina Coto",
 };
 
+// Per-speaker tagLine (headline) override. Keyed on the final displayName
+// (after any DISPLAY_NAME_OVERRIDE), lowercased. Use when Sessionize
+// carries a stale tagLine and the speaker asks for a different one.
+const TAGLINE_OVERRIDE: Record<string, string> = {
+  "rebecca rose": "Artist",
+};
+
 // Filter-chip colours per track. The actual track names come from the
 // API; this map is here to color-code them consistently with the
 // ECOSYSTEMS palette on /sponsor. Both the typo'd "Tokenizaton" and the
@@ -109,10 +116,12 @@ function processSessionizeData(api: any): SpeakerVM[] {
 
     const rawDisplayName = String(s.fullName ?? '').trim() || '(unnamed)';
     const displayName = DISPLAY_NAME_OVERRIDE[rawDisplayName.toLowerCase()] ?? rawDisplayName;
+    const rawTagLine = String(s.tagLine ?? '').trim();
+    const tagLine = TAGLINE_OVERRIDE[displayName.toLowerCase()] ?? rawTagLine;
     return {
       id: String(s.id ?? ''),
       displayName,
-      tagLine: String(s.tagLine ?? '').trim(),
+      tagLine,
       company: String(company ?? '').trim(),
       bio: String(s.bio ?? '').trim(),
       xHandle: HIDE_X_HANDLE.has(displayName.toLowerCase()) ? '' : (xHandleMatch?.[1] ?? ''),
