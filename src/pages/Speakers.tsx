@@ -37,12 +37,29 @@ const HIDE_X_HANDLE: Set<string> = new Set([
   "shyan hussain",
 ]);
 
+// Per-speaker exclusion — matches against the Sessionize fullName
+// AFTER any DISPLAY_NAME_OVERRIDE has been applied, lowercased.
+// Use when a speaker asks to be removed from the public /speakers
+// page but is still marked Accepted in Sessionize.
+const HIDE_SPEAKER: Set<string> = new Set([
+  "patrick camuso",
+  "patrick camuso, cpa",
+  "artur merabian",
+]);
+
 // Per-speaker displayName override. Keyed on the lowercased Sessionize
 // fullName; value is what we show on the site instead. Use when a
 // speaker asks to be listed by their real name rather than the screen
 // name Sessionize returns.
 const DISPLAY_NAME_OVERRIDE: Record<string, string> = {
   "ombruja": "Carolina Coto",
+};
+
+// Per-speaker tagLine (headline) override. Keyed on the final displayName
+// (after any DISPLAY_NAME_OVERRIDE), lowercased. Use when Sessionize
+// carries a stale tagLine and the speaker asks for a different one.
+const TAGLINE_OVERRIDE: Record<string, string> = {
+  "rebecca rose": "Artist",
 };
 
 // Filter-chip colours per track. The actual track names come from the
@@ -98,6 +115,11 @@ function processSessionizeData(api: any): SpeakerVM[] {
 
   return (api.speakers ?? [])
     .filter((s: any) => acceptedSpeakerIds.has(String(s.id)))
+    .filter((s: any) => {
+      const raw = String(s.fullName ?? '').trim().toLowerCase();
+      const overridden = (DISPLAY_NAME_OVERRIDE[raw] ?? raw).toLowerCase();
+      return !HIDE_SPEAKER.has(raw) && !HIDE_SPEAKER.has(overridden);
+    })
     .map((s: any): SpeakerVM => {
     const xLink = (s.links ?? []).find((l: any) => l?.linkType === 'Twitter');
     const xHandleMatch = xLink?.url?.match(/(?:x|twitter)\.com\/([A-Za-z0-9_]+)/i);
@@ -109,10 +131,12 @@ function processSessionizeData(api: any): SpeakerVM[] {
 
     const rawDisplayName = String(s.fullName ?? '').trim() || '(unnamed)';
     const displayName = DISPLAY_NAME_OVERRIDE[rawDisplayName.toLowerCase()] ?? rawDisplayName;
+    const rawTagLine = String(s.tagLine ?? '').trim();
+    const tagLine = TAGLINE_OVERRIDE[displayName.toLowerCase()] ?? rawTagLine;
     return {
       id: String(s.id ?? ''),
       displayName,
-      tagLine: String(s.tagLine ?? '').trim(),
+      tagLine,
       company: String(company ?? '').trim(),
       bio: String(s.bio ?? '').trim(),
       xHandle: HIDE_X_HANDLE.has(displayName.toLowerCase()) ? '' : (xHandleMatch?.[1] ?? ''),
