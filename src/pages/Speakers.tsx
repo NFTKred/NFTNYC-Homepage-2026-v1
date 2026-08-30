@@ -37,6 +37,16 @@ const HIDE_X_HANDLE: Set<string> = new Set([
   "shyan hussain",
 ]);
 
+// Per-speaker exclusion — matches against the Sessionize fullName
+// AFTER any DISPLAY_NAME_OVERRIDE has been applied, lowercased.
+// Use when a speaker asks to be removed from the public /speakers
+// page but is still marked Accepted in Sessionize.
+const HIDE_SPEAKER: Set<string> = new Set([
+  "patrick camuso",
+  "patrick camuso, cpa",
+  "artur merabian",
+]);
+
 // Per-speaker displayName override. Keyed on the lowercased Sessionize
 // fullName; value is what we show on the site instead. Use when a
 // speaker asks to be listed by their real name rather than the screen
@@ -105,6 +115,11 @@ function processSessionizeData(api: any): SpeakerVM[] {
 
   return (api.speakers ?? [])
     .filter((s: any) => acceptedSpeakerIds.has(String(s.id)))
+    .filter((s: any) => {
+      const raw = String(s.fullName ?? '').trim().toLowerCase();
+      const overridden = (DISPLAY_NAME_OVERRIDE[raw] ?? raw).toLowerCase();
+      return !HIDE_SPEAKER.has(raw) && !HIDE_SPEAKER.has(overridden);
+    })
     .map((s: any): SpeakerVM => {
     const xLink = (s.links ?? []).find((l: any) => l?.linkType === 'Twitter');
     const xHandleMatch = xLink?.url?.match(/(?:x|twitter)\.com\/([A-Za-z0-9_]+)/i);
