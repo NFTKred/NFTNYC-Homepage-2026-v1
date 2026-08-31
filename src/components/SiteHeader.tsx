@@ -21,7 +21,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   const allNavLinks = [
     { href: 'https://onehub.nft.nyc', label: 'Collect', minStage: 0 },
     { href: '/speakers', label: 'Speakers', minStage: 0 },
-    { href: '/program', label: 'Program', minStage: 0 },
+    { href: 'https://nftnyc2026.sessionize.com/', label: 'Program', minStage: 0 },
     { href: '/sponsor', label: 'Partnerships', minStage: 0 },
     { href: '#media', label: 'Media', minStage: 0 },
     { href: '/events', label: 'Events', minStage: 0 },

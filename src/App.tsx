@@ -30,7 +30,6 @@ import Visa from "./pages/Visa";
 import Media from "./pages/Media";
 import Volunteer from "./pages/Volunteer";
 import Events from "./pages/Events";
-import Program from "./pages/Program";
 import VibeSprint from "./pages/VibeSprint";
 import Sprint1 from "./pages/Sprint1";
 import Sprint2 from "./pages/Sprint2";
@@ -39,8 +38,24 @@ import SprintFeedback from "./pages/SprintFeedback";
 import ManageVolunteers from "./pages/ManageVolunteers";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import TicketingModal from "./components/TicketingModal";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
+
+/**
+ * /program - the schedule has moved to Sessionize's hosted timetable.
+ * The primary redirect is Vercel-side (see vercel.json), which handles
+ * direct URL entry and bookmarks; this component is the safety net for
+ * any client-side navigation that reaches /program before the server
+ * gets a chance to redirect. Uses replace() so /program doesn't build
+ * up in browser history.
+ */
+function ProgramRedirect() {
+  useEffect(() => {
+    window.location.replace("https://nftnyc2026.sessionize.com/");
+  }, []);
+  return null;
+}
 
 const App = () => (
   <HelmetProvider>
@@ -79,7 +94,7 @@ const App = () => (
           <Route path="/media" element={<Media />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/program" element={<Program />} />
+          <Route path="/program" element={<ProgramRedirect />} />
           <Route path="/vibesprint" element={<VibeSprint />} />
           <Route path="/sprint1" element={<Sprint1 />} />
           <Route path="/sprint2" element={<Sprint2 />} />

@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/program",
+      "destination": "https://nftnyc2026.sessionize.com/",
+      "permanent": false
+    },
+    {
       "source": "/book",
       "destination": "https://calendly.com/d/cxvt-7hw-y9b/nft-nyc-partnerships",
       "permanent": false

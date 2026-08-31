@@ -197,7 +197,9 @@ export default function Index() {
             )}
             <div style={{ marginTop: "1.25rem", display: "flex", justifyContent: "center" }}>
               <a
-                href="/program"
+                href="https://nftnyc2026.sessionize.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   ...btnBase,
                   background: "transparent",
