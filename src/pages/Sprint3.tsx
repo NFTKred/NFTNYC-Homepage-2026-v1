@@ -816,7 +816,7 @@ export default function Sprint3() {
                 </div>
               </details>
 
-              <details className="reg" name="reg">
+              <details className="reg" name="reg" open>
                 <summary>No, this is my first sprint</summary>
                 <div className="regbody">
                   <p>Registering here covers Sprint 3 and every sprint after it.</p>
