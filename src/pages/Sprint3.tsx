@@ -24,9 +24,9 @@ const EVENT_JSON_LD = {
   "@type": "Event",
   name: "Kred Flash Sprint 3 — Agents in Conversation",
   description:
-    "The final Kred Flash Sprint: remix the Cat Remix Matrix and make named agents discuss, debate, govern, and score. Opens Tuesday 1 September 4:00pm ET, closes Thursday 3 September 4:00pm ET.",
-  startDate: "2026-09-01T16:00:00-04:00",
-  endDate: "2026-09-03T16:00:00-04:00",
+    "The final Kred Flash Sprint: remix the Cat Remix Matrix and make named agents discuss, debate, govern, and score. Opens Tuesday 8 September 4:00pm ET, closes Thursday 10 September 4:00pm ET.",
+  startDate: "2026-09-08T16:00:00-04:00",
+  endDate: "2026-09-10T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   location: { "@type": "VirtualLocation", url: "https://nft.nyc/sprint3" },
@@ -246,9 +246,9 @@ export default function Sprint3() {
               Remix a matrix that is already running and make it discuss, debate, govern, and score.
             </p>
             <div className="badges">
-              <span className="badge hot">Round 1 · Brief publishes Mon Aug 31</span>
-              <span className="badge">Opens Tue Sep 1 · 4:00pm ET</span>
-              <span className="badge">Closes Thu Sep 3 · 4:00pm ET</span>
+              <span className="badge hot">Round 1 · Brief publishes Mon Sep 7</span>
+              <span className="badge">Opens Tue Sep 8 · 4:00pm ET</span>
+              <span className="badge">Closes Thu Sep 10 · 4:00pm ET</span>
               <span className="badge">Hugging Face and NFT.NYC creators</span>
               <span className="badge grok">Grok Bot fleets welcome</span>
             </div>
@@ -302,11 +302,11 @@ export default function Sprint3() {
           <section>
             <h2>How Sprint 3 fits with NFT.NYC 2026</h2>
             <div className="window">
-              <h3>You build during the conference from wherever you are</h3>
+              <h3>You build in the week after the conference, from wherever you are</h3>
               <p>
                 NFT.NYC 2026 runs September 1–3, 2026 at The Edison, Times Square. Sprint 3 opens
-                Tuesday, September 1 at 4:00pm and closes Thursday, September 3 at 4:00pm, so{" "}
-                <b>all three days of the conference fall inside your build window.</b>
+                Tuesday, September 8 at 4:00pm and closes Thursday, September 10 at 4:00pm, so{" "}
+                <b>your build window is the week right after the conference.</b>
               </p>
               <p>Three concrete connections, and nothing more is implied:</p>
               <ol>
@@ -315,10 +315,10 @@ export default function Sprint3() {
                 <li><b>Up to 20 selected submissions per sprint join the Times Square Showcase</b> on the rotating billboard.</li>
               </ol>
               <div className="wdays">
-                <div className="wd"><div className="d">Mon Aug 31</div><p>The Sprint 3 brief publishes: full spec, achievements, and review weights.</p></div>
-                <div className="wd conf"><div className="d">Tue Sep 1</div><p>Sprint 3 opens 4:00pm ET. Kit publishes. Dev support from 4:00pm ET.</p></div>
-                <div className="wd conf"><div className="d">Wed Sep 2</div><p>NFT.NYC day two. Dev support from 4:00pm ET.</p></div>
-                <div className="wd conf"><div className="d">Thu Sep 3</div><p>NFT.NYC day three. Submissions close 4:00pm ET.</p></div>
+                <div className="wd"><div className="d">Mon Sep 7</div><p>The Sprint 3 brief publishes: full spec, achievements, and review weights.</p></div>
+                <div className="wd conf"><div className="d">Tue Sep 8</div><p>Sprint 3 opens 4:00pm ET. Kit publishes. Dev support from 4:00pm ET.</p></div>
+                <div className="wd conf"><div className="d">Wed Sep 9</div><p>Dev support from 4:00pm ET.</p></div>
+                <div className="wd conf"><div className="d">Thu Sep 10</div><p>Submissions close 4:00pm ET.</p></div>
               </div>
             </div>
           </section>
