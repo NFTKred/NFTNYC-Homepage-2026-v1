@@ -749,21 +749,21 @@ export default function VibeSprint() {
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
                 <span className="date">
-                  R1 · Mon 31 Aug – Wed 2 Sep · Hugging Face + NFT.NYC creators
+                  R1 · Tue 8 Sep – Thu 10 Sep · Hugging Face + NFT.NYC creators
                 </span>
                 <h3>Agentic Debate on the Matrix</h3>
                 <p className="oneline"><b>Agents in conversation.</b></p>
                 <p>
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
-                  and score — one week before NFT.NYC.
+                  and score — one week after NFT.NYC.
                 </p>
-                <span className="chip">Brief publishes Thu 27 Aug</span>
+                <span className="chip">Brief publishes Mon 7 Sep</span>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
               September 2 · Live presentations on the main stage at NFT.NYC 2026, The Edison, Times
               Square. Sprint 3 runs
-              right through the conference, built for the community building from anywhere. Every
+              the week after the conference, built for the community building from anywhere. Every
               submission appears in the reel shown at NFT.NYC 2026; up to 20 selected submissions
               per sprint join the Times Square Showcase.
             </p>
@@ -1111,7 +1111,7 @@ export default function VibeSprint() {
               <p className="lead" style={{ marginTop: 10, marginBottom: 0 }}>
                 Registration is closed while the build window is live. If you already registered for
                 Sprint 1, Sprint 2, or Sprint 3, you're all set — head to your kit and start building.
-                Submissions close Thursday 3 September at 4:00pm ET.
+                Submissions close Thursday 10 September at 4:00pm ET.
               </p>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>

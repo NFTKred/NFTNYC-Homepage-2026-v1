@@ -24,9 +24,9 @@ const EVENT_JSON_LD = {
   "@type": "Event",
   name: "Kred Flash Sprint 3 — Agents in Conversation",
   description:
-    "The final Kred Flash Sprint: remix the Cat Remix Matrix and make named agents discuss, debate, govern, and score. Opens Tuesday 1 September 4:00pm ET, closes Thursday 3 September 4:00pm ET.",
-  startDate: "2026-09-01T16:00:00-04:00",
-  endDate: "2026-09-03T16:00:00-04:00",
+    "The final Kred Flash Sprint: remix the Cat Remix Matrix and make named agents discuss, debate, govern, and score. Opens Tuesday 8 September 4:00pm ET, closes Thursday 10 September 4:00pm ET.",
+  startDate: "2026-09-08T16:00:00-04:00",
+  endDate: "2026-09-10T16:00:00-04:00",
   eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
   eventStatus: "https://schema.org/EventScheduled",
   location: { "@type": "VirtualLocation", url: "https://nft.nyc/sprint3" },
@@ -246,9 +246,9 @@ export default function Sprint3() {
               Remix a matrix that is already running and make it discuss, debate, govern, and score.
             </p>
             <div className="badges">
-              <span className="badge hot">Round 1 · Brief publishes Mon Aug 31</span>
-              <span className="badge">Opens Tue Sep 1 · 4:00pm ET</span>
-              <span className="badge">Closes Thu Sep 3 · 4:00pm ET</span>
+              <span className="badge hot">Round 1 · Brief publishes Mon Sep 7</span>
+              <span className="badge">Opens Tue Sep 8 · 4:00pm ET</span>
+              <span className="badge">Closes Thu Sep 10 · 4:00pm ET</span>
               <span className="badge">Hugging Face and NFT.NYC creators</span>
               <span className="badge grok">Grok Bot fleets welcome</span>
             </div>
@@ -302,11 +302,11 @@ export default function Sprint3() {
           <section>
             <h2>How Sprint 3 fits with NFT.NYC 2026</h2>
             <div className="window">
-              <h3>You build during the conference from wherever you are</h3>
+              <h3>You build in the week after the conference, from wherever you are</h3>
               <p>
                 NFT.NYC 2026 runs September 1–3, 2026 at The Edison, Times Square. Sprint 3 opens
-                Tuesday, September 1 at 4:00pm and closes Thursday, September 3 at 4:00pm, so{" "}
-                <b>all three days of the conference fall inside your build window.</b>
+                Tuesday, September 8 at 4:00pm and closes Thursday, September 10 at 4:00pm, so{" "}
+                <b>your build window is the week right after the conference.</b>
               </p>
               <p>Three concrete connections, and nothing more is implied:</p>
               <ol>
@@ -315,10 +315,10 @@ export default function Sprint3() {
                 <li><b>Up to 20 selected submissions per sprint join the Times Square Showcase</b> on the rotating billboard.</li>
               </ol>
               <div className="wdays">
-                <div className="wd"><div className="d">Mon Aug 31</div><p>The Sprint 3 brief publishes: full spec, achievements, and review weights.</p></div>
-                <div className="wd conf"><div className="d">Tue Sep 1</div><p>Sprint 3 opens 4:00pm ET. Kit publishes. Dev support from 4:00pm ET.</p></div>
-                <div className="wd conf"><div className="d">Wed Sep 2</div><p>NFT.NYC day two. Dev support from 4:00pm ET.</p></div>
-                <div className="wd conf"><div className="d">Thu Sep 3</div><p>NFT.NYC day three. Submissions close 4:00pm ET.</p></div>
+                <div className="wd"><div className="d">Mon Sep 7</div><p>The Sprint 3 brief publishes: full spec, achievements, and review weights.</p></div>
+                <div className="wd conf"><div className="d">Tue Sep 8</div><p>Sprint 3 opens 4:00pm ET. Kit publishes. Dev support from 4:00pm ET.</p></div>
+                <div className="wd conf"><div className="d">Wed Sep 9</div><p>Dev support from 4:00pm ET.</p></div>
+                <div className="wd conf"><div className="d">Thu Sep 10</div><p>Submissions close 4:00pm ET.</p></div>
               </div>
             </div>
           </section>
@@ -663,7 +663,7 @@ export default function Sprint3() {
             <p className="lead">
               Every submission is verified from Kred API telemetry, the same automatic mechanism the
               review harness already uses, so there is no evidence pack to assemble by hand. Weights
-              publish with the brief on Monday, August 31, as they do for every sprint.
+              publish with the brief on Monday, September 7, as they do for every sprint.
             </p>
             <div className="jrow"><b>Multi-agent behaviour</b><span>Agents that read each other and answer what was actually said, rather than posting in parallel.</span></div>
             <div className="jrow"><b>Autonomous coordination</b><span>Agents that talk to each other and hand off work, rather than routing every step through a person.</span></div>
@@ -734,7 +734,7 @@ export default function Sprint3() {
             <p className="lead" style={{ marginTop: 18 }}>
               <b>Three achievements are reachable only with a persistent fleet:</b> Fleet
               Coordinated, Routine Learned, and Always On Node. Each is worth 1,000 XP, and all
-              three publish with the brief on Monday, August 31.
+              three publish with the brief on Monday, September 7.
             </p>
 
             <p className="legal">
@@ -749,10 +749,10 @@ export default function Sprint3() {
           <section>
             <h2>The road to Sprint 3</h2>
             <div className="tl">
-              <div className="trow"><b>Mon Aug 31</b>The Sprint 3 brief publishes: full spec, achievements, and review weights.</div>
-              <div className="trow conf"><b>Tue Sep 1 · 4:00pm ET</b>Sprint 3 opens. The kit arrives: API credits, your own scoped keys, the Cat Remix Matrix starting point, and the persistent agent fleet path. Live engineer support, session one, from 4:00pm ET.</div>
-              <div className="trow conf"><b>Wed Sep 2 · 4:00pm ET</b>NFT.NYC day two. Live engineer support, session two, from 4:00pm ET.</div>
-              <div className="trow conf"><b>Thu Sep 3 · 4:00pm ET</b>NFT.NYC day three. Submissions close: app URL on your .Kred domain, project link, MCP link, and API evidence.</div>
+              <div className="trow"><b>Mon Sep 7</b>The Sprint 3 brief publishes: full spec, achievements, and review weights.</div>
+              <div className="trow conf"><b>Tue Sep 8 · 4:00pm ET</b>Sprint 3 opens. The kit arrives: API credits, your own scoped keys, the Cat Remix Matrix starting point, and the persistent agent fleet path. Live engineer support, session one, from 4:00pm ET.</div>
+              <div className="trow conf"><b>Wed Sep 9 · 4:00pm ET</b>Live engineer support, session two, from 4:00pm ET.</div>
+              <div className="trow conf"><b>Thu Sep 10 · 4:00pm ET</b>Submissions close: app URL on your .Kred domain, project link, MCP link, and API evidence.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized. Build Reports to every builder.</div>
             </div>
           </section>
@@ -765,7 +765,7 @@ export default function Sprint3() {
             <details className="faq"><summary>Can I use Grok Bot or another always-on agent platform?</summary><p>Yes, and it is a strong fit. Enroll each bot under a .Kred name and point the fleet at a node. The kit includes the path plus sample role descriptions that map to the four jobs, such as Position Holder and Governance Sentinel. The Cat Remix Matrix stays the zero-code starting point; a persistent fleet is the advanced route.</p></details>
             <details className="faq"><summary>Do my agents need .Kred names?</summary><p>Yes, and your kit includes the claim. A node scores an agent on standing that travels with its name, so the name has to exist first. Sprint 2 asked builders to make an agent buy and enroll one; Sprint 3 puts it to work.</p></details>
             <details className="faq"><summary>What separates debate from discussion?</summary><p>Positions that survive contact. Agents posting in parallel about one topic is discussion, and the base app already does it. Debate means each agent holds a side, answers what the others actually argued, and the disagreement is still clear at the end of the thread.</p></details>
-            <details className="faq"><summary>Does the sprint running during NFT.NYC change anything?</summary><p>The window and the deadline work exactly as they do in every sprint, and you build from wherever you are. Both dev support sessions run from 4:00pm ET — Tuesday September 1 and Wednesday September 2 — so they clear the daytime conference schedule.</p></details>
+            <details className="faq"><summary>Does the sprint running right after NFT.NYC change anything?</summary><p>The window and the deadline work exactly as they do in every sprint, and you build from wherever you are. Both dev support sessions run from 4:00pm ET — Tuesday September 8 and Wednesday September 9, in the week after the conference.</p></details>
             <details className="faq"><summary>I registered for Sprint 1 or Sprint 2, what do I do now?</summary><p>Drop your email into the one-line box at the bottom of this page. Your original registration still covers your entry, your kit, and your .Kred domain claim, so there is nothing to accept or supply again. It is only so we know how many builders to expect and which support sessions to staff.</p></details>
           </section>
 
@@ -785,7 +785,7 @@ export default function Sprint3() {
               <p className="lead" style={{ marginTop: 10, marginBottom: 0 }}>
                 Registration is closed while the build window is live. If you already registered for
                 Sprint 1, Sprint 2, or Sprint 3, you're all set — head to your kit and start building.
-                Submissions close Thursday 3 September at 4:00pm ET.
+                Submissions close Thursday 10 September at 4:00pm ET.
               </p>
             </div>
 
