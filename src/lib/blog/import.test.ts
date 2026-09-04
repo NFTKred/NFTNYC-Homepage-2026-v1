@@ -14,11 +14,11 @@ describe("markdownToPost", () => {
       "",
       "## Summary",
       "",
-      "The **TS Challenge** is a *showcase* with a [link](https://onehub.nft.nyc).",
+      "The **TS Challenge** is a *showcase* with a [link](https://collect.nft.nyc).",
       "",
       "| Attribute | Detail |",
       "|---|---|",
-      "| Platform | OneHub.NFT.NYC |",
+      "| Platform | Collect.NFT.NYC |",
       "| Cost | Free |",
     ].join("\n");
 
@@ -46,13 +46,13 @@ describe("markdownToPost", () => {
     if (para.type !== "paragraph") throw new Error("expected paragraph");
     expect(para.html).toContain("<strong>TS Challenge</strong>");
     expect(para.html).toContain("<em>showcase</em>");
-    expect(para.html).toContain('<a href="https://onehub.nft.nyc">link</a>');
+    expect(para.html).toContain('<a href="https://collect.nft.nyc">link</a>');
 
     const table = post.blocks[4];
     if (table.type !== "table") throw new Error("expected table");
     expect(table.headers).toEqual(["Attribute", "Detail"]);
     expect(table.rows).toEqual([
-      ["Platform", "OneHub.NFT.NYC"],
+      ["Platform", "Collect.NFT.NYC"],
       ["Cost", "Free"],
     ]);
   });

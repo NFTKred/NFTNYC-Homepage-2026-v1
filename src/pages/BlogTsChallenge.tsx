@@ -145,7 +145,7 @@ export default function BlogTsChallenge() {
 
           {/* Summary */}
           <p style={body}>
-            The Times Square Billboard Challenge (TS Challenge) is a community engagement program on onehub.nft.nyc where collectors, artists, and fans worldwide collect limited-edition digital art from the NFT.NYC 2025 Community Artist Showcase. Participants send Collectible Gifts, earn T-XP (Times Square Experience Points), and compete on a global leaderboard. The platform is powered by OneHub and organized by the NFT.NYC team.
+            The Times Square Billboard Challenge (TS Challenge) is a community engagement program on collect.nft.nyc where collectors, artists, and fans worldwide collect limited-edition digital art from the NFT.NYC 2025 Community Artist Showcase. Participants send Collectible Gifts, earn T-XP (Times Square Experience Points), and compete on a global leaderboard. The platform is powered by OneHub and organized by the NFT.NYC team.
           </p>
 
           {/* Summary table */}
@@ -159,7 +159,7 @@ export default function BlogTsChallenge() {
               </thead>
               <tbody>
                 {[
-                  ['Platform', 'onehub.nft.nyc'],
+                  ['Platform', 'collect.nft.nyc'],
                   ['Organizer', 'OneHub, built by the NFT.NYC team and powered by NFT.Kred'],
                   ['Art categories', 'Collectible TS Art (curated by Superchief Gallery) and Collectible Gifts'],
                   ['Display venues', 'Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery'],
@@ -184,7 +184,7 @@ export default function BlogTsChallenge() {
             The TS Challenge is an interactive, community-driven competition that connects digital collecting with physical display in Times Square, New York City. Participants collect exclusive digital art from the NFT.NYC 2025 Community Artist Showcase, exchange Collectible Gifts with other community members, and accumulate T-XP to rise on a global leaderboard.
           </p>
           <p style={{ ...body, marginTop: '1rem' }}>
-            Every piece of art in the challenge was displayed at physical scale across three venues: Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery. Collecting these works as NFTs on onehub.nft.nyc provides a direct connection to art that appeared in one of the most-visited locations on Earth.
+            Every piece of art in the challenge was displayed at physical scale across three venues: Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery. Collecting these works as NFTs on collect.nft.nyc provides a direct connection to art that appeared in one of the most-visited locations on Earth.
           </p>
           <p style={{ ...body, marginTop: '1rem' }}>
             The challenge centers on three core actions: <strong style={{ color: 'var(--color-text)' }}>collect, earn, and compete</strong>. Every interaction on the platform generates T-XP, which determines leaderboard ranking. Top positions on the leaderboard may unlock future perks and recognition.
@@ -196,7 +196,7 @@ export default function BlogTsChallenge() {
             NFT.NYC has been the largest gathering of the NFT community since its inception. The Times Square Billboard Challenge extends that community beyond the conference dates and into a year-round engagement layer. The TS Challenge creates a persistent platform where collectors, artists, and fans can connect, exchange gifts, and compete continuously.
           </p>
           <p style={{ ...body, marginTop: '1rem' }}>
-            The challenge also provides a mechanism for artists to reach audiences at unprecedented scale. The NFT.NYC 2025 Community Artist Showcase featured work from over 1,500 artists, and the TS Challenge makes every showcased piece collectible and tradeable through onehub.nft.nyc.
+            The challenge also provides a mechanism for artists to reach audiences at unprecedented scale. The NFT.NYC 2025 Community Artist Showcase featured work from over 1,500 artists, and the TS Challenge makes every showcased piece collectible and tradeable through collect.nft.nyc.
           </p>
 
           {/* How it works */}
@@ -316,11 +316,11 @@ export default function BlogTsChallenge() {
           </p>
 
           <p style={{ ...body, marginTop: '1rem' }}>
-            The live leaderboard is always available at <a href="https://onehub.nft.nyc/leaderboard" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>onehub.nft.nyc/leaderboard</a>.
+            The live leaderboard is always available at <a href="https://collect.nft.nyc/leaderboard" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>collect.nft.nyc/leaderboard</a>.
           </p>
 
           {/* Platform features */}
-          <h2 style={sectionTitle}>Platform features on onehub.nft.nyc</h2>
+          <h2 style={sectionTitle}>Platform features on collect.nft.nyc</h2>
 
           <h3 style={subTitle}>Dashboard</h3>
           <div style={{ overflowX: 'auto', marginTop: '0.5rem' }}>
@@ -417,7 +417,7 @@ export default function BlogTsChallenge() {
           {/* How to get started */}
           <h2 style={sectionTitle}>How to get started with the TS Challenge</h2>
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
-            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Visit onehub.nft.nyc.</strong> Go to onehub.nft.nyc and select Connect Wallet.</li>
+            <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Visit collect.nft.nyc.</strong> Go to collect.nft.nyc and select Connect Wallet.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Connect your wallet.</strong> Link your preferred wallet to the platform.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Explore the collection.</strong> Browse Collectible TS Art and Collectible Gifts on the Collect Art page.</li>
             <li style={listItem}><strong style={{ color: 'var(--color-text)' }}>Start earning T-XP.</strong> Claim your daily bonus on the Dashboard, send gifts, share NFTs on social media, and invite friends.</li>
@@ -454,8 +454,8 @@ export default function BlogTsChallenge() {
           {/* FAQ */}
           <h2 style={sectionTitle}>Frequently asked questions</h2>
           {[
-            { q: 'What is the Times Square Billboard Challenge?', a: 'The TS Challenge is a community-driven competition hosted on onehub.nft.nyc where participants collect digital art from the NFT.NYC 2025 Community Artist Showcase, send Collectible Gifts, earn T-XP, and compete on a global leaderboard.' },
-            { q: 'How do I get started?', a: 'Visit onehub.nft.nyc, connect your wallet, and start collecting art or sending gifts. You can also claim a daily bonus on the Dashboard to begin earning T-XP immediately.' },
+            { q: 'What is the Times Square Billboard Challenge?', a: 'The TS Challenge is a community-driven competition hosted on collect.nft.nyc where participants collect digital art from the NFT.NYC 2025 Community Artist Showcase, send Collectible Gifts, earn T-XP, and compete on a global leaderboard.' },
+            { q: 'How do I get started?', a: 'Visit collect.nft.nyc, connect your wallet, and start collecting art or sending gifts. You can also claim a daily bonus on the Dashboard to begin earning T-XP immediately.' },
             { q: 'What is T-XP?', a: 'T-XP (Times Square Experience Points) is the off-chain progression metric that determines your leaderboard ranking and unlocks the ability to purchase TS Art and Collectible Gifts. It is earned through collecting, gifting, and daily engagement. T-XP is not a cryptocurrency or token. It cannot be traded or transferred.' },
             { q: 'Can I participate without buying anything?', a: 'Yes. Creating an account, connecting your wallet, using the Gift Studio, completing Daily Actions, and receiving gifts from others are all free ways to earn T-XP and climb the leaderboard.' },
             { q: 'What rewards do top collectors earn?', a: 'Top leaderboard positions may unlock perks for future NFT.NYC events. Details are still being determined. Leaderboard rank bonuses already provide ongoing daily T-XP advantages: +500 for rank 1, +250 for rank 2, +100 for rank 3, and +10 for ranks 4 through 10.' },
@@ -473,14 +473,14 @@ export default function BlogTsChallenge() {
           {/* Key takeaways */}
           <h2 style={sectionTitle}>Key takeaways</h2>
           <ol style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
-            <li style={listItem}>The TS Challenge is a free-to-join community competition on onehub.nft.nyc that combines digital art collecting with physical Times Square display.</li>
+            <li style={listItem}>The TS Challenge is a free-to-join community competition on collect.nft.nyc that combines digital art collecting with physical Times Square display.</li>
             <li style={listItem}>All art was curated by Superchief Gallery and physically displayed on Times Square billboards, the Monument by Superchief, and the NFT.NYC Community Artists Gallery.</li>
             <li style={listItem}>T-XP is the off-chain progression metric driving leaderboard rankings. Earn up to 500 T-XP per day through Daily Actions.</li>
             <li style={listItem}>The streak system rewards consistency with a Boost Multiplier ranging from 1.1x to 4x.</li>
             <li style={listItem}>Social gifting is a core mechanic. Both sender and recipient earn T-XP for every Collectible Gift exchanged.</li>
             <li style={listItem}>The platform includes a Gift Studio (AI-enabled custom gift creation), a Dashboard, a Community Directory, and an Activity feed.</li>
             <li style={listItem}>The community includes 150,000+ members and 1,500+ showcased artists.</li>
-            <li style={listItem}>To start, visit onehub.nft.nyc, connect a wallet, and claim your daily bonus.</li>
+            <li style={listItem}>To start, visit collect.nft.nyc, connect a wallet, and claim your daily bonus.</li>
           </ol>
 
           {/* Disclaimer */}

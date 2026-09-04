@@ -43,7 +43,7 @@ NFT.NYC was founded in 2019. Nine editions through 2026. More than 40,000 attend
 ## Sister projects
 
 - Speaker voting (cross-project): https://vote.nft.nyc/
-- OneHub (TS Challenge platform): https://onehub.nft.nyc/
+- OneHub (TS Challenge platform): https://collect.nft.nyc/
 
 ## Social
 

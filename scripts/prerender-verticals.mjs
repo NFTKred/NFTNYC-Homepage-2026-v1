@@ -251,7 +251,7 @@ async function main() {
           {
             "@type": "Question",
             "name": "What is the Times Square Challenge?",
-            "acceptedAnswer": { "@type": "Answer", "text": "A 12-Mission showcase of tokenization across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Participants earn T-XP, build a Passport (.Kred domain), and compete on a global leaderboard. Hosted on OneHub.NFT.NYC." }
+            "acceptedAnswer": { "@type": "Answer", "text": "A 12-Mission showcase of tokenization across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Participants earn T-XP, build a Passport (.Kred domain), and compete on a global leaderboard. Hosted on Collect.NFT.NYC." }
           },
           {
             "@type": "Question",
@@ -273,7 +273,7 @@ async function main() {
         "hasDefinedTerm": [
           { "@type": "DefinedTerm", "name": "NFT", "description": "Non-fungible token: a unique cryptographic asset on a blockchain that cannot be replicated.", "url": `${ORIGIN}/origins#nft-enters-the-english-language` },
           { "@type": "DefinedTerm", "name": "Proof of presence", "description": "NFT.NYC's founding philosophy: physical, in-person attendance is the criterion that matters, not wallet holdings.", "url": `${ORIGIN}/origins#what-does-proof-of-presence-mean` },
-          { "@type": "DefinedTerm", "name": "Times Square Challenge", "description": "A 12-mission tokenization showcase hosted on OneHub.NFT.NYC where participants earn T-XP, build a Passport, and compete on a global leaderboard.", "url": `${ORIGIN}/origins#what-is-the-times-square-challenge` },
+          { "@type": "DefinedTerm", "name": "Times Square Challenge", "description": "A 12-mission tokenization showcase hosted on Collect.NFT.NYC where participants earn T-XP, build a Passport, and compete on a global leaderboard.", "url": `${ORIGIN}/origins#what-is-the-times-square-challenge` },
           { "@type": "DefinedTerm", "name": "T-XP", "description": "Times Square experience points earned by completing missions in the Times Square Challenge.", "url": `${ORIGIN}/origins#challenge` },
           { "@type": "DefinedTerm", "name": "Passport", "description": "A .Kred domain name participants own outright, holding every mission completion, Speaker Card, and Proof of Attendance earned across NFT.NYC events.", "url": `${ORIGIN}/origins#challenge` },
           { "@type": "DefinedTerm", "name": "FOMO", "description": "Your own NFT.NYC AI Agent, unlocked through Mission 8 of the Times Square Challenge, anchored to your Passport (.Kred domain).", "url": `${ORIGIN}/origins#what-is-fomo` },

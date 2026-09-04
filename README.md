@@ -2,7 +2,7 @@
 
 The React + Vite SPA that powers [https://www.nft.nyc/](https://www.nft.nyc/) — homepage, industry vertical pages, speak / sponsor / blog routes, and the Times Square Challenge landing. Deployed on Vercel.
 
-The Times Square Challenge platform itself (collecting + voting on TS art) lives in a separate project at [https://onehub.nft.nyc/](https://onehub.nft.nyc/). Speaker voting lives at [https://vote.nft.nyc/](https://vote.nft.nyc/).
+The Times Square Challenge platform itself (collecting + voting on TS art) lives in a separate project at [https://collect.nft.nyc/](https://collect.nft.nyc/). Speaker voting lives at [https://vote.nft.nyc/](https://vote.nft.nyc/).
 
 ## Stack
 

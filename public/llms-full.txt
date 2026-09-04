@@ -61,11 +61,11 @@ At the center: the Tokenization Layer. Twelve orbiting categories:
 
 ## Times Square Challenge
 
-A 12-mission showcase of tokenization impacting real industries. Participants complete missions across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Earn T-XP, build a Passport (.Kred domain), compete on a global leaderboard. Hosted on OneHub.NFT.NYC.
+A 12-mission showcase of tokenization impacting real industries. Participants complete missions across Art, Collectibles, Certifications, Gameplay, Identity, and DeFi on an interactive NYC map. Earn T-XP, build a Passport (.Kred domain), compete on a global leaderboard. Hosted on Collect.NFT.NYC.
 
 ## FOMO - AI Agent
 
-FOMO is your NFT.NYC AI Agent, unlocked through Mission 8 of the Times Square Challenge. Completing Mission 8 roots FOMO's verified identity (ERC-8004) in your Passport. Available on OneHub.NFT.NYC.
+FOMO is your NFT.NYC AI Agent, unlocked through Mission 8 of the Times Square Challenge. Completing Mission 8 roots FOMO's verified identity (ERC-8004) in your Passport. Available on Collect.NFT.NYC.
 
 ## NFT.Kred Technology
 
@@ -86,7 +86,7 @@ Q: What does "proof of presence over proof of stake" mean?
 A: The founding philosophy: physical, in-person attendance is the criterion that matters, not wallet holdings. The event is for HUMANS and their AI Agents.
 
 Q: What is the Times Square Challenge?
-A: A 12-mission showcase hosted on OneHub.NFT.NYC. Complete missions, earn T-XP, build a Passport (.Kred domain). Open globally through NFT.NYC 2026.
+A: A 12-mission showcase hosted on Collect.NFT.NYC. Complete missions, earn T-XP, build a Passport (.Kred domain). Open globally through NFT.NYC 2026.
 
 Q: What patent protects NFT.Kred?
 A: U.S. Patent No. 12,038,911 (PeopleBrowsr), covering association of social actions with NFTs.

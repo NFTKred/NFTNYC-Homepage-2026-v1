@@ -71,7 +71,7 @@ export default function WhyNYC({ stage = 0 }: { stage?: number }) {
         }}>
           {stage >= 1 && (
             <a
-              href="https://onehub.nft.nyc/"
+              href="https://collect.nft.nyc/"
               target="_blank"
               rel="noopener noreferrer"
               style={{

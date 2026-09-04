@@ -240,7 +240,7 @@ export default function BlogHistoryOfRemix() {
               Duchamp, Jamaican dub and hip-hop to today's on-chain platforms. Web3 adds the piece
               missing from every earlier era: provenance. At NFT.NYC 2026 (September 1-3, The
               Edison, Times Square), the{" "}
-              <a href="https://OneHub.NFT.NYC/ts-collect" target="_blank" rel="noopener noreferrer">
+              <a href="https://Collect.NFT.NYC/ts-collect" target="_blank" rel="noopener noreferrer">
                 Times Square Collect
               </a>
               ,{" "}
@@ -996,8 +996,8 @@ export default function BlogHistoryOfRemix() {
               <h3>Times Square Collect: remixing the gift</h3>
               <p>
                 A free, 12-mission program on{" "}
-                <a href="https://OneHub.NFT.NYC/ts-collect" target="_blank" rel="noopener noreferrer">
-                  OneHub.NFT.NYC
+                <a href="https://Collect.NFT.NYC/ts-collect" target="_blank" rel="noopener noreferrer">
+                  Collect.NFT.NYC
                 </a>{" "}
                 leading into NFT.NYC 2026. Participants collect NFT art, earn T-XP (Times Square
                 Experience Points), climb a global leaderboard, and write every completion to a
@@ -1033,11 +1033,11 @@ export default function BlogHistoryOfRemix() {
               <p className="note" style={{ marginTop: "0.875rem" }}>
                 Start at{" "}
                 <a
-                  href="https://OneHub.NFT.NYC/ts-collect"
+                  href="https://Collect.NFT.NYC/ts-collect"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  OneHub.NFT.NYC/ts-collect
+                  Collect.NFT.NYC/ts-collect
                 </a>
               </p>
             </div>
@@ -1726,7 +1726,7 @@ export default function BlogHistoryOfRemix() {
             </p>
             <a
               className="btn"
-              href="https://OneHub.NFT.NYC/ts-collect"
+              href="https://Collect.NFT.NYC/ts-collect"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -1774,11 +1774,11 @@ export default function BlogHistoryOfRemix() {
               </a>
               ,{" "}
               <a
-                href="https://OneHub.NFT.NYC/ts-collect"
+                href="https://Collect.NFT.NYC/ts-collect"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                OneHub.NFT.NYC
+                Collect.NFT.NYC
               </a>
               ,{" "}
               <a href="https://R3ORDR.com" target="_blank" rel="noopener noreferrer">

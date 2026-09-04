@@ -248,7 +248,7 @@ export default function SeeWhatsOnTheMap() {
           Start by collecting Times Square Art from our global community of Artists - and earn T-XP for your activity.
         </p>
 
-        {/* Live activity feed — real events from onehub.nft.nyc tagged
+        {/* Live activity feed — real events from collect.nft.nyc tagged
             `tsbillboard`. Replaces the old cycling map-marker tile. When
             the API is unreachable the block hides itself and the section
             still reads cleanly. */}
@@ -267,7 +267,7 @@ export default function SeeWhatsOnTheMap() {
                 <a
                   key={`${item.id}-${i}`}
                   className="swotm-feed-item"
-                  href="https://onehub.nft.nyc/activity"
+                  href="https://collect.nft.nyc/activity"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ '--dot': item.color } as React.CSSProperties}
@@ -389,7 +389,7 @@ const SWOTM_CSS = `
 }
 
 /* Live activity feed — vertically auto-scrolling list of real events
-   from onehub.nft.nyc. Reuses the global @keyframes feedScrollUp from
+   from collect.nft.nyc. Reuses the global @keyframes feedScrollUp from
    src/index.css. The mask-image fades the top/bottom edges so items
    appear to enter / leave rather than pop in / out. Duplicate item
    set is rendered inline so the marquee can loop seamlessly at 50%. */

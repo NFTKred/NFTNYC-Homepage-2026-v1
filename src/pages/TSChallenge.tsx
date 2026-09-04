@@ -59,7 +59,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
     step: 1, kicker: 'Overview', title: 'What Is The', accent: 'TS Challenge',
     content: () => (
       <>
-        <p className="ts-lead">The Times Square Challenge is a free 12-Mission program on OneHub.NFT.NYC that showcases how tokenization is reshaping real industries — leading up to NFT.NYC 2026 on September 1–3, 2026.</p>
+        <p className="ts-lead">The Times Square Challenge is a free 12-Mission program on Collect.NFT.NYC that showcases how tokenization is reshaping real industries — leading up to NFT.NYC 2026 on September 1–3, 2026.</p>
         <ul className="ts-list">
           <li><strong>12 Missions</strong> across six industries: Art, Collectibles, Certifications, Gameplay, Identity, and DeFi</li>
           <li>Each Mission is a <strong>working example</strong> of tokenization in a different real-world vertical</li>
@@ -106,7 +106,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
           <li>It's a <strong>living surface</strong> — new Missions appear in the lead-up to NFT.NYC 2026 as partners and industries come online.</li>
           <li>See at a glance which experiences are <strong>live</strong>, which are <strong>coming soon</strong>, and where each one sits in the city.</li>
           <li>The map ties digital experience to physical place — Times Square, Fifth Avenue, Coney Island, the Flatiron, the Hudson.</li>
-          <li>Open the live map at <a href="https://onehub.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>OneHub.NFT.NYC/map</a>.</li>
+          <li>Open the live map at <a href="https://collect.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Collect.NFT.NYC/map</a>.</li>
         </ul>
       </>
     ),
@@ -292,7 +292,7 @@ export default function TSChallenge() {
             <p className="scroll-fade-up" style={{
               fontFamily: 'var(--font-body)', fontSize: 14,
               color: 'var(--color-primary)', marginBottom: 24, opacity: 0.7,
-            }}>Powered by OneHub on onehub.nft.nyc</p>
+            }}>Powered by OneHub on collect.nft.nyc</p>
 
             {/* Relay mascot */}
             <img
@@ -374,7 +374,7 @@ export default function TSChallenge() {
               marginTop: 32, lineHeight: 1.6,
             }}>
               Have an idea?{' '}
-              <a href="https://onehub.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+              <a href="https://collect.nft.nyc/map" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                 Submit a Mission
               </a>{' '}
               that showcases how your project, brand, or use case is putting tokenization to work.
@@ -435,7 +435,7 @@ export default function TSChallenge() {
           {stage >= 1 && (
             <div style={{ textAlign: 'center' as const, padding: '48px 0' }}>
               <a
-                href="https://onehub.nft.nyc"
+                href="https://collect.nft.nyc"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

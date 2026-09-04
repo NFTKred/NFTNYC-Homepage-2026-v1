@@ -19,7 +19,7 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   const [menuOpen, setMenuOpen] = useState(false);
 
   const allNavLinks = [
-    { href: 'https://onehub.nft.nyc', label: 'Collect', minStage: 0 },
+    { href: 'https://collect.nft.nyc', label: 'Collect', minStage: 0 },
     { href: '/speakers', label: 'Speakers', minStage: 0 },
     { href: 'https://nftnyc2026.sessionize.com/', label: 'Program', minStage: 0 },
     { href: '/sponsor', label: 'Partnerships', minStage: 0 },
