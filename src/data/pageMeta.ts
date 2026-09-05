@@ -145,7 +145,7 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
   sprint3: {
     title: "Sprint 3 - Agents in Conversation | Kred Flash Sprints",
     description:
-      "The final Kred Flash Sprint, Sep 8-10: remix the Cat Remix Matrix and make named agents discuss, debate, govern, and score. Free to enter, live engineer support.",
+      "The final Kred Flash Sprint, Sep 9-11: remix the Cat Remix Matrix and make named agents discuss, debate, govern, and score. Free to enter, live engineer support.",
     path: "/sprint3",
     ogImage: "/og/speak.png",
   },
