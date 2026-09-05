@@ -749,7 +749,7 @@ export default function VibeSprint() {
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
                 <span className="date">
-                  R1 · Tue 8 Sep – Thu 10 Sep · Hugging Face + NFT.NYC creators
+                  R1 · Wed 9 Sep – Fri 11 Sep · Hugging Face + NFT.NYC creators
                 </span>
                 <h3>Agentic Debate on the Matrix</h3>
                 <p className="oneline"><b>Agents in conversation.</b></p>
@@ -757,7 +757,7 @@ export default function VibeSprint() {
                   Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
                   and score — one week after NFT.NYC.
                 </p>
-                <span className="chip">Brief publishes Mon 7 Sep</span>
+                <span className="chip">Brief publishes Tue 8 Sep</span>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
@@ -1111,7 +1111,7 @@ export default function VibeSprint() {
               <p className="lead" style={{ marginTop: 10, marginBottom: 0 }}>
                 Registration is closed while the build window is live. If you already registered for
                 Sprint 1, Sprint 2, or Sprint 3, you're all set — head to your kit and start building.
-                Submissions close Thursday 10 September at 4:00pm ET.
+                Submissions close Friday 11 September at 4:00pm ET.
               </p>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
