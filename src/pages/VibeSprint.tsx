@@ -611,7 +611,7 @@ export default function VibeSprint() {
             <div className="eyebrow">PeopleBrowsr × NFT.NYC 2026</div>
             <h1>
               Kred Flash Sprints<br />
-              <span className="glow">Three Sprints to NFT.NYC</span>
+              <span className="glow">Identity and Agentic AI</span>
             </h1>
             <p className="sub">
               <b>
@@ -749,23 +749,31 @@ export default function VibeSprint() {
               <div className="sp" style={{ ["--tone" as string]: "var(--vs-violet)" } as React.CSSProperties}>
                 <span className="no">3</span>
                 <span className="date">
-                  R1 · Wed 9 Sep – Fri 11 Sep · Hugging Face + NFT.NYC creators
+                  Round 1 · Dates to be announced · Hugging Face and NFT.NYC creators
                 </span>
-                <h3>Agentic Debate on the Matrix</h3>
+                <h3>Agents in Conversation</h3>
                 <p className="oneline"><b>Agents in conversation.</b></p>
                 <p>
-                  Agents with .Kred identities join Matrix.Kred Nodes to discuss, debate, govern,
-                  and score — one week after NFT.NYC.
+                  Sprint 3 uses Cat Matrix, the consumer face of Matrix.Kred, for named agents to
+                  discuss, debate, govern, and score.
                 </p>
-                <span className="chip">Brief publishes Tue 8 Sep</span>
+                <p>
+                  Each cat starts with 500 C-XP, with owner-managed allowances. Treats are 25 C-XP
+                  gifts within the Platform. C-XP are off-chain reward points.
+                </p>
+                <p>
+                  Outside agents take turns through the agent API, webhooks, email, or the MCP
+                  connector. The build window lasts 48 hours, with support from 4:00pm ET on both evenings.
+                </p>
+                <span className="chip">Brief publishes before opening</span>
+                <p><a href="/sprint3" style={{ color: "var(--vs-cyan)" }}>Sprint 3 brief</a></p>
               </div>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
-              September 2 · Live presentations on the main stage at NFT.NYC 2026, The Edison, Times
-              Square. Sprint 3 runs
-              the week after the conference, built for the community building from anywhere. Every
-              submission appears in the reel shown at NFT.NYC 2026; up to 20 selected submissions
-              per sprint join the Times Square Showcase.
+              NFT.NYC 2026 took place September 1–3, 2026, at The Edison, Times Square.
+              Sprint 3 runs online, with dates to be announced. Every Sprint 3 submission joins the
+              digital showcase on <a href="https://catmatrix.Kred" style={{ color: "var(--vs-cyan)" }}>Cat Matrix</a>,
+              with permanent recognition on the builder's .Kred page.
             </p>
           </section>
 
@@ -951,7 +959,7 @@ export default function VibeSprint() {
               <div className="ecard"><b>Finisher XP</b><span className="amt">2,500 XP</span>For every sprint you submit.</div>
               <div className="ecard"><b>Finisher Certificate</b><span className="amt">Minted NFT</span>Your submission's certificate, minted on the platform you built with.</div>
               <div className="ecard"><b>Build Report</b><span className="amt">Full feedback</span>What passed, what scored what, and what to level up next sprint.</div>
-              <div className="ecard"><b>Times Square Showcase</b><span className="amt">Up to 20 per sprint</span>Up to 20 selected submissions per sprint are featured on the rotating Times Square billboard.</div>
+              <div className="ecard"><b>Sprint 3 digital showcase</b><span className="amt">Every submission</span>Every Sprint 3 submission is featured on <a href="https://catmatrix.Kred" style={{ color: "var(--vs-cyan)" }}>Cat Matrix</a>, with permanent recognition on the builder's .Kred page.</div>
               <div className="ecard"><b>Spotlight</b><span className="amt">$1,000 grant</span>One Spotlight submission per sprint earns a build grant and a deep-dive on the NFT.NYC blog; two Featured submissions earn recap coverage.</div>
             </div>
             <p className="form-note" style={{ marginTop: 12 }}>
@@ -1092,7 +1100,7 @@ export default function VibeSprint() {
               <div className="trow"><b>Wed 26 and Thu 27 Aug · from 4:00pm ET</b>Live engineer support, five to eight hours each evening.</div>
               <div className="trow"><b>Fri 28 Aug · 4:00pm ET</b>Submissions close. App URL on your .Kred domain, project link, MCP link, API evidence.</div>
               <div className="trow"><b>After close</b>Spotlight and Featured submissions recognized. Build Reports to every builder.</div>
-              <div className="trow"><b>September 2</b>Live presentations on the main stage at NFT.NYC 2026, The Edison, Times Square.</div>
+              <div className="trow"><b>September 2, 2026</b>Live presentations took place on the main stage at NFT.NYC 2026, The Edison, Times Square.</div>
             </div>
           </section>
 
@@ -1106,12 +1114,11 @@ export default function VibeSprint() {
               marginTop: 8,
             }}>
               <b style={{ color: "var(--color-text)", fontSize: 18 }}>
-                Sprint 3 is in progress now.
+                Sprint 3 opens soon.
               </b>
               <p className="lead" style={{ marginTop: 10, marginBottom: 0 }}>
-                Registration is closed while the build window is live. If you already registered for
-                Sprint 1, Sprint 2, or Sprint 3, you're all set — head to your kit and start building.
-                Submissions close Friday 11 September at 4:00pm ET.
+                Sprint 3 dates will be announced here and by email to registered builders.
+                One free registration covers Sprints 1, 2 and 3. Existing registrants retain their entry and kit.
               </p>
             </div>
             <p className="form-note" style={{ marginTop: 10 }}>
@@ -1251,7 +1258,7 @@ export default function VibeSprint() {
                 <ul>
                   <li>Keep building — you can resubmit with the same email any time before close.</li>
                   <li>Every valid submission earns Finisher XP, a Finisher Certificate, and a Build Report.</li>
-                  <li>Up to 20 selected submissions per sprint join the Times Square Showcase.</li>
+                  <li>Sprint 3 submissions join the digital showcase on Cat Matrix, with permanent recognition on each builder's .Kred page.</li>
                 </ul>
               </div>
             )}

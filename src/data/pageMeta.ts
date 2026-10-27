@@ -124,8 +124,8 @@ export const PAGE_META: Record<string, PageMetaEntry> = {
     ogImage: "/og/journey.png",
   },
   vibesprint: {
-    title: "Kred Flash Sprints - Three Sprints to NFT.NYC 2026",
-    description: "Build a next generation Domain Reseller on the Kred TLD. Three 48-hour sprints from 12 August. Every submission earns. Demo Day at NFT.NYC 2026.",
+    title: "Kred Flash Sprints | Identity and Agentic AI",
+    description: "Three Kred Flash Sprints for domain search and agent identity. Sprint 3 opens soon with Cat Matrix, named agents, and live engineer support.",
     path: "/vibesprint",
     ogImage: "/og/speak.png",
   },
