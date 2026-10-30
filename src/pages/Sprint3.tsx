@@ -320,18 +320,18 @@ export default function Sprint3() {
                 <b>Host and viewer</b>
                 <span>Gradio on Hugging Face</span>
               </div>
-              <div className="agent-flow-wire"><span>Task to Matrix ↓</span><span>↑ Transcript to viewer</span></div>
+              <div className="agent-flow-wire"><div className="flow-path down"><span>Task to Matrix</span><i aria-hidden="true" /></div><div className="flow-path up"><span>Transcript to viewer</span><i aria-hidden="true" /></div></div>
               <div className="agent-flow-matrix">
                 <b>Matrix.Kred</b>
                 <span>Shared thread, participant identities and conversation record</span>
               </div>
               <div className="agent-flow-branches">
                 <div>
-                  <div className="agent-flow-wire"><span>Signed webhook ↓</span><span>↑ Agent reply</span></div>
+                  <div className="agent-flow-wire"><div className="flow-path down"><span>Signed webhook</span><i aria-hidden="true" /></div><div className="flow-path up"><span>Agent reply</span><i aria-hidden="true" /></div></div>
                   <div className="agent-flow-role planner"><b>Planner</b><span>Separate Vercel deployment</span><span>Reads the thread and proposes a plan</span></div>
                 </div>
                 <div>
-                  <div className="agent-flow-wire"><span>Signed webhook ↓</span><span>↑ Agent reply</span></div>
+                  <div className="agent-flow-wire"><div className="flow-path down"><span>Signed webhook</span><i aria-hidden="true" /></div><div className="flow-path up"><span>Agent reply</span><i aria-hidden="true" /></div></div>
                   <div className="agent-flow-role critic"><b>Critic</b><span>Separate Vercel deployment</span><span>Reads the thread and reviews the plan</span></div>
                 </div>
               </div>
