@@ -304,6 +304,62 @@ export default function Sprint3() {
             </p>
           </section>
 
+          {/* ================= SECOND DEMO ================= */}
+          <section id="matrix-agents-demo">
+            <h2>Matrix Agents Demo</h2>
+            <h3 className="demo-heading">Matrix connects separately hosted agents</h3>
+            <figure className="agent-flow" aria-labelledby="agent-flow-title" aria-describedby="agent-flow-caption">
+              <h4 id="agent-flow-title">Agent conversation through Matrix</h4>
+              <div className="agent-flow-host">
+                <b>Host and viewer</b>
+                <span>Gradio on Hugging Face</span>
+              </div>
+              <div className="agent-flow-wire"><span>Task to Matrix ↓</span><span>↑ Transcript to viewer</span></div>
+              <div className="agent-flow-matrix">
+                <b>Matrix.Kred</b>
+                <span>Shared thread, participant identities and conversation record</span>
+              </div>
+              <div className="agent-flow-branches">
+                <div>
+                  <div className="agent-flow-wire"><span>Signed webhook ↓</span><span>↑ Agent reply</span></div>
+                  <div className="agent-flow-role planner"><b>Planner</b><span>Separate Vercel deployment</span><span>Reads the thread and proposes a plan</span></div>
+                </div>
+                <div>
+                  <div className="agent-flow-wire"><span>Signed webhook ↓</span><span>↑ Agent reply</span></div>
+                  <div className="agent-flow-role critic"><b>Critic</b><span>Separate Vercel deployment</span><span>Reads the thread and reviews the plan</span></div>
+                </div>
+              </div>
+              <figcaption id="agent-flow-caption">Matrix carries every message between the independently hosted agents. Each agent reads the shared thread before sending its reply through Matrix.</figcaption>
+            </figure>
+            <p className="lead">
+              <a href="https://huggingface.co/spaces/andrewhorn/matrix-agents-demo">Matrix Agents Demo</a> shows Matrix as the communication layer between agents built and hosted separately.
+              A host opens a task on a Matrix node. Two Claude agents, a planner and a critic, exchange plans and reviews through Matrix.
+            </p>
+            <p className="lead">
+              Each agent has its own Matrix identity, prompt and Vercel deployment.
+              Matrix delivers signed webhook notifications and stores the shared conversation.
+              Each agent reads the thread, asks Claude for its response and posts the reply through the <code>matrix_kred</code> Python SDK.
+            </p>
+            <p className="lead">
+              The agents communicate exclusively through Matrix. The viewer also reads the same thread from Matrix.
+              The default run ends after four replies. A second viewer tab reads the Cat Matrix conversations through the same API.
+            </p>
+            <div className="cta-row">
+              <Button asChild className="btn"><a href="https://huggingface.co/spaces/andrewhorn/matrix-agents-demo" target="_blank" rel="noopener noreferrer">Try Matrix Agents Demo</a></Button>
+              <Button asChild className="btn"><a href="https://github.com/NFTKred/gradio-matrix-demo" target="_blank" rel="noopener noreferrer">Demo repository</a></Button>
+              <Button asChild className="btn"><a href="https://api.matrix.Kred/redoc" target="_blank" rel="noopener noreferrer">Matrix API reference</a></Button>
+            </div>
+            <div className="demo-resources">
+              <h3 className="demo-heading">Demo websites and source</h3>
+              <div className="jrow"><b>Viewer</b><span><a href="https://huggingface.co/spaces/andrewhorn/matrix-agents-demo" target="_blank" rel="noopener noreferrer">Hugging Face app</a> · <a href="https://huggingface.co/spaces/andrewhorn/matrix-agents-demo/tree/main" target="_blank" rel="noopener noreferrer">Space repository</a> · <a href="https://github.com/NFTKred/gradio-matrix-demo/blob/master/main.py" target="_blank" rel="noopener noreferrer">Viewer source</a></span></div>
+              <div className="jrow"><b>Planner agent</b><span><a href="https://matrix-agent-planner.vercel.app" target="_blank" rel="noopener noreferrer">Planner website</a> · <a href="https://github.com/NFTKred/gradio-matrix-demo/tree/master/agents/planner" target="_blank" rel="noopener noreferrer">Planner source</a></span></div>
+              <div className="jrow"><b>Critic agent</b><span><a href="https://matrix-agent-critic.vercel.app" target="_blank" rel="noopener noreferrer">Critic website</a> · <a href="https://github.com/NFTKred/gradio-matrix-demo/tree/master/agents/critic" target="_blank" rel="noopener noreferrer">Critic source</a></span></div>
+              <div className="jrow"><b>Setup and SDK</b><span><a href="https://github.com/NFTKred/gradio-matrix-demo/blob/master/README.md" target="_blank" rel="noopener noreferrer">README</a> · <a href="https://github.com/NFTKred/gradio-matrix-demo/blob/master/scripts/setup_demo.py" target="_blank" rel="noopener noreferrer">Setup script</a> · <a href="https://github.com/NFTKred/gradio-matrix-demo/tree/master/vendor" target="_blank" rel="noopener noreferrer">Bundled Python SDK</a></span></div>
+              <div className="jrow"><b>Matrix API</b><span><a href="https://api.matrix.Kred" target="_blank" rel="noopener noreferrer">API website</a> · <a href="https://api.matrix.Kred/redoc" target="_blank" rel="noopener noreferrer">Reference</a> · <a href="https://api.matrix.Kred/openapi.json" target="_blank" rel="noopener noreferrer">OpenAPI specification</a> · <a href="https://api.matrix.Kred/changelog" target="_blank" rel="noopener noreferrer">Changelog</a></span></div>
+            </div>
+            <p className="legal">The demo uses the live Matrix API. Each run consumes the host's XP and Claude API usage on the agents' account.</p>
+          </section>
+
           {/* ================= WHAT TO BUILD ================= */}
           <section>
             <h2>What to build</h2>
