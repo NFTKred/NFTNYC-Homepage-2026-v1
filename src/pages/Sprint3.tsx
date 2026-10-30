@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type CSSProperties, type FormEvent } from
 import Header from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import PageMeta from "@/components/PageMeta";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import {
   RegistrantContactFields,
@@ -14,7 +15,7 @@ import "@/styles/sprint3.css";
 /**
  * Sprint 3 page copy follows the supplied Markdown draft.
  * Shares the .vibesprint stylesheet for the common blocks and adds the
- * Sprint 3-only blocks via sprint3.css. Registration remains hidden.
+ * Sprint 3-only blocks via sprint3.css. Registration uses the existing season flow.
  */
 
 
@@ -133,11 +134,11 @@ export default function Sprint3() {
     }
     const d = domain.trim() || "yourname";
     if (domainCheck.state === "taken") {
-      setFormError(`${d}.Kred is already taken — please choose another name.`);
+      setFormError(`${d}.Kred is already taken. Please choose another name.`);
       return;
     }
     if (domainCheck.state === "checking") {
-      setFormError("Just checking that domain is available — try again in a moment.");
+      setFormError("Domain availability checking is in progress. Please try again shortly.");
       return;
     }
     setSending(true);
@@ -478,21 +479,53 @@ export default function Sprint3() {
             <details className="faq"><summary>I registered for Sprint one or Sprint two. What now?</summary><p>Your original registration covers your entry, your kit and your .Kred domain. Sprint three opens soon, with the date published on this page and by email.</p></details>
           </section>
 
-          {/* Registration remains hidden until the user requests opening it. */}
+          {/* Season registration */}
           <section id="register">
-            <h2>Tell us you are in</h2>
-            <div className="closed-status" role="status" style={{
-              border: "1px solid var(--card-border)",
-              borderRadius: 12,
-              padding: "24px 28px",
-              background: "rgba(241, 86, 33, 0.06)",
-              marginTop: 8,
-            }}>
-              <b style={{ color: "var(--color-text)", fontSize: 18 }}>Sprint three opens soon.</b>
-              <p className="lead" style={{ marginTop: 10, marginBottom: 0 }}>
-                The date publishes on this page and by email to everyone registered.
-                One registration at no charge covers all three sprints, so builders already registered retain their entry.
-              </p>
+            <h2>Sprint 3 registration</h2>
+            <p className="lead">Sprint three registration is open. Your registration covers all three sprints. Sprint one and Sprint two builders retain their entry and kit.</p>
+            <div className="regpick">
+              <details className="reg" open>
+                <summary>New builder registration</summary>
+                <div className="regbody">
+                  {submitted ? (
+                    <div id="successCard" className="success" role="status">
+                      <b>Your registration is saved.</b>
+                      <p>Your requested domain is {claimedDomain}. Your confirmation email carries the registration details.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={onSubmit} noValidate>
+                      <div className="field"><label htmlFor="fName">Name</label><input id="fName" name="name" required autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} /></div>
+                      <div className="field"><label htmlFor="fEmail">Email</label><input id="fEmail" name="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+                      <div className="field"><label htmlFor="fSegment">Your community</label><select id="fSegment" value={segment} onChange={(e) => setSegment(e.target.value)}><option>NFT.NYC creator, design what an argument looks like</option><option>Hugging Face builder, make an agent hold a position</option><option>Other builder</option></select></div>
+                      <div className="field"><label htmlFor="fTool">Build tool</label><select id="fTool" value={buildTool} onChange={(e) => setBuildTool(e.target.value)}><option>Lovable</option><option>Hugging Face</option><option>Claude Code</option><option>Codex</option><option>Other</option></select></div>
+                      <div className="field full">
+                        <div className="domain-callout"><div><b>Your registration claims a real .Kred domain.</b><br /><span>The domain name you choose will be registered for you.</span></div></div>
+                        <label htmlFor="fDomain">Claim your .Kred domain</label>
+                        <div className="domain-row"><input id="fDomain" name="domain" required pattern="[a-zA-Z0-9-]+" placeholder="yourname" value={domain} onChange={(e) => setDomain(e.target.value)} /><span className="tld">.Kred</span></div>
+                        <p className="form-note" role="status">{domainCheck.state === "available" ? "Your domain is available." : domainCheck.state === "checking" ? "Domain availability check in progress." : domainCheck.state === "taken" ? "Your domain is already taken. Please choose another name." : domainCheck.message}</p>
+                      </div>
+                      <RegistrantContactFields open={Boolean(domain.trim())} onChange={setContact} />
+                      <div className="agree"><input id="fAgree" type="checkbox" required checked={agree} onChange={(e) => setAgree(e.target.checked)} /><label htmlFor="fAgree">I accept the <a href="https://www.peoplebrowsr.com/tos" target="_blank" rel="noopener noreferrer">PeopleBrowsr Terms of Service</a> and <a href="https://f005.backblazeb2.com/file/PB-HubSpot/Kred_Flash_Sprints_Participation_Terms_v1.pdf" target="_blank" rel="noopener noreferrer">Kred Flash Sprint ToS</a>.</label></div>
+                      {formError && <p className="field full" role="alert">{formError}</p>}
+                      <div className="form-actions"><Button className="btn" type="submit" disabled={!agree || sending || domainCheck.state === "checking" || domainCheck.state === "taken"}>{sending ? "Registration in progress" : "Claim my kit and register"}</Button></div>
+                    </form>
+                  )}
+                </div>
+              </details>
+              <details className="reg">
+                <summary>Returning builder</summary>
+                <div className="regbody">
+                  <p>Your original registration covers Sprint three. Your email confirms your interest with the sprint team.</p>
+                  {quickSent ? <p role="status">Your Sprint three interest is saved.</p> : (
+                    <form className="quickform" onSubmit={onSubmitQuick}>
+                      <label htmlFor="quickEmail">Registration email</label>
+                      <input id="quickEmail" type="email" required autoComplete="email" value={quickEmail} onChange={(e) => setQuickEmail(e.target.value)} />
+                      <Button className="btn" type="submit" disabled={quickSending}>{quickSending ? "Confirmation in progress" : "Confirm my interest"}</Button>
+                      {quickError && <p role="alert">{quickError}</p>}
+                    </form>
+                  )}
+                </div>
+              </details>
             </div>
             <div className="licence">
               <b>Your work stays yours.</b> You keep full ownership and copyright of everything you build.
