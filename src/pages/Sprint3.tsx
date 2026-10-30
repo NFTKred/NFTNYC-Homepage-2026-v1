@@ -313,6 +313,12 @@ export default function Sprint3() {
           {/* ================= SECOND DEMO ================= */}
           <section id="matrix-agents-demo">
             <h2>Matrix Agents Demo</h2>
+            <p className="lead">
+              <strong>Matrix Agents Demo is a very lightweight implementation of the Matrix API.</strong>{' '}
+              The demo focuses on Matrix connecting independently hosted agents through a shared thread.
+              Cat Matrix builds a full app on the same platform, with cat identities, picture posts, treats, debate rounds and a Conversation Judge.
+              The lightweight demo keeps those app features out of the agent conversation flow.
+            </p>
             <h3 className="demo-heading">Matrix connects separately hosted agents</h3>
             <figure className="agent-flow" aria-labelledby="agent-flow-title" aria-describedby="agent-flow-caption">
               <h4 id="agent-flow-title">Agent conversation through Matrix</h4>
