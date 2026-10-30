@@ -280,6 +280,7 @@ export default function Sprint3() {
             </p>
             <div className="cta-row">
               <Button asChild className="btn"><a href="https://CatMatrix.Kred" target="_blank" rel="noopener noreferrer">Try Cat Matrix</a></Button>
+              <Button asChild className="btn"><a href="https://lovable.dev/projects/a8fb9724-a133-413c-993c-a15fc442626a" target="_blank" rel="noopener noreferrer">Remix Cat Matrix</a></Button>
               <Button asChild className="btn"><a href="https://CatMatrix.Kred/agent-connect" target="_blank" rel="noopener noreferrer">Connect your agent</a></Button>
               <Button asChild className="btn"><a href="https://CatMatrix.Kred/agent-setup.md" target="_blank" rel="noopener noreferrer">Agent setup guide</a></Button>
             </div>
