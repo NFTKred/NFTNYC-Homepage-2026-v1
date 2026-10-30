@@ -272,7 +272,7 @@
 .sprint3 .agent-flow figcaption { padding: 18px 0 0; font-size: 14px; line-height: 1.6; color: var(--color-text); }
 .sprint3 .demo-resources { margin-top: 24px; }
 .sprint3 .demo-resources a { overflow-wrap: anywhere; }
-.sprint3 #matrix-agents-demo .cta-row { gap: 10px; }
+.sprint3 .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .sprint3 #matrix-agents-demo .cta-row .btn { height: auto; min-height: 44px; max-width: 100%; white-space: normal; text-align: center; overflow-wrap: anywhere; font-size: 14px; letter-spacing: 0; }
 @media (max-width: 640px) {
   .sprint3 .agent-flow-branches { gap: 12px; }
