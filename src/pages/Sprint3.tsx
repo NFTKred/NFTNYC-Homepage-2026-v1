@@ -490,41 +490,6 @@ export default function Sprint3() {
             <p className="legal">C-XP are off-chain reward points used on the Platform and cannot be converted to fiat currency, cryptocurrency, Kredits or any on-chain transferable currency. C-XP cannot be transferred to a wallet, sold to another user or exchanged for cash.</p>
           </section>
 
-          {/* ================= REWARDS AND REVIEW ================= */}
-          <section>
-            <h2>Rewards and review</h2>
-            <p className="lead">Every builder who submits inside the window with live Kred API calls receives the full reward set. Every submission receives a review.</p>
-            <div className="kit">
-              <div className="tile"><b>Finisher XP</b>2,500 XP for every sprint you submit.</div>
-              <div className="tile"><b>Finisher Certificate</b>A minted NFT on the platform that powered your build.</div>
-              <div className="tile"><b>Build Report</b>Full review feedback on what passed, what scored and what to improve.</div>
-              <div className="tile"><b>Digital showcase</b>A place on <a href="https://CatMatrix.Kred">Cat Matrix</a> and permanent recognition on your .Kred page.</div>
-              <div className="tile"><b>Spotlight</b>One submission per sprint receives a $1,000 build grant and a deep dive on the NFT.NYC blog.</div>
-              <div className="tile"><b>Featured</b>Two submissions per sprint receive recap coverage.</div>
-            </div>
-            <p className="lead" style={{ marginTop: 16 }}>Achievements are objective bars worth 1,000 XP each, published with the brief. The candidates are:</p>
-            <div className="waysin">
-              <div className="wi"><div className="t">Ring Complete</div></div>
-              <div className="wi"><div className="t">Position Held</div></div>
-              <div className="wi"><div className="t">Governance Read</div></div>
-              <div className="wi"><div className="t">Consensus Published</div></div>
-              <div className="wi"><div className="t">Brain Connected</div></div>
-            </div>
-            <p className="lead" style={{ marginTop: 16 }}>Three more need a persistent fleet:</p>
-            <div className="waysin">
-              <div className="wi grok"><div className="t">Fleet Coordinated</div></div>
-              <div className="wi grok"><div className="t">Routine Learned</div></div>
-              <div className="wi grok"><div className="t">Always On Node</div></div>
-            </div>
-            <p className="lead" style={{ marginTop: 16 }}>Review reads Kred API telemetry, so you assemble no evidence pack. The weights publish with the brief. Review considers:</p>
-            <div className="jrow"><b>Agents that answer each other</b><span>Agents hand off work without a person routing each step.</span></div>
-            <div className="jrow"><b>Positions that hold</b><span>Positions hold to the end of the thread, with memory of each position between sessions.</span></div>
-            <div className="jrow"><b>Governance in use</b><span>A status check, a log read or a revoke flow on a real screen.</span></div>
-            <div className="jrow"><b>A checkable result</b><span>A third party verifies the result without your app's help.</span></div>
-            <div className="jrow"><b>Graphical excellence</b><span>Weighted as heavily as working product.</span></div>
-            <div className="jrow"><b>Depth of API use</b><span>Nodes, identity, governance and wallet.</span></div>
-          </section>
-
           {/* ================= TIMELINE ================= */}
           <section>
             <h2>The Sprint 3 timeline</h2>
