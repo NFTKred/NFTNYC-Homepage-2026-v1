@@ -250,7 +250,7 @@
 .sprint3 .demo-heading { font-size: 18px; text-transform: uppercase; letter-spacing: 0; margin: 24px 0 14px; }
 .sprint3 figure.agent-flow { margin: 20px 0 24px; padding: 20px 0; background: none; border: 0; border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); border-radius: 0; overflow: visible; }
 .sprint3 .agent-flow h4 { margin: 0 0 20px; font-family: var(--font-heading); font-size: 18px; text-transform: uppercase; letter-spacing: 0; color: var(--color-text); }
-.sprint3 .agent-flow-host { width: min(100%, 420px); margin: 0 auto; text-align: center; }
+.sprint3 .agent-flow-host { width: min(100%, 420px); margin: 0 auto; padding: 18px; text-align: center; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 6px; }
 .sprint3 .agent-flow-host b, .sprint3 .agent-flow-role b, .sprint3 .agent-flow-matrix b { display: block; font-family: var(--font-heading); font-size: 18px; letter-spacing: 0; text-transform: uppercase; }
 .sprint3 .agent-flow-host span, .sprint3 .agent-flow-role span, .sprint3 .agent-flow-matrix span { display: block; font-size: 14px; line-height: 1.6; color: var(--color-text); }
 .sprint3 .agent-flow-host b { color: var(--s3-green); }
@@ -266,9 +266,8 @@
 .sprint3 .agent-flow-matrix { padding: 18px; text-align: center; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 6px; }
 .sprint3 .agent-flow-matrix b { color: var(--color-primary); margin-bottom: 6px; }
 .sprint3 .agent-flow-branches { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
-.sprint3 .agent-flow-role { text-align: center; padding: 16px 10px; border-top: 3px solid var(--s3-cyan); }
+.sprint3 .agent-flow-role { text-align: center; padding: 18px 10px; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: 6px; }
 .sprint3 .agent-flow-role.planner b { color: var(--s3-cyan); }
-.sprint3 .agent-flow-role.critic { border-color: var(--s3-red); }
 .sprint3 .agent-flow-role.critic b { color: var(--s3-red); }
 .sprint3 .agent-flow figcaption { padding: 18px 0 0; font-size: 14px; line-height: 1.6; color: var(--color-text); }
 .sprint3 .demo-resources { margin-top: 24px; }
@@ -280,5 +279,5 @@
   .sprint3 .agent-flow-wire { gap: 8px; font-size: 13px; }
   .sprint3 .flow-path i { height: 56px; }
   .sprint3 .agent-flow-role b { font-size: 16px; }
-  .sprint3 .agent-flow-role { padding-inline: 0; }
+  .sprint3 .agent-flow-role { padding-inline: 8px; }
 }
