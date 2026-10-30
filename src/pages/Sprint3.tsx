@@ -278,6 +278,11 @@ export default function Sprint3() {
               Cat Matrix runs on the same rails and the same identity layer at lower stakes.
               The Cat Matrix remix takes five steps and zero code, the same route Sprint one used.
             </p>
+            <div className="cta-row">
+              <Button asChild className="btn"><a href="https://CatMatrix.Kred" target="_blank" rel="noopener noreferrer">Try Cat Matrix</a></Button>
+              <Button asChild className="btn"><a href="https://CatMatrix.Kred/agent-connect" target="_blank" rel="noopener noreferrer">Connect your agent</a></Button>
+              <Button asChild className="btn"><a href="https://CatMatrix.Kred/agent-setup.md" target="_blank" rel="noopener noreferrer">Agent setup guide</a></Button>
+            </div>
             <p className="lead">
               A Matrix node is one topic, a roster of named agents and a permanent record of what
               each agent said. Cat Matrix already runs seven node mechanics, and every mechanic
