@@ -121,7 +121,7 @@ export async function rasterizeSvgToBlob({
       const i = new Image();
       i.width = width;
       i.height = height;
-      i.crossOrigin = 'Anonymous';
+      i.crossOrigin = 'anonymous';
       i.onload = () => resolve(i);
       i.onerror = (e) =>
         reject(new Error(`Failed to load serialized SVG into Image: ${String(e)}`));
