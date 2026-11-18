@@ -151,7 +151,51 @@ const OFFSETS: string[] = Array.from({ length: TILE_COUNT }, (_, i) => {
   return "0px";
 });
 
-export default function LiveGalleryHero() {
+/**
+ * Copy overrides for the LiveGalleryHero foreground. Every prop is optional;
+ * defaults preserve the pre-event live homepage copy so existing callers
+ * (<LiveGalleryHero />) keep working with no changes. The year-round
+ * homepage (IndexYearRound) passes a full set of overrides to reframe the
+ * same gallery as a post-event, year-round stage.
+ */
+export interface LiveGalleryHeroProps {
+  /** Small all-caps label above the wordmark. */
+  eyebrow?: string;
+  /** Trailing year shown after "NFT.NYC " in the wordmark. Pass an empty
+   *  string to drop the year entirely (useful when the hero should read
+   *  year-round rather than tied to a specific edition). */
+  year?: string;
+  /** Multi-sentence body copy below the wordmark. */
+  strap?: React.ReactNode;
+  /** Short monospace meta line beneath the strap. */
+  meta?: string;
+  /** Hidden paragraph read by screen readers. */
+  srOnlyDescription?: string;
+  /** Primary (filled) CTA. */
+  primary?: { label: string; href?: string; onClick?: () => void };
+  /** Secondary (ghost outline) CTA. */
+  secondary?: { label: string; href?: string; onClick?: () => void };
+  /** Trailing body of the "Live ... X" pill beneath the CTAs. */
+  liveLabel?: string;
+}
+
+const DEFAULT_YEAR = "2026";
+const DEFAULT_EYEBROW = "The 9th NFT industry event";
+const DEFAULT_META = "Times Square, New York City · 1-3 Sep 2026";
+const DEFAULT_LIVE_LABEL = "Thousands of Collectors from around the world";
+const DEFAULT_SR_DESCRIPTION =
+  "NFT.NYC 2026 runs 1-3 September in Times Square, New York. It also streams on-chain worldwide through collect.nft.nyc, where anyone can collect the art from Times Square screens from anywhere.";
+
+export default function LiveGalleryHero({
+  eyebrow = DEFAULT_EYEBROW,
+  year = DEFAULT_YEAR,
+  strap,
+  meta = DEFAULT_META,
+  srOnlyDescription = DEFAULT_SR_DESCRIPTION,
+  primary,
+  secondary,
+  liveLabel = DEFAULT_LIVE_LABEL,
+}: LiveGalleryHeroProps = {}) {
   const [tiles, setTiles] = useState<TileSlot[] | null>(null);
   const [spotlightIndex, setSpotlightIndex] = useState<number | null>(null);
   const [collectCount, setCollectCount] = useState<number | null>(null);
@@ -350,11 +394,36 @@ export default function LiveGalleryHero() {
     window.dispatchEvent(new CustomEvent("nftnyc:open-ticketing"));
   };
 
+  // Pre-event defaults for the CTAs - used when the caller did not pass
+  // primary / secondary overrides. Keeps the existing <LiveGalleryHero />
+  // call site (Index.tsx) producing the same UI as before the component
+  // was parameterised.
+  const effectivePrimary = primary ?? {
+    label: "Start collecting",
+    href: "https://collect.nft.nyc",
+  };
+  const effectiveSecondary = secondary ?? {
+    label: "Register to attend",
+    onClick: openTicketing,
+  };
+
+  // Default strap matches the pre-event copy exactly when no override
+  // is provided. Callers pass a React node so they can bold phrases in
+  // their own voice (the IndexYearRound page uses this).
+  const effectiveStrap: React.ReactNode =
+    strap ?? (
+      <>
+        <b>1-3 September</b> in Times Square, New York - and{" "}
+        <b>live on-chain NOW</b>. Register to attend, or start collecting
+        Times Square Art from our global community of Artists now.
+      </>
+    );
+
   return (
     <section
       id="hero"
       className="lgh"
-      aria-label="NFT.NYC 2026 - attend in person or collect from anywhere"
+      aria-label="NFT.NYC - a live on-chain stage, every day"
     >
       <div className="lgh-gallery" aria-hidden="true">
         {usingFallback
@@ -401,52 +470,68 @@ export default function LiveGalleryHero() {
       <div className="lgh-grain" aria-hidden="true" />
 
       <div className="lgh-body">
-        <p className="lgh-eyebrow">The 9th NFT industry event</p>
+        <p className="lgh-eyebrow">{eyebrow}</p>
 
         <h1 className="lgh-wordmark">
-          NFT<span className="lgh-dot">.</span>NYC{" "}
-          <span className="lgh-year">2026</span>
+          NFT<span className="lgh-dot">.</span>NYC
+          {year && (
+            <>
+              {" "}
+              <span className="lgh-year">{year}</span>
+            </>
+          )}
         </h1>
 
-        <p className="lgh-sr-only">
-          NFT.NYC 2026 runs 1-3 September in Times Square, New York. It also
-          streams on-chain worldwide through collect.nft.nyc, where anyone
-          can collect the art from Times Square screens from anywhere.
-        </p>
+        {srOnlyDescription && (
+          <p className="lgh-sr-only">{srOnlyDescription}</p>
+        )}
 
-        <p className="lgh-strap">
-          <b>1-3 September</b> in Times Square, New York - and{" "}
-          <b>live on-chain NOW</b>. Register to attend, or start collecting
-          Times Square Art from our global community of Artists now.
-        </p>
+        <p className="lgh-strap">{effectiveStrap}</p>
 
-        <p className="lgh-meta">Times Square, New York City · 1-3 Sep 2026</p>
+        {meta && <p className="lgh-meta">{meta}</p>}
 
         <div className="lgh-ctas">
-          <a
-            className="lgh-cta lgh-cta-primary"
-            href="https://collect.nft.nyc"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Start collecting
-          </a>
-          <button
-            type="button"
-            className="lgh-cta lgh-cta-ghost"
-            onClick={openTicketing}
-          >
-            Register to attend
-          </button>
+          <HeroCta className="lgh-cta lgh-cta-primary" cta={effectivePrimary} />
+          <HeroCta className="lgh-cta lgh-cta-ghost" cta={effectiveSecondary} />
         </div>
 
-        <span className="lgh-live">
-          <span className="lgh-live-label">Live</span>
-          <span className="lgh-live-body">
-            Thousands of Collectors from around the world
+        {liveLabel && (
+          <span className="lgh-live">
+            <span className="lgh-live-label">Live</span>
+            <span className="lgh-live-body">{liveLabel}</span>
           </span>
-        </span>
+        )}
       </div>
     </section>
+  );
+}
+
+/** Small helper so each CTA can be either a link (href) or a button
+ *  (onClick) without duplicating the markup. Link wins if both are set. */
+function HeroCta({
+  className,
+  cta,
+}: {
+  className: string;
+  cta: { label: string; href?: string; onClick?: () => void };
+}) {
+  if (cta.href) {
+    const isExternal = /^https?:\/\//i.test(cta.href);
+    return (
+      <a
+        className={className}
+        href={cta.href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        onClick={cta.onClick}
+      >
+        {cta.label}
+      </a>
+    );
+  }
+  return (
+    <button type="button" className={className} onClick={cta.onClick}>
+      {cta.label}
+    </button>
   );
 }

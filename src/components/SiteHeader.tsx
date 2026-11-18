@@ -7,6 +7,14 @@ interface HeaderProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   stage?: number;
+  /** Hide the urgency banner above the nav bar. Pages that run year-round
+   *  (not tied to a date) pass this so the "Speaker submissions are closed"
+   *  banner does not sit above them. Defaults to false - banner shows. */
+  hideBanner?: boolean;
+  /** Hide the countdown pill and the Register button in the nav. Year-round
+   *  pages pass this so no event-ticket pressure sits in the header.
+   *  Defaults to false - both show. */
+  hideCountdown?: boolean;
 }
 
 // Fires the global ticketing modal (CC / Crypto choice). The modal is
@@ -15,7 +23,7 @@ function openTicketing() {
   window.dispatchEvent(new CustomEvent('nftnyc:open-ticketing'));
 }
 
-export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps) {
+export default function Header({ theme, onToggleTheme, stage = 0, hideBanner = false, hideCountdown = false }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const allNavLinks = [
@@ -53,7 +61,9 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
   };
 
   const [bannerDismissed, setBannerDismissed] = useState(false);
-  const showBanner = !bannerDismissed;
+  // Banner is suppressed either by the parent (year-round pages) or by
+  // the viewer dismissing it with the x button.
+  const showBanner = !hideBanner && !bannerDismissed;
   const bannerHeight = showBanner ? 36 : 0;
 
   return (
@@ -172,35 +182,37 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 {link.label}
               </a>
             ))}
-            <Countdown compact />
-            <button
-              onClick={openTicketing}
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '13px',
-                fontWeight: 600,
-                color: '#fff',
-                background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
-                backgroundSize: '300% 300%',
-                animation: 'liquidGradient 12s ease-in-out infinite',
-                border: 'none',
-                borderRadius: '9999px',
-                padding: '0.45rem 1rem',
-                cursor: 'pointer',
-                transition: 'transform 150ms ease, box-shadow 150ms ease',
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(139,92,246,0.4)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-              }}
-            >
-              Register
-            </button>
+            {!hideCountdown && <Countdown compact />}
+            {!hideCountdown && (
+              <button
+                onClick={openTicketing}
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
+                  backgroundSize: '300% 300%',
+                  animation: 'liquidGradient 12s ease-in-out infinite',
+                  border: 'none',
+                  borderRadius: '9999px',
+                  padding: '0.45rem 1rem',
+                  cursor: 'pointer',
+                  transition: 'transform 150ms ease, box-shadow 150ms ease',
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 16px rgba(139,92,246,0.4)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                }}
+              >
+                Register
+              </button>
+            )}
             <button
               onClick={onToggleTheme}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
@@ -278,28 +290,30 @@ export default function Header({ theme, onToggleTheme, stage = 0 }: HeaderProps)
                 {link.label}
               </a>
             ))}
-            <button
-              onClick={() => {
-                setMenuOpen(false);
-                openTicketing();
-              }}
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: 'var(--text-lg)',
-                fontWeight: 600,
-                color: '#fff',
-                background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
-                backgroundSize: '300% 300%',
-                animation: 'liquidGradient 12s ease-in-out infinite',
-                border: 'none',
-                borderRadius: '9999px',
-                padding: '0.75rem 2rem',
-                cursor: 'pointer',
-                marginTop: '0.5rem',
-              }}
-            >
-              Register
-            </button>
+            {!hideCountdown && (
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  openTicketing();
+                }}
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 'var(--text-lg)',
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #06B6D4, #3B82F6)',
+                  backgroundSize: '300% 300%',
+                  animation: 'liquidGradient 12s ease-in-out infinite',
+                  border: 'none',
+                  borderRadius: '9999px',
+                  padding: '0.75rem 2rem',
+                  cursor: 'pointer',
+                  marginTop: '0.5rem',
+                }}
+              >
+                Register
+              </button>
+            )}
           </nav>
         </div>
       )}

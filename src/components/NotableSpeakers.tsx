@@ -74,7 +74,18 @@ function extractFeatured(api: RawSessionize): FeaturedSpeaker[] {
     });
 }
 
-export default function NotableSpeakers() {
+export interface NotableSpeakersProps {
+  /** Small all-caps label above the heading. Defaults to the pre-event
+   *  "Featured at NFT.NYC 2026" so existing callers keep their copy. */
+  eyebrow?: string;
+  /** Section heading. Defaults to "Meet Our Featured Speakers". */
+  heading?: string;
+}
+
+export default function NotableSpeakers({
+  eyebrow = "Featured at NFT.NYC 2026",
+  heading = "Meet Our Featured Speakers",
+}: NotableSpeakersProps = {}) {
   const [speakers, setSpeakers] = useState<FeaturedSpeaker[] | null>(null);
 
   useEffect(() => {
@@ -119,7 +130,7 @@ export default function NotableSpeakers() {
               marginBottom: "0.75rem",
             }}
           >
-            Featured at NFT.NYC 2026
+            {eyebrow}
           </p>
           <h2
             style={{
@@ -131,7 +142,7 @@ export default function NotableSpeakers() {
               textTransform: "uppercase",
             }}
           >
-            Meet Our Featured Speakers
+            {heading}
           </h2>
         </div>
         <div
