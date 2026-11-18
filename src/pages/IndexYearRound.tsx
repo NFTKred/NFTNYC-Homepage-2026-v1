@@ -106,77 +106,21 @@ export default function IndexYearRound() {
         {/* ======== HERO (YEAR-ROUND) ======== */}
         <LiveGalleryHero
           eyebrow="Nine editions. One stage. Every day."
-          year=""
+          year="365"
           strap={
             <>
-              <b>Collect, remix and collect again.</b> Live on-chain art from a
-              worldwide community, every day. NFT.NYC 2026 wrapped on{" "}
-              <b>September 1-3</b>. The stage stays open.
+              The ninth edition of NFT.NYC closed in Times Square on{" "}
+              <b>September 1-3</b>: three days, 12 tracks, hundreds of
+              speakers. <b>Four products launched at NFT.NYC 2026</b> keep
+              the stage open, 365 days a year.
             </>
           }
-          meta="Times Square, New York City · September 1-3, 2026"
-          srOnlyDescription="NFT.NYC is a worldwide on-chain stage for digital ownership. The 2026 edition ran September 1-3 in Times Square, New York. Collect.Kred stays open every day with artworks collectible from anywhere."
+          meta="Times Square, New York City · Every day"
+          srOnlyDescription="NFT.NYC 365 is the stage NFT.NYC became after the 2026 edition: live 365 days a year. The 2026 edition ran September 1-3 in Times Square, New York. Four products launched at the event keep the community experience open every day."
           primary={{ label: "Start collecting", href: "https://Collect.Kred" }}
-          secondary={{ label: "See the 2026 recap", href: "#recap-2026" }}
+          secondary={{ label: "See the 2026 recap", href: "#launched-at-2026" }}
           liveLabel="Thousands of Collectors from around the world"
         />
-
-        {/* ======== 2026 RECAP ========
-            Sets the past tense once so every section that follows can
-            stay present-tense. */}
-        <section
-          id="recap-2026"
-          style={{
-            padding: "clamp(3rem, 8vw, 8rem) 1.5rem",
-            background: "#0a0a0f",
-          }}
-        >
-          <div className="max-w-[960px] mx-auto text-center">
-            <p
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--text-xs)",
-                fontWeight: 500,
-                textTransform: "uppercase",
-                letterSpacing: "0.2em",
-                color: "var(--color-text-muted)",
-                marginBottom: "1rem",
-              }}
-            >
-              September 1-3, 2026 · Times Square
-            </p>
-            <h2
-              className="scroll-fade-up"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(1.75rem, 1rem + 2.5vw, 2.75rem)",
-                fontWeight: 700,
-                color: "var(--color-text)",
-                letterSpacing: "-0.02em",
-                textTransform: "uppercase",
-                marginBottom: "1.5rem",
-              }}
-            >
-              NFT.NYC 2026
-            </h2>
-            <p
-              className="scroll-fade-up"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "var(--text-lg)",
-                color: "var(--color-text-muted)",
-                lineHeight: 1.55,
-                maxWidth: "58ch",
-                marginInline: "auto",
-                marginBottom: "2.25rem",
-              }}
-            >
-              The ninth edition of NFT.NYC closed in Times Square. Three days,
-              12 tracks, hundreds of speakers. Four live products on the other
-              side.
-            </p>
-          </div>
-        </section>
 
         {/* ======== LAUNCHED AT NFT.NYC 2026 ========
             Four cards. Order: Collect first (biggest cumulative number),
