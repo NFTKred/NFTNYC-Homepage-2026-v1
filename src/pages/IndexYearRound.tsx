@@ -454,9 +454,9 @@ const LAUNCHES: LaunchCard[] = [
     },
   },
   {
-    name: "Empire.Kred Gen2",
+    name: "Empire.Kred Gen 2",
     tagline: "Where tokenization meets the market.",
-    proof: <>Founders, Backers and Gen2 Shares, on-chain</>,
+    proof: <>Founders, Backers and Gen 2 Shares, on-chain</>,
     body: (
       <>
         Empire.Kred returned to the stage at NFT.NYC 2026 to introduce
@@ -840,17 +840,47 @@ function LaunchedAt2026() {
                   padding: "0.25rem 0.25rem 0",
                 }}
               >
+                {/* Brand lockup: a small accent chip sits beside the name
+                    so each title reads as a product mark and not just
+                    heading text. */}
                 <div
                   style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(1.15rem, 0.95rem + 0.5vw, 1.5rem)",
-                    fontWeight: 700,
-                    color: "var(--color-text)",
-                    letterSpacing: "-0.01em",
-                    lineHeight: 1.1,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.55rem",
                   }}
                 >
-                  {card.name}
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: "inline-block",
+                      width: "14px",
+                      height: "14px",
+                      borderRadius: "3px",
+                      background: `linear-gradient(135deg, ${card.accent}, ${card.accent}aa)`,
+                      boxShadow: `0 0 0 1px ${card.accent}33, 0 0 12px -2px ${card.accent}80`,
+                      flex: "0 0 14px",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "clamp(1.4rem, 1.1rem + 0.7vw, 1.9rem)",
+                      fontWeight: 700,
+                      color: "var(--color-text)",
+                      letterSpacing: "-0.025em",
+                      lineHeight: 1.05,
+                      // Subtle shimmer from accent to a brighter version of
+                      // itself, clipped to the text so the name reads as a
+                      // wordmark rather than body copy.
+                      background: `linear-gradient(135deg, var(--color-text) 0%, var(--color-text) 55%, ${card.accent} 100%)`,
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    {card.name}
+                  </span>
                 </div>
                 <div
                   style={{
