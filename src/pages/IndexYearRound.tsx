@@ -355,6 +355,9 @@ interface LaunchCard {
   media: CardMedia;
   featured: FeaturedPerson;
   cta: string;
+  /** Path to the product's own favicon (a PNG in /public/launches/favicons).
+   *  Sits beside the name as the product's logo mark. */
+  mark: string;
 }
 
 const LAUNCHES: LaunchCard[] = [
@@ -374,6 +377,7 @@ const LAUNCHES: LaunchCard[] = [
     href: "https://Collect.Kred",
     cta: "Collect now",
     accent: "#06B6D4",
+    mark: "/launches/favicons/collect.png",
     media: {
       kind: "image",
       src: "/launches/collect-kred-hero.jpg",
@@ -405,6 +409,7 @@ const LAUNCHES: LaunchCard[] = [
     href: "https://Remix.Kred",
     cta: "Remix now",
     accent: "#EC4899",
+    mark: "/launches/favicons/remix.png",
     media: {
       kind: "video",
       src: "/launches/r3ordr-loop.mp4",
@@ -432,6 +437,7 @@ const LAUNCHES: LaunchCard[] = [
     href: "https://HotGarage.Kred",
     cta: "Open your garage",
     accent: "#F59E0B",
+    mark: "/launches/favicons/hotgarage.png",
     media: {
       kind: "rotating",
       // Race highlight images pulled from the HotGarage.Kred activity feed.
@@ -467,6 +473,7 @@ const LAUNCHES: LaunchCard[] = [
     href: "https://Empire.Kred",
     cta: "Ring the bell",
     accent: "#8B5CF6",
+    mark: "/launches/favicons/empire.png",
     media: {
       kind: "image",
       src: "/launches/empire-kred-hero.jpg",
@@ -840,8 +847,8 @@ function LaunchedAt2026() {
                   padding: "0.25rem 0.25rem 0",
                 }}
               >
-                {/* Brand lockup: a small accent chip sits beside the name
-                    so each title reads as a product mark and not just
+                {/* Brand lockup: the product's own favicon sits beside the
+                    name so each title reads as a product mark and not just
                     heading text. */}
                 <div
                   style={{
@@ -850,33 +857,30 @@ function LaunchedAt2026() {
                     gap: "0.55rem",
                   }}
                 >
-                  <span
+                  <img
+                    src={card.mark}
+                    alt=""
                     aria-hidden="true"
+                    width={22}
+                    height={22}
+                    loading="lazy"
+                    decoding="async"
                     style={{
-                      display: "inline-block",
-                      width: "14px",
-                      height: "14px",
-                      borderRadius: "3px",
-                      background: `linear-gradient(135deg, ${card.accent}, ${card.accent}aa)`,
-                      boxShadow: `0 0 0 1px ${card.accent}33, 0 0 12px -2px ${card.accent}80`,
-                      flex: "0 0 14px",
+                      display: "block",
+                      width: "22px",
+                      height: "22px",
+                      flex: "0 0 22px",
+                      objectFit: "contain",
                     }}
                   />
                   <span
                     style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "clamp(1.4rem, 1.1rem + 0.7vw, 1.9rem)",
+                      fontFamily: "var(--font-body)",
+                      fontSize: "clamp(1.1rem, 0.95rem + 0.4vw, 1.4rem)",
                       fontWeight: 700,
                       color: "var(--color-text)",
-                      letterSpacing: "-0.025em",
-                      lineHeight: 1.05,
-                      // Subtle shimmer from accent to a brighter version of
-                      // itself, clipped to the text so the name reads as a
-                      // wordmark rather than body copy.
-                      background: `linear-gradient(135deg, var(--color-text) 0%, var(--color-text) 55%, ${card.accent} 100%)`,
-                      WebkitBackgroundClip: "text",
-                      backgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
+                      letterSpacing: "-0.015em",
+                      lineHeight: 1.1,
                     }}
                   >
                     {card.name}
