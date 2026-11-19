@@ -444,8 +444,9 @@ const LAUNCHES: LaunchCard[] = [
       intervalMs: 3500,
     },
     featured: {
-      name: "Featured driver",
-      role: "Spotlight coming soon",
+      name: "Naozo NZ",
+      role: "Driver, HotGarage",
+      src: "/launches/naozo-nz.webp",
     },
   },
   {
@@ -468,8 +469,9 @@ const LAUNCHES: LaunchCard[] = [
       alt: "Empire.Kred - the social Share simulation",
     },
     featured: {
-      name: "Featured Founder",
-      role: "Spotlight coming soon",
+      name: "Lynn O'Connell",
+      role: "Presented during NFT.NYC 2019",
+      src: "/launches/lynn-oconnell.jpg",
     },
   },
 ];
