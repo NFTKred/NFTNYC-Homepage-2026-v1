@@ -323,6 +323,19 @@ type CardMedia =
   | { kind: "video"; src: string; poster?: string }
   | { kind: "rotating"; srcs: string[]; alt: string; intervalMs?: number };
 
+/**
+ * One featured individual per card. `src` is an optional photo path; when
+ * absent the avatar falls back to a brand-accented circle with `initials`
+ * (or nothing, for an anonymous placeholder). Swap in real photos by
+ * dropping JPGs into /public/launches/ and setting `src` here.
+ */
+interface FeaturedPerson {
+  name: string;
+  role: string;
+  src?: string;
+  initials?: string;
+}
+
 interface LaunchCard {
   name: string;
   tagline: string;
@@ -331,6 +344,8 @@ interface LaunchCard {
   href: string;
   accent: string;
   media: CardMedia;
+  featured: FeaturedPerson;
+  cta: string;
 }
 
 const LAUNCHES: LaunchCard[] = [
@@ -346,6 +361,7 @@ const LAUNCHES: LaunchCard[] = [
       </>
     ),
     href: "https://Collect.Kred",
+    cta: "Collect now",
     accent: "#06B6D4",
     media: {
       kind: "image",
@@ -353,23 +369,33 @@ const LAUNCHES: LaunchCard[] = [
       alt: "Collect.Kred - a community of artists and collectors on-chain",
       wordmark: "Collect.Kred",
     },
+    featured: {
+      name: "Featured artist",
+      role: "Spotlight coming soon",
+    },
   },
   {
-    name: "R3ORDR.Kred",
+    name: "Remix.Kred",
     tagline: "Remix as a medium.",
-    proof: <>Founding artist <b>Dario De Siena</b></>,
+    proof: <>Open to every artist</>,
     body: (
       <>
-        R3ORDR.Kred is the hub of the R3ORDR collection and the Remix Trial
-        founded by artist Dario De Siena. 2026 proved out the Trial, and
-        R3ORDR.Kred stays open for remix submissions.
+        Remix.Kred opens remix as a medium to every artist. R3ORDR, founded
+        by Dario De Siena, was the trial collection that proved the model at
+        NFT.NYC 2026. Remix.Kred brings that model to everyone.
       </>
     ),
-    href: "https://R3ORDR.Kred",
+    href: "https://Remix.Kred",
+    cta: "Remix now",
     accent: "#EC4899",
     media: {
       kind: "video",
       src: "/launches/r3ordr-loop.mp4",
+    },
+    featured: {
+      name: "Dario De Siena",
+      role: "Founding artist, R3ORDR",
+      initials: "DD",
     },
   },
   {
@@ -384,6 +410,7 @@ const LAUNCHES: LaunchCard[] = [
       </>
     ),
     href: "https://HotGarage.Kred",
+    cta: "Open your garage",
     accent: "#F59E0B",
     media: {
       kind: "rotating",
@@ -400,6 +427,10 @@ const LAUNCHES: LaunchCard[] = [
       alt: "HotGarage.Kred - a race highlight from the activity feed",
       intervalMs: 3500,
     },
+    featured: {
+      name: "Featured driver",
+      role: "Spotlight coming soon",
+    },
   },
   {
     name: "Empire.Kred Gen2",
@@ -413,11 +444,16 @@ const LAUNCHES: LaunchCard[] = [
       </>
     ),
     href: "https://Empire.Kred",
+    cta: "Ring the bell",
     accent: "#8B5CF6",
     media: {
       kind: "image",
       src: "/launches/empire-kred-hero.jpg",
       alt: "Empire.Kred - the social Share simulation",
+    },
+    featured: {
+      name: "Featured Founder",
+      role: "Spotlight coming soon",
     },
   },
 ];
@@ -571,6 +607,62 @@ function LaunchCardMedia({ media, accent }: { media: CardMedia; accent: string }
   );
 }
 
+/**
+ * Small row that shows the featured individual beside their name and role.
+ * When `src` is set, the avatar is that photo; otherwise it is a solid
+ * brand-accent circle with initials (or empty, for an anonymous placeholder).
+ */
+function FeaturedAvatar({ person, accent }: { person: FeaturedPerson; accent: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+      <div
+        aria-hidden="true"
+        style={{
+          width: "36px",
+          height: "36px",
+          borderRadius: "9999px",
+          background: person.src
+            ? `url(${person.src}) center/cover no-repeat`
+            : `linear-gradient(135deg, ${accent}cc, ${accent}55)`,
+          border: `1px solid ${accent}66`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "var(--font-display)",
+          fontSize: "13px",
+          fontWeight: 700,
+          color: "#fff",
+          letterSpacing: "0.02em",
+          flex: "0 0 36px",
+        }}
+      >
+        {!person.src && person.initials}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.25 }}>
+        <span
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "13px",
+            fontWeight: 600,
+            color: "var(--color-text)",
+          }}
+        >
+          {person.name}
+        </span>
+        <span
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "12px",
+            color: "var(--color-text-muted)",
+          }}
+        >
+          {person.role}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function LaunchedAt2026() {
   return (
     <section
@@ -702,6 +794,9 @@ function LaunchedAt2026() {
               >
                 {card.proof}
               </div>
+              <div style={{ marginTop: "0.25rem" }}>
+                <FeaturedAvatar person={card.featured} accent={card.accent} />
+              </div>
               <div
                 style={{
                   fontFamily: "var(--font-body)",
@@ -723,7 +818,7 @@ function LaunchedAt2026() {
                   letterSpacing: "0.01em",
                 }}
               >
-                Visit {card.name} &rarr;
+                {card.cta} &rarr;
               </div>
               </div>
             </a>
