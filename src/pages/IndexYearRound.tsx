@@ -324,16 +324,25 @@ type CardMedia =
   | { kind: "rotating"; srcs: string[]; alt: string; intervalMs?: number };
 
 /**
- * One featured individual per card. `src` is an optional photo path; when
- * absent the avatar falls back to a brand-accented circle with `initials`
- * (or nothing, for an anonymous placeholder). Swap in real photos by
- * dropping JPGs into /public/launches/ and setting `src` here.
+ * Featured row beside each card body. A card either features a single
+ * individual (single circle avatar: photo if `src`, else accent circle
+ * with `initials`) or a group (a stack of overlapping circles: one per
+ * entry in `stack`). Setting `stack` overrides `src` and `initials`.
+ * Swap in real photos by dropping JPGs into /public/launches/ and setting
+ * `src` on either the person or a stack entry.
  */
+interface StackedAvatar {
+  src?: string;
+  initials?: string;
+  tone?: string;
+}
+
 interface FeaturedPerson {
   name: string;
   role: string;
   src?: string;
   initials?: string;
+  stack?: StackedAvatar[];
 }
 
 interface LaunchCard {
@@ -370,8 +379,15 @@ const LAUNCHES: LaunchCard[] = [
       wordmark: "Collect.Kred",
     },
     featured: {
-      name: "Featured artist",
-      role: "Spotlight coming soon",
+      name: "100+ Featured Artists",
+      role: "Already USDC Approved",
+      stack: [
+        { tone: "#06B6D4" },
+        { tone: "#8B5CF6" },
+        { tone: "#EC4899" },
+        { tone: "#F59E0B" },
+        { tone: "#10B981" },
+      ],
     },
   },
   {
@@ -400,7 +416,7 @@ const LAUNCHES: LaunchCard[] = [
   },
   {
     name: "HotGarage.Kred",
-    tagline: "The Hot Wheels NFT revival.",
+    tagline: "Reviving dormant collections.",
     proof: <>Racing, Chop Shop and performance parts, live</>,
     body: (
       <>
@@ -613,31 +629,84 @@ function LaunchCardMedia({ media, accent }: { media: CardMedia; accent: string }
  * brand-accent circle with initials (or empty, for an anonymous placeholder).
  */
 function FeaturedAvatar({ person, accent }: { person: FeaturedPerson; accent: string }) {
+  const singleAvatar = (
+    <div
+      aria-hidden="true"
+      style={{
+        width: "36px",
+        height: "36px",
+        borderRadius: "9999px",
+        background: person.src
+          ? `url(${person.src}) center/cover no-repeat`
+          : `linear-gradient(135deg, ${accent}cc, ${accent}55)`,
+        border: `1px solid ${accent}66`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "var(--font-display)",
+        fontSize: "13px",
+        fontWeight: 700,
+        color: "#fff",
+        letterSpacing: "0.02em",
+        flex: "0 0 36px",
+      }}
+    >
+      {!person.src && person.initials}
+    </div>
+  );
+
+  // Stacked avatars overlap left-to-right. Each sits 14px right of the
+  // previous one and above it in z-order, so the newest avatar in the
+  // array lands at the back and the first sits in front.
+  const stackAvatars = person.stack && (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        // Width is the first circle plus one 14px step per extra circle.
+        width: `${36 + Math.max(0, person.stack.length - 1) * 14}px`,
+        height: "36px",
+        flex: "0 0 auto",
+      }}
+    >
+      {person.stack.map((entry, i) => {
+        const tone = entry.tone ?? accent;
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${i * 14}px`,
+              width: "28px",
+              height: "28px",
+              borderRadius: "9999px",
+              background: entry.src
+                ? `url(${entry.src}) center/cover no-repeat`
+                : `linear-gradient(135deg, ${tone}dd, ${tone}66)`,
+              border: `2px solid var(--color-surface)`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: "var(--font-display)",
+              fontSize: "11px",
+              fontWeight: 700,
+              color: "#fff",
+              zIndex: person.stack!.length - i,
+              boxShadow: "0 1px 2px rgba(0,0,0,0.25)",
+            }}
+          >
+            {!entry.src && entry.initials}
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
-      <div
-        aria-hidden="true"
-        style={{
-          width: "36px",
-          height: "36px",
-          borderRadius: "9999px",
-          background: person.src
-            ? `url(${person.src}) center/cover no-repeat`
-            : `linear-gradient(135deg, ${accent}cc, ${accent}55)`,
-          border: `1px solid ${accent}66`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "var(--font-display)",
-          fontSize: "13px",
-          fontWeight: 700,
-          color: "#fff",
-          letterSpacing: "0.02em",
-          flex: "0 0 36px",
-        }}
-      >
-        {!person.src && person.initials}
-      </div>
+      {person.stack ? stackAvatars : singleAvatar}
       <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.25 }}>
         <span
           style={{
@@ -719,119 +788,147 @@ function LaunchedAt2026() {
         <div
           className="launches-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
+            display: "flex",
+            flexDirection: "column",
             gap: "1.5rem",
           }}
         >
           {LAUNCHES.map((card) => (
-            <a
+            <article
               key={card.name}
-              href={card.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="scroll-fade-up"
+              className="launch-card scroll-fade-up"
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.75rem",
+                display: "grid",
+                gridTemplateColumns: "minmax(0, 5fr) minmax(0, 7fr)",
+                gap: "1.5rem",
                 padding: "1rem",
                 background: "var(--color-surface)",
                 border: "1px solid var(--card-border)",
                 borderRadius: "1rem",
-                textDecoration: "none",
-                color: "inherit",
                 position: "relative",
                 overflow: "hidden",
-                transition: "border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease",
+                transition: "border-color 200ms ease, box-shadow 200ms ease",
+                // CSS variable so the hover state below can read the card's
+                // accent without needing a per-card inline style for every
+                // interactive child.
+                ["--card-accent" as never]: card.accent,
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = card.accent;
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
                 (e.currentTarget as HTMLElement).style.boxShadow = `0 10px 30px -14px ${card.accent}66`;
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "var(--card-border)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                 (e.currentTarget as HTMLElement).style.boxShadow = "none";
               }}
             >
-              {/* 16:9 media area carrying image / video / rotating slides */}
+              {/* Media column: 16:9 image / video / rotating slides */}
               <LaunchCardMedia media={card.media} accent={card.accent} />
-              <div style={{ padding: "0.5rem 0.5rem 0" }}>
+
+              {/* Content column */}
               <div
                 style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(1.1rem, 0.95rem + 0.4vw, 1.35rem)",
-                  fontWeight: 700,
-                  color: "var(--color-text)",
-                  letterSpacing: "-0.01em",
-                  lineHeight: 1.1,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.65rem",
+                  padding: "0.25rem 0.25rem 0",
                 }}
               >
-                {card.name}
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--text-sm)",
-                  color: card.accent,
-                  fontWeight: 600,
-                  letterSpacing: "0.01em",
-                }}
-              >
-                {card.tagline}
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "var(--color-text-faint)",
-                }}
-              >
-                {card.proof}
-              </div>
-              <div style={{ marginTop: "0.25rem" }}>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(1.15rem, 0.95rem + 0.5vw, 1.5rem)",
+                    fontWeight: 700,
+                    color: "var(--color-text)",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {card.name}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "var(--text-sm)",
+                    color: card.accent,
+                    fontWeight: 600,
+                    letterSpacing: "0.01em",
+                  }}
+                >
+                  {card.tagline}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    color: "var(--color-text-faint)",
+                  }}
+                >
+                  {card.proof}
+                </div>
                 <FeaturedAvatar person={card.featured} accent={card.accent} />
+                <div
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "var(--text-sm)",
+                    color: "var(--color-text-muted)",
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {card.body}
+                </div>
+                <a
+                  href={card.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="launch-cta"
+                  style={{
+                    marginTop: "auto",
+                    alignSelf: "flex-start",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    padding: "0.6rem 1.1rem",
+                    borderRadius: "9999px",
+                    background: card.accent,
+                    color: "#0a0a0f",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    letterSpacing: "0.02em",
+                    textDecoration: "none",
+                    boxShadow: `0 6px 18px -8px ${card.accent}aa`,
+                    transition: "transform 150ms ease, box-shadow 150ms ease, filter 150ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+                    (e.currentTarget as HTMLElement).style.filter = "brightness(1.08)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = `0 10px 24px -8px ${card.accent}cc`;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                    (e.currentTarget as HTMLElement).style.filter = "none";
+                    (e.currentTarget as HTMLElement).style.boxShadow = `0 6px 18px -8px ${card.accent}aa`;
+                  }}
+                >
+                  {card.cta}
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
               </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "var(--text-sm)",
-                  color: "var(--color-text-muted)",
-                  lineHeight: 1.55,
-                }}
-              >
-                {card.body}
-              </div>
-              <div
-                aria-hidden="true"
-                style={{
-                  marginTop: "auto",
-                  fontFamily: "var(--font-body)",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: card.accent,
-                  letterSpacing: "0.01em",
-                }}
-              >
-                {card.cta} &rarr;
-              </div>
-              </div>
-            </a>
+            </article>
           ))}
         </div>
       </div>
-      {/* Grid collapses to a single column at narrow widths. Kept as a
-          <style> block rather than inline so the media query can drive
-          it; container queries would work too but need a container type
-          on the parent. */}
+      {/* Each card lays out media-left, content-right on desktop; at
+          narrow widths media stacks above content. Kept as a <style>
+          block so a media query can drive the article's own grid. */}
       <style>{`
         @media (max-width: 720px) {
-          .launches-grid {
+          .launch-card {
             grid-template-columns: 1fr !important;
           }
         }
