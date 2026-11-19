@@ -110,13 +110,13 @@ export default function IndexYearRound() {
           strap={
             <>
               The ninth edition of NFT.NYC closed in Times Square on{" "}
-              <b>September 1-3</b>: three days, 12 tracks, hundreds of
+              <b>September 3, 2026</b>: three days, 12 tracks, hundreds of
               speakers. <b>Four products launched at NFT.NYC 2026</b> keep
               the stage open, 365 days a year.
             </>
           }
           meta="Times Square, New York City · Every day"
-          srOnlyDescription="NFT.NYC 365 is the stage NFT.NYC became after the 2026 edition: live 365 days a year. The 2026 edition ran September 1-3 in Times Square, New York. Four products launched at the event keep the community experience open every day."
+          srOnlyDescription="NFT.NYC 365 is the stage NFT.NYC became after the 2026 edition: live 365 days a year. The 2026 edition closed on September 3, 2026 in Times Square, New York. Four products launched at the event keep the community experience open every day."
           primary={{ label: "Start collecting", href: "https://Collect.Kred" }}
           secondary={{ label: "See the 2026 recap", href: "#launched-at-2026" }}
           liveLabel="Thousands of Collectors from around the world"
@@ -311,12 +311,18 @@ export default function IndexYearRound() {
 }
 
 /**
- * "Launched at NFT.NYC 2026" - four product cards in a responsive grid.
- * Kept as an internal component rather than a shared one because the copy
- * is specific to this page and reusing it elsewhere would mean either
- * duplicating the strings (current approach for the pre-event homepage,
- * which is archived) or threading props through for every field.
+ * "Launched at NFT.NYC 2026" - four product cards laid out as two rows
+ * of two on desktop, each with a 16:9 media header. Each card's media
+ * is one of three types:
+ *   - image: a single JPG/PNG background with an optional wordmark overlay
+ *   - video: an autoplay, loop, muted <video> that sits in the media area
+ *   - rotating: a slide-show of images that cross-fade on a timer
  */
+type CardMedia =
+  | { kind: "image"; src: string; alt: string; wordmark?: string }
+  | { kind: "video"; src: string; poster?: string }
+  | { kind: "rotating"; srcs: string[]; alt: string; intervalMs?: number };
+
 interface LaunchCard {
   name: string;
   tagline: string;
@@ -324,6 +330,7 @@ interface LaunchCard {
   body: React.ReactNode;
   href: string;
   accent: string;
+  media: CardMedia;
 }
 
 const LAUNCHES: LaunchCard[] = [
@@ -340,6 +347,12 @@ const LAUNCHES: LaunchCard[] = [
     ),
     href: "https://Collect.Kred",
     accent: "#06B6D4",
+    media: {
+      kind: "image",
+      src: "/launches/collect-kred-hero.jpg",
+      alt: "Collect.Kred - a community of artists and collectors on-chain",
+      wordmark: "Collect.Kred",
+    },
   },
   {
     name: "R3ORDR.Kred",
@@ -354,6 +367,10 @@ const LAUNCHES: LaunchCard[] = [
     ),
     href: "https://R3ORDR.Kred",
     accent: "#EC4899",
+    media: {
+      kind: "video",
+      src: "/launches/r3ordr-loop.mp4",
+    },
   },
   {
     name: "HotGarage.Kred",
@@ -368,6 +385,21 @@ const LAUNCHES: LaunchCard[] = [
     ),
     href: "https://HotGarage.Kred",
     accent: "#F59E0B",
+    media: {
+      kind: "rotating",
+      // Race highlight images pulled from the HotGarage.Kred activity feed.
+      // Updated manually; the feed has new moments regularly.
+      srcs: [
+        "/launches/hotgarage-races/race-moment-516.jpg",
+        "/launches/hotgarage-races/race-moment-514.jpg",
+        "/launches/hotgarage-races/race-moment-513.jpg",
+        "/launches/hotgarage-races/race-moment-512.jpg",
+        "/launches/hotgarage-races/race-moment-511.jpg",
+        "/launches/hotgarage-races/race-moment-510.jpg",
+      ],
+      alt: "HotGarage.Kred - a race highlight from the activity feed",
+      intervalMs: 3500,
+    },
   },
   {
     name: "Empire.Kred Gen2",
@@ -382,8 +414,162 @@ const LAUNCHES: LaunchCard[] = [
     ),
     href: "https://Empire.Kred",
     accent: "#8B5CF6",
+    media: {
+      kind: "image",
+      src: "/launches/empire-kred-hero.jpg",
+      alt: "Empire.Kred - the social Share simulation",
+    },
   },
 ];
+
+/**
+ * Renders the 16:9 media header of a launch card. Image kind paints a
+ * single <img> and optionally overlays a wordmark badge over the centre.
+ * Video kind renders an autoplay, loop, muted inline <video>. Rotating
+ * kind cross-fades between images on a timer with reduced-motion fallback.
+ */
+function LaunchCardMedia({ media, accent }: { media: CardMedia; accent: string }) {
+  const [rotatingIndex, setRotatingIndex] = useState(0);
+
+  // Rotator effect only runs when media kind is "rotating". Reduced-motion
+  // viewers see the first frame only; everyone else sees a gentle crossfade
+  // every intervalMs.
+  useEffect(() => {
+    if (media.kind !== "rotating") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const delay = media.intervalMs ?? 3500;
+    const id = window.setInterval(() => {
+      setRotatingIndex((i) => (i + 1) % media.srcs.length);
+    }, delay);
+    return () => window.clearInterval(id);
+  }, [media]);
+
+  return (
+    <div
+      aria-hidden={media.kind === "video" ? "true" : undefined}
+      style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "16 / 9",
+        overflow: "hidden",
+        borderRadius: "0.5rem",
+        background: "#0a0a0f",
+      }}
+    >
+      {media.kind === "image" && (
+        <>
+          <img
+            src={media.src}
+            alt={media.alt}
+            loading="lazy"
+            decoding="async"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+          {media.wordmark && (
+            <>
+              {/* Scrim behind the wordmark so the text reads on any image */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "radial-gradient(ellipse 60% 55% at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.0) 100%)",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.5rem, 3vw, 2.75rem)",
+                  fontWeight: 700,
+                  color: "#F0F0F5",
+                  letterSpacing: "-0.015em",
+                  textShadow: "0 2px 12px rgba(0,0,0,0.8)",
+                }}
+              >
+                {media.wordmark}
+              </span>
+            </>
+          )}
+        </>
+      )}
+
+      {media.kind === "video" && (
+        <video
+          src={media.src}
+          poster={media.poster}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      )}
+
+      {media.kind === "rotating" && (
+        // Stack every frame absolutely in the same box; only the active
+        // index has opacity 1, everyone else fades out.
+        <>
+          {media.srcs.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt={i === 0 ? media.alt : ""}
+              loading={i === 0 ? "eager" : "lazy"}
+              decoding="async"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+                opacity: i === rotatingIndex ? 1 : 0,
+                transition: "opacity 900ms ease",
+              }}
+            />
+          ))}
+        </>
+      )}
+
+      {/* Thin accent line along the bottom of the media area so the card
+          still carries its brand colour even when the top is a solid
+          image or video. */}
+      <span
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: "2px",
+          background: accent,
+          opacity: 0.85,
+        }}
+      />
+    </div>
+  );
+}
 
 function LaunchedAt2026() {
   return (
@@ -439,10 +625,11 @@ function LaunchedAt2026() {
           </p>
         </div>
         <div
+          className="launches-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
-            gap: "1.25rem",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "1.5rem",
           }}
         >
           {LAUNCHES.map((card) => (
@@ -456,7 +643,7 @@ function LaunchedAt2026() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.75rem",
-                padding: "1.5rem",
+                padding: "1rem",
                 background: "var(--color-surface)",
                 border: "1px solid var(--card-border)",
                 borderRadius: "1rem",
@@ -477,19 +664,9 @@ function LaunchedAt2026() {
                 (e.currentTarget as HTMLElement).style.boxShadow = "none";
               }}
             >
-              {/* Accent bar at the top of each card */}
-              <span
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: "3px",
-                  background: card.accent,
-                  opacity: 0.85,
-                }}
-              />
+              {/* 16:9 media area carrying image / video / rotating slides */}
+              <LaunchCardMedia media={card.media} accent={card.accent} />
+              <div style={{ padding: "0.5rem 0.5rem 0" }}>
               <div
                 style={{
                   fontFamily: "var(--font-display)",
@@ -548,10 +725,22 @@ function LaunchedAt2026() {
               >
                 Visit {card.name} &rarr;
               </div>
+              </div>
             </a>
           ))}
         </div>
       </div>
+      {/* Grid collapses to a single column at narrow widths. Kept as a
+          <style> block rather than inline so the media query can drive
+          it; container queries would work too but need a container type
+          on the parent. */}
+      <style>{`
+        @media (max-width: 720px) {
+          .launches-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
