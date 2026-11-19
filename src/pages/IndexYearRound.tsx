@@ -412,7 +412,7 @@ const LAUNCHES: LaunchCard[] = [
     featured: {
       name: "Dario De Siena",
       role: "Founding artist, R3ORDR",
-      initials: "DD",
+      src: "/launches/dario-desiena.jpeg",
     },
   },
   {
