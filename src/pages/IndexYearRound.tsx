@@ -376,7 +376,6 @@ const LAUNCHES: LaunchCard[] = [
       kind: "image",
       src: "/launches/collect-kred-hero.jpg",
       alt: "Collect.Kred - a community of artists and collectors on-chain",
-      wordmark: "Collect.Kred",
     },
     featured: {
       name: "100+ Featured Artists",
