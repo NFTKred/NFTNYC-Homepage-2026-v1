@@ -365,8 +365,10 @@ const LAUNCHES: LaunchCard[] = [
     body: (
       <>
         Collect.Kred, launched by NFT.NYC and supported by Kred technology,
-        opened months before NFT.NYC 2026 and has not slowed down. Artists
-        submit, collectors collect, and every collect rewards the artist.
+        opened in the months leading up to NFT.NYC 2026 with a mission of
+        helping digital creators find new collectors. Artists submit,
+        collectors collect, fans remix, and every piece collected rewards
+        the artist.
       </>
     ),
     href: "https://Collect.Kred",
@@ -381,11 +383,11 @@ const LAUNCHES: LaunchCard[] = [
       name: "100+ Featured Artists",
       role: "Already USDC Approved",
       stack: [
-        { tone: "#06B6D4" },
-        { tone: "#8B5CF6" },
-        { tone: "#EC4899" },
-        { tone: "#F59E0B" },
-        { tone: "#10B981" },
+        { src: "/launches/collect-artists/yuzapata.webp" },
+        { src: "/launches/collect-artists/junrott.webp" },
+        { src: "/launches/collect-artists/luetas.jpg" },
+        { src: "/launches/collect-artists/thorium.webp" },
+        { src: "/launches/collect-artists/lia.webp" },
       ],
     },
   },
@@ -419,9 +421,12 @@ const LAUNCHES: LaunchCard[] = [
     proof: <>Racing, Chop Shop and performance parts, live</>,
     body: (
       <>
-        HotGarage.Kred launched at NFT.NYC 2026 with racing, Chop Shop and
-        performance parts: three new ways to play with a Hot Wheels digital
-        collectible. A dormant collection is back on the grid.
+        HotGarage.Kred, the unofficial digital garage for Hot Wheels
+        Collectibles owners, opened in the months before NFT.NYC 2026.
+        Over 549,000 Collectibles moved to owner wallets after the Mattel
+        shutdown. Owners race on six tracks, fit Performance Parts and
+        build new cars in the Custom Workshop, and every car stays in
+        its owner's wallet.
       </>
     ),
     href: "https://HotGarage.Kred",
@@ -444,7 +449,7 @@ const LAUNCHES: LaunchCard[] = [
     },
     featured: {
       name: "Naozo NZ",
-      role: "Driver, HotGarage",
+      role: "Featured Driver",
       src: "/launches/naozo-nz.webp",
     },
   },
@@ -454,8 +459,8 @@ const LAUNCHES: LaunchCard[] = [
     proof: <>Founders, Backers and Gen2 Shares, on-chain</>,
     body: (
       <>
-        Empire.Kred Gen2, the economic simulation, took the stage at NFT.NYC
-        2026. Founders issue Gen2 Shares, Backers buy in, and the Backer
+        Empire.Kred returned to the stage at NFT.NYC 2026 to introduce
+        Gen 2. Founders issue Gen 2 Shares, Backers buy in, and the Backer
         Share rewards a Founder in XP and in Kredits once Listed.
       </>
     ),
