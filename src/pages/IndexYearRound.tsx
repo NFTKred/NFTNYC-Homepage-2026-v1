@@ -409,7 +409,7 @@ const LAUNCHES: LaunchCard[] = [
     href: "https://Remix.Kred",
     cta: "Remix now",
     accent: "#EC4899",
-    mark: "/launches/favicons/remix.png",
+    mark: "/launches/favicons/remix.svg",
     media: {
       kind: "video",
       src: "/launches/r3ordr-loop.mp4",
