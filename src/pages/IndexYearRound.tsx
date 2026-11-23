@@ -319,7 +319,7 @@ export default function IndexYearRound() {
  *   - rotating: a slide-show of images that cross-fade on a timer
  */
 type CardMedia =
-  | { kind: "image"; src: string; alt: string; wordmark?: string }
+  | { kind: "image"; src: string; alt: string; wordmark?: string; objectPosition?: string }
   | { kind: "video"; src: string; poster?: string }
   | { kind: "rotating"; srcs: string[]; alt: string; intervalMs?: number };
 
@@ -476,8 +476,9 @@ const LAUNCHES: LaunchCard[] = [
     mark: "/launches/favicons/empire.png",
     media: {
       kind: "image",
-      src: "/launches/empire-kred-hero.jpg",
+      src: "/launches/empire-kred-tile.png",
       alt: "Empire.Kred - the social Share simulation",
+      objectPosition: "top left",
     },
     featured: {
       name: "Lynn O'Connell",
@@ -534,6 +535,7 @@ function LaunchCardMedia({ media, accent }: { media: CardMedia; accent: string }
               width: "100%",
               height: "100%",
               objectFit: "cover",
+              objectPosition: media.objectPosition ?? "center",
               display: "block",
             }}
           />
