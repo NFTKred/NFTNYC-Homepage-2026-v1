@@ -470,7 +470,7 @@ export default function LiveGalleryHero({
       <div className="lgh-grain" aria-hidden="true" />
 
       <div className="lgh-body">
-        <p className="lgh-eyebrow">{eyebrow}</p>
+        {eyebrow && <p className="lgh-eyebrow">{eyebrow}</p>}
 
         <h1 className="lgh-wordmark">
           NFT<span className="lgh-dot">.</span>NYC

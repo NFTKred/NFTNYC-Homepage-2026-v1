@@ -105,7 +105,7 @@ export default function IndexYearRound() {
       <main id="main">
         {/* ======== HERO (YEAR-ROUND) ======== */}
         <LiveGalleryHero
-          eyebrow="Nine editions. One stage. Every day."
+          eyebrow=""
           year="365"
           strap={
             <>
