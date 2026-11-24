@@ -213,7 +213,7 @@ export default function SiteFooter({ stage = 0, hideIndustryFeed = false }: { st
 
         <div style={{ borderTop: '1px solid var(--card-border)', paddingTop: '1.5rem' }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
-            Times Square, New York City | 1–3 September 2026
+            Times Square, New York City
           </p>
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>
             © 2026 NFT.NYC

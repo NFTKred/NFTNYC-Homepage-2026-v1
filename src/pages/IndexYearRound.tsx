@@ -355,6 +355,9 @@ interface LaunchCard {
   media: CardMedia;
   featured: FeaturedPerson;
   cta: string;
+  /** Optional ghost-styled button sitting beside the primary CTA, used
+   *  for a supporting link (e.g. a protocol paper or docs page). */
+  secondary?: { label: string; href: string };
   /** Path to the product's own favicon (a PNG in /public/launches/favicons).
    *  Sits beside the name as the product's logo mark. */
   mark: string;
@@ -408,6 +411,10 @@ const LAUNCHES: LaunchCard[] = [
     ),
     href: "https://Remix.Kred",
     cta: "Remix now",
+    secondary: {
+      label: "Read the Remix Protocol",
+      href: "https://remix.kred/protocol",
+    },
     accent: "#EC4899",
     mark: "/launches/favicons/remix.svg",
     media: {
@@ -922,44 +929,87 @@ function LaunchedAt2026() {
                 >
                   {card.body}
                 </div>
-                <a
-                  href={card.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="launch-cta"
+                <div
                   style={{
                     marginTop: "auto",
-                    alignSelf: "flex-start",
-                    display: "inline-flex",
+                    display: "flex",
+                    flexWrap: "wrap",
                     alignItems: "center",
-                    gap: "0.4rem",
-                    padding: "0.6rem 1.1rem",
-                    borderRadius: "9999px",
-                    background: card.accent,
-                    color: "#0a0a0f",
-                    fontFamily: "var(--font-body)",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    letterSpacing: "0.02em",
-                    textDecoration: "none",
-                    boxShadow: `0 6px 18px -8px ${card.accent}aa`,
-                    transition: "transform 150ms ease, box-shadow 150ms ease, filter 150ms ease",
-                    whiteSpace: "nowrap",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-                    (e.currentTarget as HTMLElement).style.filter = "brightness(1.08)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 10px 24px -8px ${card.accent}cc`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                    (e.currentTarget as HTMLElement).style.filter = "none";
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 6px 18px -8px ${card.accent}aa`;
+                    gap: "0.6rem",
                   }}
                 >
-                  {card.cta}
-                  <span aria-hidden="true">&rarr;</span>
-                </a>
+                  <a
+                    href={card.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="launch-cta"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                      padding: "0.6rem 1.1rem",
+                      borderRadius: "9999px",
+                      background: card.accent,
+                      color: "#0a0a0f",
+                      fontFamily: "var(--font-body)",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      letterSpacing: "0.02em",
+                      textDecoration: "none",
+                      boxShadow: `0 6px 18px -8px ${card.accent}aa`,
+                      transition: "transform 150ms ease, box-shadow 150ms ease, filter 150ms ease",
+                      whiteSpace: "nowrap",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+                      (e.currentTarget as HTMLElement).style.filter = "brightness(1.08)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = `0 10px 24px -8px ${card.accent}cc`;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                      (e.currentTarget as HTMLElement).style.filter = "none";
+                      (e.currentTarget as HTMLElement).style.boxShadow = `0 6px 18px -8px ${card.accent}aa`;
+                    }}
+                  >
+                    {card.cta}
+                    <span aria-hidden="true">&rarr;</span>
+                  </a>
+                  {card.secondary && (
+                    <a
+                      href={card.secondary.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.4rem",
+                        padding: "0.55rem 1rem",
+                        borderRadius: "9999px",
+                        background: "transparent",
+                        color: "var(--color-text)",
+                        border: `1px solid ${card.accent}66`,
+                        fontFamily: "var(--font-body)",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        letterSpacing: "0.02em",
+                        textDecoration: "none",
+                        transition: "border-color 150ms ease, background 150ms ease, color 150ms ease",
+                        whiteSpace: "nowrap",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = card.accent;
+                        (e.currentTarget as HTMLElement).style.background = `${card.accent}14`;
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = `${card.accent}66`;
+                        (e.currentTarget as HTMLElement).style.background = "transparent";
+                      }}
+                    >
+                      {card.secondary.label}
+                      <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  )}
+                </div>
               </div>
             </article>
           ))}

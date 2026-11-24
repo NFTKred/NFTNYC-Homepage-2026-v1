@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import Index from "./pages/Index";
 import IndexYearRound from "./pages/IndexYearRound";
 import IndexEventTemplate from "./pages/IndexEventTemplate";
 import TSChallenge from "./pages/TSChallenge";
@@ -71,9 +70,10 @@ const App = () => (
       <TicketingModal />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* Preview routes - not promoted to / yet. /year-round is the
-              post-event preview; /event-template is the archived pre-event
+          <Route path="/" element={<IndexYearRound />} />
+          {/* /year-round kept as an alias for the shipped post-event
+              homepage so links from the preview period still land on
+              the live page. /event-template is the archived pre-event
               page kept for the next edition. */}
           <Route path="/year-round" element={<IndexYearRound />} />
           <Route path="/event-template" element={<IndexEventTemplate />} />
